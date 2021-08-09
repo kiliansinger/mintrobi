@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<!--https://stackoverflow.com/questions/38557822/debugging-in-visual-studio-code-with-babel-node-->
+<!--
+To enable type checking for all JavaScript files without changing any code, just add "javascript.implicitProjectConfig.checkJs": true to your workspace or user settings. This enables type checking for any JavaScript file that is not part of a jsconfig.json or tsconfig.json project.
+You can opt individual files out of type checking with a // @ts-nocheck comment at the top of the file:
+TODO: implement doors as rooms that repeat the last go... command
+you can make a door also an orc that blocks the road
+-->
+<html>
+<head>
+<META HTTP-EQUIV="content-type" CONTENT="text/html; charset=utf-8">
+<meta http-equiv="Cache-control" content="no-cache">
+<meta http-equiv="Cache-control" content="no-store">
+<style>
+	html {
+	color: 		#ffaa55;
+    background-color: #000000;
+    margin: 	10px;
+    font-family: Arial, Helvetica, Sans-Serif;
+    font-size: 	18pt;   
+}
+
+#story {
+    position: 	absolute;
+	top: 		10px;
+    bottom: 	80px;
+    left: 		10px;
+    right: 		10px;
+    overflow: 	auto;
+	
+}
+
+#story p {
+    margin: 0.2em 0;
+    white-space: pre-wrap;
+	  overflow: auto;
+
+}
+
+#inputline {
+    position: absolute;
+    bottom: 18pt;
+    left: 18pt;
+    right: 18pt;
+}
+
+#story .command {
+    color:#00FF00;
+    font-style:italic;
+    margin-top:0.2em;
+}
+
+.command::before {
+color: #00FF00;
+    content:"\25B6";
+    margin-right:0.5em;
+	font-style:normal;
+}
+
+#prompt {
+	background: 		#000000;
+	color: #00FF00; 
+}
+
+#inp {
+    width: 80%;
+	background: 		#222222;
+	color: #00FF00;
+    height: 1.5em;
+	font-family: Arial, Helvetica, Sans-Serif;
+    font-size: 	18pt;   
+}
+img {
+    width:30%; 
+    height:auto;
+	display: block;
+}
+</style>
+    </head>
+	<body onload="start()">
+        <div id="story"></div>
+        <div id="inputline">
+            <span id="prompt">&#x25B6;</span>
+            <input id="inp">
+        </div>
+    </body>
+<!-- Load Babel copied from https://unpkg.com/@babel/standalone/babel.min.js forwared to https://unpkg.com/@babel/standalone@7.11.3/babel.min.js-->
+<script>
+// @ts-check
+</script>
+<script src="babel.min.js"></script>
+<script>
+// Define a preset https://medium.com/jspoint/a-minimal-guide-to-ecmascript-decorators-55b70338215e
+Babel.registerPreset("env-plus", {
+  presets: [
+    [Babel.availablePresets["env"], { "loose": true }]
+  ],
+  plugins: [
+    [
+      Babel.availablePlugins["proposal-decorators"], {"decoratorsBeforeExport": true}<!--{ legacy: true }-->
+    ],
+	[
+		Babel.availablePlugins["proposal-class-properties"],
+		{
+			"loose": true
+		}
+    ]
+  ],
+});
+</script>
+<!-- Decorator example -->
+<script type="text/babel" data-presets="env-plus">
+// @ts-check
+class Obj {
+	static arr = [];
+	static dict = {};
+	static idcnt = 0;
+	id = 0;
+	constructor() {
+		this.id = Obj.idcnt;
+		Obj.arr[this.id] = this;
+		Obj.idcnt++;
+	}
+	name=undefined;
+	static nametag() {
+    	// search through the global object for a name that resolves to this object
+		for (var name in window) {
+			if (window[name] instanceof Obj) {
+				for (var i in Obj.arr) {
+
+					if (window[name] == Obj.arr[i] && !Obj.dict.hasOwnProperty(name)) {
+						Obj.arr[i].name = name;
+						Obj.dict[name] = Obj.arr[i];
+					}
+				}
+			}
+		}
+	}
+
+	static inspect(object, num = 0) {
+		switch (typeof(object)) {
+
+			case "undefined":
+				return "undefined";
+			case "string":
+				return "\"" + object.replace(/\n/g, "\\n").replace(/\"/g, "\\\"") + "\"";
+			case "object":
+				if (object == null) {
+					return "null";
+				}
+				if (num > 0 && object instanceof Obj) return "Obj.dict['" + object.name + "']"
+				var a = [];
+				if (object instanceof Array) {
+					for (var i in object) {
+						a.push(Obj.inspect(object[i], ++num));
+					};
+					return "[" + a.join(", ") + "]";
+				} else {
+
+					for (var key in object) {
+						if (object.hasOwnProperty(key)) {
+							if (num === 0 && (key === "id" || key === "name")) continue;
+							if(typeof(object[key]) === "function" ) continue;//skip functions to avoid hacks
+							a.push('"'+key+'"' + ": " + Obj.inspect(object[key], ++num));
+						}
+					};
+					return "{" + a.join(", ") + "}";
+				}
+			default:
+				return object.toString();
+		}
+	};
+	static dump(){
+		Obj.nametag();
+		let a = ["{"];
+  
+        
+		for (var key in Obj.dict) {
+			a.push('"'+key+'":'+Obj.inspect(Obj.dict[key])+",");
+		}
+		a.push("}");
+		return a.join('');
+	}
+	
+	static restore(data){
+		let dict2;
+		eval('dict2='+data);
+		
+		for (var key in dict2) {
+			if(key in Obj.dict){
+				for(var key2 in Obj.dict[key]){
+					if (Obj.dict[key].hasOwnProperty(key2))
+						if(key2 in dict2[key]) Obj.dict[key][key2]=dict2[key][key2];
+				}
+			}
+		}
+	}
+}
+
+class Thing extends Obj{
+	/** @member {string} */
+	titel="";
+	description="";
+	speakable=false;//when true you can speak with it. you need to add: XXX.dialog=function* ()
+	opensoninspection=false;//is closed but when you look at it by command "look at item" it opens.
+	takeable=false;//when true you can take it. you need to add take function take
+	dropable=false;//when true you can drop it. do not add any function
+	//functions receiving and giving are used for interaction in take
+	//you do not write functions take and drop
+	usable=false;//when true you can use it. you need to add function use
+	openable=false;//when true you can give things, that is drop things there do not add any function
+	applicable=false;//when true you cann apply it. add function doApply
+	closable=false;//when true you can close it,do not add any function
+	open=false;
+	blocking=false;//used if a person blocks a direction or a door blocks a direction;
+	blockable=false;//if true we can block and unblock.used if a person blocks a direction or a door can block a direction must be set true when we insert something that blocks;
+	locked=false;
+
+	visible=false;
+	things={};//items,scenes,persons
+	applytarget={};
+	parent=null;
+	position=null;
+	take(thing,force=false){
+		let retval=true;
+		if(!force && thing.parent.giving) retval=thing.parent.giving(thing);
+		if(retval){
+			let old=thing.parent;
+			thing.parent.remove(thing)
+			this.insert(thing);	
+			if(this.receiving) retval&= this.receiving(thing);
+			if(!retval){
+				thing.parent.remove(thing)
+				old.insert(thing);
+			}
+			return retval;
+		}
+		else return false;
+	}
+	constructor(titel,description){
+		super();
+		this.titel=titel;
+		this.description=description;
+	}
+	describe(){
+		if(this.opensoninspection) this.open=true;
+		return this.titel+": "+this.description;
+	}
+	insert(thing){
+        if(thing.name===undefined) Obj.nametag()
+		this.things[thing.name]=thing;
+		thing.parent=this;
+	}
+	remove(thing){
+        if(thing.name===undefined) Obj.nametag()
+		if(this.things.hasOwnProperty(thing.name)){
+			delete this.things[thing.name];
+			return true;
+		}
+		return false;
+	}
+	has(thing){
+        if(thing.name===undefined) Obj.nametag()
+		return this.things.hasOwnProperty(thing.name)
+	}
+	insertApplyTarget(target){
+        if(target.name===undefined) Obj.nametag()
+		this.applytarget[target.name]=target;
+	}
+	removeApplyTarget(target){
+        if(target.name===undefined) Obj.nametag()
+		if(this.applytarget.hasOwnProperty(target.name))delete this.applytarget[target.name];
+	}
+
+	speak(choice=""){
+		if(!this.dialog) return "";
+		if(!this.iter) this.iter=this.dialog();
+		let result=this.iter.next(choice);
+		if (result.done) this.iter=this.dialog();
+		return result.value;
+	}
+	
+}
+
+class Scene extends Thing{//is not takeable
+	constructor(titel,description,{openable=false,opensoninspection=false,closable=false,open=true,visible=true}={}){
+		super(titel,description);
+		this.openable=openable;
+		this.open=open;
+		this.closable=closable;
+		this.opensoninspection=opensoninspection;
+	}
+	northblock=undefined;
+	northdir=undefined;
+	set north(target){
+		this.northdir=target;
+		if(!target.south) target.south=this;
+	}
+	get north(){
+		return this.northdir;
+	}
+	southblock=undefined;
+	southdir=undefined;
+	set south(target){
+		this.southdir=target;
+		if(!target.north) target.north=this;
+	}
+	get south(){
+		return this.southdir;
+	}
+	eastblock=undefined;
+	eastdir=undefined;
+	set east(target){
+		this.eastdir=target;
+		if(!target.west) target.west=this;
+	}
+	get east(){
+		return this.eastdir;
+	}
+	westblock=undefined;
+	westdir=undefined;
+	set west(target){
+		this.westdir=target;
+		if(!target.east) target.east=this;
+	}
+	get west(){
+		return this.westdir;
+	}
+	upblock=undefined;
+	updir=undefined;
+	set up(target){
+		this.updir=target;
+		if(!target.down) target.down=this;
+	}
+	get up(){
+		return this.updir;
+	}
+	downblock=undefined;
+	downdir=undefined;
+	set down(target){
+		this.downdir=target;
+		if(!target.up) target.up=this;
+	}
+	get down(){
+		return this.downdir;
+	}
+}
+class Door extends Thing{
+constructor(titel,description,{openable=false,opensoninspection=false,closable=false,open=false,visible=true,takeable=false,dropable=false,usable=false,applicable=true,blockable=true,blocking=true,locked=false}={}){
+		super(titel,description);
+		this.openable=openable;
+		this.closable=closable;
+		this.open=open;
+		this.visible=visible;
+		this.takeable=takeable;
+		this.dropable=dropable;
+		this.usable=usable;
+		this.opensoninspection=opensoninspection;
+		this.applicable=applicable;
+		this.blockable=blockable;
+		this.blocking=blocking;
+		this.locked=locked;
+	}
+}
+/**
+ * Class representing an item.
+ * @extends Thing
+ */
+class Item extends Thing{//is takeable
+	constructor(titel,description,{openable=false,opensoninspection=false,closable=false,open=false,visible=true,takeable=true,dropable=true,usable=false,applicable=false}={}){
+		super(titel,description);
+		this.openable=openable;
+		this.closable=closable;
+		this.open=open;
+		this.visible=visible;
+		this.takeable=takeable;
+		this.dropable=dropable;
+		this.usable=usable;
+		this.opensoninspection=opensoninspection;
+		this.applicable=applicable;
+	}
+}
+
+class Person extends Thing{
+	position=null;
+	constructor(titel,description,{speakable=true,opensoninspection=false,openable=false,closable=false,open=false,visible=true,takeable=false,dropable=false,usable=false}={}){
+		super(titel,description);
+		this.speakable=speakable;
+		this.openable=openable;
+		this.closable=closable;
+		this.open=open;
+		this.visible=visible;
+		this.takeable=takeable;
+		this.dropable=dropable;
+		this.opensoninspection=opensoninspection;
+		this.usable=usable;
+	}
+}
+class BlockingPerson extends Thing{
+	position=null;
+	constructor(titel,description,{speakable=true,opensoninspection=false,openable=false,closable=false,open=false,visible=true,takeable=false,dropable=false,usable=false,blockable=true,blocking=true,locked=false}={}){
+		super(titel,description);
+		this.speakable=speakable;
+		this.openable=openable;
+		this.closable=closable;
+		this.open=open;
+		this.visible=visible;
+		this.takeable=takeable;
+		this.dropable=dropable;
+		this.opensoninspection=opensoninspection;
+		this.usable=usable;
+		this.blockable=blockable;
+		this.blocking=blocking;
+		this.locked=locked;
+	}
+}
+function replaceWords(command,inputcommand,param){
+	let upper=false;
+	let words=command.split(' ');
+	let words2=inputcommand.split(' ');
+	let command2=command;
+	let arrowindex=0;
+	for( arrowindex in words2) if (words2[arrowindex]==="=>") break;
+	let correction=0;
+	for(var ii in words){
+		let i=Number(ii);//carefull: javascript takes indices to arrays as string!!!
+		if(words[i].toUpperCase()==words[i] && words[i]!=="=>"){
+			upper=true;
+			let key=words[i].toLowerCase();
+			if(words2[i+correction]) {
+				if(i==words.length-1) words[i]=words2.slice(i+correction).join(" ");
+				else if((i<words.length-1) && words[i+1]==="=>"){
+					words[i]=words2.slice(i+correction,Number(arrowindex)+correction).join(" ");
+					correction=Number(arrowindex)-1-Number(i);
+				}
+				else words[i]=words2[i+correction];
+			}
+			if(words[i].includes("=>")) return "";
+			param[key]=words[i];
+		}
+	}
+	if(upper) {
+		command2=words.join(" ");
+		//console.log(command2,command,inputcommand);
+		//console.log(JSON.stringify(param));
+	}
+	return command2;
+}
+function when( command,param={} ) {
+	return function ( target ){	
+		const original = target.descriptor.value;
+		if (typeof original === 'function') {
+			target.descriptor.value = function(...args) {
+				let command2=replaceWords(command,Commands.command,param);
+				if(!original.toString().startsWith("function ()") && args[0]) {
+					return original.apply(this, args);//we have direct call
+				}
+				//console.log(`Arguments: ${args}`);
+				try {
+					if(Commands.command===command2) Commands.recogparam=param;
+					if(!original.toString().startsWith("function ()") && Commands.recogparam===null) return false;//no command match
+					else if(original.toString().startsWith("function ()")) return original.apply(this, args);//handing through parameters for direct call
+					else return original.apply(this, [Commands.recogparam]);//handling match
+				} catch (e) {
+					throw e;
+				}
+			}
+		}
+		return target;
+	}
+}
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+function lookrecursive(things,at,found=false,key=null,list=false,quiet=false,cnt=1){
+		let thing=null;
+		for(var i in things){
+			var foundhere=false;
+			if(things[i].titel.toLowerCase()===at) {
+				thing=things[i];found =true;foundhere=true;
+			}
+			if(found && !quiet && (key===null || things[i] instanceof key)){
+				if (list) print("\n"+Array(cnt).join('   ')+"&#x26AC; "+things[i].titel);
+				else print("\n"+Array(cnt).join('   ')+"&#x26AC; "+things[i].describe()+"\n"+Array(cnt).join('   '));
+			}
+		    if(things[i].open && !isEmpty( things[i]["things"])){
+				if(found) if(!quiet && (key===null || things[i] instanceof key)) print(" mit:");
+				if(found) list=true;
+				let foundthere=lookrecursive(things[i]["things"],at,found,key,list,quiet,cnt+1);
+				
+				if(!foundhere && foundthere) return foundthere;
+			}
+			if(foundhere) return thing;
+		}
+		return null;
+}
+function search(thingname,typ=null){
+	let mine=true;
+	let thing=lookrecursive(Commands.actor.things,thingname,false,typ,false,true);
+	if(thing===null && Commands.actor.position.open) {
+		mine=false;
+		thing=lookrecursive(Commands.actor.position.things,thingname,false,typ,false,true);	
+	}
+	return {mine:mine,thing:thing};
+}
+///////////////////////////////////////////////////////
+let lichtung=new Scene("Lichtung","<img src='lichtung.jpg'>Du stehst auf einer Lichtung mitten im Wald auf einer Nordseeinsel. Ein schmaler Weg führt nach Norden durch den Wald. Im Osten befindet sich eine Brücke die zum Steinbruch führt. Nach Süden geht es hinunter in ein Dorf.");
+let steinbruch=new Scene("Steinbruch","Viel Fels und Geröll");
+let loch=new Item("Loch","Ein tiefes Loch",{open:true,takeable:false});
+let schluessel=new Item("Schlüssel","Ein Metall Schlüssel.",{applicable:true});
+let tuer=new Door("Tür","Eine verschlossene Tür.",{locked:true})
+tuer.describe=function(){
+	if(!this.blocking){
+		return "Eine offene Tür."
+	}
+	else return this.description;
+}
+let raum=new Scene("Raum","Ein dunkler Raum.");
+let teleporter=new Person("Teleporter","Ein Teleporter. Der hat ganz viele Tasten zum tippen.",{usable:true});
+
+
+teleporter.use=function(){
+	print("Ich sollte darauf tippen...");
+	return false;
+}
+teleporter.dialog=function* (){
+    const reply = yield 'Intergalaktischer Teleporter bitte Zahlencode eingeben</p>';
+    if (reply==="9783548310701") {
+        return "<img src='kaktus.png'>Code akzeptiert. Das Schloss verwandelt sich in eine Rakete. Die Türme sind die Antriebsraketen und Du fliegst auf einen bis dahin unbekannten Planeten namens Kaktus. Dort triffst du endlich den Grafen Gracula, der dir erzählt dass sein Schloss als intergalaktischer Weltraumbahnhof verwendet wird. Und da Du es bis hierhin geschafft jast, hast du das Zeug dafür das Programm selbst weiterentwickeln.  Deiner Fantasie sind dabei keine Grenzen gesetzt...\nDieses Spiel ist erstmal fertig!"
+    }
+    else return "Falscher Code!"
+}
+schluessel.insertApplyTarget(tuer);
+
+loch.insert(schluessel);
+
+steinbruch.insert(loch);
+lichtung.east=steinbruch;
+//steinbruch.west=lichtung;
+loch.giving=function(thing){
+	print("Das Loch ist zu tief!");
+	return false;
+}
+loch.receiving=function(thing){
+	print('Besser nicht, sonst ists weg.')
+	return false;
+}
+
+let dorf=new Scene("Dorf","<img src='dorf.png'>Ein kleines idyllisches Dorf");
+let elektronikladen=new Scene("Tilli Elektronikschuppen","<img src='electronics.jpg'>Ein Elektronikladen.");
+let tilli=new Person("Tilli","Ein lustiger Elektronikverkäufer.",{open:false});
+tilli.dialog=function* (){
+    return 'Wenn Du kein Geld hast dann gibts hier nichts.';
+}
+let batterie=new Item("Batterie","Volle Mono-Batterie.",{applicable:true});
+let kabel=new Item("Kabel","Stück isolierten Volldraht Kabel.",{applicable:true,open:true});
+kabel.describe=function(){
+	if(this.has(nagel) && this.has(batterie)){
+		return "aktiver Elektromagnet"
+	}
+	if(this.has(nagel)) {
+		return "Elektromagnet"
+	}
+	
+	else return this.description;
+}
+dorf.north=lichtung;
+dorf.south=elektronikladen;
+//elektronikladen.north=dorf
+elektronikladen.insert(tilli);
+tilli.insert(kabel);
+tilli.insert(batterie);
+tilli.giving=function(thing){
+	if(thing===batterie){
+		if(this.has(euro)) {
+			if(this.has(leere_batterie)){
+				return true
+			}
+		}
+		else {
+			print("Erst was kaufen!\n");
+			return false;
+		}
+	}
+	if(thing===kabel){
+		if(this.has(euro)){
+			return true
+		}
+		else {
+			print("Erst das Geld! Ein Euro kostet das.\n");
+			return false;
+		}
+	}
+	return false;
+}
+tilli.receiving=function(thing){
+	if(thing===leere_batterie) {
+		if(tilli.has(euro) ){
+			let retval;
+			print("Ok ich lade ihn dir auf");
+			this.open=true;
+			retval=Commands.take({item:"batterie"});
+			this.open=false;
+			return retval;
+		}else{
+			print("Ah ein Akku. Ich kann ihn dir aufladen, wenn du hier was kaufst.");
+			
+			return false;
+		}
+	}else if(thing===euro){
+		let retval=true;
+		print("Hm für einen Euro kann ich dir nur ein Stück isolierten Volldraht Kabel geben.");
+		this.open=true;
+		retval&=Commands.take({item:"kabel"});
+		this.open=false;
+		return retval;
+	}
+	return false;
+}
+//lichtung.south=dorf;
+let dorfjunge=new Person("Dorfjunge","Ein Junge mit Fußballsammelkarten.");
+let euro=new Item("euro","Ein Euro.");
+dorfjunge.insert(euro);
+
+dorf.insert(dorfjunge);
+
+dorfjunge.dialog=function* (){
+const reply = yield 'Hi! Was gibts? <p style="color:#0f0;">1 - Ich brauche Batterien.</br>2 - Was machst du?</br>3 - Was sind deine Hobbies?</p>';
+	switch(reply){
+	case "1":
+		return 'Schau doch mal im Elektronikladen nach weiter die Strasse nach Süden runter.'
+	break;
+	case "2":
+		return 'Ich warte auf einen Freund von mir';
+	break;
+	case "3":
+		let reply2;
+		if(Commands.actor.has(sammelbild)) reply2=yield 'Ich sammele Fußballkarten, gleich treffe ich einen Freund um zu tauschen.<p style="color:#0f0;">1 - Ok</br>2 - Ich habe hier eine! Willst du sie mir abkaufen?</p>'
+		else return 'Ich sammele Fußballkarten, gleich treffe ich einen Freund um zu tauschen.'
+		switch(reply2){
+		case "1":
+			return "Bye."
+		break;
+		case "2":
+			const reply3=yield 'Zeig mal! Wow, die habe ich noch nicht! Ich gebe dir dafür 1EUR!<p style="color:#0f0;">1 - OK</br>2 - Nein lieber nicht...</br></p>';
+			switch(reply3){
+			case "1":
+				if(this.has(euro)){
+					this.open=true;
+					this.take(sammelbild)
+					Commands.actor.take(euro);
+					this.open=false;
+				}
+				return 'Hier 1 Euro. Bye.'
+			break;
+			case "2":
+				return 'Na gut dann eben nicht. Bye.';
+			break;
+			default:
+			break;
+			}
+		default: break;
+		}
+	break;
+	default: return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+	}
+}
+
+let parkbank=new Scene("Parkbank","Eine Parkbank aus altem Holz",{open:false,opensoninspection:true});
+lichtung.insert(parkbank);
+let muelleimer=new Scene("Mülleimer","Ein Metallmülleimer",{open:false,opensoninspection:true});
+let aschenbecher=new Scene("Aschenbecher","Ein Aschenbecher",{open:false,opensoninspection:true});
+let nagel=new Item("Nagel","Ein rostiger Nagel",{applicable:true});
+
+let sammelbild=new Item("Sammelbild","Es ist eine Fußballsammelkarten");
+aschenbecher.insert(sammelbild);
+parkbank.insert(nagel);
+lichtung.insert(parkbank);
+parkbank.insert(muelleimer);
+parkbank.insert(aschenbecher);
+
+let schloss=new Scene("Schloss","<img src='schloss_an.jpg'>Ein altes Schloss befindet sich auf dem Berg. Die Eingangstüt ist verschlossen. Im Süden kann man eine Lichtung sehen.",{open:false});
+schloss.describe=function(){
+	if(Commands.actor.has(taschenlampe) && taschenlampe.on) {
+		this.open=true;
+		return this.titel+": "+this.description;
+	}
+	else {
+		this.open=false;
+		return "<img src='schloss_aus.jpg'>Hier oben ist es zu dunkel man kann nur den weg nach Süden zur Lichtung sehen.";
+	}
+}
+
+schloss.insert(tuer)
+schloss.northblock=tuer;
+
+schloss.north=raum;
+raum.insert(teleporter);
+lichtung.north=schloss;
+//schloss.south=lichtung;
+
+schluessel.doapply=function(target){
+	if(target===tuer){
+		print("Das Schloss öffnet sich. ");
+		target.locked=false;
+		target.blocking=false;
+        print(target.describe())
+		return true;
+	}
+	return false;
+}
+
+let ich=new Person("Liana Miracula","Eine schlaue und tapfere Detektivin.<img src='miracula.png'>",{open:true});
+ich.position=lichtung;
+
+let taschenlampe=new Item("Taschenlampe","Eine starke LED-Taschenlampe mit massivem Aluminium Griff.",{usable:true,open:false,openable:true,closable:true});
+let leere_batterie=new Item("leere Batterie","Leere Mono-Batterie.",{open:true,applicable:true});
+
+leere_batterie.insertApplyTarget(taschenlampe);
+batterie.insertApplyTarget(taschenlampe);
+batterie.insertApplyTarget(kabel);
+kabel.insertApplyTarget(batterie);
+batterie.doapply=function(target){
+	if(target===kabel) return target.doapply(this);//is needed because reciproce call only works when doapply is not there
+	if(target===taschenlampe) {
+		target.take(this);
+		return true;
+	}
+	return false;
+}
+leere_batterie.doapply=function(target){
+	target.take(this);
+	return true;
+}
+nagel.insertApplyTarget(kabel)
+kabel.insertApplyTarget(schluessel)
+nagel.doapply=function(target){
+	target.take(this);
+	target.titel="Elektromagnet";
+	print(target.describe())
+	return true;
+}
+kabel.insertApplyTarget(nagel)
+kabel.giving=function(thing){
+	if(thing===batterie){
+		if(this.has(nagel)) this.titel="Elektromagnet"
+		return true;
+	}
+	if(thing===nagel){
+		this.titel="Kabel"
+		return true;
+	}
+	return false;
+		
+}
+//problem gib batterie an kabel
+kabel.doapply=function(target){
+	if(target===nagel){
+		this.take(target);
+		this.titel="Elektromagnet";
+		print(this.describe())
+		return true;
+	}
+	if(target===batterie){
+		if(this.has(nagel)){
+			this.take(target);
+			this.titel="aktiver Elektromagnet";
+			print(this.describe())
+			return true;
+		}
+		return false;
+	}
+	if(target===schluessel){
+		if(this.has(nagel) && this.has(batterie)){
+			Commands.actor.take(schluessel,true);
+			print("Oh wow, jetzt hab ich den Schlüssel!")
+			return true;
+		}
+		if(this.has(nagel) && !this.has(batterie)) {
+			print("Ich glaube der braucht noch Strom!")
+			return true;
+		}
+	}
+}
+let notiz=new Item("Notiz","Bitte recyclen!");
+let notiz2=new Item("Notiz2","gekauft bei Tilli-Elektronikschuppen");
+let buch=new Item("Buch","<img src='buch.jpg'>Per Anhalter durch die Galaxis von Douglas Adams. (ISBN 9783548310701)",{open:true});//ISBN 978-3-0369-5954-2
+let umschlag=new Item("Umschlag","Ein Briefumschlag, addressiert an Graf Gracula, Auf dem Berg 1, 12345 Dorflingen",{open:true});
+let brief=new Item("Brief","Sehr geehrter Herr Graf Gracula, wir würden uns freuen wenn wir uns zu dem nächsten Gemeindefest an diesem Wochenende kennenlernen könnten. Leider hat noch niemand im Dorf ihre Bekanntschaft gemacht. Liebe Grüße der Gemeindevorsteher ");
+buch.insert(umschlag);
+umschlag.insert(brief);
+
+leere_batterie.insert(notiz);
+leere_batterie.insert(notiz2);
+taschenlampe.insert(leere_batterie);
+taschenlampe.on=false;
+taschenlampe.giving=function(thing){//!!!does not work
+	if(thing===batterie) taschenlampe.on=false;
+	return true;
+}
+taschenlampe.use=function(){
+	this.on=false;
+	if(this.things["leere_batterie"]) {
+		print("Batterien sind leer!");
+		return false;
+	}
+	if(isEmpty(this.things)){
+		print("Keine Batterien drin!")
+		return false;
+		
+	}
+	if(this.things["batterie"]) {
+	  this.on=true;
+	  print("Taschenlampe ist an.")
+	  return true;
+	}
+	return false;
+}
+muelleimer.insert(taschenlampe);
+lichtung.insert(buch);
+
+/**
+ * Prints a string to the canvas at the beginning by adding it to the beginning of Commands.answer.
+ *
+ * @param {string} x - A string param
+ * @return {void}
+ *
+ * @example
+ *
+ *     printfront('hello')
+ */
+function printfront(x){
+	Commands.answer.unshift(x);
+}
+/**
+ * Prints a string to the canvas at the beginning by adding it to the beginning of Commands.answer.
+ *
+ * @param {number} x - a
+ * @param {number} y - a
+ * @return {number}
+ *
+ * @example
+ *
+ *     add(2,3)
+ */
+ function add(x,y){
+	return x+y;
+}
+
+//add("23","23423")
+
+
+/**
+ * Prints a string to the canvas by pushing the string to Commands.answer
+ *
+ * @param {string} x - A string param
+ * @return {void}
+ *
+ * @example
+ *
+ *     print('hello')
+ */
+
+
+function print(x){
+    Commands.answer.push(x)
+};
+
+class Commands{
+	static recogparam=null;
+	static command="";
+	
+	static execute(cmd){
+		let delstr=["=>","der","die","das","dem","der","dem","den","die","das","ein","einer","ein","einem","einer","einem","einen","eine","ein"];
+		let importantprep=["an","mit","auf","nach","durch","in", "zu"];
+		Commands.answer=[];
+		let recog=false;
+		for(var del in delstr) cmd=cmd.split(" "+delstr[del]+" ").join(' ')
+		for(var del in delstr) cmd=cmd.split(" "+importantprep[del]+" ").join(' => ')
+		cmd=cmd.replace(/\s+/g, ' ');
+		Commands.command=cmd.toLowerCase();
+		console.log(cmd);
+		Commands.recogparam=null;
+		recog|=Commands.go();
+		Commands.recogparam=null;
+		recog|=Commands.look();
+		Commands.recogparam=null;
+		recog|=Commands.use();
+		Commands.recogparam=null;
+		recog|=Commands.open();
+		Commands.recogparam=null;
+		recog|=Commands.close();
+		Commands.recogparam=null;
+		recog|=Commands.take();
+		Commands.recogparam=null;
+		recog|=Commands.give();
+		Commands.recogparam=null;
+		recog|=Commands.doapply();
+		Commands.recogparam=null;
+		recog|=Commands.load();
+		Commands.recogparam=null;
+		recog|=Commands.save();
+		Commands.recogparam=null;
+		recog|=Commands.reset();
+		Commands.recogparam=null;
+		recog|=Commands.help();
+		Commands.recogparam=null;
+		let commandspeak=Commands.speak();
+		recog|=commandspeak;
+		Commands.recogparam=null;
+		
+		if(recog){
+			printfront("Ok.\n")
+		}
+		else{
+			if(Commands.lastcommandspeak) commandspeak=Commands.continuespeak(cmd);
+			if(!commandspeak) {
+				print("??? Schreibe hilfe für Befehlsliste!\n");
+			}
+		}
+		Commands.lastcommandspeak=commandspeak;
+		return Commands.answer.join("");
+	}
+
+	static actor=ich;
+	static answer=[];
+@when( "hilfe" )
+	@when( "h" )
+	static help(){
+		print("Befehle:\n");
+		print("&#x26AC; hilfe\n");
+		print("     mit Kurzform: h\n");
+		print("&#x26AC; schaue/betrachte/b (auf,...) (ETWAS)\n");
+		print("&#x26AC; schaue/betrachte/b mich (an)\n");
+		print("&#x26AC; schaue/betrachte/b (auf,...) rucksack\n");
+		print("     mit Kurzform: r\n");
+		print("&#x26AC; gehe (nach) norden/süden/westen/osten/...\n");
+		print("     mit Kurzform: n,s,w,o\n");
+		print("&#x26AC; verwende/benutze/drücke/ziehe/v ETWAS\n");
+		print("&#x26AC; verwende/benutze/v ETWAS auf/mit/... ETWAS/JEMANDEN\n");
+		print("&#x26AC; öffne/ö ETWAS\n");
+		print("&#x26AC; schließe/s ETWAS\n");
+		print("&#x26AC; nimm/m ETWAS\n");
+		print("&#x26AC; gib/lege/l ETWAS\n");
+		print("&#x26AC; gib/lege/l ETWAS an/zu/... ETWAS/JEMANDEN\n");
+		print("&#x26AC; sprich/rede/tippe/t (mit/in) PERSON/COMPUTER\n");
+		print("&#x26AC; speichere/save SPIELSTANDSNAME\n");
+		print("&#x26AC; lade/load SPIELSTANDSNAME\n");
+		print("&#x26AC; reset\n");
+		return true;
+	}
+	
+	@when( "schaue",{at:"scene"} )
+	@when( "betrachte",{at:"scene"} )
+	@when( "b",{at:"scene"} )
+	@when( "r",{at:"rucksack"} )
+	@when( "schaue AT" )
+	@when( "betrachte AT" )
+	@when( "b AT" )
+    @when( "schaue => AT" )
+	@when( "betrachte => AT" )
+	@when( "b => AT" )
+	static look({at}) {
+		switch(at){
+			case "scene":
+				print(Commands.actor.position.describe());
+				if(!isEmpty(Commands.actor.position.things) && Commands.actor.position.open ) {
+					print("\nDesweiteren sieht man:");
+					lookrecursive(Commands.actor.position.things,at,true,null,true);
+					print("\n");
+				}
+				
+				return true;
+			case "mich":
+				print("Du bist "+Commands.actor.describe());
+				//return true;//we du fallthrough on purpuse
+				//do not insert anything here
+			case "rucksack":
+				if(!isEmpty(Commands.actor.things)) print("In deinem Rucksack befinden sich: \n");
+				if(Commands.actor.open) for(var i in Commands.actor.things){
+					print(Commands.actor.things[i].titel);
+					print("\n");
+				}
+				return true;
+			default: 
+				console.log("schaue");
+				let found1,found2;
+				found1=lookrecursive(Commands.actor.things,at,false,null,false);
+				found2=lookrecursive(Commands.actor.position.things,at,false,null,false);
+				
+				return (found1!==null)||(found2!==null);
+		}
+	}
+	
+	@when( "w",{direction:"west"} )
+	@when( "westen",{direction:"west"} )
+	@when( "gehe westen",{direction:"west"} )
+	@when( "gehe => westen",{direction:"west"} )
+	@when( "o",{direction:"east"} )
+	@when( "osten",{direction:"east"} )
+	@when( "gehe osten",{direction:"east"} )
+	@when( "gehe => osten",{direction:"east"} )
+	@when( "s",{direction:"south"} )
+	@when( "süden",{direction:"south"} )
+	@when( "gehe süden",{direction:"south"} )
+	@when( "gehe => süden",{direction:"south"} )
+	@when( "n",{direction:"north"} )
+	@when( "norden",{direction:"north"} )
+    @when( "gehe norden",{direction:"north"} )
+	@when( "gehe => norden",{direction:"north"} )
+	@when( "oben",{direction:"up"} )
+    @when( "gehe oben",{direction:"up"} )
+	@when( "gehe => oben",{direction:"up"} )
+	@when( "hoch",{direction:"up"} )
+    @when( "gehe hoch",{direction:"up"} )
+	@when( "gehe => hoch",{direction:"up"} )
+	@when( "unten",{direction:"down"} )
+    @when( "gehe unten",{direction:"down"} )
+	@when( "gehe => unten",{direction:"down"} )
+	@when( "runter",{direction:"down"} )
+    @when( "gehe runter",{direction:"down"} )
+	@when( "gehe => runter",{direction:"down"} )
+    static go({direction}) {
+		if(Commands.actor.position.hasOwnProperty(direction) || Commands.actor.position[direction] ){
+			if(Commands.actor.position[direction+"block"]!==undefined){
+				if(!Commands.actor.position[direction+"block"].blocking){
+					Commands.actor.position=Commands.actor.position[direction];
+					Commands.look({at:"scene"});	
+					return true;
+				}
+			}
+			else{
+				Commands.actor.position=Commands.actor.position[direction];
+				Commands.look({at:"scene"});
+				return true;
+			}
+		}
+		print("Da kann ich nicht hin.\n");
+		return false;
+    }
+	
+	@when( "v ITEM" )
+	@when( "verwende ITEM" )
+	@when( "benutze ITEM" )
+	@when( "drücke ITEM" )
+	@when( "ziehe ITEM" )
+    static use({item}) {
+		let {thing}=search(item);
+		if(thing && thing.usable) return thing.use();
+		else {
+			print("Das geht nicht.");
+			return false;
+		}
+	}
+	
+	//when chatte mit echten personen
+	//when rede mit: mit npc
+	@when( "benutze ITEM => TARGET" )
+	@when( "verwende ITEM => TARGET" )
+	@when( "v ITEM => TARGET" )
+    static doapply({item,target}){
+		let retval;
+		let {thing}=search(item);
+		let {thing:targetthing}=search(target);
+		if(thing!==null && targetthing!==null && thing.applicable){
+			if(thing.applytarget.hasOwnProperty(targetthing.name))
+			retval= thing.doapply(targetthing);
+		}
+		if(retval) return retval;
+		else {
+			let {thing}=search(target);
+			let {thing:targetthing}=search(item);
+			if(thing!==null && targetthing!==null && thing.applicable){
+				if(thing.applytarget.hasOwnProperty(targetthing.name))
+					return thing.doapply(targetthing);
+			}
+			else print("Hab ich nicht oder kann es nicht anwenden.");
+			return false;
+		}
+		
+	}
+
+	static openbool(item,state){
+		let {thing}=search(item);
+		if(thing!==null){
+			if(thing.blockable){
+				if(thing.locked){
+					print("Das geht nicht.");
+					return true;
+				}
+				else {
+					thing.blocking=!state;
+					Commands.look({at:item});
+					return true;
+				}
+			}
+			else if((state==true && thing.openable)||(state==false && thing.closable)){
+				thing.open=state;
+				//iterate over all stuff and take it if takeable.
+				Commands.look({at:item});
+				return true;
+			}
+			else print("Das geht nicht.");
+			return false;	
+		}
+		return false;
+	}
+	@when( "öffne ITEM" )
+	@when( "ö ITEM" )
+    static open({item}) {
+		return Commands.openbool(item,true);
+	}
+	
+	@when( "schließe ITEM" )
+	@when( "s ITEM" )
+    static close({item}) {
+		return Commands.openbool(item,false);
+	}
+		
+	@when( "nimm ITEM" )
+	@when( "m ITEM" )
+	static take({item}){
+		let {mine,thing}=search(item);
+		if(thing!==null && thing.takeable && thing.parent!=ich) {
+			return Commands.actor.take(thing);
+		}
+		else{
+			return false;
+		}
+	}
+
+	@when( "gib ITEM => TARGET" )
+	@when( "lege ITEM => TARGET" )
+	@when( "l ITEM => TARGET" )
+	@when( "gib ITEM",{target:"scene"})
+	@when( "lege ITEM",{target:"scene"})
+	@when( "l ITEM",{target:"scene"})
+	static give({item,target}){//todo all logic should be in Thing class
+		let {mine,thing}=search(item);
+		let targetthing;
+		if(target==="scene"){
+			if(!thing.dropable) {
+				print("Kann ich nicht ablegen.");
+				return false;
+			}
+			targetthing=Commands.actor.position;
+		}
+		else ({thing:targetthing}=search(target));
+		if(thing!==null && targetthing!==null && (targetthing.open || targetthing.receiving)&& mine){
+			return targetthing.take(thing);
+		}
+		else print("Hab ich nicht oder kann es nicht geben.");
+		return false;
+	}
+	static lastperson;
+	static lastcommandspeak=false;
+	static continuespeak(text2){
+		return Commands.speak({person:Commands.lastperson,text:text2});
+	}
+	
+	@when( "sprich => PERSON",{text:""} )
+	@when( "sprich PERSON",{text:""} )
+	@when( "rede => PERSON",{text:""} )
+	@when( "rede PERSON",{text:""} )
+    @when( "tippe => PERSON",{text:""} )
+	@when( "tippe PERSON",{text:""} )
+	@when( "t => PERSON",{text:""} )
+	@when( "t PERSON",{text:""} )
+	static speak({person,text}){
+		let {thing:personobj}=search(person,Person);
+		if(personobj!==null && personobj.speakable){
+			Commands.lastperson=person;
+			print(personobj.speak(text));
+			return true;
+		}
+		else print("Geht so nicht.");
+		return false;
+	}
+	
+	@when( "speichere TITEL" )
+	@when( "save TITEL" )
+	static save({titel}){
+		let dump2=Obj.dump();
+		localStorage.setItem(titel, dump2);
+		return true;
+	}
+	@when( "lade TITEL" )
+	@when( "load TITEL" )
+	static load({titel}){
+		let dump2=localStorage.getItem(titel)
+		if(dump2!==null){
+			Obj.restore(dump2);
+			return true;
+		}else return false;
+	}
+	@when( "reset" )
+	static reset(){
+		return Commands.load({titel:"reset"});
+	}
+	static intro(){
+		let dump=Obj.dump();
+		localStorage.setItem("reset", dump);
+		let dump2=localStorage.getItem("current")
+		if(dump2!==null){
+			Obj.restore(dump2);
+		}
+		Commands.answer=[];
+		Commands.look({at:"mich"});
+		print("\n");
+		Commands.look({at:"scene"});
+		print(" ");
+		print("Du trägst einen Rucksack.");
+		
+		return Commands.answer.join("");
+	}
+}
+
+
+</script>
+
+<!-- Input handler -->
+<script type="text/babel" data-presets="env-plus">
+let story = document.getElementById('story')
+let inp = document.getElementById('inp')
+let prompt = document.getElementById('prompt')
+function start(){
+	let answer=Commands.intro();
+	let p2 = document.createElement('p');
+	p2.innerHTML  = answer;
+	story.appendChild(p2);
+	inp.value = '';
+	setTimeout(function(){story.scrollTop = story.scrollHeight - story.clientHeight }, 3000);
+	document.getElementById("inp").addEventListener("keydown", (e)=>{
+		if (event.keyCode == 13) {
+			let cmd = inp.value;
+			let p = document.createElement('p');
+			p.innerHTML  = cmd;
+			p.className = 'command';
+			story.appendChild(p);
+			
+			let answer=Commands.execute(cmd);
+			let p2 = document.createElement('p');
+			p2.innerHTML  = answer;
+			story.appendChild(p2);
+			inp.value = '';
+			story.scrollTop = story.scrollHeight ;//- story.offsetHeight;
+
+			setTimeout(function(){story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
+			let dump=Obj.dump();
+			localStorage.setItem("current", dump);
+		}
+	}, false);
+}
+</script>
+
