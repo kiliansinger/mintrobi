@@ -205,7 +205,12 @@ class Thing extends Obj{
 	opensoninspection=false;//is closed but when you look at it by command "look at item" it opens.
 	takeable=false;//when true you can take it. you need to add take function take
 	dropable=false;//when true you can drop it. do not add any function
-	//functions receiving and giving are used for interaction in take
+	//function 'receiving' is called after take is called such that object is in posession of other person
+	//but if you return false the object is given back
+	
+	//'giving' is called when you take something from a person
+	//if you return false it is rejected 
+	//'receiving' and giving are called in 'take' function
 	//you do not write functions take and drop
 	usable=false;//when true you can use it. you need to add function use
 	openable=false;//when true you can give things, that is drop things there do not add any function
@@ -228,7 +233,7 @@ class Thing extends Obj{
 			let old=thing.parent;
 			thing.parent.remove(thing)
 			this.insert(thing);	
-			if(this.receiving) retval&= this.receiving(thing);
+			if(this.receiving) retval&= this.receiving(thing);//here we have recursive problem with calling take in receiving but only when calling take directly
 			if(!retval){
 				thing.parent.remove(thing)
 				old.insert(thing);
@@ -679,7 +684,7 @@ const reply = yield 'Hi! Was gibts? <p style="color:#0f0;">1 - Ich brauche Batte
 
 dorfjunge.giving=function(thing){
 	if(thing===euro){
-		if(this.has(sammelbild)) {
+		if(this.has(sammelbild)) {//only give euro when dorfjunge has received the sammelbild before
 			return true
 		}
 		else {
@@ -692,9 +697,8 @@ dorfjunge.receiving=function(thing){
 		if(this.has(euro) ){
 			let retval;
 			print("Wow, die habe ich noch nicht! Ich gebe dir dafür 1EUR!");
-			this.take(sammelbild)
 			this.open=true;
-			retval=Commands.take({item:"euro"});//calls tilli giving
+			retval=Commands.actor.take(euro);
 			this.open=false;
 			return retval;
 		}
