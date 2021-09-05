@@ -199,7 +199,7 @@ class Obj {
 
 class Thing extends Obj{
 	/** @member {string} */
-	titel="";
+	titel=[""];
 	description="";
 	speakable=false;//when true you can speak with it. you need to add: XXX.dialog=function* ()
 	opensoninspection=false;//is closed but when you look at it by command "look at item" it opens.
@@ -238,13 +238,16 @@ class Thing extends Obj{
 		else return false;
 	}
 	constructor(titel,description){
+		let titel2
+		if(typeof titel==="string") titel2=[titel];
+		else titel2=titel;
 		super();
-		this.titel=titel;
+		this.titel=titel2;
 		this.description=description;
 	}
 	describe(){
 		if(this.opensoninspection) this.open=true;
-		return this.titel+": "+this.description;
+		return this.titel[0]+": "+this.description;
 	}
 	insert(thing){
         if(thing.name===undefined) Obj.nametag()
@@ -480,14 +483,16 @@ function lookrecursive(things,at,found=false,key=null,list=false,quiet=false,cnt
 		let thing=null;
 		for(var i in things){
 			var foundhere=false;
-			if(things[i].titel.toLowerCase()===at) {
-				thing=things[i];found =true;foundhere=true;
+			for(let j in things[i].titel){
+				if(things[i].titel[j].toLowerCase()===at) {
+					thing=things[i];found =true;foundhere=true;
+				}
 			}
 			if(found && !quiet && (key===null || things[i] instanceof key)){
-				if (list) print("\n"+Array(cnt).join('   ')+"&#x26AC; "+things[i].titel);
+				if (list) print("\n"+Array(cnt).join('   ')+"&#x26AC; "+things[i].titel[0]);
 				else print("\n"+Array(cnt).join('   ')+"&#x26AC; "+things[i].describe()+"\n"+Array(cnt).join('   '));
 			}
-		    if(things[i].open && !isEmpty( things[i]["things"])){
+			if(things[i].open && !isEmpty( things[i]["things"])){
 				if(found) if(!quiet && (key===null || things[i] instanceof key)) print(" mit:");
 				if(found) list=true;
 				let foundthere=lookrecursive(things[i]["things"],at,found,key,list,quiet,cnt+1);
@@ -603,7 +608,7 @@ tilli.receiving=function(thing){
 			let retval;
 			print("Ok ich lade ihn dir auf");
 			this.open=true;
-			retval=Commands.take({item:"batterie"});
+			retval=Commands.take({item:"batterie"});//calls tilli giving
 			this.open=false;
 			return retval;
 		}else{
@@ -622,7 +627,7 @@ tilli.receiving=function(thing){
 	return false;
 }
 //lichtung.south=dorf;
-let dorfjunge=new Person("Dorfjunge","Ein Junge mit Fußballsammelkarten.");
+let dorfjunge=new Person(["Dorfjunge","Dorfjungen"],"Ein Junge mit Fußballsammelkarten.");
 let euro=new Item("euro","Ein Euro.");
 dorfjunge.insert(euro);
 
@@ -670,6 +675,34 @@ const reply = yield 'Hi! Was gibts? <p style="color:#0f0;">1 - Ich brauche Batte
 	}
 }
 
+
+
+dorfjunge.giving=function(thing){
+	if(thing===euro){
+		if(this.has(sammelbild)) {
+			return true
+		}
+		else {
+			return false;
+		}
+	}
+}
+dorfjunge.receiving=function(thing){
+	if(thing===sammelbild) {
+		if(this.has(euro) ){
+			let retval;
+			print("Wow, die habe ich noch nicht! Ich gebe dir dafür 1EUR!");
+			this.take(sammelbild)
+			this.open=true;
+			retval=Commands.take({item:"euro"});//calls tilli giving
+			this.open=false;
+			return retval;
+		}
+	}
+	print("Das brauche ich nicht.");
+	return false;
+
+}
 let parkbank=new Scene("Parkbank","Eine Parkbank aus altem Holz",{open:false,opensoninspection:true});
 lichtung.insert(parkbank);
 let muelleimer=new Scene("Mülleimer","Ein Metallmülleimer",{open:false,opensoninspection:true});
@@ -687,7 +720,7 @@ let schloss=new Scene("Schloss","<img src='schloss_an.jpg'>Ein altes Schloss bef
 schloss.describe=function(){
 	if(Commands.actor.has(taschenlampe) && taschenlampe.on) {
 		this.open=true;
-		return this.titel+": "+this.description;
+		return this.titel[0]+": "+this.description;
 	}
 	else {
 		this.open=false;
@@ -718,7 +751,7 @@ let ich=new Person("Liana Miracula Singer","Eine schlaue und tapfere Detektivin.
 ich.position=lichtung;
 
 let taschenlampe=new Item("Taschenlampe","Eine starke LED-Taschenlampe mit massivem Aluminium Griff.",{usable:true,open:false,openable:true,closable:true});
-let leere_batterie=new Item("leere Batterie","Leere Mono-Batterie.",{open:true,applicable:true});
+let leere_batterie=new Item(["leere Batterie","Batterie"],"Leere Mono-Batterie.",{open:true,applicable:true});
 
 leere_batterie.insertApplyTarget(taschenlampe);
 batterie.insertApplyTarget(taschenlampe);
@@ -740,18 +773,18 @@ nagel.insertApplyTarget(kabel)
 kabel.insertApplyTarget(schluessel)
 nagel.doapply=function(target){
 	target.take(this);
-	target.titel="Elektromagnet";
+	target.titel=["Elektromagnet"];
 	print(target.describe())
 	return true;
 }
 kabel.insertApplyTarget(nagel)
 kabel.giving=function(thing){
 	if(thing===batterie){
-		if(this.has(nagel)) this.titel="Elektromagnet"
+		if(this.has(nagel)) this.titel=["Elektromagnet"]
 		return true;
 	}
 	if(thing===nagel){
-		this.titel="Kabel"
+		this.titel=["Kabel"]
 		return true;
 	}
 	return false;
@@ -761,14 +794,14 @@ kabel.giving=function(thing){
 kabel.doapply=function(target){
 	if(target===nagel){
 		this.take(target);
-		this.titel="Elektromagnet";
+		this.titel=["Elektromagnet"];
 		print(this.describe())
 		return true;
 	}
 	if(target===batterie){
 		if(this.has(nagel)){
 			this.take(target);
-			this.titel="aktiver Elektromagnet";
+			this.titel=["aktiver Elektromagnet","Elektromagnet"];
 			print(this.describe())
 			return true;
 		}
@@ -982,7 +1015,7 @@ class Commands{
 			case "rucksack":
 				if(!isEmpty(Commands.actor.things)) print("In deinem Rucksack befinden sich: \n");
 				if(Commands.actor.open) for(var i in Commands.actor.things){
-					print(Commands.actor.things[i].titel);
+					print(Commands.actor.things[i].titel[0]);
 					print("\n");
 				}
 				return true;
