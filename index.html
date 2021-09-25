@@ -70,11 +70,49 @@ color: #00FF00;
 	font-family: Arial, Helvetica, Sans-Serif;
     font-size: 	18pt;   
 }
+.flow {
+	position: relative;
+	top: 0;
+	left: 0;
+}
+
+.back {
+	position: relative;
+	top: 0;
+	left: 0;
+}
+
+#s1oma1{
+	position: absolute;
+	top: 30px;
+	left: 30px;
+	width: 100px;
+}
+#s1oma2{
+	position: absolute;
+	top: 30px;
+	left: 30px;
+	width: 100px;
+	animation: fade 2s;
+	animation-iteration-count: infinite;
+}
+
 img {
     width:30%; 
     height:auto;
 	display: block;
+
 }
+
+@keyframes fade {
+	0% {opacity: 1}
+	15% {opacity: 1}
+	30% {opacity: 0}
+	70% {opacity: 0}
+	85% {opacity: 1}
+	100% {opacity:1}
+}
+
 </style>
     </head>
 	<body onload="start()">
@@ -519,7 +557,7 @@ function search(thingname,typ=null){
 }
 ///////////////////////////////////////////////////////
 let ich=new Person("Kai","Du bist interessiert an der Wissenschaft und willst die Welt erforschen",{open:true});
-let omazuhause=new Scene("Haus Oma","<img src='s1.png'>Du bist im Haus deiner Grosseltern.</br>Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.");
+let omazuhause=new Scene("Haus Oma","<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>Du bist im Haus deiner Grosseltern.</br>Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.");
 let oma=new  Person(["Oma","Omi"],"Deinen liebe Oma.");
 omazuhause.insert(oma);
 ich.position=omazuhause;
