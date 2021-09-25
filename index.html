@@ -525,7 +525,7 @@ omazuhause.insert(oma);
 ich.position=omazuhause;
 
 oma.dialog=function* (){
-	return "Ada, meine Liebe, hast du gut geschlafen?</br>Opa hat nach dir gefragt, weil er etwas fuer dich hat.";
+	return "Kai, meine Liebe, hast du gut geschlafen?</br>Opa hat nach dir gefragt, weil er etwas fuer dich hat.";
 }
 
 let strand=new Scene("Strand","<img src='s2.png'>Du stehst am Strand vorm Haus deiner Grosseltern,</br>an dem sich ein kleiner Steg befindet.</br>Dort sitzt dein Opa und angelt.</br>Nach Norden fuehrt ein Pfad hinter dem Haus in den Dschungel,</br>nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
@@ -548,7 +548,7 @@ opa.dialog=function* (){
 			Commands.actor.take(bottlemessage);
 			this.open=false;
 			bottlegiven=true;
-			return "mmm...Ada. *grummel*</br>Hab' da was fuer dich...";
+			return "mmm...Kai. *grummel*</br>Hab' da was fuer dich...";
 			break;
 		default: 
 			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
@@ -562,6 +562,59 @@ opa.receiving=function(thing){
 	print("Nein behalte das. Das ist fuer dich.</br>");
 	return false;
 }	
+let scene3=new Scene("Scene3","<img src='s3.png'>Du stehst am Strand, um dich herum sind einige Leute.</br>Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,\n\
+im Westen ist eine Strandbar.")
+scene3.east=strand;
+let frau=new Person("Frau","ein Frau");
+scene3.insert(frau);
+frau.dialog=function* (){
+	return "Endlich mal Ruhe. In der Stadt hat man nur Theater,</br>mit all den komischen Gestalten, die sich da herumtreiben...";
+}
+let kind=new Person("Kind","ein kind");
+scene3.insert(kind);
+kind.dialog=function* (){
+	return "Hier auf der Insel wohnen Leute im Wald,</br>die ganz lustig verkleidet sind!";
+}
+let scene4=new Scene("Scene4","<img src='s4.png'>Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum Strand.")
+scene4.east=scene3;
+let Barmann=new Person("Barmann","ein Barmann");
+scene4.insert(Barmann);
+Barmann.dialog=function* (){
+	return "Hallo ich bin ein Barmann";
+}
+let tortenliebhaber=new Person("tortenliebhaber","ein tortenliebhaber");
+scene4.insert(tortenliebhaber);
+tortenliebhaber.dialog=function* (){
+	return "Mein lieber Scholli, das nenn' ich mal eine Torte!";
+}
+let scene5=new Scene("Scene5","<img src='s5.png'>Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>Nach Norden geht es in den Dschungel,</br>nach Sueden geht es zum Strand.")
+scene5.east=scene4;
+let Verkaeufer=new Person("Verkaeufer","ein Verkaeufer");
+scene5.insert(Verkaeufer);
+Verkaeufer.dialog=function* (){
+	return "Sehe ich da etwa eine kleine Touristin?\nHier gibt es Souvenirs fuer jeden Geschmack!";
+}
+let Tratschtante=new Person("Tratschtante","ein Tratschtante");
+scene5.insert(Tratschtante);
+Tratschtante.dialog=function* (){
+	return "Psst, hoer mal, ich muss dir was erzaehlen.</br>Der Verkaeufer da hinten verlangt bei Touristen</br>den dreifachen Preis!</br>Lass dich nicht uebers Ohr hauen!";
+}
+	let Kuenstler=new Person("Kuenstler","ein Kuenstler");
+scene5.insert(Kuenstler);
+Kuenstler.dialog=function* (){
+	return "Fuer dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder 3?";
+}
+let scene6=new Scene("Scene6","<img src='s6.png'>Du befindest dich auf einem Pfad im Dschungel.</br>Nach Norden geht es zu einer Lichtung,</br>nach Osten geht es zum Strandhaus,</br>nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.")
+scene6.east=scene5;
+
+let scene7=new Scene("Scene7","<img src='s7.png'>Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
+scene7.east=scene6;
+let Forscher=new Person("Forscher","ein Forscher");
+scene7.insert(Forscher);
+Forscher.dialog=function* (){
+	return "Hallo, wer sind Sie denn?";
+}
+
 
 //TODO insert crab
 //todo insert plant
