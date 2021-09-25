@@ -518,6 +518,76 @@ function search(thingname,typ=null){
 	return {mine:mine,thing:thing};
 }
 ///////////////////////////////////////////////////////
+let ich=new Person("Kai","Du bist interessiert an der Wissenschaft und willst die Welt erforschen",{open:true});
+let omazuhause=new Scene("Haus Oma","<img src='s1.png'>Du bist im Haus deiner Grosseltern.</br>Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.");
+let oma=new  Person(["Oma","Omi"],"Deinen liebe Oma.");
+omazuhause.insert(oma);
+ich.position=omazuhause;
+
+oma.dialog=function* (){
+	return "Ada, meine Liebe, hast du gut geschlafen?</br>Opa hat nach dir gefragt, weil er etwas fuer dich hat.";
+}
+
+let strand=new Scene("Strand","<img src='s2.png'>Du stehst am Strand vorm Haus deiner Grosseltern,</br>an dem sich ein kleiner Steg befindet.</br>Dort sitzt dein Opa und angelt.</br>Nach Norden fuehrt ein Pfad hinter dem Haus in den Dschungel,</br>nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
+strand.east=omazuhause;
+let bottlemessage=new Item("Flaschenpost","<img src='bottlemessage.png'>eine verschlossene Flaschenpost");
+let opa=new Person("Opa","Dein lieber Opa.");
+strand.insert(opa);
+opa.insert(bottlemessage);
+let bottlegiven=false;
+opa.dialog=function* (){
+	if(this.has(bottlemessage)){
+		
+		let reply=yield "Hallo Kai<p style='color:#0f0;'>1 - Hallo Opa.</br>2 - Was gibts?</p>";
+		switch(reply){
+		case "1":
+			return 'Viel Spaß!'
+			break;
+		case "2":
+			this.open=true;			
+			Commands.actor.take(bottlemessage);
+			this.open=false;
+			bottlegiven=true;
+			return "mmm...Ada. *grummel*</br>Hab' da was fuer dich...";
+			break;
+		default: 
+			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+		}
+	} else
+	{
+		return "Fischen ist lustig.";
+	}
+}
+opa.receiving=function(thing){
+	print("Nein behalte das. Das ist fuer dich.</br>");
+	return false;
+}	
+
+//TODO insert crab
+//todo insert plant
+
+
+
+/*
+	                MainWindow::setText("\
+/rgba(0fff)Hallo Opa!\n\
+/rgba(fccf)Hmmm...Ada. *grummel*\n\
+Hab' da was fuer dich...\n\
+/rgba(ffff)Verschlossene Flaschenpos");
+                speakopafirsttime=false;
+                Inventory::addObject(&bottle);
+                Inventory::setOpen(true);
+            }
+            else{
+                MainWindow::setText("\
+/rgba(fccf)Fischen ist lustig.\n");
+*/
+	
+	
+
+
+///////
+/*
 let lichtung=new Scene("Lichtung","<img src='lichtung.jpg'>Du stehst auf einer Lichtung mitten im Wald auf einer Nordseeinsel. Ein schmaler Weg führt nach Norden durch den Wald. Im Osten befindet sich eine Brücke die zum Steinbruch führt. Nach Süden geht es hinunter in ein Dorf.");
 let steinbruch=new Scene("Steinbruch","Viel Fels und Geröll");
 let loch=new Item("Loch","Ein tiefes Loch",{open:true,takeable:false});
@@ -860,6 +930,8 @@ taschenlampe.use=function(){
 muelleimer.insert(taschenlampe);
 lichtung.insert(buch);
 
+*/
+
 /**
  * Prints a string to the canvas at the beginning by adding it to the beginning of Commands.answer.
  *
@@ -956,7 +1028,7 @@ class Commands{
 		else{
 			if(Commands.lastcommandspeak) commandspeak=Commands.continuespeak(cmd);
 			if(!commandspeak) {
-				print("??? Schreibe hilfe für Befehlsliste!\n");
+				print("Ich verstehe dich nicht oder kann es nicht machen! Schreibe 'hilfe' für Befehlsliste!\n");
 			}
 		}
 		Commands.lastcommandspeak=commandspeak;
