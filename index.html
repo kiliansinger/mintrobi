@@ -332,14 +332,12 @@ color: #00FF00;
 	left: 21.91%;
 	top: 29.44%;
 	width: 28.64%;
-	visibility:hidden;
 }
 #s8torzu{
 	position: absolute;
 	left: 21.91%;
 	top: 29.44%;
 	width: 28.64%;
-	visibility:visible;
 }
 #s8schild{
 	position: absolute;
@@ -977,7 +975,7 @@ tortenliebhaber.dialog=function* (){
 	return "Mein lieber Scholli, das nenn' ich mal eine Torte!";
 }
 let scene5=new Scene("Scene5","<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>Nach Norden geht es in den Dschungel,</br>nach Sueden geht es zum Strand.")
-scene5.east=scene4;
+scene5.south=scene3;
 let verkaeufer=new Person("Verkaeufer","ein Verkaeufer");
 scene5.insert(verkaeufer);
 verkaeufer.dialog=function* (){
@@ -994,26 +992,87 @@ kuenstler.dialog=function* (){
 	return "Fuer dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder 3?";
 }
 let scene6=new Scene("Scene6","<div class='flow'><img class='back' src='s6.png'></div>Du befindest dich auf einem Pfad im Dschungel.</br>Nach Norden geht es zu einer Lichtung,</br>nach Osten geht es zum Strandhaus,</br>nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.")
-scene6.east=scene5;
-
+scene6.south=scene5;
+scene6.east=strand;
 let scene7=new Scene("Scene7","<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
-scene7.east=scene6;
-let forscher=new Person("Forscher","ein Forscher");
-scene7.insert(forscher);
-forscher.dialog=function* (){
-	return "Hallo, wer sind Sie denn?";
+scene7.south=scene6;
+let kostuem=new Item("kostuem","<img src='kostuem.png'>eine kostuem",{open:true,applicable:true});
+let Forscher=new Person("Forscher","ein Forscher");
+scene7.insert(Forscher);
+Forscher.insert(kostuem);
+Forscher.dialog=function* (){
+	if(this.has(kostuem)){
+    let reply = yield "Hallo, guten Tag.<p style='color:#0f0;'>1 - Hallo, wer sind Sie denn?.</br>2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>";
+	switch(reply){
+	case "1":
+		return 'Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>ich erforsche den hiesigen Stamm der Ureinwohner.'
+	break;
+	case "2":
+	this.open=true;			
+			Commands.actor.take(kostuem);
+			this.open=false;
+		return "Es ist mir noch nicht gelungen Einlass gewaehrt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spaehen konnte.</br>Doch mit deiner Statur ist eventuell moeglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das Kostüm.";
+		break;
+	default: 
+		return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+	break;}
+} else
+	{
+		return "Wissenschaft ist wunderbar!";
+	}
+	
+}
+Forscher.receiving=function(thing){
+	print("Nein behalte das. Das ist fuer dich.</br>");
+	return false;
 }
 
 
-let scene8=new Scene("Scene8","<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>")
-scene8.east=scene7;
+let scene8=new Scene("Scene8","")
+scene8.east=scene6;
+let loch=new Item("Loch","Ein tiefes Loch",{open:true,takeable:false});
+let schluessel=new Item("Schlüssel","Ein Metall Schlüssel.",{applicable:true});
+let tuer=new Door("Tür","Eine verschlossene Tür.",{blocking:true})
+let kabel=new Item("kabel","cable",{applicable:true});
+let tilli=new Person("tilli", "experimental person");
 let torwache=new Person("Torwache","eine Torwache");
+let llave=new Item("llave","acceso");
 scene8.insert(torwache);
-torwache.dialog=function* (){
-	return "Hallo, wer sind Sie denn?";
+scene8.northblock=tuer;
+
+scene8.describe=function(){
+	if(tuer.blocking){
+		return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>";
+	}
+	else return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>";
 }
-let scene9=new Scene("Scene9","<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>")
-scene9.east=scene8;
+
+
+torwache.insert(schluessel);
+torwache.insert(llave);
+torwache.dialog=function* (){
+	if(Commands.actor.has(kostuem)){
+		if(tuer.blocking){
+			let reply = yield "Hallo, Kumpel.</br>Ich dachte zuerst du bist schon wieder einer von diesen</br>bescheuerten Staedtern, die uns immer wieder auf</br>die Nerven gehen. Aber manche verkleiden sich,</br>und da wir von klein auf rechnen lernen,</br>faellt es uns leicht die 20te Fibonacci Zahl</br>schnell im Kopf zu berechnen und sie in das</br>Zahlenschloss einzugeben. Und spaetestens daran</br>scheitern die bescheuerten Staedter immer.</br> Hahaha! Hast du den Code berechnet?</br> Wenn ja dann sage ihn mir doch:";
+			if (reply==="6765") {
+				tuer.blocking=false;
+				return "<img src='s8block.png'>Code akzeptiert.</br>"+scene8.describe();
+			}
+			else return "<img src='s8block.png'>Falscher Code!"
+		}	
+		else
+		{
+			return "hola amigo";
+		}			
+	}
+	else{
+		return "Ugga bugga, blubliblah! Impostor!"
+	}
+}
+
+let scene9=new Scene("Scene9","<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>",{open:false});
+scene9.south=scene8;
+
 let pina=new Person(["Pina","Pina Colada"],"eine Ureinwohnerin");
 let mojito=new Person("Mojito","ein Ureinwohner");
 let daiquiri=new Person("Daiquiri","ein Ureinwohner mit einem Problem");
@@ -1862,4 +1921,3 @@ function start(){
 	}, false);
 }
 </script>
-
