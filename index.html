@@ -909,7 +909,37 @@ omazuhause.insert(oma);
 ich.position=omazuhause;
 
 oma.dialog=function* (){
-	return "Kai, meine Liebe, hast du gut geschlafen?</br>Opa hat nach dir gefragt, weil er etwas fuer dich hat.";
+
+	//return "Kai, meine Liebe, hast du gut geschlafen?</br>Opa hat nach dir gefragt, weil er etwas fuer dich hat.";
+	let reply=yield "Hallo Kai<p style='color:#0f0;'>1 - led an.</br>2 - led aus.</p>";
+	switch(reply){
+		case "1":
+			const response = new XMLHttpRequest();
+			response.open("GET", 'http://raspberrypi/gpio?port=2&level=1');
+
+			response.send();
+
+			/*
+			function reqListener () {
+  console.log(this.responseText);
+}
+
+response.addEventListener("load", reqListener);
+*/
+			return 'led an';
+			break;
+		case "2":
+			const response2 = new XMLHttpRequest();
+			response2.open("GET", 'http://raspberrypi/gpio?port=2&level=0');
+
+			response2.send();
+
+			return "led aus";
+			break;
+		default: 
+			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+		
+	} 
 }
 
 let strand=new Scene("Strand","<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>Du stehst am Strand vorm Haus deiner Grosseltern,</br>an dem sich ein kleiner Steg befindet.</br>Dort sitzt dein Opa und angelt.</br>Nach Norden fuehrt ein Pfad hinter dem Haus in den Dschungel,</br>nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
