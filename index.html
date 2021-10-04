@@ -902,14 +902,14 @@ function search(thingname,typ=null){
 	return {mine:mine,thing:thing};
 }
 ///////////////////////////////////////////////////////
-let ich=new Person("Kai","Du bist interessiert an der Wissenschaft und willst die Welt erforschen",{open:true});
+let ich=new Person("Kai","Du bist interessiert an der Wissenschaft und willst die Welt erforschen.</br>Du kannst immer hilfe eingeben, wenn du nicht weiter kommst.",{open:true});
 let omazuhause=new Scene("Haus Oma","<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>Du bist im Haus deiner Grosseltern.</br>Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.");
 let oma=new  Person(["Oma","Omi"],"Deinen liebe Oma.");
 omazuhause.insert(oma);
 ich.position=omazuhause;
 
 oma.dialog=function* (){
-	return "Kai, meine Liebe, hast du gut geschlafen?</br>Opa hat nach dir gefragt, weil er etwas fuer dich hat.";
+	return "Kai, meine Liebe, du bist ja endlich mal aufgwacht!</br>Opa hat nach dir gefragt. Er hat etwas mysterioeses Gefunden, das er dir gerne zeigen moechte.";
 }
 
 let strand=new Scene("Strand","<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>Du stehst am Strand vorm Haus deiner Grosseltern,</br>an dem sich ein kleiner Steg befindet.</br>Dort sitzt dein Opa und angelt.</br>Nach Norden fuehrt ein Pfad hinter dem Haus in den Dschungel,</br>nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
@@ -921,16 +921,16 @@ opa.insert(bottlemessage);
 opa.dialog=function* (){
 	if(this.has(bottlemessage)){
 		
-		let reply=yield "Hallo Kai<p style='color:#0f0;'>1 - Hallo Opa.</br>2 - Was gibts?</p>";
+		let reply=yield "Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.<p style='color:#0f0;'>1 - Och ne, dafuer bin ich jetzt noch viel zu muede.</br>2 - Echt???! Zeig mal her was du gefunden hast.</p>";
 		switch(reply){
 		case "1":
-			return 'Viel Spaß!'
+			return 'Ach Schade. Dann komm doch spaeter nochmal zu mir.'
 			break;
 		case "2":
 			this.open=true;			
 			Commands.actor.take(bottlemessage);
 			this.open=false;
-			return "mmm...Kai. *grummel*</br>Hab' da was fuer dich...";
+			return "Hier eine geheimnisvolle Flasche,</br>aber ich bekomme sie leider einfach nicht auf.</br>Du brauchst einen Flaschenoeffner, vielleicht findest du ja einen.";
 			break;
 		default: 
 			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
@@ -944,42 +944,68 @@ opa.receiving=function(thing){
 	print("Nein behalte das. Das ist fuer dich.</br>");
 	return false;
 }	
-let scene3=new Scene("Scene3","<div class='flow'><img class='back' src='s3.png'><img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'><img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'><img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>Du stehst am Strand, um dich herum sind einige Leute.</br>Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,\n\
+let scene3=new Scene("Badestrand","<div class='flow'><img class='back' src='s3.png'><img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'><img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'><img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>Du stehst am Strand, um dich herum sind einige Leute.</br>Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,\n\
 im Westen ist eine Strandbar.")
 scene3.east=strand;
 let frau=new Person("Frau","ein Frau");
 scene3.insert(frau);
 frau.dialog=function* (){
-	return "Endlich mal Ruhe. In der Stadt hat man nur Theater,</br>mit all den komischen Gestalten, die sich da herumtreiben...";
+	return "Endlich mal Ruhe. In der Stadt hat man nur Theater,</br>mit all den komischen Gestalten, die sich da herumtreiben.</br>Diesen Urlaub habe ich mir echt verdient.";
 }
 let kind=new Person("Kind","ein Kind");
 scene3.insert(kind);
 kind.dialog=function* (){
-	return "Hier auf der Insel wohnen Leute im Wald,</br>die ganz lustig verkleidet sind!";
+	return "Da sind komisch verkleidete Menschen im Wald.</br>Hast du schonmal einen von denen gesehen?";
 }
 let junge=new Person(["Junge","Jungen"],"ein Junge");
 scene3.insert(junge);
 junge.dialog=function* (){
-	return "Die Sandburg habe ich ganz alleine gebaut!";
+	return "Hey schau maul,</br>diese Sandburg habe ich ganz alleine gebaut!";
 }
-let scene4=new Scene("Scene4","<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum Strand.")
+let scene4=new Scene("Strandbar","<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum Strand.")
 scene4.east=scene3;
 let barmann=new Person("Barmann","ein Barmann");
 scene4.insert(barmann);
 barmann.dialog=function* (){
-	return "Hallo ich bin ein Barmann";
+	if(Commands.actor.has(tortenheber)){	
+	  	let reply=yield "Dankeschoen! Dankeschoen! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>1 - Ja na klar! Was muss ich tun?</br>2 - Nein, ich habe gerade keine Lust.</p>";
+			switch(reply){
+			case "1":
+			return "Ich habe gehoert, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese 3-stoeckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein groeßeres Stueck auf einem kleineren liegen.</br>Hast du eine Idee wie ich das am besten mache?"
+			break;
+			case "2":
+			return "Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung oeffne ich dir auch deine Flasche."
+    		break;
+			default: 
+			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+			break;}
+	} else{
+		let reply2=yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, dann die Orangen und jetzt auch noch mein Tortenheber.</br>Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>1 - Nein danke, mir geht es bestens. </br>2 - Ja, kannst du mir helfen diese Flasche zu oeffnen?</p>";
+			switch(reply2){
+			case "1":
+			return 'Dann bis speater'
+			case "2":
+			return "Wuerde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>Das wird aber echt schwer ohne meinen Tortenheber.";
+			break;
+	    	default: 
+			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+	    	break;}
+		}
 }
+
 let tortenliebhaber=new Person("Tortenliebhaber","ein Tortenliebhaber");
 scene4.insert(tortenliebhaber);
 tortenliebhaber.dialog=function* (){
-	return "Mein lieber Scholli, das nenn' ich mal eine Torte!";
+	return "Das ist echt aergerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte backen.";
 }
-let scene5=new Scene("Scene5","<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>Nach Norden geht es in den Dschungel,</br>nach Sueden geht es zum Strand.")
+
+
+let scene5=new Scene("Stadt","<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>Nach Norden geht es in den Dschungel,</br>nach Sueden geht es zum Strand.")
 scene5.south=scene3;
 let verkaeufer=new Person("Verkaeufer","ein Verkaeufer");
 scene5.insert(verkaeufer);
 verkaeufer.dialog=function* (){
-	return "Sehe ich da etwa eine kleine Touristin?\nHier gibt es Souvenirs fuer jeden Geschmack!";
+	return "Hey komm mal her zu mir!</br>Hier gibt es Souvenirs fuer jeden Geschmack! Bei mir wird jeder gluecklich!";
 }
 let tratschtante=new Person("Tratschtante","ein Tratschtante");
 scene5.insert(tratschtante);
@@ -989,12 +1015,12 @@ tratschtante.dialog=function* (){
 	let kuenstler=new Person("Kuenstler","ein Kuenstler");
 scene5.insert(kuenstler);
 kuenstler.dialog=function* (){
-	return "Fuer dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder 3?";
+	return "Fuer dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder doch 3 Millionen?";
 }
-let scene6=new Scene("Scene6","<div class='flow'><img class='back' src='s6.png'></div>Du befindest dich auf einem Pfad im Dschungel.</br>Nach Norden geht es zu einer Lichtung,</br>nach Osten geht es zum Strandhaus,</br>nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.")
+let scene6=new Scene("Dschungel","<div class='flow'><img class='back' src='s6.png'></div>Du befindest dich auf einem Pfad im Dschungel.</br>Nach Norden geht es zu einer Lichtung,</br>nach Osten geht es zum Strandhaus,</br>nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.")
 scene6.south=scene5;
 scene6.east=strand;
-let scene7=new Scene("Scene7","<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
+let scene7=new Scene("Lichtung","<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
 scene7.south=scene6;
 let kostuem=new Item("kostuem","<img src='kostuem.png'>eine kostuem",{open:true,applicable:true});
 let Forscher=new Person("Forscher","ein Forscher");
@@ -1036,20 +1062,20 @@ let tuer=new Door("Tür","Eine verschlossene Tür.",{blocking:true})
 let kabel=new Item("kabel","cable",{applicable:true});
 let tilli=new Person("tilli", "experimental person");
 let torwache=new Person("Torwache","eine Torwache");
-let llave=new Item("llave","acceso");
+
 scene8.insert(torwache);
 scene8.northblock=tuer;
 
 scene8.describe=function(){
 	if(tuer.blocking){
-		return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>";
+		return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.";
 	}
 	else return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>";
 }
 
-
+/*
 torwache.insert(schluessel);
-torwache.insert(llave);
+*/
 torwache.dialog=function* (){
 	if(Commands.actor.has(kostuem)){
 		if(tuer.blocking){
@@ -1062,7 +1088,7 @@ torwache.dialog=function* (){
 		}	
 		else
 		{
-			return "hola amigo";
+			return "Hallo, Kumpel!";
 		}			
 	}
 	else{
@@ -1070,7 +1096,7 @@ torwache.dialog=function* (){
 	}
 }
 
-let scene9=new Scene("Scene9","<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>",{open:false});
+let scene9=new Scene("Scene9","<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>");
 scene9.south=scene8;
 
 let pina=new Person(["Pina","Pina Colada"],"eine Ureinwohnerin");
@@ -1118,6 +1144,11 @@ daiquiri.dialog=function* (){
 		return "Danke nochmals.";
 	}
 }
+
+
+
+let scene10=new Scene("Geheimes Labor","<img src='s10.png'>Du stehst in dem geheimen Labor von einem verrueckten Forscher.</br>Doch dieser ist auf mysterioese Weise verschwunden. </br>Auf dem Tisch siehst du einen Roboter, der noch nicht ganz fertig gestellt wurde.</br>Ausserdem faellt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth.</br>Nach Sueden geht es zur Strandbar.");
+scene10.south=scene4;
 
 //TODO insert crab
 //todo insert plant
