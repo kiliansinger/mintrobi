@@ -965,19 +965,33 @@ junge.dialog=function* (){
 
 let scene4=new Scene("Scene4","Barman")
 scene4.east=scene3;
-let seetang=new Door("seetang","Eine verschlossene Tür.",{blocking:true})
-
+let seetang=new Door("seetang","Ein Haufen riechender Seetang. Hm yam yam ich liebe Sushi-Rolls!",{blocking:true,usable:true})
+seetang.cnt=0;
+seetang.use=function(){
+	seetang.cnt++;
+	if(seetang.cnt>=3) {
+		seetang.blocking=false;
+		print(scene4.describe());
+		return true;
+	}
+	else {
+		print("Nichts passiert. Aber ich nehme mir ein Stück zum essen. Hm lecker!");
+		return true;
+	}
+}
 scene4.northblock=seetang;
+scene4.insert(seetang);
+
 scene4.describe=function(){
 	if(seetang.blocking){
 		return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum he postiert";
 	}
-	else return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>Abierto Open</br>";
+	else return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>Oh da ist ja eine geheime Höhle dahinter. Was da wohl drin ist?</br>";
 }
 
 let barmann=new Person("Barmann","ein Barmann");
 scene4.insert(barmann);
-
+//scene4.north=scene10;
 /*
 barmann.dialog=function* (){
 	if(Commands.actor.has(tortenheber)){
@@ -1022,9 +1036,10 @@ if (reply==="torta") {
 			else return "<img src='bottlemessage.png'>Incorrecto"
 */
 
+barmann.tricked=false;
 
 barmann.dialog=function* (){
-	if(Commands.actor.has(tortenheber)){
+	if(Commands.actor.has(tortenheber)||barmann.tricked){
 		if(seetang.blocking){
 			let reply = yield "Dankeschoen! Dankeschoen! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>1 - Ja na klar! Was muss ich tun?</br>2 - Nein, ich habe gerade keine Lust.</p>";
             switch(reply){
@@ -1032,7 +1047,7 @@ barmann.dialog=function* (){
 			  let reply13 = yield 'Ich habe gehoert, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese 3-stoeckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein groeßeres Stueck auf einem kleineren liegen.</br>Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein!'
 			  if (reply13==="AC,AB,CB,AC,BA,BC,AC,AB,CB,CA,BA,CB,AC,AB,CB,AC,BA,BC,AC,BA,CB,CA,BA,BC,AC,AB,CB,AC,BA,BC,AC") {
 					//seetang.blocking=false;
-					return "Das hat geklappt. Hier ich öffne dir die Flasche. Da ist ein verschlüsselter Text drin:</br><pre>DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OYB8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'GY-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</pre></br>Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:<pre>NM.. NNEDALESN HR.EBEZBSEZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT GBLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW NTZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCREISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT TLLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</pre></br>Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit einer statistischen Analyse des verwürfelten Textes zu vergleichen. Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. Aber in diesem Falle war das Schicksal gnädig mit uns...</br>"+scene4.describe();
+					return scene4.describe()+"Das hat geklappt. Hier ich öffne dir die Flasche. Da ist ein verschlüsselter Text drin:</br><textarea rows='8' cols='80' style='white-space: wrap;' >DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OYB8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'GY-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:</br><textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBSEZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT GBLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW NTZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCREISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT TLLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit einer statistischen Analyse des verwürfelten Textes zu vergleichen. Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. Aber in diesem Falle war das Schicksal gnädig mit uns...</br>";
 				}            
 				else
 				{ return "<img src='bottlemessage.png'>Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. Aber ich backe einfach nochmal eine."
@@ -1059,6 +1074,10 @@ barmann.dialog=function* (){
 			break;
 			case "2":
 			return "Wuerde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>Das wird aber echt schwer ohne meinen Tortenheber.";
+			break;
+			case "123":
+			barmann.tricked=true;
+			return "Oh du bist der Programmierer. Dann geht das auch ohne Tortenheber!"
 			break;
 	    	default: 
 			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
@@ -1879,6 +1898,7 @@ class Commands{
 		}
 		return false;
 	}
+	@when( "öffne ITEM" )
 	@when( "öffne ITEM" )
 	@when( "ö ITEM" )
     static open({item}) {
