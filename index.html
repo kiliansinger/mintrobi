@@ -494,6 +494,35 @@ Babel.registerPreset("env-plus", {
 </script>
 <!-- Decorator example -->
 <script type="text/babel" data-presets="env-plus">
+
+/*TODO:
+Roboter ist kaputt und kann sich nicht mehr selber reparieren.
+Wir sind jetzt mit dem Programmier teil fertig.
+Man kommt in die Höhle und findet den Roboter als Schatz.
+Einfachste Rätsel ist zugangs code zum Computer.
+
+Man findet 7 Segment anzeige
+Dazu muss man 7 Segment anzeige richtig verbinden und mit robo reden.
+Dazu findet man eine Anleitung die Beschreibt wie man die 7 Segment anzeige verbinden muss.
+
+Dann öffnet sich tür zum labyrith und man muss roboter folgen.
+Findet man motor treiber.
+wenn mann man dann imnmer passend n, s,  usw eintippt. (vorwärts ist norden, rückwärts ist süden und nach rechts drehen ist Osten und nach links drehn ist Westen)
+roboter fährt immer zur ursprungslage damit das ding nicht vom tisch fällt.
+
+Danach findet man den Ultraschallsensor.
+Roboter will damit erkennen dass ein Mensch vor ihm ist. Und man muss seine Hand vor dem Sensor winken.
+
+Dann eröffnet der Roboter einem den Zugang zum Heiligsten: sein Gehirn und man bekommt ssh zugansdaten mit zugang zum git.
+
+*/
+
+
+
+
+
+
+
 // @ts-check
 class Obj {
 	static arr = [];
@@ -738,8 +767,9 @@ class Scene extends Thing{//is not takeable
 	}
 }
 class Door extends Thing{
-constructor(titel,description,{openable=false,opensoninspection=false,closable=false,open=false,visible=true,takeable=false,dropable=false,usable=false,applicable=true,blockable=true,blocking=true,locked=false}={}){
+constructor(titel,description,{openable=false,opensoninspection=false,closable=false,open=false,visible=true,takeable=false,dropable=false,usable=false,applicable=true,blockable=true,blocking=true,locked=false,speakable=false}={}){
 		super(titel,description);
+		this.speakable=speakable;
 		this.openable=openable;
 		this.closable=closable;
 		this.open=open;
@@ -1237,8 +1267,145 @@ daiquiri.dialog=function* (){
 
 
 
-let scene10=new Scene("Geheimes Labor","<img src='s10.png'>Du stehst in dem geheimen Labor von einem verrueckten Forscher.</br>Doch dieser ist auf mysterioese Weise verschwunden. </br>Auf dem Tisch siehst du einen Roboter, der noch nicht ganz fertig gestellt wurde.</br>Ausserdem faellt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth.</br>Nach Sueden geht es zur Strandbar.");
+let scene10=new Scene("Geheimes Labor","<img src='s10.png'>Du stehst in dem geheimen Labor von einem verrueckten Forscher.</br>Doch dieser ist auf mysterioese Weise verschwunden. </br>Auf dem Tisch siehst du einen Roboter, der noch nicht ganz fertig gestellt wurde.</br>Ausserdem faellt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth. Doch der Weg ist durch eine Tür mit Zahlenschloss verschlossen.</br>Nach Sueden geht es zur Strandbar.");
 scene10.south=scene4;
+
+let robo=new Person("robo","Ein kaputter Roboter. Es liegt auch eine 7 Segment Anzeige herum. Mit einer Bedienungseinleitung. Da steht drin, dass man die Pins an der Anzeige gegen den Uhrzeigersinn von unten Links anfängt zu zählen. Da wo der Punk ist ist also Pin 5. Dann muss man Pin 3 mit 3V3 verbinden. Desweiteren mit einem 220Ohm widerstand soll man Pin1->IO2, Pin2->IO3, Pin3->IO4, Pin6->IO17, Pin7->IO18, Pin9->IO15, Pin10->IO14 verbinden.");
+scene10.insert(robo);
+let intervalID;
+let codecnt;
+let code=[1,3,1,9];
+
+
+robo.dialog=function* (){
+	codecnt=0;
+	intervalID=setInterval(displayCode, 1000);
+	return "Sende Computer-Password mit 7-Segment anzeige!";
+}
+
+
+let seg={'a':18,'b':17,'c':4,'d':3,'e':2,'f':15,'g':14};
+
+function reset(pin){
+	for(const key in seg) gpio(seg[key],1);
+}
+function set(pin){
+	gpio(pin,0);
+}
+
+function gpio(pin,val){
+	const response2 = new XMLHttpRequest();
+	response2.open("GET", 'http://raspberrypi/gpio?port='+pin+'&level='+val,false);
+
+	//request.open('GET', '/bar/foo.txt', false);  // `false` makes the request synchronous
+//request.send(null);
+
+//if (request.status === 200) {
+
+
+
+
+	response2.send();
+}
+
+function display7segment(n){
+	
+	switch(n){
+		case 0:
+			reset();
+			set(seg['a']);set(seg['b']);set(seg['c']);set(seg['d']);set(seg['e']);set(seg['f']);
+			break;
+		case 1:
+			reset();
+			set(seg['b']);set(seg['c']);
+			break;
+		case 2:
+			reset();
+			set(seg['a']);set(seg['b']);set(seg['g']);set(seg['d']);set(seg['e']);
+			break;
+		case 3:
+			reset();
+			set(seg['a']);set(seg['b']);set(seg['g']);set(seg['c']);set(seg['d']);
+			break;
+		case 4:
+			reset();
+			set(seg['f']);set(seg['b']);set(seg['g']);set(seg['c']);
+			break;
+		case 5:
+			reset();
+			set(seg['a']);set(seg['f']);set(seg['g']);set(seg['c']);set(seg['d']);
+			break;
+		case 6:
+			reset();
+			set(seg['a']);set(seg['f']);set(seg['e']);set(seg['c']);set(seg['d']);set(seg['g']);
+			break;
+		case 7:
+			reset();
+			set(seg['a']);set(seg['b']);set(seg['c']);
+			break;
+		case 8:
+			reset();
+			set(seg['a']);set(seg['b']);set(seg['c']);set(seg['d']);set(seg['e']);set(seg['f']);set(seg['g']);
+			break;
+		case 9:
+			reset();
+			set(seg['a']);set(seg['b']);set(seg['c']);set(seg['d']);set(seg['f']);set(seg['g']);
+			break;
+
+	}
+
+}
+
+
+
+function displayCode() {
+	display7segment(code[codecnt]);
+	codecnt++
+	if(codecnt==code.length) clearInterval(intervalID);
+}
+
+scene4.northblock=seetang;
+scene4.insert(seetang);
+
+let numberlockdoor=new Door("Zahlenschlosstür","Ein digitales Eingabefeld ist an der Tür.",{blocking:true,usable:true,speakable:true});
+numberlockdoor.use=function(){
+	print("Ich sollte darauf tippen...");
+	return false;
+}
+numberlockdoor.dialog=function* (){
+    const reply = yield 'Bitte Zahlencode eingeben</p>';
+    if (reply==="1319") {
+        numberlockdoor.blocking=false;
+		return "Die Tür öffnet sich!"
+    }
+    else return "Falscher Code!"
+}
+scene10.northblock=numberlockdoor;
+scene10.insert(numberlockdoor)
+let scene11=new Scene("Dunkles Labyrinth","Es ist stock dunkel hier. Ich glaube ich brauche Robos Hilfe um hier rauszufinden. Oh auf dem Boden liegt Ultraschallsensor und eine Anleitung. Da steht dass man VCC mit 5V verbinden muss und GND mit GND. Dann nur noch TRIG mit IO23. Da wird dann ein Ultraschallpuls ausgesendet. Und an Echo kommt dann ein 5V Signal, wenn das Echo empfangen wird. Man muss allerdings die 5V auf 3.3V runterteilen. Dazu nehmen wir einen 100 Ohm Widerstand von Echo gehen dann an IO24. Dann muss man noch von IO24 mit 200Ohm nach GND gehen.");
+scene11.south=scene10;
+let robo2=new Person("robo","Ein kaputter Roboter mit 7 Segment Anzeige.");
+scene11.insert(robo2);
+
+let firsttimedist=true;
+robo2.dialog=function* (){
+	const response2 = new XMLHttpRequest();
+	response2.open("GET", 'http://raspberrypi/dist',false);
+
+	response2.send();
+
+	if (response2.status === 200) {
+  		if(response2.responseText!="0") {
+		  if(firsttimedist){
+			firsttimedist=false;
+			return "Distanz: "+response2.responseText+ " cm.</br>Super der Ultraschallsensor funktioniert. Der Roboter führt dich aus dem Labyrinth heraus du hast das Spiel gemeistert. Gratulation! Du kannst nun auf http://raspberrypi:3000/  und user root mit passwort raspberry auf den Source code zugreifen. Per ssh pi@raspberrypi mit passwort raspberry kannst du dich auf dem System einloggen."
+		  }
+		  return "Distanz: "+response2.responseText+ " cm."
+		}
+		else return "Sensor deffekt!";
+	}
+}
+
 /*
 let winner=new Person('winner', 'controls the robot');
 insert
