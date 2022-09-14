@@ -472,6 +472,144 @@ img {
 <script>
 // @ts-check
 </script>
+<script>
+	function microBitReceivedMessage(message){
+		console.log(message)
+		microBitWriteString("x\r\n")
+	}
+/*
+This code is to connect a micro:bit using BLE UART to p5.
+
+API:
+
+microBitConnect()
+
+This function should be called by an user event, like  mousePressed() https://p5js.org/reference/#/p5/mousePressed
+or KeyPressed() https://p5js.org/reference/#/p5/keyPressed
+
+microBitDisconnect()
+
+This function disconnects the microbit from the device running the p5 sketch.
+
+microBitWriteString("string")
+
+Writes a text to the microbit
+
+microBitReceivedMessage(message)
+
+This is a function that is called when the microBit sends a message to the device running P5
+
+
+Example sketch.js
+
+//This code sends the current key pressed to the microbit, and shows the last message of the microbit in the middle of the screen
+function setup() {
+  createCanvas(400, 400);
+}
+lastMessage = "";
+function draw() {
+  background(220);
+  text(lastMessage,200,200);
+}
+
+function mousePressed(){
+  microBitConnect()
+}
+
+function keyPressed(){
+  microBitWriteString(key + "\n")
+}
+function microBitReceivedMessage(message){
+  lastMessage = message;
+}
+
+*/
+
+	// https://lancaster-university.github.io/microbit-docs/resources/bluetooth/bluetooth_profile.html
+// An implementation of Nordic Semicondutor's UART/Serial Port Emulation over Bluetooth low energy
+const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+
+// Allows the micro:bit to transmit a byte array
+const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+
+// Allows a connected client to send a byte array
+const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+
+let uBitDevice;
+let rxCharacteristic;
+
+async function microBitWriteString(string){
+  if (!rxCharacteristic) {
+    return;
+  }
+
+  try {
+    let encoder = new TextEncoder();
+    rxCharacteristic.writeValue(encoder.encode(string));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function microBitConnect() {
+  try {
+    console.log("Requesting Bluetooth Device...");
+    uBitDevice = await navigator.bluetooth.requestDevice({
+      filters: [{ namePrefix: "BBC micro:bit" }],
+      optionalServices: [UART_SERVICE_UUID]
+    });
+
+    console.log("Connecting to GATT Server...");
+    const server = await uBitDevice.gatt.connect();
+
+    console.log("Getting Service...");
+    const service = await server.getPrimaryService(UART_SERVICE_UUID);
+
+    console.log("Getting Characteristics...");
+    const txCharacteristic = await service.getCharacteristic(
+      UART_TX_CHARACTERISTIC_UUID
+    );
+    txCharacteristic.startNotifications();
+    txCharacteristic.addEventListener(
+      "characteristicvaluechanged",
+      onTxCharacteristicValueChanged
+    );
+    rxCharacteristic = await service.getCharacteristic(
+      UART_RX_CHARACTERISTIC_UUID
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function microBitDisconnect() {
+  if (!uBitDevice) {
+    return;
+  }
+
+  if (uBitDevice.gatt.connected) {
+    uBitDevice.gatt.disconnect();
+    console.log("Disconnected");
+  }
+}
+
+
+function onTxCharacteristicValueChanged(event) {
+  let receivedData = [];
+  for (var i = 0; i < event.target.value.byteLength; i++) {
+    receivedData[i] = event.target.value.getUint8(i);
+  }
+  const receivedString = String.fromCharCode.apply(null, receivedData);
+  if (typeof microBitReceivedMessage !== 'undefined'){
+    microBitReceivedMessage(receivedString);
+  }else{
+    console.log("microBitReceivedMessage is not defined")
+  }
+  console.log(receivedString);
+}
+
+
+</script>
 <script src="babel.min.js"></script>
 <script>
 // Define a preset https://medium.com/jspoint/a-minimal-guide-to-ecmascript-decorators-55b70338215e
@@ -939,7 +1077,8 @@ omazuhause.insert(oma);
 ich.position=omazuhause;
 
 oma.dialog=function* (){
-	return "Kai, meine Liebe, du bist ja endlich mal aufgwacht!</br>Opa hat nach dir gefragt. Er hat etwas mysterioeses Gefunden, das er dir gerne zeigen moechte.";
+	microBitConnect()
+	return "Kai, meine Liebe, du bist ja endlich mal aufgewacht!</br>Opa hat nach dir gefragt. Er hat etwas mysteriöses Gefunden, das er dir gerne zeigen möchte.";
 }
 
 let strand=new Scene("Strand","<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>Du stehst am Strand vorm Haus deiner Grosseltern,</br>an dem sich ein kleiner Steg befindet.</br>Dort sitzt dein Opa und angelt.</br>Nach Norden fuehrt ein Pfad hinter dem Haus in den Dschungel,</br>nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
@@ -954,13 +1093,13 @@ opa.dialog=function* (){
 		let reply=yield "Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.<p style='color:#0f0;'>1 - Och ne, dafuer bin ich jetzt noch viel zu muede.</br>2 - Echt???! Zeig mal her was du gefunden hast.</p>";
 		switch(reply){
 		case "1":
-			return 'Ach Schade. Dann komm doch spaeter nochmal zu mir.'
+			return 'Ach Schade. Dann komm doch später nochmal zu mir.'
 			break;
 		case "2":
 			this.open=true;			
 			Commands.actor.take(bottlemessage);
 			this.open=false;
-			return "Hier eine geheimnisvolle Flasche,</br>aber ich bekomme sie leider einfach nicht auf.</br>Du brauchst einen Flaschenoeffner, vielleicht findest du ja einen.";
+			return "Hier eine geheimnisvolle Flasche,</br>aber ich bekomme sie leider einfach nicht auf.</br>Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.";
 			break;
 		default: 
 			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
@@ -1026,10 +1165,10 @@ scene4.insert(barmann);
 barmann.dialog=function* (){
 	if(Commands.actor.has(tortenheber)){
 		if(seetang.blocking){
-		 	let reply=yield "Dankeschoen! Dankeschoen! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>1 - Ja na klar! Was muss ich tun?</br>2 - Nein, ich habe gerade keine Lust.</p>";
+		 	let reply=yield "Dankeschön! Dankeschön! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>1 - Ja na klar! Was muss ich tun?</br>2 - Nein, ich habe gerade keine Lust.</p>";
 			switch(reply){
 			case "1":
-			return "Ich habe gehoert, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese 3-stoeckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein groeßeres Stueck auf einem kleineren liegen.</br>Hast du eine Idee wie ich das am besten mache?"
+			return "Ich habe gehört, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese 3-stöckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein größeres Stueck auf einem kleineren liegen.</br>Hast du eine Idee wie ich das am besten mache?"
 			if (reply==="torta") {
 				seetang.blocking=false;
 				return "<img src='map.png'>Code akzeptiert.</br>"+scene4.describe();
@@ -1037,7 +1176,7 @@ barmann.dialog=function* (){
 			else return "<img src='bottlemessage.png'>Incorrecto"
 			break;
 			case "2":
-			return "Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung oeffne ich dir auch deine Flasche."
+			return "Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung öffne ich dir auch deine Flasche."
     		break;
 			default: 
 			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
@@ -1045,7 +1184,7 @@ barmann.dialog=function* (){
 		}
 	}
 		else{
-		let reply2=yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, dann die Orangen und jetzt auch noch mein Tortenheber.</br>Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>1 - Nein danke, mir geht es bestens. </br>2 - Ja, kannst du mir helfen diese Flasche zu oeffnen?</p>";
+		let reply2=yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, dann die Orangen und jetzt auch noch mein Tortenheber.</br>Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>1 - Nein danke, mir geht es bestens. </br>2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>";
 			switch(reply2){
 			case "1":
 			return 'Dann bis speater'
@@ -1071,10 +1210,10 @@ barmann.tricked=false;
 barmann.dialog=function* (){
 	if(Commands.actor.has(tortenheber)||barmann.tricked){
 		if(seetang.blocking){
-			let reply = yield "Dankeschoen! Dankeschoen! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>1 - Ja na klar! Was muss ich tun?</br>2 - Nein, ich habe gerade keine Lust.</p>";
+			let reply = yield "Dankeschön! Dankeschön! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>1 - Ja na klar! Was muss ich tun?</br>2 - Nein, ich habe gerade keine Lust.</p>";
             switch(reply){
 			  case "1":
-			  let reply13 = yield 'Ich habe gehoert, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese 3-stoeckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein groeßeres Stueck auf einem kleineren liegen.</br>Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein!'
+			  let reply13 = yield 'Ich habe gehört, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese 3-stöckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein größeres Stueck auf einem kleineren liegen.</br>Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein!'
 			  if (reply13==="AC,AB,CB,AC,BA,BC,AC,AB,CB,CA,BA,CB,AC,AB,CB,AC,BA,BC,AC,BA,CB,CA,BA,BC,AC,AB,CB,AC,BA,BC,AC") {
 					//seetang.blocking=false;
 					return scene4.describe()+"Das hat geklappt. Hier ich öffne dir die Flasche. Da ist ein verschlüsselter Text drin:</br><textarea rows='8' cols='80' style='white-space: wrap;' >DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OYB8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'GY-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:</br><textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBSEZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT GBLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW NTZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCREISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT TLLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit einer statistischen Analyse des verwürfelten Textes zu vergleichen. Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. Aber in diesem Falle war das Schicksal gnädig mit uns...</br>";
@@ -1085,7 +1224,7 @@ barmann.dialog=function* (){
 				}
 				break;
 			  case "2":
-				return "Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung oeffne ich dir auch deine Flasche.";
+				return "Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung öffne ich dir auch deine Flasche.";
 				break;
 	    		default: 
 				return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
@@ -1097,7 +1236,7 @@ barmann.dialog=function* (){
 		}			
 	}
 	else{
-		let reply = yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, dann die Orangen und jetzt auch noch mein Tortenheber.</br>Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>1 - Nein danke, mir geht es bestens. </br>2 - Ja, kannst du mir helfen diese Flasche zu oeffnen?</p>";
+		let reply = yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, dann die Orangen und jetzt auch noch mein Tortenheber.</br>Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>1 - Nein danke, mir geht es bestens. </br>2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>";
 			switch(reply){
 			case "1":
 			return 'Dann bis speater'
@@ -1119,23 +1258,23 @@ barmann.dialog=function* (){
 let tortenliebhaber=new Person("Tortenliebhaber","ein Tortenliebhaber");
 scene4.insert(tortenliebhaber);
 tortenliebhaber.dialog=function* (){
-	return "Das ist echt aergerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte backen.";
+	return "Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte backen.";
 }
 
 
 let scene5=new Scene("Stadt","<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>Nach Norden geht es in den Dschungel,</br>nach Sueden geht es zum Strand.")
 scene5.south=scene3;
-let verkaeufer=new Person("Verkaeufer","ein Verkaeufer");
+let verkaeufer=new Person("Verkäufer","ein Verkäufer");
 scene5.insert(verkaeufer);
 verkaeufer.dialog=function* (){
-	return "Hey komm mal her zu mir!</br>Hier gibt es Souvenirs fuer jeden Geschmack! Bei mir wird jeder gluecklich!";
+	return "Hey komm mal her zu mir!</br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!";
 }
 let tratschtante=new Person("Tratschtante","ein Tratschtante");
 scene5.insert(tratschtante);
 tratschtante.dialog=function* (){
-	return "Psst, hoer mal, ich muss dir was erzaehlen.</br>Der Verkaeufer da hinten verlangt bei Touristen</br>den dreifachen Preis!</br>Lass dich nicht uebers Ohr hauen!";
+	return "Psst, hör mal, ich muss dir was erzählen.</br>Der Verkäufer da hinten verlangt bei Touristen</br>den dreifachen Preis!</br>Lass dich nicht übers Ohr hauen!";
 }
-	let kuenstler=new Person("Kuenstler","ein Kuenstler");
+	let kuenstler=new Person("Künstler","ein Künstler");
 scene5.insert(kuenstler);
 kuenstler.dialog=function* (){
 	return "Fuer dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder doch 3 Millionen?";
@@ -1145,7 +1284,7 @@ scene6.south=scene5;
 scene6.east=strand;
 let scene7=new Scene("Lichtung","<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
 scene7.south=scene6;
-let kostuem=new Item("kostuem","<img src='kostuem.png'>eine kostuem",{open:true,applicable:true});
+let kostuem=new Item("Kostüm","<img src='kostuem.png'>eine Kostüm",{open:true,applicable:true});
 let Forscher=new Person("Forscher","ein Forscher");
 scene7.insert(Forscher);
 Forscher.insert(kostuem);
@@ -1160,7 +1299,7 @@ Forscher.dialog=function* (){
 	this.open=true;			
 			Commands.actor.take(kostuem);
 			this.open=false;
-		return "Es ist mir noch nicht gelungen Einlass gewaehrt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spaehen konnte.</br>Doch mit deiner Statur ist eventuell moeglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das Kostüm.";
+		return "Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spähen konnte.</br>Doch mit deiner Statur ist eventuell möglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das Kostüm.";
 		break;
 	default: 
 		return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
@@ -1172,7 +1311,7 @@ Forscher.dialog=function* (){
 	
 }
 Forscher.receiving=function(thing){
-	print("Nein behalte das. Das ist fuer dich.</br>");
+	print("Nein behalte das. Das ist für dich.</br>");
 	return false;
 }
 
@@ -1199,7 +1338,7 @@ torwache.insert(schluessel);
 torwache.dialog=function* (){
 	if(Commands.actor.has(kostuem)){
 		if(tuer.blocking){
-			let reply = yield "Hallo, Kumpel.</br>Ich dachte zuerst du bist schon wieder einer von diesen</br>bescheuerten Staedtern, die uns immer wieder auf</br>die Nerven gehen. Aber manche verkleiden sich,</br>und da wir von klein auf rechnen lernen,</br>faellt es uns leicht die 20te Fibonacci Zahl</br>schnell im Kopf zu berechnen und sie in das</br>Zahlenschloss einzugeben. Und spaetestens daran</br>scheitern die bescheuerten Staedter immer.</br> Hahaha! Hast du den Code berechnet?</br> Wenn ja dann sage ihn mir doch:";
+			let reply = yield "Hallo, Kumpel.</br>Ich dachte zuerst du bist schon wieder einer von diesen</br>bescheuerten Städtern, die uns immer wieder auf</br>die Nerven gehen. Aber manche verkleiden sich,</br>und da wir von klein auf rechnen lernen,</br>fällt es uns leicht die 20te Fibonacci Zahl</br>schnell im Kopf zu berechnen und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>scheitern die bescheuerten Städter immer.</br> Hahaha! Hast du den Code berechnet?</br> Wenn ja dann sage ihn mir doch:";
 			if (reply==="6765") {
 				tuer.blocking=false;
 				return "<img src='s8block.png'>Code akzeptiert.</br>"+scene8.describe();
@@ -1241,7 +1380,7 @@ daiquiri.dialog=function* (){
 		let reply=yield "Ich bin so verzweifelt,</br>ich komme einfach nicht weiter!</br>Die Nachbarn lachen schon alle ueber mich,</br>ich weiss es genau! Meine Frau wird mich bestimmt verlassen,</br>wenn ich es nicht los werde!<p style='color:#0f0;'>1 - Kann ich dir irgendwie helfen.</br>2 - Nee keine Zeit!</p>";
 		switch(reply){
 		case "1":
-			let reply2=yield "Das waere sehr nett! Ich bin gestern mit diesem</br>seltsamen silbernen Teil auf dem Kopf aufgewacht,</br>aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstoeren.</br>Bitte mach das weg!?!</br><p style='color:#0f0;'>1 - Kein Problem</br>2 - Nee keine Lust!</p>";
+			let reply2=yield "Das wäre sehr nett! Ich bin gestern mit diesem</br>seltsamen silbernen Teil auf dem Kopf aufgewacht,</br>aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstören.</br>Bitte mach das weg!?!</br><p style='color:#0f0;'>1 - Kein Problem</br>2 - Nee keine Lust!</p>";
 			switch (reply2){
 				case "1":
 					this.open=true;			
@@ -1267,7 +1406,7 @@ daiquiri.dialog=function* (){
 
 
 
-let scene10=new Scene("Geheimes Labor","<img src='s10.png'>Du stehst in dem geheimen Labor von einem verrueckten Forscher.</br>Doch dieser ist auf mysterioese Weise verschwunden. </br>Auf dem Tisch siehst du einen Roboter, der noch nicht ganz fertig gestellt wurde.</br>Ausserdem faellt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth. Doch der Weg ist durch eine Tür mit Zahlenschloss verschlossen.</br>Nach Sueden geht es zur Strandbar.");
+let scene10=new Scene("Geheimes Labor","<img src='s10.png'>Du stehst in dem geheimen Labor von einem verrueckten Forscher.</br>Doch dieser ist auf mysteriöse Weise verschwunden. </br>Auf dem Tisch siehst du einen Roboter, der noch nicht ganz fertig gestellt wurde.</br>Ausserdem fällt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth. Doch der Weg ist durch eine Tür mit Zahlenschloss verschlossen.</br>Nach Sueden geht es zur Strandbar.");
 scene10.south=scene4;
 
 let robo=new Person("robo","Ein kaputter Roboter. Es liegt auch eine 7 Segment Anzeige herum. Mit einer Bedienungseinleitung. Da steht drin, dass man die Pins an der Anzeige gegen den Uhrzeigersinn von unten Links anfängt zu zählen. Da wo der Punk ist ist also Pin 5. Dann muss man Pin 3 mit 3V3 verbinden. Desweiteren mit einem 220Ohm widerstand soll man Pin1->IO2, Pin2->IO3, Pin3->IO4, Pin6->IO17, Pin7->IO18, Pin9->IO15, Pin10->IO14 verbinden.");
@@ -1831,6 +1970,7 @@ class Commands{
 	static command="";
 	
 	static execute(cmd){
+		cmd=cmd.toLowerCase();
 		let delstr=["=>","der","die","das","dem","der","dem","den","die","das","ein","einer","ein","einem","einer","einem","einen","eine","ein"];
 		let importantprep=["an","mit","auf","nach","durch","in", "zu"];
 		Commands.answer=[];
