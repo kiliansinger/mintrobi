@@ -1081,16 +1081,14 @@ omazuhause.insert(oma);
 ich.position=omazuhause;
 
 oma.dialog=function* (){
-	microBitConnect()
-	
 	return (!isChrome?"Achtung damit alles funktioniert solltest du das Spiel mit einem Chrome Browser starten! ":"")+
 	"Kai, meine Liebe, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk "+
-	"schon bestellt haben. Falls nicht helfe mir doch schnell: "+
-	"<a target='_blank' href='https://www.reichelt.de/my/1978474'>Mintrobi</a> "+
+	"schon bestellt haben. Falls nicht helfe mir doch schnell dabei: "+
+	"<a target='_blank' href='https://www.reichelt.de/my/1978474'>Mintrobi</a>. "+
 	"Und falls du ihn noch nicht zusammengebaut hast dann hat Opa hier ein Video hochgeladen, "+
 	"das du gerne auf unserem Fernseher schauen kannst: "+
-	"<a target='_blank' href='https://www.youtube.com/embed/8m-lXWjnjYI?autoplay=1'>Aufbauvideo</a></br> "+
-	"Opa hat übrigens nach dir gefragt. Er hat etwas mysteriöses Gefunden, das er dir gerne zeigen möchte.";
+	"<a target='_blank' href='https://www.youtube.com/embed/8m-lXWjnjYI?autoplay=1'>Aufbauvideo</a>.</br>"+
+	"Opa hat übrigens nach dir gefragt. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.";
 }
 
 let strand=new Scene("Strand","<div class='flow'><img class='back' src='s2.png'>"+
@@ -1101,7 +1099,7 @@ let strand=new Scene("Strand","<div class='flow'><img class='back' src='s2.png'>
 	"Du stehst am Strand vorm Haus deiner Grosseltern,</br>"+
 	"an dem sich ein kleiner Steg befindet.</br>"+
 	"Dort sitzt dein Opa und angelt.</br>"+
-	"nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
+	"Nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
 strand.east=omazuhause;
 let bottlemessage=new Item("Flaschenpost","<img src='bottlemessage.png'>eine verschlossene Flaschenpost");
 let opa=new Person("Opa","Dein lieber Opa.");
@@ -1142,8 +1140,8 @@ let scene3=new Scene("Badestrand","<div class='flow'><img class='back' src='s3.p
 	"<img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'>"+
 	"<img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>"+
 	"Du stehst am Strand, um dich herum sind einige Leute.</br>"+
-	"Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,\n\
-	im Westen ist eine Strandbar.")
+	"Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,</br>"+
+	"im Westen ist eine Strandbar.")
 scene3.east=strand;
 let frau=new Person("Frau","ein Frau");
 scene3.insert(frau);
@@ -1164,7 +1162,7 @@ junge.dialog=function* (){
 
 let scene4=new Scene("Scene4","Barman")
 scene4.east=scene3;
-let seetang=new Door("seetang","Ein Haufen riechender Seetang. Hm yam yam ich liebe Sushi-Rolls!",{blocking:true,usable:true})
+let seetang=new Door("Seetang","Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!",{blocking:true,usable:true})
 seetang.cnt=0;
 seetang.use=function(){
 	seetang.cnt++;
@@ -1275,7 +1273,7 @@ barmann.dialog=function* (){
 			return 'Dann bis speater'
 			break;
 			case "2":
-			return "Wuerde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>"+
+			return "Würde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>"+
 				"Das wird aber echt schwer ohne meinen Tortenheber.";
 			break;
 			case "123":
@@ -1301,7 +1299,7 @@ let scene5=new Scene("Stadt","<div class='flow'><img class='back' src='s5.png'>"
 	"<img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'>"+
 	"<img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>"+
 	"Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>"+
-	"Nach Norden geht es in den Dschungel,</br>nach Sueden geht es zum Strand.")
+	"Nach Norden geht über Straße mit Ampel in den Dschungel ,</br>nach Sueden geht es zum Strand.")
 scene5.south=scene3;
 let verkaeufer=new Person("Verkäufer","ein Verkäufer");
 scene5.insert(verkaeufer);
@@ -1323,7 +1321,31 @@ let scene6=new Scene("Dschungel","<div class='flow'><img class='back' src='s6.pn
 "Du befindest dich auf einem Pfad im Dschungel."+
 "</br>Nach Norden geht es zu einer Lichtung,</br>"+
 "nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.")
+let kaputteAmpel=new Door("Ampel","Ein eine kaputte Ampel.",{blocking:true,usable:true,speakable:true});
+kaputteAmpel.use=function(){
+	print("Ich sollte darauf tippen ...");
+	return false;
+}
+//https://thecodebarbarian.com/async-generator-functions-in-javascript.html#:~:text=Async%20generator%20functions%20behave%20similarly,()%20function%20returns%20a%20promise.
+kaputteAmpel.dialog=function* (){
+    const reply = yield "Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>"+
+	"Du musst dazu den folgenden link öffnen, den Code vervollständigen und Pin 0 mit dem langen Beinchen der roten </br>"+
+	"Leuchtdiode verbinden. Dann musst du den 56Ohm Widerstand einfügen und dann alles mit GND verbinden.</br>"+
+	"In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode.</br>"+
+	"Wenn du fertig bist, dann drücke die [Enter]-Taste."
+    if (true) {
+		microBitConnect().then(()=>{
+			kaputteAmpel.blocking=false;
+		})
+		while(kaputteAmpel.blocking) yield "Die Ampel ist noch kaputt. Verbinde und drücke die [Enter]-Taste."
+		return "Die Ampel funktioniert wieder."
+     
+    }
+    else return "Falscher Code!"
+}
 scene6.south=scene5;
+scene5.northblock=kaputteAmpel;
+scene5.insert(kaputteAmpel)
 let scene7=new Scene("Lichtung","<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' "+
 	"src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>"+
 	"Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
