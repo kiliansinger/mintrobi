@@ -619,7 +619,7 @@ Babel.registerPreset("env-plus", {
   ],
   plugins: [
     [
-      Babel.availablePlugins["proposal-decorators"], {"decoratorsBeforeExport": true}<!--{ legacy: true }-->
+      Babel.availablePlugins["proposal-decorators"], {"decoratorsBeforeExport": true}
     ],
 	[
 		Babel.availablePlugins["proposal-class-properties"],
@@ -1069,19 +1069,39 @@ function search(thingname,typ=null){
 	}
 	return {mine:mine,thing:thing};
 }
+var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 ///////////////////////////////////////////////////////
-let ich=new Person("Kai","Du bist interessiert an der Wissenschaft und willst die Welt erforschen.</br>Du kannst immer hilfe eingeben, wenn du nicht weiter kommst.",{open:true});
-let omazuhause=new Scene("Haus Oma","<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>Du bist im Haus deiner Grosseltern.</br>Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.");
+let ich=new Person("Kai","Du bist interessiert an der Wissenschaft und willst die Welt erforschen."+
+	"</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>",{open:true});
+let omazuhause=new Scene("Haus Oma","<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' "+
+	"src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>Du bist im Haus deiner Grosseltern.</br>"+
+	"Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.");
 let oma=new  Person(["Oma","Omi"],"Deinen liebe Oma.");
 omazuhause.insert(oma);
 ich.position=omazuhause;
 
 oma.dialog=function* (){
 	microBitConnect()
-	return "Kai, meine Liebe, du bist ja endlich mal aufgewacht!</br>Opa hat nach dir gefragt. Er hat etwas mysteriöses Gefunden, das er dir gerne zeigen möchte.";
+	
+	return (!isChrome?"Achtung damit alles funktioniert solltest du das Spiel mit einem Chrome Browser starten! ":"")+
+	"Kai, meine Liebe, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk "+
+	"schon bestellt haben. Falls nicht helfe mir doch schnell: "+
+	"<a target='_blank' href='https://www.reichelt.de/my/1978474'>Mintrobi</a> "+
+	"Und falls du ihn noch nicht zusammengebaut hast dann hat Opa hier ein Video hochgeladen, "+
+	"das du gerne auf unserem Fernseher schauen kannst: "+
+	"<a target='_blank' href='https://www.youtube.com/embed/8m-lXWjnjYI?autoplay=1'>Aufbauvideo</a></br> "+
+	"Opa hat übrigens nach dir gefragt. Er hat etwas mysteriöses Gefunden, das er dir gerne zeigen möchte.";
 }
 
-let strand=new Scene("Strand","<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>Du stehst am Strand vorm Haus deiner Grosseltern,</br>an dem sich ein kleiner Steg befindet.</br>Dort sitzt dein Opa und angelt.</br>Nach Norden fuehrt ein Pfad hinter dem Haus in den Dschungel,</br>nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
+let strand=new Scene("Strand","<div class='flow'><img class='back' src='s2.png'>"+
+	"<img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'>"+
+	"<img id='s2krabbe2' src='s2krabbe2.png'>"+
+	"<img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'>"+
+	"<img id='s2vase' src='s2vase.png'></div>"+
+	"Du stehst am Strand vorm Haus deiner Grosseltern,</br>"+
+	"an dem sich ein kleiner Steg befindet.</br>"+
+	"Dort sitzt dein Opa und angelt.</br>"+
+	"nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
 strand.east=omazuhause;
 let bottlemessage=new Item("Flaschenpost","<img src='bottlemessage.png'>eine verschlossene Flaschenpost");
 let opa=new Person("Opa","Dein lieber Opa.");
@@ -1090,7 +1110,10 @@ opa.insert(bottlemessage);
 opa.dialog=function* (){
 	if(this.has(bottlemessage)){
 		
-		let reply=yield "Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.<p style='color:#0f0;'>1 - Och ne, dafuer bin ich jetzt noch viel zu muede.</br>2 - Echt???! Zeig mal her was du gefunden hast.</p>";
+		let reply=yield "Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, "+
+			"ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.<p style='color:#0f0;'>"+
+			"1 - Och ne, dafür bin ich jetzt noch viel zu müde.</br>"+
+			"2 - Echt???! Zeig mal her was du gefunden hast.</p>";
 		switch(reply){
 		case "1":
 			return 'Ach Schade. Dann komm doch später nochmal zu mir.'
@@ -1099,7 +1122,8 @@ opa.dialog=function* (){
 			this.open=true;			
 			Commands.actor.take(bottlemessage);
 			this.open=false;
-			return "Hier eine geheimnisvolle Flasche,</br>aber ich bekomme sie leider einfach nicht auf.</br>Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.";
+			return "Hier eine geheimnisvolle Flasche,</br>aber ich bekomme sie leider einfach nicht auf.</br>"+
+				"Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.";
 			break;
 		default: 
 			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
@@ -1113,13 +1137,19 @@ opa.receiving=function(thing){
 	print("Nein behalte das. Das ist fuer dich.</br>");
 	return false;
 }	
-let scene3=new Scene("Badestrand","<div class='flow'><img class='back' src='s3.png'><img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'><img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'><img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>Du stehst am Strand, um dich herum sind einige Leute.</br>Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,\n\
-im Westen ist eine Strandbar.")
+let scene3=new Scene("Badestrand","<div class='flow'><img class='back' src='s3.png'>"+
+	"<img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'>"+
+	"<img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'>"+
+	"<img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>"+
+	"Du stehst am Strand, um dich herum sind einige Leute.</br>"+
+	"Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,\n\
+	im Westen ist eine Strandbar.")
 scene3.east=strand;
 let frau=new Person("Frau","ein Frau");
 scene3.insert(frau);
 frau.dialog=function* (){
-	return "Endlich mal Ruhe. In der Stadt hat man nur Theater,</br>mit all den komischen Gestalten, die sich da herumtreiben.</br>Diesen Urlaub habe ich mir echt verdient.";
+	return "Endlich mal Ruhe. In der Stadt hat man nur Theater,</br>"+
+	"mit all den komischen Gestalten, die sich da herumtreiben.</br>Diesen Urlaub habe ich mir echt verdient.";
 }
 let kind=new Person("Kind","ein Kind");
 scene3.insert(kind);
@@ -1153,73 +1183,72 @@ scene4.insert(seetang);
 
 scene4.describe=function(){
 	if(seetang.blocking){
-		return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum he postiert";
+		return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'>"+
+			"<img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'>"+
+			"<img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'>"+
+			"<img id='s4seetang' src='s4seetang.png'></div>"+
+			"Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum he postiert";
 	}
-	else return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>Oh da ist ja eine geheime Höhle dahinter. Was da wohl drin ist?</br>";
+	else return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'>"+
+		"<img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'>"+
+		"<img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>"+
+		"Oh da ist ja eine geheime Höhle dahinter. Was da wohl drin ist?</br>";
 }
 
 let barmann=new Person("Barmann","ein Barmann");
 scene4.insert(barmann);
-//scene4.north=scene10;
-/*
-barmann.dialog=function* (){
-	if(Commands.actor.has(tortenheber)){
-		if(seetang.blocking){
-		 	let reply=yield "Dankeschön! Dankeschön! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>1 - Ja na klar! Was muss ich tun?</br>2 - Nein, ich habe gerade keine Lust.</p>";
-			switch(reply){
-			case "1":
-			return "Ich habe gehört, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese 3-stöckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein größeres Stueck auf einem kleineren liegen.</br>Hast du eine Idee wie ich das am besten mache?"
-			if (reply==="torta") {
-				seetang.blocking=false;
-				return "<img src='map.png'>Code akzeptiert.</br>"+scene4.describe();
-			}
-			else return "<img src='bottlemessage.png'>Incorrecto"
-			break;
-			case "2":
-			return "Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung öffne ich dir auch deine Flasche."
-    		break;
-			default: 
-			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
-			break;}
-		}
-	}
-		else{
-		let reply2=yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, dann die Orangen und jetzt auch noch mein Tortenheber.</br>Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>1 - Nein danke, mir geht es bestens. </br>2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>";
-			switch(reply2){
-			case "1":
-			return 'Dann bis speater'
-			case "2":
-			return "Wuerde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>Das wird aber echt schwer ohne meinen Tortenheber.";
-			break;
-	    	default: 
-			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
-	    	break;}
-		}
-}
-*/
-/*\*
-if (reply==="torta") {
-				seetang.blocking=false;
-				return "<img src='map.png'>Code akzeptiert.</br>"+scene4.describe();
-			}            
-			else return "<img src='bottlemessage.png'>Incorrecto"
-*/
 
 barmann.tricked=false;
 
 barmann.dialog=function* (){
 	if(Commands.actor.has(tortenheber)||barmann.tricked){
 		if(seetang.blocking){
-			let reply = yield "Dankeschön! Dankeschön! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>1 - Ja na klar! Was muss ich tun?</br>2 - Nein, ich habe gerade keine Lust.</p>";
+			let reply = yield "Dankeschön! Dankeschön! "+
+			"Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>"+
+			"Ich dachte schon den sehe ich nie wieder.</br>"+
+			"Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>"+
+			"1 - Ja na klar! Was muss ich tun?</br>"+
+			"2 - Nein, ich habe gerade keine Lust.</p>";
             switch(reply){
 			  case "1":
-			  let reply13 = yield 'Ich habe gehört, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese 3-stöckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein größeres Stueck auf einem kleineren liegen.</br>Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein!'
+			  let reply13 = yield "Ich habe gehört, dass du Programieren kannst und vielleicht "+
+			  "kannst du auch mier weiter helfen.</br>"+
+			  "Ich muss diese 3-stöckige Torte auf diesen Teller bringen,</br>"+
+			  "doch da gibt es ein Problem.</br>"+
+			  "Ich kann jedes Stück nur alleine bewegen und es</br>"+
+			  "darf nie ein größeres Stueck auf einem kleineren liegen.</br>"+
+			  "Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein!"
 			  if (reply13==="AC,AB,CB,AC,BA,BC,AC,AB,CB,CA,BA,CB,AC,AB,CB,AC,BA,BC,AC,BA,CB,CA,BA,BC,AC,AB,CB,AC,BA,BC,AC") {
 					//seetang.blocking=false;
-					return scene4.describe()+"Das hat geklappt. Hier ich öffne dir die Flasche. Da ist ein verschlüsselter Text drin:</br><textarea rows='8' cols='80' style='white-space: wrap;' >DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OYB8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'GY-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:</br><textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBSEZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT GBLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW NTZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCREISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT TLLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit einer statistischen Analyse des verwürfelten Textes zu vergleichen. Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. Aber in diesem Falle war das Schicksal gnädig mit uns...</br>";
+					return scene4.describe()+"Das hat geklappt. Hier ich öffne dir die Flasche. "+
+					"Da ist ein verschlüsselter Text drin:</br>"+
+					"<textarea rows='8' cols='80' style='white-space: wrap;' >"+
+					"DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB"+
+					"'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E"+
+					"8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OY"+
+					"B8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0"+
+					"@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'G"+
+					"Y-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>"+
+					"Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:</br>"+
+					"<textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBS"+
+					"EZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT G"+
+					"BLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW N"+
+					"TZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCR"+
+					"EISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT T"+
+					"LLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>"+
+					"Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit "+
+					"einer statistischen Analyse des verwürfelten Textes zu vergleichen. "+
+					"Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. "+
+					"Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. "+
+					"Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach "+
+					"dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, "+
+					"bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, "+
+					"dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. "+
+					"Aber in diesem Falle war das Schicksal gnädig mit uns...</br>";
 				}            
 				else
-				{ return "<img src='bottlemessage.png'>Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. Aber ich backe einfach nochmal eine."
+				{ return "<img src='bottlemessage.png'>Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. "+
+					"Aber ich backe einfach nochmal eine."
 				break;
 				}
 				break;
@@ -1236,13 +1265,18 @@ barmann.dialog=function* (){
 		}			
 	}
 	else{
-		let reply = yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, dann die Orangen und jetzt auch noch mein Tortenheber.</br>Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>1 - Nein danke, mir geht es bestens. </br>2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>";
+		let reply = yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, "+
+		"dann die Orangen und jetzt auch noch mein Tortenheber.</br>"+
+		"Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>"+
+			"1 - Nein danke, mir geht es bestens. </br>"+
+			"2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>";
 			switch(reply){
 			case "1":
 			return 'Dann bis speater'
 			break;
 			case "2":
-			return "Wuerde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>Das wird aber echt schwer ohne meinen Tortenheber.";
+			return "Wuerde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>"+
+				"Das wird aber echt schwer ohne meinen Tortenheber.";
 			break;
 			case "123":
 			barmann.tricked=true;
@@ -1262,7 +1296,12 @@ tortenliebhaber.dialog=function* (){
 }
 
 
-let scene5=new Scene("Stadt","<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>Nach Norden geht es in den Dschungel,</br>nach Sueden geht es zum Strand.")
+let scene5=new Scene("Stadt","<div class='flow'><img class='back' src='s5.png'>"+
+	"<img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'>"+
+	"<img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'>"+
+	"<img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>"+
+	"Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>"+
+	"Nach Norden geht es in den Dschungel,</br>nach Sueden geht es zum Strand.")
 scene5.south=scene3;
 let verkaeufer=new Person("Verkäufer","ein Verkäufer");
 scene5.insert(verkaeufer);
@@ -1272,17 +1311,22 @@ verkaeufer.dialog=function* (){
 let tratschtante=new Person("Tratschtante","ein Tratschtante");
 scene5.insert(tratschtante);
 tratschtante.dialog=function* (){
-	return "Psst, hör mal, ich muss dir was erzählen.</br>Der Verkäufer da hinten verlangt bei Touristen</br>den dreifachen Preis!</br>Lass dich nicht übers Ohr hauen!";
+	return "Psst, hör mal, ich muss dir was erzählen.</br>Der Verkäufer da hinten verlangt bei Touristen</br>"+
+	"den dreifachen Preis!</br>Lass dich nicht übers Ohr hauen!";
 }
 	let kuenstler=new Person("Künstler","ein Künstler");
 scene5.insert(kuenstler);
 kuenstler.dialog=function* (){
 	return "Fuer dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder doch 3 Millionen?";
 }
-let scene6=new Scene("Dschungel","<div class='flow'><img class='back' src='s6.png'></div>Du befindest dich auf einem Pfad im Dschungel.</br>Nach Norden geht es zu einer Lichtung,</br>nach Osten geht es zum Strandhaus,</br>nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.")
+let scene6=new Scene("Dschungel","<div class='flow'><img class='back' src='s6.png'></div>"+
+"Du befindest dich auf einem Pfad im Dschungel."+
+"</br>Nach Norden geht es zu einer Lichtung,</br>"+
+"nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.")
 scene6.south=scene5;
-scene6.east=strand;
-let scene7=new Scene("Lichtung","<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
+let scene7=new Scene("Lichtung","<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' "+
+	"src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>"+
+	"Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
 scene7.south=scene6;
 let kostuem=new Item("Kostüm","<img src='kostuem.png'>eine Kostüm",{open:true,applicable:true});
 let Forscher=new Person("Forscher","ein Forscher");
@@ -1290,16 +1334,25 @@ scene7.insert(Forscher);
 Forscher.insert(kostuem);
 Forscher.dialog=function* (){
 	if(this.has(kostuem)){
-    let reply = yield "Hallo, guten Tag.<p style='color:#0f0;'>1 - Hallo, wer sind Sie denn?.</br>2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>";
+    let reply = yield "Hallo, guten Tag.<p style='color:#0f0;'>"+
+		"1 - Hallo, wer sind Sie denn?.</br>"+
+		"2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>";
 	switch(reply){
 	case "1":
-		return 'Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>ich erforsche den hiesigen Stamm der Ureinwohner.'
+		return "Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>"+
+		"ich erforsche den hiesigen Stamm der Ureinwohner."
 	break;
 	case "2":
 	this.open=true;			
 			Commands.actor.take(kostuem);
 			this.open=false;
-		return "Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spähen konnte.</br>Doch mit deiner Statur ist eventuell möglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das Kostüm.";
+		return "Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>"+
+		"Meine bisherigen Forschungen habe ich Beobachtungen</br>"+
+		"aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>"+
+		"ueber den Zaun, der das Dorf umgibt spähen konnte.</br>"+
+		"Doch mit deiner Statur ist eventuell möglich dich als einer</br>"+
+		"der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>"+
+		"Hier ist das Kostüm.";
 		break;
 	default: 
 		return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
@@ -1327,9 +1380,18 @@ scene8.northblock=tuer;
 
 scene8.describe=function(){
 	if(tuer.blocking){
-		return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.";
+		return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'>"+
+			"<img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'>"+
+			"<img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>"+
+			"baut sich eine grossee Holzwand auf der sich oben</br>"+
+			"ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>"+
+			"Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.";
 	}
-	else return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>";
+	else return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'>"+
+		"<img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'>"+
+		"<img id='s8schild' src='s8schild.png'></div>"+
+		"Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>"+
+		"ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>";
 }
 
 /*
@@ -1338,7 +1400,16 @@ torwache.insert(schluessel);
 torwache.dialog=function* (){
 	if(Commands.actor.has(kostuem)){
 		if(tuer.blocking){
-			let reply = yield "Hallo, Kumpel.</br>Ich dachte zuerst du bist schon wieder einer von diesen</br>bescheuerten Städtern, die uns immer wieder auf</br>die Nerven gehen. Aber manche verkleiden sich,</br>und da wir von klein auf rechnen lernen,</br>fällt es uns leicht die 20te Fibonacci Zahl</br>schnell im Kopf zu berechnen und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>scheitern die bescheuerten Städter immer.</br> Hahaha! Hast du den Code berechnet?</br> Wenn ja dann sage ihn mir doch:";
+			let reply = yield "Hallo, Kumpel.</br>"+
+			"Ich dachte zuerst du bist schon wieder einer von diesen</br>"+
+			"bescheuerten Städtern, die uns immer wieder auf</br>"+
+			"die Nerven gehen. Aber manche verkleiden sich,</br>"+
+			"und da wir von klein auf rechnen lernen,</br>"+
+			"fällt es uns leicht die 20te Fibonacci Zahl</br>"+
+			"schnell im Kopf zu berechnen und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>"+
+			"scheitern die bescheuerten Städter immer.</br> "+
+			"Hahaha! Hast du den Code berechnet?"+
+			"</br> Wenn ja dann sage ihn mir doch:";
 			if (reply==="6765") {
 				tuer.blocking=false;
 				return "<img src='s8block.png'>Code akzeptiert.</br>"+scene8.describe();
@@ -1355,7 +1426,15 @@ torwache.dialog=function* (){
 	}
 }
 
-let scene9=new Scene("Scene9","<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>");
+let scene9=new Scene("Scene9","<div class='flow'><img class='back' src='s9.png'>"+
+	"<img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'>"+
+	"<img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'>"+
+	"<img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'>"+
+	"<img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>"+
+	"Du bist im Dschungel und vor dir</br>"+
+	"baut sich eine grossee Holzwand auf der sich oben</br>"+
+	"ein Ureinwohner als Wache postiert hat.</br>"+
+	"Nach Osten geht es zurueck zum Dschungelpfad.</br>");
 scene9.south=scene8;
 
 let pina=new Person(["Pina","Pina Colada"],"eine Ureinwohnerin");
@@ -1369,7 +1448,9 @@ pina.dialog=function* (){
 	return "Uiui, eine neue Maske, schnieke Mann.";
 }
 mojito.dialog=function* (){
-	return "Hehe, dieser Idiot von nebenan hat</br>auf seinem Kopf so ein komisches silbernes Teil stecken,</br>das sieht total bescheuert aus!";
+	return "Hehe, dieser Idiot von nebenan hat</br>"+
+	"auf seinem Kopf so ein komisches silbernes Teil stecken,</br>"+
+	"das sieht total bescheuert aus!";
 }
 let tortenheber=new Item("Tortenheber","<img src='tortenheber.png'>ein Tortenheber");
 
@@ -1377,10 +1458,21 @@ daiquiri.insert(tortenheber);
 
 daiquiri.dialog=function* (){
 	if(this.has(tortenheber)){
-		let reply=yield "Ich bin so verzweifelt,</br>ich komme einfach nicht weiter!</br>Die Nachbarn lachen schon alle ueber mich,</br>ich weiss es genau! Meine Frau wird mich bestimmt verlassen,</br>wenn ich es nicht los werde!<p style='color:#0f0;'>1 - Kann ich dir irgendwie helfen.</br>2 - Nee keine Zeit!</p>";
+		let reply=yield "Ich bin so verzweifelt,</br>"+
+		"ich komme einfach nicht weiter!</br>"+
+		"Die Nachbarn lachen schon alle ueber mich,</br>"+
+		"ich weiss es genau! Meine Frau wird mich bestimmt verlassen,</br>"+
+		"wenn ich es nicht los werde!<p style='color:#0f0;'>"+
+			"1 - Kann ich dir irgendwie helfen.</br>"+
+			"2 - Nee keine Zeit!</p>";
 		switch(reply){
 		case "1":
-			let reply2=yield "Das wäre sehr nett! Ich bin gestern mit diesem</br>seltsamen silbernen Teil auf dem Kopf aufgewacht,</br>aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstören.</br>Bitte mach das weg!?!</br><p style='color:#0f0;'>1 - Kein Problem</br>2 - Nee keine Lust!</p>";
+			let reply2=yield "Das wäre sehr nett! Ich bin gestern mit diesem</br>"+
+			"seltsamen silbernen Teil auf dem Kopf aufgewacht,</br>"+
+			"aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstören.</br>"+
+			"Bitte mach das weg!?!</br><p style='color:#0f0;'>"+
+				"1 - Kein Problem</br>"+
+				"2 - Nee keine Lust!</p>";
 			switch (reply2){
 				case "1":
 					this.open=true;			
@@ -1406,10 +1498,20 @@ daiquiri.dialog=function* (){
 
 
 
-let scene10=new Scene("Geheimes Labor","<img src='s10.png'>Du stehst in dem geheimen Labor von einem verrueckten Forscher.</br>Doch dieser ist auf mysteriöse Weise verschwunden. </br>Auf dem Tisch siehst du einen Roboter, der noch nicht ganz fertig gestellt wurde.</br>Ausserdem fällt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth. Doch der Weg ist durch eine Tür mit Zahlenschloss verschlossen.</br>Nach Sueden geht es zur Strandbar.");
+let scene10=new Scene("Geheimes Labor","<img src='s10.png'>"+
+"Du stehst in dem geheimen Labor von einem verrueckten Forscher.</br>"+
+"Doch dieser ist auf mysteriöse Weise verschwunden. </br>"+
+"Auf dem Tisch siehst du einen Roboter, der noch nicht ganz fertig gestellt wurde.</br>"+
+"Ausserdem fällt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth. "+
+"Doch der Weg ist durch eine Tür mit Zahlenschloss verschlossen.</br>"+
+"Nach Sueden geht es zur Strandbar.");
 scene10.south=scene4;
 
-let robo=new Person("robo","Ein kaputter Roboter. Es liegt auch eine 7 Segment Anzeige herum. Mit einer Bedienungseinleitung. Da steht drin, dass man die Pins an der Anzeige gegen den Uhrzeigersinn von unten Links anfängt zu zählen. Da wo der Punk ist ist also Pin 5. Dann muss man Pin 3 mit 3V3 verbinden. Desweiteren mit einem 220Ohm widerstand soll man Pin1->IO2, Pin2->IO3, Pin3->IO4, Pin6->IO17, Pin7->IO18, Pin9->IO15, Pin10->IO14 verbinden.");
+let robo=new Person("robo","Ein kaputter Roboter. Es liegt auch eine 7 Segment Anzeige herum. "+
+"Mit einer Bedienungseinleitung. Da steht drin, dass man die Pins an der Anzeige gegen den Uhrzeigersinn "+
+"von unten Links anfängt zu zählen. Da wo der Punk ist ist also Pin 5. Dann muss man Pin 3 mit 3V3 verbinden. "+
+"Desweiteren mit einem 220Ohm widerstand soll man Pin1->IO2, Pin2->IO3, Pin3->IO4, Pin6->IO17, Pin7->IO18, "+
+"Pin9->IO15, Pin10->IO14 verbinden.");
 scene10.insert(robo);
 let intervalID;
 let codecnt;
@@ -1521,7 +1623,15 @@ numberlockdoor.dialog=function* (){
 }
 scene10.northblock=numberlockdoor;
 scene10.insert(numberlockdoor)
-let scene11=new Scene("Dunkles Labyrinth","Es ist stock dunkel hier. Ich glaube ich brauche Robos Hilfe um hier rauszufinden. Oh auf dem Boden liegt Ultraschallsensor und eine Anleitung. Da steht dass man VCC mit 5V verbinden muss und GND mit GND. Dann nur noch TRIG mit IO23. Da wird dann ein Ultraschallpuls ausgesendet. Und an Echo kommt dann ein 5V Signal, wenn das Echo empfangen wird. Man muss allerdings die 5V auf 3.3V runterteilen. Dazu nehmen wir einen 100 Ohm Widerstand von Echo gehen dann an IO24. Dann muss man noch von IO24 mit 200Ohm nach GND gehen.");
+let scene11=new Scene("Dunkles Labyrinth","Es ist stock dunkel hier. "+
+"Ich glaube ich brauche Robos Hilfe um hier rauszufinden. "+
+"Oh auf dem Boden liegt Ultraschallsensor und eine Anleitung. "+
+"Da steht dass man VCC mit 5V verbinden muss und GND mit GND. "+
+"Dann nur noch TRIG mit IO23. Da wird dann ein Ultraschallpuls ausgesendet. "+
+"Und an Echo kommt dann ein 5V Signal, wenn das Echo empfangen wird. "+
+"Man muss allerdings die 5V auf 3.3V runterteilen. "+
+"Dazu nehmen wir einen 100 Ohm Widerstand von Echo gehen dann an IO24. "+
+"Dann muss man noch von IO24 mit 200Ohm nach GND gehen.");
 scene11.south=scene10;
 let robo2=new Person("robo","Ein kaputter Roboter mit 7 Segment Anzeige.");
 scene11.insert(robo2);
@@ -1537,7 +1647,11 @@ robo2.dialog=function* (){
   		if(response2.responseText!="0") {
 		  if(firsttimedist){
 			firsttimedist=false;
-			return "Distanz: "+response2.responseText+ " cm.</br>Super der Ultraschallsensor funktioniert. Der Roboter führt dich aus dem Labyrinth heraus du hast das Spiel gemeistert. Gratulation! Du kannst nun auf http://raspberrypi:3000/  und user root mit passwort raspberry auf den Source code zugreifen. Per ssh pi@raspberrypi mit passwort raspberry kannst du dich auf dem System einloggen."
+			return "Distanz: "+response2.responseText+ " cm.</br>Super der Ultraschallsensor funktioniert. "+
+			"Der Roboter führt dich aus dem Labyrinth heraus du hast das Spiel gemeistert. "+
+			"Gratulation! Du kannst nun auf http://raspberrypi:3000/  "+
+			"und user root mit passwort raspberry auf den Source code zugreifen. "+
+			"Per ssh pi@raspberrypi mit passwort raspberry kannst du dich auf dem System einloggen."
 		  }
 		  return "Distanz: "+response2.responseText+ " cm."
 		}
@@ -1545,378 +1659,6 @@ robo2.dialog=function* (){
 	}
 }
 
-/*
-let winner=new Person('winner', 'controls the robot');
-insert
-*/
-//TODO insert crab
-//todo insert plant
-
-
-
-/*
-	                MainWindow::setText("\
-/rgba(0fff)Hallo Opa!\n\
-/rgba(fccf)Hmmm...Ada. *grummel*\n\
-Hab' da was fuer dich...\n\
-/rgba(ffff)Verschlossene Flaschenpos");
-                speakopafirsttime=false;
-                Inventory::addObject(&bottle);
-                Inventory::setOpen(true);
-            }
-            else{
-                MainWindow::setText("\
-/rgba(fccf)Fischen ist lustig.\n");
-*/
-	
-	
-
-
-///////
-/*
-let lichtung=new Scene("Lichtung","<img src='lichtung.jpg'>Du stehst auf einer Lichtung mitten im Wald auf einer Nordseeinsel. Ein schmaler Weg führt nach Norden durch den Wald. Im Osten befindet sich eine Brücke die zum Steinbruch führt. Nach Süden geht es hinunter in ein Dorf.");
-let steinbruch=new Scene("Steinbruch","Viel Fels und Geröll");
-let loch=new Item("Loch","Ein tiefes Loch",{open:true,takeable:false});
-let schluessel=new Item("Schlüssel","Ein Metall Schlüssel.",{applicable:true});
-let tuer=new Door("Tür","Eine verschlossene Tür.",{locked:true})
-tuer.describe=function(){
-	if(!this.blocking){
-		return "Eine offene Tür."
-	}
-	else return this.description;
-}
-let raum=new Scene("Raum","Ein dunkler Raum.");
-let teleporter=new Person("Teleporter","Ein Teleporter. Der hat ganz viele Tasten zum tippen.",{usable:true});
-
-
-teleporter.use=function(){
-	print("Ich sollte darauf tippen...");
-	return false;
-}
-teleporter.dialog=function* (){
-    const reply = yield 'Intergalaktischer Teleporter bitte Zahlencode eingeben</p>';
-    if (reply==="9783548310701") {
-        return "<img src='kaktus.png'>Code akzeptiert. Das Schloss verwandelt sich in eine Rakete. Die Türme sind die Antriebsraketen und Du fliegst auf einen bis dahin unbekannten Planeten namens Kaktus. Dort triffst du endlich den Grafen Gracula, der dir erzählt dass sein Schloss als intergalaktischer Weltraumbahnhof verwendet wird. Und da Du es bis hierhin geschafft jast, hast du das Zeug dafür das Programm selbst weiterentwickeln.  Deiner Fantasie sind dabei keine Grenzen gesetzt...\nDieses Spiel ist erstmal fertig!"
-    }
-    else return "Falscher Code!"
-}
-schluessel.insertApplyTarget(tuer);
-
-loch.insert(schluessel);
-
-steinbruch.insert(loch);
-lichtung.east=steinbruch;
-//steinbruch.west=lichtung;
-loch.giving=function(thing){
-	print("Das Loch ist zu tief!");
-	return false;
-}
-loch.receiving=function(thing){
-	print('Besser nicht, sonst ists weg.')
-	return false;
-}
-
-let dorf=new Scene("Dorf","<img src='dorf.png'>Ein kleines idyllisches Dorf");
-let elektronikladen=new Scene("Tilli Elektronikschuppen","<img src='electronics.jpg'>Ein Elektronikladen.");
-let tilli=new Person("Tilli","Ein lustiger Elektronikverkäufer.",{open:false});
-tilli.dialog=function* (){
-    return 'Wenn Du kein Geld hast dann gibts hier nichts.';
-}
-let batterie=new Item("Batterie","Volle Mono-Batterie.",{applicable:true});
-let kabel=new Item("Kabel","Stück isolierten Volldraht Kabel.",{applicable:true,open:true});
-kabel.describe=function(){
-	if(this.has(nagel) && this.has(batterie)){
-		return "aktiver Elektromagnet"
-	}
-	if(this.has(nagel)) {
-		return "Elektromagnet"
-	}
-	
-	else return this.description;
-}
-dorf.north=lichtung;
-dorf.south=elektronikladen;
-//elektronikladen.north=dorf
-elektronikladen.insert(tilli);
-tilli.insert(kabel);
-tilli.insert(batterie);
-tilli.giving=function(thing){
-	if(thing===batterie){
-		if(this.has(euro)) {
-			if(this.has(leere_batterie)){
-				return true
-			}
-		}
-		else {
-			print("Erst was kaufen!\n");
-			return false;
-		}
-	}
-	if(thing===kabel){
-		if(this.has(euro)){
-			return true
-		}
-		else {
-			print("Erst das Geld! Ein Euro kostet das.\n");
-			return false;
-		}
-	}
-	return false;
-}
-tilli.receiving=function(thing){
-	if(thing===leere_batterie) {
-		if(tilli.has(euro) ){
-			let retval;
-			print("Ok ich lade ihn dir auf");
-			this.open=true;
-			retval=Commands.take({item:"batterie"});//calls tilli giving
-			this.open=false;
-			return retval;
-		}else{
-			print("Ah ein Akku. Ich kann ihn dir aufladen, wenn du hier was kaufst.");
-			
-			return false;
-		}
-	}else if(thing===euro){
-		let retval=true;
-		print("Hm für einen Euro kann ich dir nur ein Stück isolierten Volldraht Kabel geben.");
-		this.open=true;
-		retval&=Commands.take({item:"kabel"});
-		this.open=false;
-		return retval;
-	}
-	return false;
-}
-//lichtung.south=dorf;
-let dorfjunge=new Person(["Dorfjunge","Dorfjungen"],"Ein Junge mit Fußballsammelkarten.");
-let euro=new Item("euro","Ein Euro.");
-dorfjunge.insert(euro);
-
-dorf.insert(dorfjunge);
-
-dorfjunge.dialog=function* (){
-const reply = yield 'Hi! Was gibts? <p style="color:#0f0;">1 - Ich brauche Batterien.</br>2 - Was machst du?</br>3 - Was sind deine Hobbies?</p>';
-	switch(reply){
-	case "1":
-		return 'Schau doch mal im Elektronikladen nach weiter die Strasse nach Süden runter.'
-	break;
-	case "2":
-		return 'Ich warte auf einen Freund von mir';
-	break;
-	case "3":
-		let reply2;
-		if(Commands.actor.has(sammelbild)) reply2=yield 'Ich sammele Fußballkarten, gleich treffe ich einen Freund um zu tauschen.<p style="color:#0f0;">1 - Ok</br>2 - Ich habe hier eine! Willst du sie mir abkaufen?</p>'
-		else return 'Ich sammele Fußballkarten, gleich treffe ich einen Freund um zu tauschen.'
-		switch(reply2){
-		case "1":
-			return "Bye."
-		break;
-		case "2":
-			const reply3=yield 'Zeig mal! Wow, die habe ich noch nicht! Ich gebe dir dafür 1EUR!<p style="color:#0f0;">1 - OK</br>2 - Nein lieber nicht...</br></p>';
-			switch(reply3){
-			case "1":
-				if(this.has(euro)){
-					this.open=true;
-					this.take(sammelbild)
-					Commands.actor.take(euro);
-					this.open=false;
-				}
-				return 'Hier 1 Euro. Bye.'
-			break;
-			case "2":
-				return 'Na gut dann eben nicht. Bye.';
-			break;
-			default:
-			break;
-			}
-		default: break;
-		}
-	break;
-	default: return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
-	}
-}
-
-
-
-dorfjunge.giving=function(thing){
-	if(thing===euro){
-		if(this.has(sammelbild)) {//only give euro when dorfjunge has received the sammelbild before
-			return true
-		}
-		else {
-			return false;
-		}
-	}
-}
-dorfjunge.receiving=function(thing){
-	if(thing===sammelbild) {
-		if(this.has(euro) ){
-			let retval;
-			print("Wow, die habe ich noch nicht! Ich gebe dir dafür 1EUR!");
-			this.open=true;
-			retval=Commands.actor.take(euro);
-			this.open=false;
-			return retval;
-		}
-	}
-	print("Das brauche ich nicht.");
-	return false;
-
-}
-let parkbank=new Scene("Parkbank","Eine Parkbank aus altem Holz",{open:false,opensoninspection:true});
-lichtung.insert(parkbank);
-let muelleimer=new Scene("Mülleimer","Ein Metallmülleimer",{open:false,opensoninspection:true});
-let aschenbecher=new Scene("Aschenbecher","Ein Aschenbecher",{open:false,opensoninspection:true});
-let nagel=new Item("Nagel","Ein rostiger Nagel",{applicable:true});
-
-let sammelbild=new Item("Sammelbild","Es ist eine Fußballsammelkarten");
-aschenbecher.insert(sammelbild);
-parkbank.insert(nagel);
-lichtung.insert(parkbank);
-parkbank.insert(muelleimer);
-parkbank.insert(aschenbecher);
-
-let schloss=new Scene("Schloss","<img src='schloss_an.jpg'>Ein altes Schloss befindet sich auf dem Berg. Die Eingangstüt ist verschlossen. Im Süden kann man eine Lichtung sehen.",{open:false});
-schloss.describe=function(){
-	if(Commands.actor.has(taschenlampe) && taschenlampe.on) {
-		this.open=true;
-		return this.titel[0]+": "+this.description;
-	}
-	else {
-		this.open=false;
-		return "<img src='schloss_aus.jpg'>Hier oben ist es zu dunkel man kann nur den weg nach Süden zur Lichtung sehen.";
-	}
-}
-
-schloss.insert(tuer)
-schloss.northblock=tuer;
-
-schloss.north=raum;
-raum.insert(teleporter);
-lichtung.north=schloss;
-//schloss.south=lichtung;
-
-schluessel.doapply=function(target){
-	if(target===tuer){
-		print("Das Schloss öffnet sich. ");
-		target.locked=false;
-		target.blocking=false;
-        print(target.describe())
-		return true;
-	}
-	return false;
-}
-
-let ich=new Person("Liana Miracula Singer","Eine schlaue und tapfere Detektivin.<img src='miracula.png'>",{open:true});
-ich.position=lichtung;
-
-let taschenlampe=new Item("Taschenlampe","Eine starke LED-Taschenlampe mit massivem Aluminium Griff.",{usable:true,open:false,openable:true,closable:true});
-let leere_batterie=new Item(["leere Batterie","Batterie"],"Leere Mono-Batterie.",{open:true,applicable:true});
-
-leere_batterie.insertApplyTarget(taschenlampe);
-batterie.insertApplyTarget(taschenlampe);
-batterie.insertApplyTarget(kabel);
-kabel.insertApplyTarget(batterie);
-batterie.doapply=function(target){
-	if(target===kabel) return target.doapply(this);//is needed because reciproce call only works when doapply is not there
-	if(target===taschenlampe) {
-		target.take(this);
-		return true;
-	}
-	return false;
-}
-leere_batterie.doapply=function(target){
-	target.take(this);
-	return true;
-}
-nagel.insertApplyTarget(kabel)
-kabel.insertApplyTarget(schluessel)
-nagel.doapply=function(target){
-	target.take(this);
-	target.titel=["Elektromagnet"];
-	print(target.describe())
-	return true;
-}
-kabel.insertApplyTarget(nagel)
-kabel.giving=function(thing){
-	if(thing===batterie){
-		if(this.has(nagel)) this.titel=["Elektromagnet"]
-		return true;
-	}
-	if(thing===nagel){
-		this.titel=["Kabel"]
-		return true;
-	}
-	return false;
-		
-}
-//problem gib batterie an kabel
-kabel.doapply=function(target){
-	if(target===nagel){
-		this.take(target);
-		this.titel=["Elektromagnet"];
-		print(this.describe())
-		return true;
-	}
-	if(target===batterie){
-		if(this.has(nagel)){
-			this.take(target);
-			this.titel=["aktiver Elektromagnet","Elektromagnet"];
-			print(this.describe())
-			return true;
-		}
-		return false;
-	}
-	if(target===schluessel){
-		if(this.has(nagel) && this.has(batterie)){
-			Commands.actor.take(schluessel,true);
-			print("Oh wow, jetzt hab ich den Schlüssel!")
-			return true;
-		}
-		if(this.has(nagel) && !this.has(batterie)) {
-			print("Ich glaube der braucht noch Strom!")
-			return true;
-		}
-	}
-}
-let notiz=new Item("Notiz","Bitte recyclen!");
-let notiz2=new Item("Notiz2","gekauft bei Tilli-Elektronikschuppen");
-let buch=new Item("Buch","<img src='buch.jpg'>Per Anhalter durch die Galaxis von Douglas Adams. (ISBN 9783548310701)",{open:true});//ISBN 978-3-0369-5954-2
-let umschlag=new Item("Umschlag","Ein Briefumschlag, addressiert an Graf Gracula, Auf dem Berg 1, 12345 Dorflingen",{open:true});
-let brief=new Item("Brief","Sehr geehrter Herr Graf Gracula, wir würden uns freuen wenn wir uns zu dem nächsten Gemeindefest an diesem Wochenende kennenlernen könnten. Leider hat noch niemand im Dorf ihre Bekanntschaft gemacht. Liebe Grüße der Gemeindevorsteher ");
-buch.insert(umschlag);
-umschlag.insert(brief);
-
-leere_batterie.insert(notiz);
-leere_batterie.insert(notiz2);
-taschenlampe.insert(leere_batterie);
-taschenlampe.on=false;
-taschenlampe.giving=function(thing){//!!!does not work
-	if(thing===batterie) taschenlampe.on=false;
-	return true;
-}
-taschenlampe.use=function(){
-	this.on=false;
-	if(this.things["leere_batterie"]) {
-		print("Batterien sind leer!");
-		return false;
-	}
-	if(isEmpty(this.things)){
-		print("Keine Batterien drin!")
-		return false;
-		
-	}
-	if(this.things["batterie"]) {
-	  this.on=true;
-	  print("Taschenlampe ist an.")
-	  return true;
-	}
-	return false;
-}
-muelleimer.insert(taschenlampe);
-lichtung.insert(buch);
-
-*/
 
 /**
  * Prints a string to the canvas at the beginning by adding it to the beginning of Commands.answer.
@@ -1931,22 +1673,6 @@ lichtung.insert(buch);
 function printfront(x){
 	Commands.answer.unshift(x);
 }
-/**
- * Prints a string to the canvas at the beginning by adding it to the beginning of Commands.answer.
- *
- * @param {number} x - a
- * @param {number} y - a
- * @return {number}
- *
- * @example
- *
- *     add(2,3)
- */
- function add(x,y){
-	return x+y;
-}
-
-//add("23","23423")
 
 
 /**
@@ -2306,16 +2032,20 @@ class Commands{
 			Obj.restore(dump2);
 		}
 		Commands.answer=[];
+		
 		Commands.look({at:"mich"});
+		print("Du trägst einen Rucksack.");
 		print("\n");
 		Commands.look({at:"scene"});
-		print(" ");
-		print("Du trägst einen Rucksack.");
-		
+
+		if(Commands.actor.position==omazuhause){
+			print("Gebe z.B. ein:<em style='color:#0f0;'>rede mit oma</em> oder <em style='color:#0f0;'>w</em>");
+			//Commands.speak({person:"oma",text:""})
+		}
+			
 		return Commands.answer.join("");
 	}
 }
-
 
 </script>
 
