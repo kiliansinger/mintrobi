@@ -1,0 +1,640 @@
+https://osoyoo.com/2018/09/24/osoyoo-starter-learning-kit-for-bbc-micro-bit/
+
+mache smiley.
+https://makecode.microbit.org/_0R1RXr66UftK
+
+
+mache kleinen film.
+https://makecode.microbit.org/_bzXHoLDAXi0F
+
+mache sound
+https://makecode.microbit.org/_XkLhzm0tVdpm
+
+füge Feuerbutton hinzu:
+https://makecode.microbit.org/_bzzPeU2krfit
+
+Spiele die Tonleiter:
+https://makecode.microbit.org/_Vm009oeb9dw5
+__________________________
+
+zeige deinen namen:
+https://makecode.microbit.org/_2JDXuq6md7r7
+
+zeige name von bluetooth und schreibe auf
+https://makecode.microbit.org/_Wo1CmTYhjcpp
+
+usb serial:
+https://makecode.microbit.org/#editor
+mbed Serial Port (COM8)
+reconnect by accessing devices acces is granted to
+might also work for bluetooth
+https://web.dev/usb/
+https://web.dev/serial/
+https://codelabs.developers.google.com/codelabs/web-serial#2
+____________________________
+funk: sende smiley
+
+send morse code to mint robi by beeping with voice
+
+funksignal empfangen...(sos) und dekodieren
+
+ultraschallsensor in dunkler höhle
+
+ampel im spiel ist kaput:
+baue ampel und gehe bei grün drüber. DIGITAL
+
+finde funkelnden edelstein und sage farbe. ANALOG
+verstehe additive farben
+und subtraktive farben
+schaue auf edelstein und dann auf weisses blatt => komplementär
+
+Hinderniss: digitale signale einlesen
+
+Leitfähigkeit: analoge signale einlesen
+
+reaktionsmessung
+
+poti und lenken pong
+
+geht auch mit graphit
+
+karussell messung mit kompass und aussen und innen befinden
+
+alarmanlage mit eingebautem sensor, und dann mit fotodiode
+
+geschwindigkeit messen mit doppel fotodiode aus microbit und fotodiode.
+
+man braucht 2 taschenlampen.
+
+würfel lesen
+
+kerzensimulator mit rgb led
+
+red light green light
+spiele red light green light mit pc. pc hat jetzt ampel (da du sie ja oben repariert hast). verwende microbit als bewegungssensor.
+
+mache gleiches spiel im team, verwende jetzt einen microbit als ampel und andere als sensoren. ohne pc.
+
+mache multimusik, synchronisiert über funk.
+
+first riddle: counting up, summing up, fibo
+then recursive: factorial,merge sort, hanoi,
+then decode: plain, add one, stochastic ana,...
+
+connect led and make green light red light
+connect color led and decode color
+connect distance sensor and wave in front at given time
+
+determine time with mint robi and sun
+draw circle with stop lines and transmit compass info
+
+baue lichtschranke
+
+
+unsichtbares licht sichtbar machen
+lichtschranke
+
+mintrobi schickt password
+
+sonnenuhr
+
+schrittzähler
+
+poti bauen mit blei
+
+spiel mit funkleistung auf 1=> 30cm man muss verstecktes gehirn finden...
+___
+
+
+https://www.reichelt.de/bbc-micro-bit-v2-bbc-micro-bit-v2-p289797.html?CCOUNTRY=445&LANGUAGE=de&trstct=pos_2&nbc=1&&r=1
+https://www.reichelt.de/usb-2-0-kabel-a-stecker-auf-micro-b-stecker-0-6-m-logilink-cu0057-p317842.html?&trstct=pos_1&nbc=1
+https://www.reichelt.de/joy-car-bausatz-education-robotic-set-joy-it-car-p284852.html?&trstct=pos_0&nbc=1
+https://www.reichelt.de/powerbank-li-po-3000-mah-usb-logilink-pa0207-p270561.html?&trstct=pol_0&nbc=1
+https://www.reichelt.de/usb-2-0-a-stecker-freie-enden-1-8-m-sw-usb-a-10080109-p198964.html?PROVID=2788&gclid=EAIaIQobChMIvreJ6KuH-gIVTN7VCh2cEQ8VEAQYASABEgJD5vD_BwE
+https://www.reichelt.de/verbindungsleitungs-satz-10-teilig-mk-612s-p12242.html?&nbc=1&trstct=lsbght_sldr::177333
+https://www.reichelt.de/sortiment-led-30-teilig-s36-p119303.html?&trstct=pos_0&nbc=1
+https://www.reichelt.de/led-5-mm-bedrahtet-4-pin-rot-gruen-blau-700-1300-300-mcd-60-kbt-l-154a4surkq-p231040.html?&trstct=pol_5&nbc=1
+https://www.reichelt.de/drehpotentiometer-10-kohm-6-mm-linear-bi-p231-fd20br-p238719.html?&trstct=pos_4&nbc=1
+__
+good tuts:
+https://www.youtube.com/watch?v=xZp00mV1APQ&list=PLaIbKs93j6_aKYvHNjphlqfa7fTiKU8xp
+___
+#uart
+https://makecode.microbit.org/_0vaVyCMjX9bD
+
+__________
+
+
+//https://makecode.microbit.org/#pub:_YUeb5ue6cF2w"
+//https://makecode.microbit.org/#pub:_E5qPpWeLoCVu
+//https://makecode.microbit.org/_9z6Joi0DuEty
+https://makecode.microbit.org/_7eVLMMK8iL7r
+https://makecode.microbit.org/_efoPHkXU9g3u
+https://makecode.microbit.org/_YfKCc87wPDaR
+https://makecode.microbit.org/_TyRFJwai5KqK
+https://makecode.microbit.org/_0wiMze05CLmw
+https://makecode.microbit.org/_MKYRzkPt3L47
+https://makecode.microbit.org/_Hv5MwhavqX6P
+https://makecode.microbit.org/_emwA5D8W45AD
+https://makecode.microbit.org/_dMP56UJxgdHt
+
+///
+funk
+https://makecode.microbit.org/_bCMPWWCm3d8R
+https://makecode.microbit.org/_6fEhucDjc66o
+radio.onReceivedNumber(function (receivedNumber) {
+    if (receivedNumber == 0) {
+        busy = 0
+        basic.showLeds(`
+            . . . . .
+            . . . . #
+            . . . # .
+            # . # . .
+            . # . . .
+            `)
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            `)
+    }
+    if (receivedNumber == 1) {
+        basic.showLeds(`
+            # # . # #
+            # # . # #
+            . . . . .
+            # . . . #
+            . # # # .
+            `)
+        music.playSoundEffect(music.builtinSoundEffect(soundExpression.giggle), SoundExpressionPlayMode.UntilDone)
+        radio.sendNumber(0)
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            `)
+    }
+    if (receivedNumber == 2) {
+        basic.showLeds(`
+            . # . # .
+            # # # # #
+            # # # # #
+            . # # # .
+            . . # . .
+            `)
+        music.playSoundEffect(music.builtinSoundEffect(soundExpression.twinkle), SoundExpressionPlayMode.UntilDone)
+        radio.sendNumber(0)
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            `)
+    }
+    if (receivedNumber == 3) {
+        basic.showLeds(`
+            # # . # #
+            # # . # #
+            . . . . .
+            . # # # .
+            # . . . #
+            `)
+        music.playSoundEffect(music.builtinSoundEffect(soundExpression.sad), SoundExpressionPlayMode.UntilDone)
+        radio.sendNumber(0)
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            `)
+    }
+    if (receivedNumber == 4) {
+        basic.showLeds(`
+            # . . . #
+            . . . . .
+            . # # # .
+            # . . . #
+            . # # # .
+            `)
+        music.playSoundEffect(music.builtinSoundEffect(soundExpression.hello), SoundExpressionPlayMode.UntilDone)
+        radio.sendNumber(0)
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            `)
+    }
+})
+input.onLogoEvent(TouchButtonEvent.Touched, function () {
+    if (busy == 0) {
+        busy = 1
+        radio.sendNumber(4)
+        basic.showLeds(`
+            # . . . #
+            . . . . .
+            . # # # .
+            # . . . #
+            . # # # .
+            `)
+    }
+})
+input.onButtonPressed(Button.A, function () {
+    if (busy == 0) {
+        busy = 1
+        radio.sendNumber(1)
+        basic.showLeds(`
+            # # . # #
+            # # . # #
+            . . . . .
+            # . . . #
+            . # # # .
+            `)
+    }
+})
+input.onButtonPressed(Button.AB, function () {
+    if (busy == 0) {
+        busy = 1
+        radio.sendNumber(3)
+        basic.showLeds(`
+            # # . # #
+            # # . # #
+            . . . . .
+            . # # # .
+            # . . . #
+            `)
+    }
+})
+input.onButtonPressed(Button.B, function () {
+    if (busy == 0) {
+        busy = 1
+        radio.sendNumber(2)
+        basic.showLeds(`
+            . # . # .
+            # # # # #
+            # # # # #
+            . # # # .
+            . . # . .
+            `)
+    }
+})
+let busy = 0
+radio.setGroup(1)
+busy = 0
+radio.setTransmitPower(7)
+basic.forever(function () {
+    if (busy == 1) {
+        basic.pause(8000)
+        if (busy == 1) {
+            busy = 0
+            basic.showLeds(`
+                # . . . #
+                . # . # .
+                . . # . .
+                . # . # .
+                # . . . #
+                `)
+            basic.showLeds(`
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                `)
+        }
+    }
+})
+
+
+
+///////////////////////////////////////////
+//robi
+input.onSound(DetectedSound.Loud, function () {
+    if (clapped == 0) {
+        clapped = 1
+        JoyCar.stop(StopIntensity.Intense)
+        basic.pause(1000)
+    } else {
+        clapped = 0
+    }
+})
+let licht = 0
+let clapped = 0
+bluetooth.startUartService()
+basic.showLeds(`
+    # # . # #
+    # # . # #
+    . . . . .
+    # . . . #
+    . # # # .
+    `)
+music.playSoundEffect(music.createSoundEffect(WaveShape.Noise, 1220, 1219, 255, 0, 1008, SoundExpressionEffect.None, InterpolationCurve.Logarithmic), SoundExpressionPlayMode.UntilDone)
+clapped = 0
+let servo = 100
+let ref = (input.lightLevel() + 255) / 2
+basic.forever(function () {
+    if (input.lightLevel() < ref) {
+        licht = 1
+    } else {
+        if (licht == 1) {
+            if (input.lightLevel() > ref) {
+                licht = 0
+                if (clapped == 0) {
+                    clapped = 1
+                } else {
+                    basic.showLeds(`
+                        # # . # #
+                        # # . # #
+                        . . . . .
+                        # . . . #
+                        . # # # .
+                        `)
+                    clapped = 0
+                }
+            }
+        }
+    }
+    if (clapped == 0) {
+        JoyCar.servo(1, 90)
+        if (JoyCar.sonar() > 30) {
+            if (JoyCar.obstacleavoidance(SensorLRSelection.Left)) {
+                bluetooth.uartWriteString("l")
+                JoyCar.turn(
+                FRDirection.Forward,
+                LRDirection.Right,
+                50,
+                0
+                )
+            } else {
+                if (JoyCar.obstacleavoidance(SensorLRSelection.Right)) {
+                    bluetooth.uartWriteString("r")
+                    JoyCar.turn(
+                    FRDirection.Forward,
+                    LRDirection.Left,
+                    50,
+                    0
+                    )
+                } else {
+                    JoyCar.drive(FRDirection.Forward, 50)
+                }
+            }
+        } else {
+            JoyCar.stop(StopIntensity.Intense)
+            music.playSoundEffect(music.createSoundEffect(WaveShape.Square, 1600, 1, 255, 0, 300, SoundExpressionEffect.None, InterpolationCurve.Curve), SoundExpressionPlayMode.UntilDone)
+            JoyCar.servo(1, servo)
+            if (servo == 100) {
+                servo = 80
+            } else {
+                servo = 100
+            }
+        }
+    } else {
+        JoyCar.stop(StopIntensity.Intense)
+        basic.showLeds(`
+            . . . . .
+            # # . # #
+            . . . . .
+            . # # # .
+            . . . . .
+            `)
+    }
+})
+w
+
+///////////////////////////////
+
+
+https://ngammarano.github.io/microbit-web-bluetooth/microbit-web-bluetooth-uart.html
+
+___________
+https://hwestphal.github.io/pxt-turtle/#editor
+for (let index = 0; index < 100; index++) {
+    turtle.backward(50)
+    turtle.turnRight(90)
+    turtle.forward(50)
+    turtle.turnLeft(2)
+}
+
+_______________
+
+input.onButtonPressed(Button.A, function () {
+    Sommerzeit = 1
+    basic.showString("SZ")
+})
+input.onButtonPressed(Button.AB, function () {
+    input.calibrateCompass()
+})
+input.onButtonPressed(Button.B, function () {
+    Sommerzeit = 0
+    basic.showString("WZ")
+})
+let Stunde = 0
+let Richtung = 0
+let Sommerzeit = 0
+let Minute = 0
+basic.showLeds(`
+    . . # . .
+    . . # . .
+    . . # . .
+    . . # . .
+    . . # . .
+    `)
+basic.pause(100)
+basic.forever(function () {
+    Richtung = input.compassHeading()
+    Stunde = Math.floor(Richtung / 15)
+    Minute = Richtung % 15 * 4
+    if (Stunde < 12) {
+        Stunde += 12
+    } else {
+        Stunde += -12
+    }
+    if (Sommerzeit == 1) {
+        Stunde += 1
+    }
+    basic.showNumber(Stunde)
+    basic.pause(100)
+    basic.showNumber(Minute)
+    basic.pause(2000)
+})
+____________
+liaras program
+https://makecode.microbit.org/_6Ks4m1dt551U
+https://makecode.microbit.org/_RrsVc8DJLUdH
+
+rg
+
+https://makecode.microbit.org/_5FAJd95xbRWV
+https://makecode.microbit.org/_4oAftDWLYCiz
+https://makecode.microbit.org/_4oAftDWLYCiz
+
+____________
+
+
+fibo:
+let temp = 0
+let a = 1
+let letzte = 0
+for (let index = 0; index < 19; index++) {
+    temp = letzte
+    letzte = a
+    a += temp
+}
+basic.forever(function () {
+    basic.showNumber(a)
+})
+___
+
+http://www.kubitz-online.de/LK12_abi02/thema1/hanoi.html
+__
+mintrobi baby
+https://makecode.microbit.org/_6FvcVEPwqaDJ
+https://makecode.microbit.org/_c20CwiXRD603
+___
+morse
+start:
+https://makecode.microbit.org/_4T5ha1K54Lv3
+alphabet:
+https://makecode.microbit.org/_fwt7WYMWPfH4
+funk:
+https://makecode.microbit.org/_222ckUdRrgWv
+
+https://makecode.microbit.org/_g5kPYHa0WJ3M
+
+radio.onReceivedNumber(function (receivedNumber) {
+    empfangen = receivedNumber
+})
+let t = 0
+let empfangen = 0
+let Bpm = 400
+music.setTempo(Bpm)
+radio.setGroup(1)
+let Code = ""
+empfangen = 0
+basic.forever(function () {
+    if (input.buttonIsPressed(Button.A) || empfangen == 1) {
+        if (empfangen != 0) {
+            empfangen = 0
+        } else {
+            radio.sendNumber(1)
+        }
+        Code = "" + Code + "."
+        t = control.millis()
+        music.playTone(440, music.beat(BeatFraction.Whole))
+        t = control.millis()
+    }
+    if (input.buttonIsPressed(Button.B) || empfangen == 2) {
+        if (empfangen != 0) {
+            empfangen = 0
+        } else {
+            radio.sendNumber(2)
+        }
+        Code = "" + Code + "-"
+        t = control.millis()
+        music.playTone(440, music.beat(BeatFraction.Whole))
+        t = control.millis()
+        music.playTone(440, music.beat(BeatFraction.Whole))
+        t = control.millis()
+        music.playTone(440, music.beat(BeatFraction.Whole))
+        t = control.millis()
+    }
+    if (control.millis() > t + 60000 * 2 / Bpm) {
+        if (Code == ".-") {
+            basic.showString("A",0)
+        }
+        if (Code == "-...") {
+            basic.showString("B",0)
+        }
+        if (Code == "-.-.") {
+            basic.showString("C",0)
+        }
+        if (Code == "-..") {
+            basic.showString("D",0)
+        }
+        if (Code == ".") {
+            basic.showString("E",0)
+        }
+        if (Code == "..-.") {
+            basic.showString("F",0)
+        }
+        if (Code == "--.") {
+            basic.showString("G",0)
+        }
+        if (Code == "....") {
+            basic.showString("H",0)
+        }
+        if (Code == "..") {
+            basic.showString("I",0)
+        }
+        if (Code == ".---") {
+            basic.showString("J",0)
+        }
+        if (Code == "-.-") {
+            basic.showString("K",0)
+        }
+        if (Code == ".-..") {
+            basic.showString("L",0)
+        }
+        if (Code == "--") {
+            basic.showString("M",0)
+        }
+        if (Code == "-.") {
+            basic.showString("N",0)
+        }
+        if (Code == "---") {
+            basic.showString("O",0)
+        }
+        if (Code == ".--.") {
+            basic.showString("P",0)
+        }
+        if (Code == "--.-") {
+            basic.showString("Q",0)
+        }
+        if (Code == ".-.") {
+            basic.showString("R",0)
+        }
+        if (Code == "...") {
+            basic.showString("S",0)
+        }
+        if (Code == "-") {
+            basic.showString("T",0)
+        }
+        if (Code == "..-") {
+            basic.showString("U",0)
+        }
+        if (Code == "...-") {
+            basic.showString("V",0)
+        }
+        if (Code == ".--") {
+            basic.showString("W",0)
+        }
+        if (Code == "-..-") {
+            basic.showString("X",0)
+        }
+        if (Code == "-.--") {
+            basic.showString("Y",0)
+        }
+        if (Code == "--..") {
+            basic.showString("Z")
+        }
+        Code = ""
+    } else {
+        basic.showLeds(`
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                . . . . .
+                `,0)
+    }
+})
+
+___________________________
+__________

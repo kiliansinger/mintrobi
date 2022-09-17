@@ -475,7 +475,7 @@ img {
 <script>
 	function microBitReceivedMessage(message){
 		console.log(message)
-		microBitWriteString("x\r\n")
+		//microBitWriteString("x\r\n")
 	}
 /*
 This code is to connect a micro:bit using BLE UART to p5.
@@ -550,7 +550,7 @@ async function microBitWriteString(string){
     console.log(error);
   }
 }
-
+let bluetooth=false;
 async function microBitConnect() {
   try {
     console.log("Requesting Bluetooth Device...");
@@ -577,9 +577,21 @@ async function microBitConnect() {
     rxCharacteristic = await service.getCharacteristic(
       UART_RX_CHARACTERISTIC_UUID
     );
+
+    uBitDevice.addEventListener('gattserverdisconnected', onDisconnected);
+	bluetooth=true;
   } catch (error) {
+	bluetooth=false;
     console.log(error);
   }
+}
+async function onDisconnected(event) {
+	bluetooth=false;
+  // Object event.target is Bluetooth Device getting disconnected.
+   console.log('Bluetooth Device disonnected');
+
+ 
+  
 }
 
 function microBitDisconnect() {
