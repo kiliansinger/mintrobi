@@ -764,7 +764,7 @@ class Thing extends Obj{
 	/** @member {string} */
 	titel=[""];
 	description="";
-	speakable=false;//when true you can speak with it. you need to add: XXX.dialog=function* ()
+	speakable=false;//when true you can speak with it. you need to add: XXX.dialog=async function* ()
 	opensoninspection=false;//is closed but when you look at it by command "look at item" it opens.
 	takeable=false;//when true you can take it. you need to add take function take
 	dropable=false;//when true you can drop it. do not add any function
@@ -843,10 +843,10 @@ class Thing extends Obj{
 		if(this.applytarget.hasOwnProperty(target.name))delete this.applytarget[target.name];
 	}
 
-	speak(choice=""){
+	async speak(choice=""){
 		if(!this.dialog) return "";
 		if(!this.iter) this.iter=this.dialog();
-		let result=this.iter.next(choice);
+		let result=await this.iter.next(choice);
 		if (result.done) this.iter=this.dialog();
 		return result;
 	}
@@ -1092,7 +1092,7 @@ let oma=new  Person(["Oma","Omi"],"Deinen liebe Oma.");
 omazuhause.insert(oma);
 ich.position=omazuhause;
 
-oma.dialog=function* (){
+oma.dialog=async function* (){
 	return (!isChrome?"Achtung damit alles funktioniert solltest du das Spiel mit einem Chrome Browser starten! ":"")+
 	"Kai, meine Liebe, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk "+
 	"schon bestellt haben. Falls nicht helfe mir doch schnell dabei: "+
@@ -1117,7 +1117,7 @@ let bottlemessage=new Item("Flaschenpost","<img src='bottlemessage.png'>eine ver
 let opa=new Person("Opa","Dein lieber Opa.");
 strand.insert(opa);
 opa.insert(bottlemessage);
-opa.dialog=function* (){
+opa.dialog=async function* (){
 	if(this.has(bottlemessage)){
 		
 		let reply=yield "Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, "+
@@ -1157,18 +1157,18 @@ let scene3=new Scene("Badestrand","<div class='flow'><img class='back' src='s3.p
 scene3.east=strand;
 let frau=new Person("Frau","ein Frau");
 scene3.insert(frau);
-frau.dialog=function* (){
+frau.dialog=async function* (){
 	return "Endlich mal Ruhe. In der Stadt hat man nur Theater,</br>"+
 	"mit all den komischen Gestalten, die sich da herumtreiben.</br>Diesen Urlaub habe ich mir echt verdient.";
 }
 let kind=new Person("Kind","ein Kind");
 scene3.insert(kind);
-kind.dialog=function* (){
+kind.dialog=async function* (){
 	return "Da sind komisch verkleidete Menschen im Wald.</br>Hast du schonmal einen von denen gesehen?";
 }
 let junge=new Person(["Junge","Jungen"],"ein Junge");
 scene3.insert(junge);
-junge.dialog=function* (){
+junge.dialog=async function* (){
 	return "Hey schau mal,</br>diese Sandburg habe ich ganz alleine gebaut!";
 }
 
@@ -1210,7 +1210,7 @@ scene4.insert(barmann);
 
 barmann.tricked=false;
 
-barmann.dialog=function* (){
+barmann.dialog=async function* (){
 	if(Commands.actor.has(tortenheber)||barmann.tricked){
 		if(seetang.blocking){
 			let reply = yield "Dankeschön! Dankeschön! "+
@@ -1301,7 +1301,7 @@ barmann.dialog=function* (){
 
 let tortenliebhaber=new Person("Tortenliebhaber","ein Tortenliebhaber");
 scene4.insert(tortenliebhaber);
-tortenliebhaber.dialog=function* (){
+tortenliebhaber.dialog=async function* (){
 	return "Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte backen.";
 }
 
@@ -1315,18 +1315,18 @@ let scene5=new Scene("Stadt","<div class='flow'><img class='back' src='s5.png'>"
 scene5.south=scene3;
 let verkaeufer=new Person("Verkäufer","ein Verkäufer");
 scene5.insert(verkaeufer);
-verkaeufer.dialog=function* (){
+verkaeufer.dialog=async function* (){
 	return "Hey komm mal her zu mir!</br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!";
 }
 let tratschtante=new Person("Tratschtante","ein Tratschtante");
 scene5.insert(tratschtante);
-tratschtante.dialog=function* (){
+tratschtante.dialog=async function* (){
 	return "Psst, hör mal, ich muss dir was erzählen.</br>Der Verkäufer da hinten verlangt bei Touristen</br>"+
 	"den dreifachen Preis!</br>Lass dich nicht übers Ohr hauen!";
 }
 	let kuenstler=new Person("Künstler","ein Künstler");
 scene5.insert(kuenstler);
-kuenstler.dialog=function* (){
+kuenstler.dialog=async function* (){
 	return "Fuer dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder doch 3 Millionen?";
 }
 let scene6=new Scene("Dschungel","<div class='flow'><img class='back' src='s6.png'></div>"+
@@ -1340,13 +1340,15 @@ kaputteAmpel.use=function(){
 }
 //https://thecodebarbarian.com/async-generator-functions-in-javascript.html#:~:text=Async%20generator%20functions%20behave%20similarly,()%20function%20returns%20a%20promise.
 //https://www.javascripttutorial.net/es-next/javascript-async-generators/
-kaputteAmpel.dialog=function* (){
+kaputteAmpel.dialog=async function* (){
     const reply = yield "Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>"+
 	"Du musst dazu den folgenden link öffnen, den Code vervollständigen und Pin 0 mit dem langen Beinchen der roten </br>"+
 	"Leuchtdiode verbinden. Dann musst du den 56Ohm Widerstand einfügen und dann alles mit GND verbinden.</br>"+
 	"In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode.</br>"+
 	"Wenn du fertig bist, dann drücke die [Enter]-Taste."
-    if (true) {
+	await new Promise(resolve => setTimeout(resolve, 5000));
+	yield "werwerwe";
+    if (false) {
 		microBitConnect().then(()=>{
 			kaputteAmpel.blocking=false;
 		})
@@ -1367,7 +1369,7 @@ let kostuem=new Item("Kostüm","<img src='kostuem.png'>eine Kostüm",{open:true,
 let Forscher=new Person("Forscher","ein Forscher");
 scene7.insert(Forscher);
 Forscher.insert(kostuem);
-Forscher.dialog=function* (){
+Forscher.dialog=async function* (){
 	if(this.has(kostuem)){
     let reply = yield "Hallo, guten Tag.<p style='color:#0f0;'>"+
 		"1 - Hallo, wer sind Sie denn?.</br>"+
@@ -1432,7 +1434,7 @@ scene8.describe=function(){
 /*
 torwache.insert(schluessel);
 */
-torwache.dialog=function* (){
+torwache.dialog=async function* (){
 	if(Commands.actor.has(kostuem)){
 		if(tuer.blocking){
 			let reply = yield "Hallo, Kumpel.</br>"+
@@ -1479,10 +1481,10 @@ scene9.insert(pina);
 scene9.insert(mojito);
 scene9.insert(daiquiri);
 
-pina.dialog=function* (){
+pina.dialog=async function* (){
 	return "Uiui, eine neue Maske, schnieke Mann.";
 }
-mojito.dialog=function* (){
+mojito.dialog=async function* (){
 	return "Hehe, dieser Idiot von nebenan hat</br>"+
 	"auf seinem Kopf so ein komisches silbernes Teil stecken,</br>"+
 	"das sieht total bescheuert aus!";
@@ -1491,7 +1493,7 @@ let tortenheber=new Item("Tortenheber","<img src='tortenheber.png'>ein Tortenheb
 
 daiquiri.insert(tortenheber);
 
-daiquiri.dialog=function* (){
+daiquiri.dialog=async function* (){
 	if(this.has(tortenheber)){
 		let reply=yield "Ich bin so verzweifelt,</br>"+
 		"ich komme einfach nicht weiter!</br>"+
@@ -1553,7 +1555,7 @@ let codecnt;
 let code=[1,3,1,9];
 
 
-robo.dialog=function* (){
+robo.dialog=async function* (){
 	codecnt=0;
 	intervalID=setInterval(displayCode, 1000);
 	return "Sende Computer-Password mit 7-Segment anzeige!";
@@ -1648,7 +1650,7 @@ numberlockdoor.use=function(){
 	print("Ich sollte darauf tippen...");
 	return false;
 }
-numberlockdoor.dialog=function* (){
+numberlockdoor.dialog=async function* (){
     const reply = yield 'Bitte Zahlencode eingeben</p>';
     if (reply==="1319") {
         numberlockdoor.blocking=false;
@@ -1672,7 +1674,7 @@ let robo2=new Person("robo","Ein kaputter Roboter mit 7 Segment Anzeige.");
 scene11.insert(robo2);
 
 let firsttimedist=true;
-robo2.dialog=function* (){
+robo2.dialog=async function* (){
 	const response2 = new XMLHttpRequest();
 	response2.open("GET", 'http://raspberrypi/dist',false);
 
@@ -1730,7 +1732,7 @@ class Commands{
 	static recogparam=null;
 	static command="";
 	
-	static execute(cmd){
+	static async execute(cmd){
 		cmd=cmd.toLowerCase();
 		let delstr=["=>","der","die","das","dem","der","dem","den","die","das","ein","einer","ein","einem","einer","einem","einen","eine","ein"];
 		let importantprep=["an","mit","auf","nach","durch","in", "zu"];
@@ -1739,7 +1741,7 @@ class Commands{
 		for(var del in delstr) cmd=cmd.split(" "+delstr[del]+" ").join(' ')
 		for(var del in delstr) cmd=cmd.split(" "+importantprep[del]+" ").join(' => ')
 		cmd=cmd.replace(/\s+/g, ' ');
-		if(cmd==="") return "";
+		if(cmd==="" && !Commands.lastcommandspeak) return "";
 		Commands.command=cmd.toLowerCase();
 		console.log(cmd);
 		Commands.recogparam=null;
@@ -1767,7 +1769,7 @@ class Commands{
 		Commands.recogparam=null;
 		recog|=Commands.help();
 		Commands.recogparam=null;
-		let commandspeak=Commands.speak();
+		let commandspeak=await Commands.speak();
 		recog|=commandspeak;
 		Commands.recogparam=null;
 		
@@ -1775,7 +1777,7 @@ class Commands{
 			printfront("Ok.\n")
 		}
 		else{
-			if(Commands.lastcommandspeak) commandspeak=Commands.continuespeak(cmd);
+			if(Commands.lastcommandspeak) commandspeak=await Commands.continuespeak(cmd);
 			if(!commandspeak) {
 				 print("Ich verstehe dich nicht oder kann es nicht machen! Schreibe 'hilfe' für Befehlsliste!\n");
 			}
@@ -2017,7 +2019,7 @@ class Commands{
 	}
 	static lastperson;
 	static lastcommandspeak=false;
-	static continuespeak(text2){
+	static async continuespeak(text2){
 		return Commands.speak({person:Commands.lastperson,text:text2});
 	}
 	static endofspeak=false;
@@ -2030,11 +2032,11 @@ class Commands{
 	@when( "t => PERSON",{text:""} )
 	@when( "t PERSON",{text:""} )
 
-	static speak({person,text}){
+	static async speak({person,text}){
 		let {thing:personobj}=search(person,Person);
 		if(personobj!==null && personobj.speakable){
 			Commands.lastperson=person;
-			let ret=personobj.speak(text);
+			let ret=await personobj.speak(text);
 			print(ret.value);
 			Commands.endofspeak=ret.done;
 			return true;
@@ -2093,22 +2095,28 @@ class Commands{
 let story = document.getElementById('story')
 let inp = document.getElementById('inp')
 let prompt = document.getElementById('prompt')
-function start(){
+async function start(){
 	let answer=Commands.intro();
 	let p2 = document.createElement('p');
 	p2.innerHTML  = answer;
+
 	story.appendChild(p2);
 	inp.value = '';
 	setTimeout(function(){story.scrollTop = story.scrollHeight - story.clientHeight }, 3000);
-	document.getElementById("inp").addEventListener("keydown", (e)=>{
+	document.getElementById("inp").addEventListener("keydown", async (e)=>{
+
+	
+			
 		if (event.keyCode == 13) {
+			document.getElementById("inp").disabled=true;
+
 			let cmd = inp.value;
 			let p = document.createElement('p');
 			p.innerHTML  = cmd;
 			p.className = 'command';
 			story.appendChild(p);
 			
-			let answer=Commands.execute(cmd);
+			let answer=await Commands.execute(cmd);
 			let p2 = document.createElement('p');
 			p2.innerHTML  = answer;
 			story.appendChild(p2);
@@ -2118,7 +2126,11 @@ function start(){
 			setTimeout(function(){story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
 			let dump=Obj.dump();
 			localStorage.setItem("current", dump);
+			document.getElementById("inp").disabled=false
+			document.getElementById("inp").focus();
+			
 		}
+
 	}, false);
 }
 </script>
