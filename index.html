@@ -848,7 +848,7 @@ class Thing extends Obj{
 		if(!this.iter) this.iter=this.dialog();
 		let result=this.iter.next(choice);
 		if (result.done) this.iter=this.dialog();
-		return result.value;
+		return result;
 	}
 	
 }
@@ -1339,6 +1339,7 @@ kaputteAmpel.use=function(){
 	return false;
 }
 //https://thecodebarbarian.com/async-generator-functions-in-javascript.html#:~:text=Async%20generator%20functions%20behave%20similarly,()%20function%20returns%20a%20promise.
+//https://www.javascripttutorial.net/es-next/javascript-async-generators/
 kaputteAmpel.dialog=function* (){
     const reply = yield "Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>"+
 	"Du musst dazu den folgenden link öffnen, den Code vervollständigen und Pin 0 mit dem langen Beinchen der roten </br>"+
@@ -1738,6 +1739,7 @@ class Commands{
 		for(var del in delstr) cmd=cmd.split(" "+delstr[del]+" ").join(' ')
 		for(var del in delstr) cmd=cmd.split(" "+importantprep[del]+" ").join(' => ')
 		cmd=cmd.replace(/\s+/g, ' ');
+		if(cmd==="") return "";
 		Commands.command=cmd.toLowerCase();
 		console.log(cmd);
 		Commands.recogparam=null;
@@ -1775,10 +1777,10 @@ class Commands{
 		else{
 			if(Commands.lastcommandspeak) commandspeak=Commands.continuespeak(cmd);
 			if(!commandspeak) {
-				print("Ich verstehe dich nicht oder kann es nicht machen! Schreibe 'hilfe' für Befehlsliste!\n");
+				 print("Ich verstehe dich nicht oder kann es nicht machen! Schreibe 'hilfe' für Befehlsliste!\n");
 			}
 		}
-		Commands.lastcommandspeak=commandspeak;
+		Commands.lastcommandspeak=commandspeak && !Commands.endofspeak;
 		return Commands.answer.join("");
 	}
 
@@ -2018,7 +2020,7 @@ class Commands{
 	static continuespeak(text2){
 		return Commands.speak({person:Commands.lastperson,text:text2});
 	}
-	
+	static endofspeak=false;
 	@when( "sprich => PERSON",{text:""} )
 	@when( "sprich PERSON",{text:""} )
 	@when( "rede => PERSON",{text:""} )
@@ -2027,11 +2029,14 @@ class Commands{
 	@when( "tippe PERSON",{text:""} )
 	@when( "t => PERSON",{text:""} )
 	@when( "t PERSON",{text:""} )
+
 	static speak({person,text}){
 		let {thing:personobj}=search(person,Person);
 		if(personobj!==null && personobj.speakable){
 			Commands.lastperson=person;
-			print(personobj.speak(text));
+			let ret=personobj.speak(text);
+			print(ret.value);
+			Commands.endofspeak=ret.done;
 			return true;
 		}
 		else print("Geht so nicht.");
