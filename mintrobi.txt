@@ -24,7 +24,11 @@ zeige name von bluetooth und schreibe auf
 https://makecode.microbit.org/_Wo1CmTYhjcpp
 
 usb serial:
-https://makecode.microbit.org/#editor
+https://makecode.microbit.org/_Wvs2qTKV4HFK
+https://makecode.microbit.org/_7pcRYKeqRiVc
+https://makecode.microbit.org/_7Kz9dbTMjCeh
+https://makecode.microbit.org/_2TXHyoEozeuf
+
 mbed Serial Port (COM8)
 reconnect by accessing devices acces is granted to
 might also work for bluetooth

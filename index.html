@@ -1340,14 +1340,90 @@ kaputteAmpel.use=function(){
 }
 //https://thecodebarbarian.com/async-generator-functions-in-javascript.html#:~:text=Async%20generator%20functions%20behave%20similarly,()%20function%20returns%20a%20promise.
 //https://www.javascripttutorial.net/es-next/javascript-async-generators/
+//https://stackoverflow.com/questions/71262432/how-can-i-close-a-web-serial-port-that-ive-piped-through-a-transformstream
+async function ampelMicrobit(){
+	if ("serial" in navigator) {
+  		// The Web Serial API is supported.
+
+		 // Prompt user to select any serial port.
+		try{
+			// Get all serial ports the user has previously granted the website access to.
+			const filters = [
+				{ usbVendorId: 0x0D28, usbProductId: 0x0204 },
+				
+			];
+			const ports = await navigator.serial.getPorts();
+			let port=null;
+			console.log(JSON.stringify(filters))
+			for(let i=0;i<ports.length;++i){
+				let info = ports[i].getInfo();
+				console.log(JSON.stringify(info))
+				if(info.usbProductId==filters[0].usbProductId && info.usbVendorId==filters[0].usbVendorId) port=ports[i];
+			}
+			
+			if(!port) port = await navigator.serial.requestPort({ filters });
+			console.log(port)
+			console.log("Available\n"+JSON.stringify(port))
+			await port.open({ 
+				baudRate: 115200,
+				dataBits: 8,
+				stopBits: 1,
+				parity: "none",
+				bufferSize: 1024,
+				flowControl: "none"
+			});
+
+/*			while (port.readable) {
+				const reader = port.readable.getReader();
+				while (true) {
+					const { value, done } = await reader.read();
+					if (done) {
+						// Allow the serial port to be closed later.
+						reader.releaseLock();
+						break;
+					}
+					if (value) {
+						console.log(value);
+					}
+				}
+				
+			}
+*/
+						
+
+			const textEncoder = new TextEncoderStream();
+			const writer = textEncoder.writable.getWriter();
+			const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+
+	
+			await writer.write("1\n");//\r\n
+			// Allow the serial port to be closed later.
+	
+			writer.close();
+			await writableStreamClosed;
+			//await writer.close()
+
+			//port.writable.releaseLock();
+			await port.close()
+			//await port.close();
+			return true;
+		}catch(e){
+			console.log(e)
+			return false;
+		}
+
+	}
+}
 kaputteAmpel.dialog=async function* (){
     const reply = yield "Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>"+
 	"Du musst dazu den folgenden link öffnen, den Code vervollständigen und Pin 0 mit dem langen Beinchen der roten </br>"+
 	"Leuchtdiode verbinden. Dann musst du den 56Ohm Widerstand einfügen und dann alles mit GND verbinden.</br>"+
 	"In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode.</br>"+
 	"Wenn du fertig bist, dann drücke die [Enter]-Taste."
-	await new Promise(resolve => setTimeout(resolve, 5000));
-	yield "werwerwe";
+	//await new Promise(resolve => setTimeout(resolve, 5000));
+	let result=await ampelMicrobit();
+	if(result) yield "connecting worked [enter]";
+	else yield "connecting did not work [enter]"
     if (false) {
 		microBitConnect().then(()=>{
 			kaputteAmpel.blocking=false;
