@@ -640,58 +640,7 @@ you can make a door also an orc that blocks the road
 // @ts-check
 </script>
 <script>
-	function microBitReceivedMessage(message) {
-		console.log(message)
-		//microBitWriteString("x\r\n")
-	}
-	/*
-	This code is to connect a micro:bit using BLE UART to p5.
 	
-	API:
-	
-	microBitConnect()
-	
-	This function should be called by an user event, like  mousePressed() https://p5js.org/reference/#/p5/mousePressed
-	or KeyPressed() https://p5js.org/reference/#/p5/keyPressed
-	
-	microBitDisconnect()
-	
-	This function disconnects the microbit from the device running the p5 sketch.
-	
-	microBitWriteString("string")
-	
-	Writes a text to the microbit
-	
-	microBitReceivedMessage(message)
-	
-	This is a function that is called when the microBit sends a message to the device running P5
-	
-	
-	Example sketch.js
-	
-	//This code sends the current key pressed to the microbit, and shows the last message of the microbit in the middle of the screen
-	function setup() {
-	  createCanvas(400, 400);
-	}
-	lastMessage = "";
-	function draw() {
-	  background(220);
-	  text(lastMessage,200,200);
-	}
-	
-	function mousePressed(){
-	  microBitConnect()
-	}
-	
-	function keyPressed(){
-	  microBitWriteString(key + "\n")
-	}
-	function microBitReceivedMessage(message){
-	  lastMessage = message;
-	}
-	
-	*/
-
 	// https://lancaster-university.github.io/microbit-docs/resources/bluetooth/bluetooth_profile.html
 	// An implementation of Nordic Semicondutor's UART/Serial Port Emulation over Bluetooth low energy
 	const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -705,7 +654,7 @@ you can make a door also an orc that blocks the road
 	let uBitDevice;
 	let rxCharacteristic;
 
-	async function microBitWriteString(string) {
+	async function microBitWriteBluetooth(string) {
 		if (!rxCharacteristic) {
 			return;
 		}
@@ -718,12 +667,15 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	let bluetooth = false;
-	async function microBitConnect() {
+	async function microBitConnect(name) {
 		try {
 			console.log("Requesting Bluetooth Device...");
 			//TODO use navigator.bluetooth.getDevices similar to usb uart
+	
+
+
 			uBitDevice = await navigator.bluetooth.requestDevice({
-				filters: [{ namePrefix: "BBC micro:bit" }],
+				filters: [{ namePrefix: "BBC micro:bit"+(name==""?"":" ["+name+"]") }],
 				optionalServices: [UART_SERVICE_UUID]
 			});
 
@@ -748,9 +700,11 @@ you can make a door also an orc that blocks the road
 
 			uBitDevice.addEventListener('gattserverdisconnected', onDisconnected);
 			bluetooth = true;
+			return true;
 		} catch (error) {
 			bluetooth = false;
 			console.log(error);
+			return false;
 		}
 	}
 	async function onDisconnected(event) {
@@ -773,6 +727,21 @@ you can make a door also an orc that blocks the road
 		}
 	}
 
+let	microBitReceivedMessageCB;
+
+
+// A function that returns a promise to resolve into the data //fetched from the API or an error
+let microBitReadBluetooth=()=>{
+	return new Promise(
+			(resolve, reject) => {
+				
+				microBitReceivedMessageCB=resolve;
+			}
+		)
+}
+
+
+
 
 	function onTxCharacteristicValueChanged(event) {
 		let receivedData = [];
@@ -780,14 +749,17 @@ you can make a door also an orc that blocks the road
 			receivedData[i] = event.target.value.getUint8(i);
 		}
 		const receivedString = String.fromCharCode.apply(null, receivedData);
-		if (typeof microBitReceivedMessage !== 'undefined') {
-			microBitReceivedMessage(receivedString);
-		} else {
-			console.log("microBitReceivedMessage is not defined")
-		}
-		console.log(receivedString);
-	}
+		if (typeof microBitReceivedMessageCB !== 'undefined') {
 
+			microBitReceivedMessageCB(receivedString);
+		} else {
+			console.log("microBitReceivedMessageCB is not defined")
+		}
+		//console.log(receivedString);
+	}
+	function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 	///////////////////////////////////
 	//usb serial
 	//https://thecodebarbarian.com/async-generator-functions-in-javascript.html#:~:text=Async%20generator%20functions%20behave%20similarly,()%20function%20returns%20a%20promise.
@@ -824,40 +796,14 @@ you can make a door also an orc that blocks the road
 					bufferSize: 1024,
 					flowControl: "none"
 				});
-
-				/*			while (port.readable) {
-								const reader = port.readable.getReader();
-								while (true) {
-									const { value, done } = await reader.read();
-									if (done) {
-										// Allow the serial port to be closed later.
-										reader.releaseLock();
-										break;
-									}
-									if (value) {
-										console.log(value);
-									}
-								}
-								
-							}
-				*/
-
-
 				const textEncoder = new TextEncoderStream();
 				const writer = textEncoder.writable.getWriter();
 				const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-
-
 				await writer.write(txt + "\n");//\r\n
 				// Allow the serial port to be closed later.
-
 				writer.close();
 				await writableStreamClosed;
-				//await writer.close()
-
-				//port.writable.releaseLock();
 				await port.close()
-				//await port.close();
 				return true;
 			} catch (e) {
 				console.log(e)
@@ -924,10 +870,6 @@ you can make a door also an orc that blocks the road
 						reader.releaseLock();
 						break;
 					}
-					// value is a string.
-					//console.log(value);
-					//return value.charAt(0)
-
 				}
 				//console.log("text:"+str);
 				return str;
@@ -968,34 +910,6 @@ you can make a door also an orc that blocks the road
 </script>
 <!-- Decorator example -->
 <script type="text/babel" data-presets="env-plus">
-
-	/*TODO:
-	Roboter ist kaputt und kann sich nicht mehr selber reparieren.
-	Wir sind jetzt mit dem Programmier teil fertig.
-	Man kommt in die Höhle und findet den Roboter als Schatz.
-	Einfachste Rätsel ist zugangs code zum Computer.
-	
-	Man findet 7 Segment anzeige
-	Dazu muss man 7 Segment anzeige richtig verbinden und mit robo reden.
-	Dazu findet man eine Anleitung die Beschreibt wie man die 7 Segment anzeige verbinden muss.
-	
-	Dann öffnet sich tür zum labyrith und man muss roboter folgen.
-	Findet man motor treiber.
-	wenn mann man dann imnmer passend n, s,  usw eintippt. (vorwärts ist norden, rückwärts ist süden und nach rechts drehen ist Osten und nach links drehn ist Westen)
-	roboter fährt immer zur ursprungslage damit das ding nicht vom tisch fällt.
-	
-	Danach findet man den Ultraschallsensor.
-	Roboter will damit erkennen dass ein Mensch vor ihm ist. Und man muss seine Hand vor dem Sensor winken.
-	
-	Dann eröffnet der Roboter einem den Zugang zum Heiligsten: sein Gehirn und man bekommt ssh zugansdaten mit zugang zum git.
-	
-	*/
-
-
-
-
-
-
 
 	// @ts-check
 	class Obj {
@@ -1416,28 +1330,6 @@ you can make a door also an orc that blocks the road
 	omazuhause.insert(oma);
 	ich.position = omazuhause;
 
-	/*
-	mache smiley.
-	https://makecode.microbit.org/_0R1RXr66UftK
-	
-	
-	mache kleinen film.
-	https://makecode.microbit.org/_bzXHoLDAXi0F
-	
-	mache sound
-	https://makecode.microbit.org/_XkLhzm0tVdpm
-	
-	füge Feuerbutton hinzu:
-	https://makecode.microbit.org/_bzzPeU2krfit
-	
-	Spiele die Tonleiter:
-	https://makecode.microbit.org/_Vm009oeb9dw5
-	__________________________
-	
-	zeige deinen namen:
-	https://makecode.microbit.org/_2JDXuq6md7r7
-	*/
-
 	oma.dialog = async function* () {
 		let reply = yield (!isChrome ? "Achtung damit alles funktioniert solltest du das Spiel mit einem Chrome Browser starten! " : "") +
 			"Kai, meine Liebe, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk " +
@@ -1620,38 +1512,12 @@ you can make a door also an orc that blocks the road
 							"Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein! Du kannst das einfach durch überlegen lösen oder ein Computerprogramm schreiben. Hier der link <a target='_blank' href='https://makecode.microbit.org/_7DzXT3eF7iiu'>Code</a>."
 							console.log(reply13)
 						if (reply13 === "ab,ac,bc,ab,ca,cb,ab" || reply ==="ab,ac,bc,ab,ca,cb,ab,") {
-							//seetang.blocking=false;
 							return "Das hat geklappt. Hier ich öffne dir die Flasche. " +
 								"Da ist ein verschlüsselter Text drin, er wurde rückwärts geschrieben:</br>" +
 								"<textarea rows='8' cols='80' style='white-space: wrap;' >" +
-									/*
-								"DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB" +
-								"'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E" +
-								"8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OY" +
-								"B8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0" +
-								"@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'G" +
-								"Y-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>" +
-								"Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:</br>" +
-								"<textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBS" +
-								"EZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT G" +
-								"BLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW N" +
-								"TZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCR" +
-								"EISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT T" +
-								"LLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP
-								*/
 								"NEKCEURD GNATEES TFO"+
 								"</textarea></br>" +
 								"Kannst du ein Entschlüsslungsprogramm schreiben? Versuchs mal <a target='_blank' href='https://makecode.microbit.org/_DCub8VgW8VX1'>Code</a>."
-								/*"Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit " +
-								"einer statistischen Analyse des verwürfelten Textes zu vergleichen. " +
-								"Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. " +
-								"Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. " +
-								"Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach " +
-								"dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, " +
-								"bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, " +
-								"dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. " +
-								"Aber in diesem Falle war das Schicksal gnädig mit uns...</br>";*/
-
 						}
 						else {
 							return "<img src='bottlemessage.png'>Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. " +
@@ -1855,30 +1721,6 @@ you can make a door also an orc that blocks the road
 			default:
 				return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
 		}
-		/*
-		//await new Promise(resolve => setTimeout(resolve, 5000));
-		let result=await writeMicrobit("1");
-	
-		if(result){
-			let val="";
-			yield "connecting worked [enter]";
-			while(!val.startsWith("2")){
-			 	
-				  val=await readMicrobit()
-				  console.log(val+val.length)
-			}
-		}
-		else yield "connecting did not work [enter]"
-		if (false) {
-			microBitConnect().then(()=>{
-				kaputteAmpel.blocking=false;
-			})
-			while(kaputteAmpel.blocking) yield "Die Ampel ist noch kaputt. Verbinde und drücke die [Enter]-Taste."
-			return "Die Ampel funktioniert wieder."
-		 
-		}
-		else return "Falscher Code!"
-		*/
 	}
 	scene6.south = scene5;
 	scene5.northblock = kaputteAmpel;
@@ -2057,14 +1899,10 @@ you can make a door also an orc that blocks the road
 
 	let scene10 = new Scene("Geheimes Labor", "<img src='s10.png'>" +
 		"Hier ist ein geheimes mintrobi Programm.<a target='_blank' href='https://makecode.microbit.org/_XyR1M04cH7cR'>Code</a>.</br>" +
-		"Ausserdem fällt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth. " +
-		"Doch der Weg ist durch eine Tür mit Zahlenschloss verschlossen.</br>" +
+		"Ausserdem fällt dir der gut erhaltene Computer auf.</br>" +
+		"Im Norden ist eine Tür mit Zahlenschloss.</br>" +
 		"Nach Sueden geht es zur Strandbar.");
 	scene10.south = scene4;
-
-	
-
-	
 
 	scene4.northblock = seetang;
 	scene4.insert(seetang);
@@ -2084,24 +1922,91 @@ you can make a door also an orc that blocks the road
 	}
 	scene10.northblock = numberlockdoor;
 	scene10.insert(numberlockdoor)
-	let scene11 = new Scene("Dunkles Labyrinth", "Es ist stock dunkel hier. " +
-		"Ich glaube ich brauche Robos Hilfe um hier rauszufinden. " +
+	let scene11 = new Scene("Dunkles Labyrinth", "Es ist stockdunkel hier. " +
+		"Ich glaube ich brauche Mintrobis Hilfe um hier rauszufinden. " +
 		"");
 	scene11.south = scene10;
-	let robo = new Person("Mintrobi", "Dein lieber Mintrobi.");
-	scene11.insert(robo);
+	let mintrobi = new Person("Mintrobi", "Dein lieber Mintrobi.");
+	scene11.insert(mintrobi);
 
-	
-	/*
-					return "Distanz: " + response2.responseText + " cm.</br>Super der Ultraschallsensor funktioniert. " +
-						"Der Roboter führt dich aus dem Labyrinth heraus du hast das Spiel gemeistert. " +
-						"Gratulation! Du kannst nun auf http://raspberrypi:3000/  " +
-						"und user root mit passwort raspberry auf den Source code zugreifen. " +
-						"Per ssh pi@raspberrypi mit passwort raspberry kannst du dich auf dem System einloggen."
+	mintrobi.dialog = async function* () {
+		let name = yield "Hallo, endlich können wir miteinander reden.</br>"+
+		"Du musst unbedingt eine Funkverbindung (bluetooth) mit mir aufbauen.</br>"+
+		"Dann meinen Ultraschallsensor testen. Damit ich im dunklen Labyrinth wie eine</br>"+
+		"Fledermaus sehen kann. Damit wir uns immer verbinden können lade bitte das folgende Programm <a target='_blank' href='https://makecode.microbit.org/_5FkUDgK1tE0k'>Code</a> auf mein Gehirn</br>"+
+		"Dann drücke auf die Reset Taste auf der Rückseite vom Gehirn und tippe den Text hier ein, falls es mehrere von mir hier im Raum gibt sonst einfach [ENTER] drücken";
+
+		await microBitConnect(name);
 		
-		 "Distanz: " + response2.responseText + " cm."
-		 "Sensor deffekt!";
-	*/
+		let reply2 = yield "Schreibe jetzt ein Programm, was den Ultraschallsensor ausliest und den Abstand in cm zurückgibt.</br>"+
+		"Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn damit ich nicht vom Tisch falle oder</br>"+
+		"stelle etwas unter mich, während wir programmieren. Wenn Du soweit bist drücke. Mache die Hand nach vor meinen Ultraschallsensor um die Messungen abzubrechen. Hier ist das Programm was du vervollständigen sollst <a target='_blank' href='https://makecode.microbit.org/_89EPHkU3yC5Y'>Code</a>[ENTER]";
+		
+		await microBitConnect(name);
+		
+		try{
+			while(true){
+			let val=await Promise.race([
+							microBitReadBluetooth(),
+							new Promise((_, reject) => setTimeout(reject, 10000, new Error("timeout")))
+						]);
+						if(val==0) {
+							
+							return "Hast du das Gehirn in das Fahrgestell gesteckt?"
+						}
+						let p2 = document.createElement('p');
+						p2.innerHTML = val;
+						story.appendChild(p2);
+						story.scrollTop = story.scrollHeight - story.clientHeight 
+						if(val<10.0) break;
+
+						console.log(val);
+			}
+			while(true){
+				let reply=yield "Cool. Der Ultraschallsensor funktioniert. Jetzt kann ich dich aus dem Labyrinth herausführen.</br>"+
+				"Du musst dazu die Funksignale (bluetooth) empfangen und decodieren:</br>"+
+				"L steht für Links</br>"+
+				"R steht für Rechts</br>"+
+				"Bewege den Motor entsprechend und schreibe Dir die Richtungen auf. Hier ist ein Programm den du Erweitern sollst: "+
+				"Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn damit ich nicht vom Tisch falle oder</br>"+
+				"stelle etwas unter mich, während wir programmieren!<p style='color:#0f0;'>"+
+				"1 - Los gehts</br>"+
+				"2 - Ich will den Weg aus dem Labyrinth eingeben.</br>"+
+				"3 - Ich will später weitermachen.</p>"
+				switch(reply){
+					case "1":
+						await microBitConnect(name);
+						await microBitWriteBluetooth("L\n");
+						await sleep(2000);
+						await microBitWriteBluetooth("R\n");
+						await sleep(2000);
+						await microBitWriteBluetooth("L\n");
+						await sleep(2000);
+						await microBitWriteBluetooth("R\n");
+						await sleep(2000);
+						break;
+					case "2":
+						let reply5=yield "Wie komme ich aus dem Labyrinth. Bitte gebe den Weg in der Form (LLRR...) ein:"
+						if(reply5=="lrlr") return "Gratulation Du hast das Spiel gemeistert!</br>"+
+						"Deiner Fantasie sind keine Grenzen gesetzt. Hier sind tolle <a target='_blank' href='https://joycar.joy-it.net/de/garage/makecode'>Anleitungen</a>. Da kannst du z.B. eine <a target='_blank' href='https://joycar.joy-it.net/de/garage/makecode/13-joy-car-remote-control'>Fernsteuerung</a> bauen.</br>"+
+						"Oder baue eine Sonnenuhr und interessante Elektronikprojekte <a target='_blank' href='https://www.electronic-adventure.com/de/your-journey/part-1'>Abenteuer Elektronik</a>. Alle Bauteile dazu solltest du bereits besitzen.";
+						else {
+							yield "Hm leider passt der Weg nicht aber ich habe nochmal an den Anfang des Labyriths zurückgefunden. Bitte [ENTER] drücken."
+							break;
+						}
+					case "3":
+						return "Bis später dann."
+					default: 
+					return  "Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal...";
+				}
+			}
+
+
+		}catch{
+			return "Das hat zulange gedauert. Versuche es einfach nochmal von vorne."
+		}
+	
+	}
 
 	/**
 	 * Prints a string to the canvas at the beginning by adding it to the beginning of Commands.answer.
@@ -2116,19 +2021,6 @@ you can make a door also an orc that blocks the road
 	function printfront(x) {
 		Commands.answer.unshift(x);
 	}
-
-
-	/**
-	 * Prints a string to the canvas by pushing the string to Commands.answer
-	 *
-	 * @param {string} x - A string param
-	 * @return {void}
-	 *
-	 * @example
-	 *
-	 *     print('hello')
-	 */
-
 
 	function print(x) {
 		Commands.answer.push(x)
@@ -2502,41 +2394,47 @@ you can make a door also an orc that blocks the road
 	let inp = document.getElementById('inp')
 	let prompt = document.getElementById('prompt')
 	async function start() {
-		let answer = Commands.intro();
-		let p2 = document.createElement('p');
-		p2.innerHTML = answer;
+		try{
+			let answer = Commands.intro();
+			let p2 = document.createElement('p');
+			p2.innerHTML = answer;
 
-		story.appendChild(p2);
-		inp.value = '';
-		setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 3000);
-		document.getElementById("inp").addEventListener("keydown", async (e) => {
+			story.appendChild(p2);
+			inp.value = '';
+			setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 3000);
+			document.getElementById("inp").addEventListener("keydown", async (e) => {
 
 
 
-			if (event.keyCode == 13) {
-				document.getElementById("inp").disabled = true;
+				if (event.keyCode == 13) {
+					document.getElementById("inp").disabled = true;
 
-				let cmd = inp.value;
-				let p = document.createElement('p');
-				p.innerHTML = cmd;
-				p.className = 'command';
-				story.appendChild(p);
+					let cmd = inp.value;
+					let p = document.createElement('p');
+					p.innerHTML = cmd;
+					p.className = 'command';
+					story.appendChild(p);
 
-				let answer = await Commands.execute(cmd);
-				let p2 = document.createElement('p');
-				p2.innerHTML = answer;
-				story.appendChild(p2);
-				inp.value = '';
-				story.scrollTop = story.scrollHeight;//- story.offsetHeight;
+					let answer = await Commands.execute(cmd);
+					let p2 = document.createElement('p');
+					p2.innerHTML = answer;
+					story.appendChild(p2);
+					inp.value = '';
+					story.scrollTop = story.scrollHeight;//- story.offsetHeight;
 
-				setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
-				let dump = Obj.dump();
-				localStorage.setItem("current", dump);
-				document.getElementById("inp").disabled = false
-				document.getElementById("inp").focus();
+					setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
+					let dump = Obj.dump();
+					localStorage.setItem("current", dump);
+					document.getElementById("inp").disabled = false
+					document.getElementById("inp").focus();
 
-			}
+				}
 
-		}, false);
+			}, false);
+		}catch(e){
+			localStorage.clear()
+			
+			window.location.reload();
+		}
 	}
 </script>
