@@ -7,2206 +7,2643 @@ TODO: implement doors as rooms that repeat the last go... command
 you can make a door also an orc that blocks the road
 -->
 <html>
+
 <head>
-<META HTTP-EQUIV="content-type" CONTENT="text/html; charset=utf-8">
-<meta http-equiv="Cache-control" content="no-cache">
-<meta http-equiv="Cache-control" content="no-store">
-<style>
-	html {
-	color: 		#ffaa55;
-    background-color: #000000;
-    margin: 	10px;
-    font-family: Arial, Helvetica, Sans-Serif;
-    font-size: 	18pt;   
-}
+	<META HTTP-EQUIV="content-type" CONTENT="text/html; charset=utf-8">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-store">
+	<style>
+		html {
+			color: #ffaa55;
+			background-color: #000000;
+			margin: 10px;
+			font-family: Arial, Helvetica, Sans-Serif;
+			font-size: 18pt;
+		}
 
-#story {
-    position: 	absolute;
-	top: 		10px;
-    bottom: 	80px;
-    left: 		10px;
-    right: 		10px;
-    overflow: 	auto;
-	
-}
+		#story {
+			position: absolute;
+			top: 10px;
+			bottom: 80px;
+			left: 10px;
+			right: 10px;
+			overflow: auto;
 
-#story p {
-    margin: 0.2em 0;
-    white-space: pre-wrap;
-	  overflow: auto;
+		}
 
-}
+		#story p {
+			margin: 0.2em 0;
+			white-space: pre-wrap;
+			overflow: auto;
 
-#inputline {
-    position: absolute;
-    bottom: 18pt;
-    left: 18pt;
-    right: 18pt;
-}
+		}
 
-#story .command {
-    color:#00FF00;
-    font-style:italic;
-    margin-top:0.2em;
-}
+		#inputline {
+			position: absolute;
+			bottom: 18pt;
+			left: 18pt;
+			right: 18pt;
+		}
 
-.command::before {
-color: #00FF00;
-    content:"\25B6";
-    margin-right:0.5em;
-	font-style:normal;
-}
+		#story .command {
+			color: #00FF00;
+			font-style: italic;
+			margin-top: 0.2em;
+		}
 
-#prompt {
-	background: 		#000000;
-	color: #00FF00; 
-}
+		.command::before {
+			color: #00FF00;
+			content: "\25B6";
+			margin-right: 0.5em;
+			font-style: normal;
+		}
 
-#inp {
-    width: 80%;
-	background: 		#222222;
-	color: #00FF00;
-    height: 1.5em;
-	font-family: Arial, Helvetica, Sans-Serif;
-    font-size: 	18pt;   
-}
-.flow {
-	position: relative;
-	top: 0;
-	left: 0;
-	width: 80%;
-}
+		#prompt {
+			background: #000000;
+			color: #00FF00;
+		}
 
-.back {
-	position: relative;
-	top: 0;
-	left: 0;
-	width: 100%;
-}
+		#inp {
+			width: 80%;
+			background: #222222;
+			color: #00FF00;
+			height: 1.5em;
+			font-family: Arial, Helvetica, Sans-Serif;
+			font-size: 18pt;
+		}
 
-#s1oma1{
-	position: absolute;
-	top: 39.81%;
-	left: 43.12%;
-	width: 11.4%;
-	animation: fade 10s;
-	animation-iteration-count: infinite;
-}
-#s1oma2{
-	position: absolute;
-	top: 39.81%;
-	left: 43.12%;
-	width: 11.4%;
-	animation: invfade 10s;
-	animation-iteration-count: infinite;
-}
+		.flow {
+			position: relative;
+			top: 0;
+			left: 0;
+			width: 80%;
+		}
 
-#s2opa1{
-	position: absolute;
-	left: 82.13%;
-	top: 42.6%;
-	width: 14.06%;
-	animation: fade 10s;
-	animation-iteration-count: infinite;
-}
-#s2opa2{
-	position: absolute;
-	left: 82.13%;
-	top: 42.6%;
-	width: 14.06%;
-	animation: invfade 10s;
-	animation-iteration-count: infinite;
-}
-#s2krabbe1{
-	position: absolute;
-	left: 64.0%;
-	top: 80.5%;
-	width: 6.35%;
-	animation: fade 30s;
-	animation-iteration-count: infinite;
-}
-#s2krabbe2{
-	position: absolute;
-	left: 64.0%;
-	top: 80.5%;
-	width: 6.35%;
-	animation: invfade 30s;
-	animation-iteration-count: infinite;
-}
-#s2tuer1{
-	position: absolute;
-	left: 40.104%;
-	top: 41.57%;
-	width: 7.44%;
-	animation: fade 20s;
-	animation-iteration-count: infinite;
-}
-#s2tuer2{
-	position: absolute;
-	left: 40.104%;
-	top:  41.57%;
-	width: 7.44%;
-	animation: invfade 20s;
-	animation-iteration-count: infinite;
-}
-#s2vase{
-	position: absolute;
-	left: 37.55%;
-	top:  49.91%;
-	width: 4.48%;
-}
-#s3frau1{
-	position: absolute;
-	left: 10%;
-	top: 21.48%;
-	width: 18.64%;
-	animation: fade 30s;
-	animation-iteration-count: infinite;
-}
-#s3frau2{
-	position: absolute;
-	left: 10%;
-	top:  21.48%;
-	width: 18.64%;
-	animation: invfade 30s;
-	animation-iteration-count: infinite;
-}
-#s3kind1{
-	position: absolute;
-	left: 49.07%;
-	top: 52.22%;
-	width: 10%;
-	animation: fade 20s;
-	animation-iteration-count: infinite;
-}
-#s3kind2{
-	position: absolute;
-	left: 48.07%;
-	top:  52.22%;
-	width: 10%;
-	animation: invfade 20s;
-	animation-iteration-count: infinite;
-}
-#s3junge1{
-	position: absolute;
-	left: 75%;
-	top: 39.16%;
-	width: 14.90%;
-	animation: fade 2s;
-	animation-iteration-count: infinite;
-}
-#s3junge2{
-	position: absolute;
-	left: 75%;
-	top:  39.16%;
-	width: 14.90%;
-	animation: invfade 2s;
-	animation-iteration-count: infinite;
-}
-#s4barkeeper1{
-	position: absolute;
-	left: 9.11%;
-	top: 16.20%;
-	width: 14.32%;
-	animation: fade 2s;
-	animation-iteration-count: infinite;
-}
-#s4barkeeper2{
-	position: absolute;
-	left: 9.11%;
-	top:  16.20%;
-	width: 14.32%;
-	animation: invfade 2s;
-	animation-iteration-count: infinite;
-}
-#s4tortentyp1{
-	position: absolute;
-	left: 47.40%;
-	top:22.31%;
-	width: 17.08%;
-	animation: fade 10s;
-	animation-iteration-count: infinite;
-}
-#s4tortentyp2{
-	position: absolute;
-	left: 47.40%;
-	top:  22.31%;
-	width: 17.08%;
-	animation: invfade 10s;
-	animation-iteration-count: infinite;
-}
-#s4bar{
-	position: absolute;
-	left: 0%;
-	top:  48.3%;
-	width: 28.9%;
-}
-#s4seetang{
-	position: absolute;
-	left: 86.66%;
-	top:  12.12%;
-	width: 9.11%;
-}
-#s5artist1{
-	position: absolute;
-	left: 23.38%;
-	top:  41.48%;
-	width: 14.06%;
-	animation: fade 10s;
-	animation-iteration-count: infinite;
-}
-#s5artist2{
-	position: absolute;
-	left: 23.38%;
-	top: 41.48%;
-	width: 14.06%;
-	animation: invfade 10s;
-	animation-iteration-count: infinite;
-}
-#s5seller1{
-	position: absolute;
-	left: 12.91%;
-	top:  30.37%;
-	width:5.36%;
-	animation: fade 20s;
-	animation-iteration-count: infinite;
-}
-#s5seller2{
-	position: absolute;
-	left: 12.91%;
-	top: 30.37%;
-	width: 5.36%;
-	animation: invfade 20s;
-	animation-iteration-count: infinite;
-}
-#s5tante1{
-	position: absolute;
-	left: 77.23%;
-	top:  31.48%;
-	width:7.5%;
-	animation: fade 30s;
-	animation-iteration-count: infinite;
-}
-#s5tante2{
-	position: absolute;
-	left: 77.23%;
-	top: 31.48%;
-	width: 7.5%;
-	animation: invfade 30s;
-	animation-iteration-count: infinite;
-}
-#s7forscher1{
-	position: absolute;
-	left: 41.51%;
-	top:  18.51%;
-	width:9.11%;
-	animation: fade 30s;
-	animation-iteration-count: infinite;
-}
-#s7forscher2{
-	position: absolute;
-	left: 41.51%;
-	top: 18.51%;
-	width: 9.37%;
-	animation: invfade 30s;
-	animation-iteration-count: infinite;
-}
-#s8wache1{
-	position: absolute;
-	left: 18.43%;
-	top:  4.62%;
-	width:9.37%;
-	animation: fade 5;
-	animation-iteration-count: infinite;
-}
-#s8wache2{
-	position: absolute;
-	left:18.43%;
-	top: 4.62%;
-	width: 9.11%;
-	animation: invfade 5s;
-	animation-iteration-count: infinite;
-}
-#s8torauf{
-	position: absolute;
-	left: 21.91%;
-	top: 29.44%;
-	width: 28.64%;
-}
-#s8torzu{
-	position: absolute;
-	left: 21.91%;
-	top: 29.44%;
-	width: 28.64%;
-}
-#s8schild{
-	position: absolute;
-	left: 16.56%;
-	top: 19.16%;
-	width: 10.26%;
-}
-#s9pina1{
-	position: absolute;
-	left: 28.08%;
-	top:  57.4%;
-	width:3.03%;
-	animation: fade 5;
-	animation-iteration-count: infinite;
-}
-#s9pina2{
-	position: absolute;
-	left:28.08%;
-	top: 57.4%;
-	width: 3.03%;
-	animation: invfade 5s;
-	animation-iteration-count: infinite;
-}
-#s9mojito1{
-	position: absolute;
-	left: 13.12%;
-	top:  61.66%;
-	width: 6.35%;
-	animation: fade 3s;
-	animation-iteration-count: infinite;
-}
-#s9mojito2{
-	position: absolute;
-	left:13.12%;
-	top:  61.66%;
-	width: 6.35%;
-	animation: invfade 3s;
-	animation-iteration-count: infinite;
-}
-#s9daiquiri1{
-	position: absolute;
-	left: 70.52%;
-	top:  69.6%;
-	width:8.33%;
-	animation: fade 1s;
-	animation-iteration-count: infinite;
-}
-#s9daiquiri2{
-	position: absolute;
-	left:70.52%;
-	top: 69.6%;
-	width: 8.33%;
-	animation: invfade 1s;
-	animation-iteration-count: infinite;
-}
-#s9daiquiri3{
-	position: absolute;
-	left:70.52%;
-	top: 69.6%;
-	width: 8.33%;
-	visibility:hidden;
-}
-#s9mauer{
-	position: absolute;
-	left:11.25%;
-	top: 60.74%;
-	width:3.43%;
-}
-img {
-    height:auto;
-	display: block;
-}
+		.back {
+			position: relative;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
 
-@keyframes fade {
-	0% {opacity: 0}
-	9% {opacity: 0}
-	10% {opacity: 1}
-	20% {opacity: 1}
-	21% {opacity: 0}
-	29% {opacity: 0}
-	30% {opacity: 1}
-	39% {opacity: 1}
-	40% {opacity: 1}
-	50% {opacity: 1}
-	51% {opacity:0}
-	59% {opacity: 0}
-    60% {opacity:0}
-	69% {opacity: 0}
-	70% {opacity: 1}
-	80% {opacity: 1}
-	81% {opacity:0}
-	89% {opacity: 0}
-	90% {opacity:1}
-	99% {opacity: 1}
-	100% {opacity:0}
-}
+		#s1oma1 {
+			position: absolute;
+			top: 39.81%;
+			left: 43.12%;
+			width: 11.4%;
+			animation: fade 10s;
+			animation-iteration-count: infinite;
+		}
 
-@keyframes invfade {
-	0% {opacity: 1}
-	10% {opacity: 1}
-	11% {opacity: 0}
-	19% {opacity: 0}
-	20% {opacity: 1}
-	30% {opacity: 1}
-	31% {opacity: 0}
-	39% {opacity: 0}
-	40% {opacity: 0}
-	49% {opacity: 0}
-	50% {opacity:1}
-	59% {opacity: 1}
-    60% {opacity:1}
-	70% {opacity: 1}
-	71% {opacity: 0}
-	79% {opacity: 0}
-	80% {opacity:1}
-	90% {opacity: 1}
-	91% {opacity:0}
-	98% {opacity: 0}
-	99% {opacity:1}
-}
+		#s1oma2 {
+			position: absolute;
+			top: 39.81%;
+			left: 43.12%;
+			width: 11.4%;
+			animation: invfade 10s;
+			animation-iteration-count: infinite;
+		}
 
-</style>
-    </head>
-	<body onload="start()">
-        <div id="story"></div>
-        <div id="inputline">
-            <span id="prompt">&#x25B6;</span>
-            <input id="inp">
-        </div>
-    </body>
+		#s2opa1 {
+			position: absolute;
+			left: 82.13%;
+			top: 42.6%;
+			width: 14.06%;
+			animation: fade 10s;
+			animation-iteration-count: infinite;
+		}
+
+		#s2opa2 {
+			position: absolute;
+			left: 82.13%;
+			top: 42.6%;
+			width: 14.06%;
+			animation: invfade 10s;
+			animation-iteration-count: infinite;
+		}
+
+		#s2krabbe1 {
+			position: absolute;
+			left: 64.0%;
+			top: 80.5%;
+			width: 6.35%;
+			animation: fade 30s;
+			animation-iteration-count: infinite;
+		}
+
+		#s2krabbe2 {
+			position: absolute;
+			left: 64.0%;
+			top: 80.5%;
+			width: 6.35%;
+			animation: invfade 30s;
+			animation-iteration-count: infinite;
+		}
+
+		#s2tuer1 {
+			position: absolute;
+			left: 40.104%;
+			top: 41.57%;
+			width: 7.44%;
+			animation: fade 20s;
+			animation-iteration-count: infinite;
+		}
+
+		#s2tuer2 {
+			position: absolute;
+			left: 40.104%;
+			top: 41.57%;
+			width: 7.44%;
+			animation: invfade 20s;
+			animation-iteration-count: infinite;
+		}
+
+		#s2vase {
+			position: absolute;
+			left: 37.55%;
+			top: 49.91%;
+			width: 4.48%;
+		}
+
+		#s3frau1 {
+			position: absolute;
+			left: 10%;
+			top: 21.48%;
+			width: 18.64%;
+			animation: fade 30s;
+			animation-iteration-count: infinite;
+		}
+
+		#s3frau2 {
+			position: absolute;
+			left: 10%;
+			top: 21.48%;
+			width: 18.64%;
+			animation: invfade 30s;
+			animation-iteration-count: infinite;
+		}
+
+		#s3kind1 {
+			position: absolute;
+			left: 49.07%;
+			top: 52.22%;
+			width: 10%;
+			animation: fade 20s;
+			animation-iteration-count: infinite;
+		}
+
+		#s3kind2 {
+			position: absolute;
+			left: 48.07%;
+			top: 52.22%;
+			width: 10%;
+			animation: invfade 20s;
+			animation-iteration-count: infinite;
+		}
+
+		#s3junge1 {
+			position: absolute;
+			left: 75%;
+			top: 39.16%;
+			width: 14.90%;
+			animation: fade 2s;
+			animation-iteration-count: infinite;
+		}
+
+		#s3junge2 {
+			position: absolute;
+			left: 75%;
+			top: 39.16%;
+			width: 14.90%;
+			animation: invfade 2s;
+			animation-iteration-count: infinite;
+		}
+
+		#s4barkeeper1 {
+			position: absolute;
+			left: 9.11%;
+			top: 16.20%;
+			width: 14.32%;
+			animation: fade 2s;
+			animation-iteration-count: infinite;
+		}
+
+		#s4barkeeper2 {
+			position: absolute;
+			left: 9.11%;
+			top: 16.20%;
+			width: 14.32%;
+			animation: invfade 2s;
+			animation-iteration-count: infinite;
+		}
+
+		#s4tortentyp1 {
+			position: absolute;
+			left: 47.40%;
+			top: 22.31%;
+			width: 17.08%;
+			animation: fade 10s;
+			animation-iteration-count: infinite;
+		}
+
+		#s4tortentyp2 {
+			position: absolute;
+			left: 47.40%;
+			top: 22.31%;
+			width: 17.08%;
+			animation: invfade 10s;
+			animation-iteration-count: infinite;
+		}
+
+		#s4bar {
+			position: absolute;
+			left: 0%;
+			top: 48.3%;
+			width: 28.9%;
+		}
+
+		#s4seetang {
+			position: absolute;
+			left: 86.66%;
+			top: 12.12%;
+			width: 9.11%;
+		}
+
+		#s5artist1 {
+			position: absolute;
+			left: 23.38%;
+			top: 41.48%;
+			width: 14.06%;
+			animation: fade 10s;
+			animation-iteration-count: infinite;
+		}
+
+		#s5artist2 {
+			position: absolute;
+			left: 23.38%;
+			top: 41.48%;
+			width: 14.06%;
+			animation: invfade 10s;
+			animation-iteration-count: infinite;
+		}
+
+		#s5seller1 {
+			position: absolute;
+			left: 12.91%;
+			top: 30.37%;
+			width: 5.36%;
+			animation: fade 20s;
+			animation-iteration-count: infinite;
+		}
+
+		#s5seller2 {
+			position: absolute;
+			left: 12.91%;
+			top: 30.37%;
+			width: 5.36%;
+			animation: invfade 20s;
+			animation-iteration-count: infinite;
+		}
+
+		#s5tante1 {
+			position: absolute;
+			left: 77.23%;
+			top: 31.48%;
+			width: 7.5%;
+			animation: fade 30s;
+			animation-iteration-count: infinite;
+		}
+
+		#s5tante2 {
+			position: absolute;
+			left: 77.23%;
+			top: 31.48%;
+			width: 7.5%;
+			animation: invfade 30s;
+			animation-iteration-count: infinite;
+		}
+
+		#s7forscher1 {
+			position: absolute;
+			left: 41.51%;
+			top: 18.51%;
+			width: 9.11%;
+			animation: fade 30s;
+			animation-iteration-count: infinite;
+		}
+
+		#s7forscher2 {
+			position: absolute;
+			left: 41.51%;
+			top: 18.51%;
+			width: 9.37%;
+			animation: invfade 30s;
+			animation-iteration-count: infinite;
+		}
+
+		#s8wache1 {
+			position: absolute;
+			left: 18.43%;
+			top: 4.62%;
+			width: 9.37%;
+			animation: fade 5;
+			animation-iteration-count: infinite;
+		}
+
+		#s8wache2 {
+			position: absolute;
+			left: 18.43%;
+			top: 4.62%;
+			width: 9.11%;
+			animation: invfade 5s;
+			animation-iteration-count: infinite;
+		}
+
+		#s8torauf {
+			position: absolute;
+			left: 21.91%;
+			top: 29.44%;
+			width: 28.64%;
+		}
+
+		#s8torzu {
+			position: absolute;
+			left: 21.91%;
+			top: 29.44%;
+			width: 28.64%;
+		}
+
+		#s8schild {
+			position: absolute;
+			left: 16.56%;
+			top: 19.16%;
+			width: 10.26%;
+		}
+
+		#s9pina1 {
+			position: absolute;
+			left: 28.08%;
+			top: 57.4%;
+			width: 3.03%;
+			animation: fade 5;
+			animation-iteration-count: infinite;
+		}
+
+		#s9pina2 {
+			position: absolute;
+			left: 28.08%;
+			top: 57.4%;
+			width: 3.03%;
+			animation: invfade 5s;
+			animation-iteration-count: infinite;
+		}
+
+		#s9mojito1 {
+			position: absolute;
+			left: 13.12%;
+			top: 61.66%;
+			width: 6.35%;
+			animation: fade 3s;
+			animation-iteration-count: infinite;
+		}
+
+		#s9mojito2 {
+			position: absolute;
+			left: 13.12%;
+			top: 61.66%;
+			width: 6.35%;
+			animation: invfade 3s;
+			animation-iteration-count: infinite;
+		}
+
+		#s9daiquiri1 {
+			position: absolute;
+			left: 70.52%;
+			top: 69.6%;
+			width: 8.33%;
+			animation: fade 1s;
+			animation-iteration-count: infinite;
+		}
+
+		#s9daiquiri2 {
+			position: absolute;
+			left: 70.52%;
+			top: 69.6%;
+			width: 8.33%;
+			animation: invfade 1s;
+			animation-iteration-count: infinite;
+		}
+
+		#s9daiquiri3 {
+			position: absolute;
+			left: 70.52%;
+			top: 69.6%;
+			width: 8.33%;
+			visibility: hidden;
+		}
+
+		#s9mauer {
+			position: absolute;
+			left: 11.25%;
+			top: 60.74%;
+			width: 3.43%;
+		}
+
+		img {
+			height: auto;
+			display: block;
+		}
+
+		@keyframes fade {
+			0% {
+				opacity: 0
+			}
+
+			9% {
+				opacity: 0
+			}
+
+			10% {
+				opacity: 1
+			}
+
+			20% {
+				opacity: 1
+			}
+
+			21% {
+				opacity: 0
+			}
+
+			29% {
+				opacity: 0
+			}
+
+			30% {
+				opacity: 1
+			}
+
+			39% {
+				opacity: 1
+			}
+
+			40% {
+				opacity: 1
+			}
+
+			50% {
+				opacity: 1
+			}
+
+			51% {
+				opacity: 0
+			}
+
+			59% {
+				opacity: 0
+			}
+
+			60% {
+				opacity: 0
+			}
+
+			69% {
+				opacity: 0
+			}
+
+			70% {
+				opacity: 1
+			}
+
+			80% {
+				opacity: 1
+			}
+
+			81% {
+				opacity: 0
+			}
+
+			89% {
+				opacity: 0
+			}
+
+			90% {
+				opacity: 1
+			}
+
+			99% {
+				opacity: 1
+			}
+
+			100% {
+				opacity: 0
+			}
+		}
+
+		@keyframes invfade {
+			0% {
+				opacity: 1
+			}
+
+			10% {
+				opacity: 1
+			}
+
+			11% {
+				opacity: 0
+			}
+
+			19% {
+				opacity: 0
+			}
+
+			20% {
+				opacity: 1
+			}
+
+			30% {
+				opacity: 1
+			}
+
+			31% {
+				opacity: 0
+			}
+
+			39% {
+				opacity: 0
+			}
+
+			40% {
+				opacity: 0
+			}
+
+			49% {
+				opacity: 0
+			}
+
+			50% {
+				opacity: 1
+			}
+
+			59% {
+				opacity: 1
+			}
+
+			60% {
+				opacity: 1
+			}
+
+			70% {
+				opacity: 1
+			}
+
+			71% {
+				opacity: 0
+			}
+
+			79% {
+				opacity: 0
+			}
+
+			80% {
+				opacity: 1
+			}
+
+			90% {
+				opacity: 1
+			}
+
+			91% {
+				opacity: 0
+			}
+
+			98% {
+				opacity: 0
+			}
+
+			99% {
+				opacity: 1
+			}
+		}
+	</style>
+</head>
+
+<body onload="start()">
+	<div id="story"></div>
+	<div id="inputline">
+		<span id="prompt">&#x25B6;</span>
+		<input id="inp">
+	</div>
+</body>
 <!-- Load Babel copied from https://unpkg.com/@babel/standalone/babel.min.js forwared to https://unpkg.com/@babel/standalone@7.11.3/babel.min.js-->
 <script>
 // @ts-check
 </script>
 <script>
-	function microBitReceivedMessage(message){
+	function microBitReceivedMessage(message) {
 		console.log(message)
 		//microBitWriteString("x\r\n")
 	}
-/*
-This code is to connect a micro:bit using BLE UART to p5.
-
-API:
-
-microBitConnect()
-
-This function should be called by an user event, like  mousePressed() https://p5js.org/reference/#/p5/mousePressed
-or KeyPressed() https://p5js.org/reference/#/p5/keyPressed
-
-microBitDisconnect()
-
-This function disconnects the microbit from the device running the p5 sketch.
-
-microBitWriteString("string")
-
-Writes a text to the microbit
-
-microBitReceivedMessage(message)
-
-This is a function that is called when the microBit sends a message to the device running P5
-
-
-Example sketch.js
-
-//This code sends the current key pressed to the microbit, and shows the last message of the microbit in the middle of the screen
-function setup() {
-  createCanvas(400, 400);
-}
-lastMessage = "";
-function draw() {
-  background(220);
-  text(lastMessage,200,200);
-}
-
-function mousePressed(){
-  microBitConnect()
-}
-
-function keyPressed(){
-  microBitWriteString(key + "\n")
-}
-function microBitReceivedMessage(message){
-  lastMessage = message;
-}
-
-*/
+	/*
+	This code is to connect a micro:bit using BLE UART to p5.
+	
+	API:
+	
+	microBitConnect()
+	
+	This function should be called by an user event, like  mousePressed() https://p5js.org/reference/#/p5/mousePressed
+	or KeyPressed() https://p5js.org/reference/#/p5/keyPressed
+	
+	microBitDisconnect()
+	
+	This function disconnects the microbit from the device running the p5 sketch.
+	
+	microBitWriteString("string")
+	
+	Writes a text to the microbit
+	
+	microBitReceivedMessage(message)
+	
+	This is a function that is called when the microBit sends a message to the device running P5
+	
+	
+	Example sketch.js
+	
+	//This code sends the current key pressed to the microbit, and shows the last message of the microbit in the middle of the screen
+	function setup() {
+	  createCanvas(400, 400);
+	}
+	lastMessage = "";
+	function draw() {
+	  background(220);
+	  text(lastMessage,200,200);
+	}
+	
+	function mousePressed(){
+	  microBitConnect()
+	}
+	
+	function keyPressed(){
+	  microBitWriteString(key + "\n")
+	}
+	function microBitReceivedMessage(message){
+	  lastMessage = message;
+	}
+	
+	*/
 
 	// https://lancaster-university.github.io/microbit-docs/resources/bluetooth/bluetooth_profile.html
-// An implementation of Nordic Semicondutor's UART/Serial Port Emulation over Bluetooth low energy
-const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+	// An implementation of Nordic Semicondutor's UART/Serial Port Emulation over Bluetooth low energy
+	const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 
-// Allows the micro:bit to transmit a byte array
-const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+	// Allows the micro:bit to transmit a byte array
+	const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
-// Allows a connected client to send a byte array
-const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+	// Allows a connected client to send a byte array
+	const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
-let uBitDevice;
-let rxCharacteristic;
+	let uBitDevice;
+	let rxCharacteristic;
 
-async function microBitWriteString(string){
-  if (!rxCharacteristic) {
-    return;
-  }
+	async function microBitWriteString(string) {
+		if (!rxCharacteristic) {
+			return;
+		}
 
-  try {
-    let encoder = new TextEncoder();
-    rxCharacteristic.writeValue(encoder.encode(string));
-  } catch (error) {
-    console.log(error);
-  }
-}
-let bluetooth=false;
-async function microBitConnect() {
-  try {
-    console.log("Requesting Bluetooth Device...");
-    uBitDevice = await navigator.bluetooth.requestDevice({
-      filters: [{ namePrefix: "BBC micro:bit" }],
-      optionalServices: [UART_SERVICE_UUID]
-    });
+		try {
+			let encoder = new TextEncoder();
+			rxCharacteristic.writeValue(encoder.encode(string));
+		} catch (error) {
+			console.log(error);
+		}
+	}
+	let bluetooth = false;
+	async function microBitConnect() {
+		try {
+			console.log("Requesting Bluetooth Device...");
+			//TODO use navigator.bluetooth.getDevices similar to usb uart
+			uBitDevice = await navigator.bluetooth.requestDevice({
+				filters: [{ namePrefix: "BBC micro:bit" }],
+				optionalServices: [UART_SERVICE_UUID]
+			});
 
-    console.log("Connecting to GATT Server...");
-    const server = await uBitDevice.gatt.connect();
+			console.log("Connecting to GATT Server...");
+			const server = await uBitDevice.gatt.connect();
 
-    console.log("Getting Service...");
-    const service = await server.getPrimaryService(UART_SERVICE_UUID);
+			console.log("Getting Service...");
+			const service = await server.getPrimaryService(UART_SERVICE_UUID);
 
-    console.log("Getting Characteristics...");
-    const txCharacteristic = await service.getCharacteristic(
-      UART_TX_CHARACTERISTIC_UUID
-    );
-    txCharacteristic.startNotifications();
-    txCharacteristic.addEventListener(
-      "characteristicvaluechanged",
-      onTxCharacteristicValueChanged
-    );
-    rxCharacteristic = await service.getCharacteristic(
-      UART_RX_CHARACTERISTIC_UUID
-    );
+			console.log("Getting Characteristics...");
+			const txCharacteristic = await service.getCharacteristic(
+				UART_TX_CHARACTERISTIC_UUID
+			);
+			txCharacteristic.startNotifications();
+			txCharacteristic.addEventListener(
+				"characteristicvaluechanged",
+				onTxCharacteristicValueChanged
+			);
+			rxCharacteristic = await service.getCharacteristic(
+				UART_RX_CHARACTERISTIC_UUID
+			);
 
-    uBitDevice.addEventListener('gattserverdisconnected', onDisconnected);
-	bluetooth=true;
-  } catch (error) {
-	bluetooth=false;
-    console.log(error);
-  }
-}
-async function onDisconnected(event) {
-	bluetooth=false;
-  // Object event.target is Bluetooth Device getting disconnected.
-   console.log('Bluetooth Device disonnected');
-
- 
-  
-}
-
-function microBitDisconnect() {
-  if (!uBitDevice) {
-    return;
-  }
-
-  if (uBitDevice.gatt.connected) {
-    uBitDevice.gatt.disconnect();
-    console.log("Disconnected");
-  }
-}
+			uBitDevice.addEventListener('gattserverdisconnected', onDisconnected);
+			bluetooth = true;
+		} catch (error) {
+			bluetooth = false;
+			console.log(error);
+		}
+	}
+	async function onDisconnected(event) {
+		bluetooth = false;
+		// Object event.target is Bluetooth Device getting disconnected.
+		console.log('Bluetooth Device disonnected');
 
 
-function onTxCharacteristicValueChanged(event) {
-  let receivedData = [];
-  for (var i = 0; i < event.target.value.byteLength; i++) {
-    receivedData[i] = event.target.value.getUint8(i);
-  }
-  const receivedString = String.fromCharCode.apply(null, receivedData);
-  if (typeof microBitReceivedMessage !== 'undefined'){
-    microBitReceivedMessage(receivedString);
-  }else{
-    console.log("microBitReceivedMessage is not defined")
-  }
-  console.log(receivedString);
-}
+
+	}
+
+	function microBitDisconnect() {
+		if (!uBitDevice) {
+			return;
+		}
+
+		if (uBitDevice.gatt.connected) {
+			uBitDevice.gatt.disconnect();
+			console.log("Disconnected");
+		}
+	}
 
 
+	function onTxCharacteristicValueChanged(event) {
+		let receivedData = [];
+		for (var i = 0; i < event.target.value.byteLength; i++) {
+			receivedData[i] = event.target.value.getUint8(i);
+		}
+		const receivedString = String.fromCharCode.apply(null, receivedData);
+		if (typeof microBitReceivedMessage !== 'undefined') {
+			microBitReceivedMessage(receivedString);
+		} else {
+			console.log("microBitReceivedMessage is not defined")
+		}
+		console.log(receivedString);
+	}
+
+	///////////////////////////////////
+	//usb serial
+	//https://thecodebarbarian.com/async-generator-functions-in-javascript.html#:~:text=Async%20generator%20functions%20behave%20similarly,()%20function%20returns%20a%20promise.
+	//https://www.javascripttutorial.net/es-next/javascript-async-generators/
+	//https://stackoverflow.com/questions/71262432/how-can-i-close-a-web-serial-port-that-ive-piped-through-a-transformstream
+	async function writeMicrobit(txt) {
+		if ("serial" in navigator) {
+			// The Web Serial API is supported.
+
+			// Prompt user to select any serial port.
+			try {
+				// Get all serial ports the user has previously granted the website access to.
+				const filters = [
+					{ usbVendorId: 0x0D28, usbProductId: 0x0204 },
+
+				];
+				const ports = await navigator.serial.getPorts();
+				let port = null;
+				console.log(JSON.stringify(filters))
+				for (let i = 0; i < ports.length; ++i) {
+					let info = ports[i].getInfo();
+					console.log(JSON.stringify(info))
+					if (info.usbProductId == filters[0].usbProductId && info.usbVendorId == filters[0].usbVendorId) port = ports[i];
+				}
+
+				if (!port) port = await navigator.serial.requestPort({ filters });
+				console.log(port)
+				console.log("Available\n" + JSON.stringify(port))
+				await port.open({
+					baudRate: 115200,
+					dataBits: 8,
+					stopBits: 1,
+					parity: "none",
+					bufferSize: 1024,
+					flowControl: "none"
+				});
+
+				/*			while (port.readable) {
+								const reader = port.readable.getReader();
+								while (true) {
+									const { value, done } = await reader.read();
+									if (done) {
+										// Allow the serial port to be closed later.
+										reader.releaseLock();
+										break;
+									}
+									if (value) {
+										console.log(value);
+									}
+								}
+								
+							}
+				*/
+
+
+				const textEncoder = new TextEncoderStream();
+				const writer = textEncoder.writable.getWriter();
+				const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+
+
+				await writer.write(txt + "\n");//\r\n
+				// Allow the serial port to be closed later.
+
+				writer.close();
+				await writableStreamClosed;
+				//await writer.close()
+
+				//port.writable.releaseLock();
+				await port.close()
+				//await port.close();
+				return true;
+			} catch (e) {
+				console.log(e)
+				return false;
+			}
+
+		}
+	}
+
+
+	async function readMicrobit() {
+		if ("serial" in navigator) {
+			// The Web Serial API is supported.
+
+			// Prompt user to select any serial port.
+			let textDecoder;
+			let readableStreamClosed;
+			let reader;
+			let port = null;
+			let str = "";
+			try {
+				// Get all serial ports the user has previously granted the website access to.
+				const filters = [
+					{ usbVendorId: 0x0D28, usbProductId: 0x0204 },
+
+				];
+				const ports = await navigator.serial.getPorts();
+
+				console.log(JSON.stringify(filters))
+				for (let i = 0; i < ports.length; ++i) {
+					let info = ports[i].getInfo();
+					console.log(JSON.stringify(info))
+					if (info.usbProductId == filters[0].usbProductId && info.usbVendorId == filters[0].usbVendorId) port = ports[i];
+				}
+
+				if (!port) port = await navigator.serial.requestPort({ filters });
+				console.log(port)
+				console.log("Available\n" + JSON.stringify(port))
+				await port.open({
+					baudRate: 115200,
+					dataBits: 8,
+					stopBits: 1,
+					parity: "none",
+					bufferSize: 1024,
+					flowControl: "none"
+				});
+
+				textDecoder = new TextDecoderStream();
+				readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+				reader = textDecoder.readable.getReader();
+
+				// Listen to data coming from the serial device.
+				//we might want to use timeout https://stackoverflow.com/questions/65748344/how-can-i-interrupt-a-reader-when-it-hangs-need-a-timeout-on-reader-read
+				str = "";
+				let firsttimeout = 10000;
+				while (true) {
+					const { value, done } = await Promise.race([
+						reader.read(),
+						new Promise((_, reject) => setTimeout(reject, firsttimeout, new Error("timeout")))
+					]);
+					firsttimeout = 100;
+					str = str + value;
+					if (done) {
+						reader.releaseLock();
+						break;
+					}
+					// value is a string.
+					//console.log(value);
+					//return value.charAt(0)
+
+				}
+				//console.log("text:"+str);
+				return str;
+			} catch (e) {
+				//console.log(e)
+
+				return str;//this is the normal control flow
+			}
+			finally {//executed before return in try and catch
+				reader.cancel();
+				await readableStreamClosed.catch(() => { /* Ignore the error */ });
+
+				await port.close();
+			}
+
+		}
+	}
 </script>
 <script src="babel.min.js"></script>
 <script>
-// Define a preset https://medium.com/jspoint/a-minimal-guide-to-ecmascript-decorators-55b70338215e
-Babel.registerPreset("env-plus", {
-  presets: [
-    [Babel.availablePresets["env"], { "loose": true }]
-  ],
-  plugins: [
-    [
-      Babel.availablePlugins["proposal-decorators"], {"decoratorsBeforeExport": true}
-    ],
-	[
-		Babel.availablePlugins["proposal-class-properties"],
-		{
-			"loose": true
-		}
-    ]
-  ],
-});
+	// Define a preset https://medium.com/jspoint/a-minimal-guide-to-ecmascript-decorators-55b70338215e
+	Babel.registerPreset("env-plus", {
+		presets: [
+			[Babel.availablePresets["env"], { "loose": true }]
+		],
+		plugins: [
+			[
+				Babel.availablePlugins["proposal-decorators"], { "decoratorsBeforeExport": true }
+			],
+			[
+				Babel.availablePlugins["proposal-class-properties"],
+				{
+					"loose": true
+				}
+			]
+		],
+	});
 </script>
 <!-- Decorator example -->
 <script type="text/babel" data-presets="env-plus">
 
-/*TODO:
-Roboter ist kaputt und kann sich nicht mehr selber reparieren.
-Wir sind jetzt mit dem Programmier teil fertig.
-Man kommt in die Höhle und findet den Roboter als Schatz.
-Einfachste Rätsel ist zugangs code zum Computer.
-
-Man findet 7 Segment anzeige
-Dazu muss man 7 Segment anzeige richtig verbinden und mit robo reden.
-Dazu findet man eine Anleitung die Beschreibt wie man die 7 Segment anzeige verbinden muss.
-
-Dann öffnet sich tür zum labyrith und man muss roboter folgen.
-Findet man motor treiber.
-wenn mann man dann imnmer passend n, s,  usw eintippt. (vorwärts ist norden, rückwärts ist süden und nach rechts drehen ist Osten und nach links drehn ist Westen)
-roboter fährt immer zur ursprungslage damit das ding nicht vom tisch fällt.
-
-Danach findet man den Ultraschallsensor.
-Roboter will damit erkennen dass ein Mensch vor ihm ist. Und man muss seine Hand vor dem Sensor winken.
-
-Dann eröffnet der Roboter einem den Zugang zum Heiligsten: sein Gehirn und man bekommt ssh zugansdaten mit zugang zum git.
-
-*/
-
-
+	/*TODO:
+	Roboter ist kaputt und kann sich nicht mehr selber reparieren.
+	Wir sind jetzt mit dem Programmier teil fertig.
+	Man kommt in die Höhle und findet den Roboter als Schatz.
+	Einfachste Rätsel ist zugangs code zum Computer.
+	
+	Man findet 7 Segment anzeige
+	Dazu muss man 7 Segment anzeige richtig verbinden und mit robo reden.
+	Dazu findet man eine Anleitung die Beschreibt wie man die 7 Segment anzeige verbinden muss.
+	
+	Dann öffnet sich tür zum labyrith und man muss roboter folgen.
+	Findet man motor treiber.
+	wenn mann man dann imnmer passend n, s,  usw eintippt. (vorwärts ist norden, rückwärts ist süden und nach rechts drehen ist Osten und nach links drehn ist Westen)
+	roboter fährt immer zur ursprungslage damit das ding nicht vom tisch fällt.
+	
+	Danach findet man den Ultraschallsensor.
+	Roboter will damit erkennen dass ein Mensch vor ihm ist. Und man muss seine Hand vor dem Sensor winken.
+	
+	Dann eröffnet der Roboter einem den Zugang zum Heiligsten: sein Gehirn und man bekommt ssh zugansdaten mit zugang zum git.
+	
+	*/
 
 
 
 
 
-// @ts-check
-class Obj {
-	static arr = [];
-	static dict = {};
-	static idcnt = 0;
-	id = 0;
-	constructor() {
-		this.id = Obj.idcnt;
-		Obj.arr[this.id] = this;
-		Obj.idcnt++;
-	}
-	name=undefined;
-	static nametag() {
-    	// search through the global object for a name that resolves to this object
-		for (var name in window) {
-			if (window[name] instanceof Obj) {
-				for (var i in Obj.arr) {
 
-					if (window[name] == Obj.arr[i] && !Obj.dict.hasOwnProperty(name)) {
-						Obj.arr[i].name = name;
-						Obj.dict[name] = Obj.arr[i];
+
+	// @ts-check
+	class Obj {
+		static arr = [];
+		static dict = {};
+		static idcnt = 0;
+		id = 0;
+		constructor() {
+			this.id = Obj.idcnt;
+			Obj.arr[this.id] = this;
+			Obj.idcnt++;
+		}
+		name = undefined;
+		static nametag() {
+			// search through the global object for a name that resolves to this object
+			for (var name in window) {
+				if (window[name] instanceof Obj) {
+					for (var i in Obj.arr) {
+
+						if (window[name] == Obj.arr[i] && !Obj.dict.hasOwnProperty(name)) {
+							Obj.arr[i].name = name;
+							Obj.dict[name] = Obj.arr[i];
+						}
+					}
+				}
+			}
+		}
+
+		static inspect(object, num = 0) {
+			switch (typeof (object)) {
+
+				case "undefined":
+					return "undefined";
+				case "string":
+					return "\"" + object.replace(/\n/g, "\\n").replace(/\"/g, "\\\"") + "\"";
+				case "object":
+					if (object == null) {
+						return "null";
+					}
+					if (num > 0 && object instanceof Obj) return "Obj.dict['" + object.name + "']"
+					var a = [];
+					if (object instanceof Array) {
+						for (var i in object) {
+							a.push(Obj.inspect(object[i], ++num));
+						};
+						return "[" + a.join(", ") + "]";
+					} else {
+
+						for (var key in object) {
+							if (object.hasOwnProperty(key)) {
+								if (num === 0 && (key === "id" || key === "name")) continue;
+								if (typeof (object[key]) === "function") continue;//skip functions to avoid hacks
+								a.push('"' + key + '"' + ": " + Obj.inspect(object[key], ++num));
+							}
+						};
+						return "{" + a.join(", ") + "}";
+					}
+				default:
+					return object.toString();
+			}
+		};
+		static dump() {
+			Obj.nametag();
+			let a = ["{"];
+
+
+			for (var key in Obj.dict) {
+				a.push('"' + key + '":' + Obj.inspect(Obj.dict[key]) + ",");
+			}
+			a.push("}");
+			return a.join('');
+		}
+
+		static restore(data) {
+			let dict2;
+			eval('dict2=' + data);
+
+			for (var key in dict2) {
+				if (key in Obj.dict) {
+					for (var key2 in Obj.dict[key]) {
+						if (Obj.dict[key].hasOwnProperty(key2))
+							if (key2 in dict2[key]) Obj.dict[key][key2] = dict2[key][key2];
 					}
 				}
 			}
 		}
 	}
 
-	static inspect(object, num = 0) {
-		switch (typeof(object)) {
+	class Thing extends Obj {
+		/** @member {string} */
+		titel = [""];
+		description = "";
+		speakable = false;//when true you can speak with it. you need to add: XXX.dialog=async function* ()
+		opensoninspection = false;//is closed but when you look at it by command "look at item" it opens.
+		takeable = false;//when true you can take it. you need to add take function take
+		dropable = false;//when true you can drop it. do not add any function
+		//function 'receiving' is called after take is called such that object is in posession of other person
+		//but if you return false the object is given back
 
-			case "undefined":
-				return "undefined";
-			case "string":
-				return "\"" + object.replace(/\n/g, "\\n").replace(/\"/g, "\\\"") + "\"";
-			case "object":
-				if (object == null) {
-					return "null";
-				}
-				if (num > 0 && object instanceof Obj) return "Obj.dict['" + object.name + "']"
-				var a = [];
-				if (object instanceof Array) {
-					for (var i in object) {
-						a.push(Obj.inspect(object[i], ++num));
-					};
-					return "[" + a.join(", ") + "]";
-				} else {
+		//'giving' is called when you take something from a person
+		//if you return false it is rejected 
+		//'receiving' and giving are called in 'take' function
+		//you do not write functions take and drop
+		usable = false;//when true you can use it. you need to add function use
+		openable = false;//when true you can give things, that is drop things there do not add any function
+		applicable = false;//when true you cann apply it. add function doApply
+		closable = false;//when true you can close it,do not add any function
+		open = false;
+		blocking = false;//used if a person blocks a direction or a door blocks a direction;
+		blockable = false;//if true we can block and unblock.used if a person blocks a direction or a door can block a direction must be set true when we insert something that blocks;
+		locked = false;
 
-					for (var key in object) {
-						if (object.hasOwnProperty(key)) {
-							if (num === 0 && (key === "id" || key === "name")) continue;
-							if(typeof(object[key]) === "function" ) continue;//skip functions to avoid hacks
-							a.push('"'+key+'"' + ": " + Obj.inspect(object[key], ++num));
-						}
-					};
-					return "{" + a.join(", ") + "}";
-				}
-			default:
-				return object.toString();
-		}
-	};
-	static dump(){
-		Obj.nametag();
-		let a = ["{"];
-  
-        
-		for (var key in Obj.dict) {
-			a.push('"'+key+'":'+Obj.inspect(Obj.dict[key])+",");
-		}
-		a.push("}");
-		return a.join('');
-	}
-	
-	static restore(data){
-		let dict2;
-		eval('dict2='+data);
-		
-		for (var key in dict2) {
-			if(key in Obj.dict){
-				for(var key2 in Obj.dict[key]){
-					if (Obj.dict[key].hasOwnProperty(key2))
-						if(key2 in dict2[key]) Obj.dict[key][key2]=dict2[key][key2];
-				}
-			}
-		}
-	}
-}
-
-class Thing extends Obj{
-	/** @member {string} */
-	titel=[""];
-	description="";
-	speakable=false;//when true you can speak with it. you need to add: XXX.dialog=async function* ()
-	opensoninspection=false;//is closed but when you look at it by command "look at item" it opens.
-	takeable=false;//when true you can take it. you need to add take function take
-	dropable=false;//when true you can drop it. do not add any function
-	//function 'receiving' is called after take is called such that object is in posession of other person
-	//but if you return false the object is given back
-	
-	//'giving' is called when you take something from a person
-	//if you return false it is rejected 
-	//'receiving' and giving are called in 'take' function
-	//you do not write functions take and drop
-	usable=false;//when true you can use it. you need to add function use
-	openable=false;//when true you can give things, that is drop things there do not add any function
-	applicable=false;//when true you cann apply it. add function doApply
-	closable=false;//when true you can close it,do not add any function
-	open=false;
-	blocking=false;//used if a person blocks a direction or a door blocks a direction;
-	blockable=false;//if true we can block and unblock.used if a person blocks a direction or a door can block a direction must be set true when we insert something that blocks;
-	locked=false;
-
-	visible=false;
-	things={};//items,scenes,persons
-	applytarget={};
-	parent=null;
-	position=null;
-	take(thing,force=false){
-		let retval=true;
-		if(!force && thing.parent.giving) retval=thing.parent.giving(thing);
-		if(retval){
-			let old=thing.parent;
-			thing.parent.remove(thing)
-			this.insert(thing);	
-			if(this.receiving) retval&= this.receiving(thing);//here we have recursive problem with calling take in receiving but only when calling take directly
-			if(!retval){
+		visible = false;
+		things = {};//items,scenes,persons
+		applytarget = {};
+		parent = null;
+		position = null;
+		take(thing, force = false) {
+			let retval = true;
+			if (!force && thing.parent.giving) retval = thing.parent.giving(thing);
+			if (retval) {
+				let old = thing.parent;
 				thing.parent.remove(thing)
-				old.insert(thing);
+				this.insert(thing);
+				if (this.receiving) retval &= this.receiving(thing);//here we have recursive problem with calling take in receiving but only when calling take directly
+				if (!retval) {
+					thing.parent.remove(thing)
+					old.insert(thing);
+				}
+				return retval;
 			}
-			return retval;
+			else return false;
 		}
-		else return false;
-	}
-	constructor(titel,description){
-		let titel2
-		if(typeof titel==="string") titel2=[titel];
-		else titel2=titel;
-		super();
-		this.titel=titel2;
-		this.description=description;
-	}
-	describe(){
-		if(this.opensoninspection) this.open=true;
-		return this.titel[0]+": "+this.description;
-	}
-	insert(thing){
-        if(thing.name===undefined) Obj.nametag()
-		this.things[thing.name]=thing;
-		thing.parent=this;
-	}
-	remove(thing){
-        if(thing.name===undefined) Obj.nametag()
-		if(this.things.hasOwnProperty(thing.name)){
-			delete this.things[thing.name];
-			return true;
+		constructor(titel, description) {
+			let titel2
+			if (typeof titel === "string") titel2 = [titel];
+			else titel2 = titel;
+			super();
+			this.titel = titel2;
+			this.description = description;
 		}
-		return false;
-	}
-	has(thing){
-        if(thing.name===undefined) Obj.nametag()
-		return this.things.hasOwnProperty(thing.name)
-	}
-	insertApplyTarget(target){
-        if(target.name===undefined) Obj.nametag()
-		this.applytarget[target.name]=target;
-	}
-	removeApplyTarget(target){
-        if(target.name===undefined) Obj.nametag()
-		if(this.applytarget.hasOwnProperty(target.name))delete this.applytarget[target.name];
+		describe() {
+			if (this.opensoninspection) this.open = true;
+			return this.titel[0] + ": " + this.description;
+		}
+		insert(thing) {
+			if (thing.name === undefined) Obj.nametag()
+			this.things[thing.name] = thing;
+			thing.parent = this;
+		}
+		remove(thing) {
+			if (thing.name === undefined) Obj.nametag()
+			if (this.things.hasOwnProperty(thing.name)) {
+				delete this.things[thing.name];
+				return true;
+			}
+			return false;
+		}
+		has(thing) {
+			if (thing.name === undefined) Obj.nametag()
+			return this.things.hasOwnProperty(thing.name)
+		}
+		insertApplyTarget(target) {
+			if (target.name === undefined) Obj.nametag()
+			this.applytarget[target.name] = target;
+		}
+		removeApplyTarget(target) {
+			if (target.name === undefined) Obj.nametag()
+			if (this.applytarget.hasOwnProperty(target.name)) delete this.applytarget[target.name];
+		}
+
+		async speak(choice = "") {
+			if (!this.dialog) return "";
+			if (!this.iter) this.iter = this.dialog();
+			let result = await this.iter.next(choice);
+			if (result.done) this.iter = this.dialog();
+			return result;
+		}
+
 	}
 
-	async speak(choice=""){
-		if(!this.dialog) return "";
-		if(!this.iter) this.iter=this.dialog();
-		let result=await this.iter.next(choice);
-		if (result.done) this.iter=this.dialog();
-		return result;
-	}
-	
-}
-
-class Scene extends Thing{//is not takeable
-	constructor(titel,description,{openable=false,opensoninspection=false,closable=false,open=true,visible=true}={}){
-		super(titel,description);
-		this.openable=openable;
-		this.open=open;
-		this.closable=closable;
-		this.opensoninspection=opensoninspection;
-	}
-	northblock=undefined;
-	northdir=undefined;
-	set north(target){
-		this.northdir=target;
-		if(!target.south) target.south=this;
-	}
-	get north(){
-		return this.northdir;
-	}
-	southblock=undefined;
-	southdir=undefined;
-	set south(target){
-		this.southdir=target;
-		if(!target.north) target.north=this;
-	}
-	get south(){
-		return this.southdir;
-	}
-	eastblock=undefined;
-	eastdir=undefined;
-	set east(target){
-		this.eastdir=target;
-		if(!target.west) target.west=this;
-	}
-	get east(){
-		return this.eastdir;
-	}
-	westblock=undefined;
-	westdir=undefined;
-	set west(target){
-		this.westdir=target;
-		if(!target.east) target.east=this;
-	}
-	get west(){
-		return this.westdir;
-	}
-	upblock=undefined;
-	updir=undefined;
-	set up(target){
-		this.updir=target;
-		if(!target.down) target.down=this;
-	}
-	get up(){
-		return this.updir;
-	}
-	downblock=undefined;
-	downdir=undefined;
-	set down(target){
-		this.downdir=target;
-		if(!target.up) target.up=this;
-	}
-	get down(){
-		return this.downdir;
-	}
-}
-class Door extends Thing{
-constructor(titel,description,{openable=false,opensoninspection=false,closable=false,open=false,visible=true,takeable=false,dropable=false,usable=false,applicable=true,blockable=true,blocking=true,locked=false,speakable=false}={}){
-		super(titel,description);
-		this.speakable=speakable;
-		this.openable=openable;
-		this.closable=closable;
-		this.open=open;
-		this.visible=visible;
-		this.takeable=takeable;
-		this.dropable=dropable;
-		this.usable=usable;
-		this.opensoninspection=opensoninspection;
-		this.applicable=applicable;
-		this.blockable=blockable;
-		this.blocking=blocking;
-		this.locked=locked;
-	}
-}
-/**
- * Class representing an item.
- * @extends Thing
- */
-class Item extends Thing{//is takeable
-	constructor(titel,description,{openable=false,opensoninspection=false,closable=false,open=false,visible=true,takeable=true,dropable=true,usable=false,applicable=false}={}){
-		super(titel,description);
-		this.openable=openable;
-		this.closable=closable;
-		this.open=open;
-		this.visible=visible;
-		this.takeable=takeable;
-		this.dropable=dropable;
-		this.usable=usable;
-		this.opensoninspection=opensoninspection;
-		this.applicable=applicable;
-	}
-}
-
-class Person extends Thing{
-	position=null;
-	constructor(titel,description,{speakable=true,opensoninspection=false,openable=false,closable=false,open=false,visible=true,takeable=false,dropable=false,usable=false}={}){
-		super(titel,description);
-		this.speakable=speakable;
-		this.openable=openable;
-		this.closable=closable;
-		this.open=open;
-		this.visible=visible;
-		this.takeable=takeable;
-		this.dropable=dropable;
-		this.opensoninspection=opensoninspection;
-		this.usable=usable;
-	}
-}
-class BlockingPerson extends Thing{
-	position=null;
-	constructor(titel,description,{speakable=true,opensoninspection=false,openable=false,closable=false,open=false,visible=true,takeable=false,dropable=false,usable=false,blockable=true,blocking=true,locked=false}={}){
-		super(titel,description);
-		this.speakable=speakable;
-		this.openable=openable;
-		this.closable=closable;
-		this.open=open;
-		this.visible=visible;
-		this.takeable=takeable;
-		this.dropable=dropable;
-		this.opensoninspection=opensoninspection;
-		this.usable=usable;
-		this.blockable=blockable;
-		this.blocking=blocking;
-		this.locked=locked;
-	}
-}
-function replaceWords(command,inputcommand,param){
-	let upper=false;
-	let words=command.split(' ');
-	let words2=inputcommand.split(' ');
-	let command2=command;
-	let arrowindex=0;
-	for( arrowindex in words2) if (words2[arrowindex]==="=>") break;
-	let correction=0;
-	for(var ii in words){
-		let i=Number(ii);//carefull: javascript takes indices to arrays as string!!!
-		if(words[i].toUpperCase()==words[i] && words[i]!=="=>"){
-			upper=true;
-			let key=words[i].toLowerCase();
-			if(words2[i+correction]) {
-				if(i==words.length-1) words[i]=words2.slice(i+correction).join(" ");
-				else if((i<words.length-1) && words[i+1]==="=>"){
-					words[i]=words2.slice(i+correction,Number(arrowindex)+correction).join(" ");
-					correction=Number(arrowindex)-1-Number(i);
-				}
-				else words[i]=words2[i+correction];
-			}
-			if(words[i].includes("=>")) return "";
-			param[key]=words[i];
+	class Scene extends Thing {//is not takeable
+		constructor(titel, description, { openable = false, opensoninspection = false, closable = false, open = true, visible = true } = {}) {
+			super(titel, description);
+			this.openable = openable;
+			this.open = open;
+			this.closable = closable;
+			this.opensoninspection = opensoninspection;
+		}
+		northblock = undefined;
+		northdir = undefined;
+		set north(target) {
+			this.northdir = target;
+			if (!target.south) target.south = this;
+		}
+		get north() {
+			return this.northdir;
+		}
+		southblock = undefined;
+		southdir = undefined;
+		set south(target) {
+			this.southdir = target;
+			if (!target.north) target.north = this;
+		}
+		get south() {
+			return this.southdir;
+		}
+		eastblock = undefined;
+		eastdir = undefined;
+		set east(target) {
+			this.eastdir = target;
+			if (!target.west) target.west = this;
+		}
+		get east() {
+			return this.eastdir;
+		}
+		westblock = undefined;
+		westdir = undefined;
+		set west(target) {
+			this.westdir = target;
+			if (!target.east) target.east = this;
+		}
+		get west() {
+			return this.westdir;
+		}
+		upblock = undefined;
+		updir = undefined;
+		set up(target) {
+			this.updir = target;
+			if (!target.down) target.down = this;
+		}
+		get up() {
+			return this.updir;
+		}
+		downblock = undefined;
+		downdir = undefined;
+		set down(target) {
+			this.downdir = target;
+			if (!target.up) target.up = this;
+		}
+		get down() {
+			return this.downdir;
 		}
 	}
-	if(upper) {
-		command2=words.join(" ");
-		//console.log(command2,command,inputcommand);
-		//console.log(JSON.stringify(param));
+	class Door extends Thing {
+		constructor(titel, description, { openable = false, opensoninspection = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false, applicable = true, blockable = true, blocking = true, locked = false, speakable = false } = {}) {
+			super(titel, description);
+			this.speakable = speakable;
+			this.openable = openable;
+			this.closable = closable;
+			this.open = open;
+			this.visible = visible;
+			this.takeable = takeable;
+			this.dropable = dropable;
+			this.usable = usable;
+			this.opensoninspection = opensoninspection;
+			this.applicable = applicable;
+			this.blockable = blockable;
+			this.blocking = blocking;
+			this.locked = locked;
+		}
 	}
-	return command2;
-}
-function when( command,param={} ) {
-	return function ( target ){	
-		const original = target.descriptor.value;
-		if (typeof original === 'function') {
-			target.descriptor.value = function(...args) {
-				let command2=replaceWords(command,Commands.command,param);
-				if(!original.toString().startsWith("function ()") && args[0]) {
-					return original.apply(this, args);//we have direct call
+	/**
+	 * Class representing an item.
+	 * @extends Thing
+	 */
+	class Item extends Thing {//is takeable
+		constructor(titel, description, { openable = false, opensoninspection = false, closable = false, open = false, visible = true, takeable = true, dropable = true, usable = false, applicable = false } = {}) {
+			super(titel, description);
+			this.openable = openable;
+			this.closable = closable;
+			this.open = open;
+			this.visible = visible;
+			this.takeable = takeable;
+			this.dropable = dropable;
+			this.usable = usable;
+			this.opensoninspection = opensoninspection;
+			this.applicable = applicable;
+		}
+	}
+
+	class Person extends Thing {
+		position = null;
+		constructor(titel, description, { speakable = true, opensoninspection = false, openable = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false } = {}) {
+			super(titel, description);
+			this.speakable = speakable;
+			this.openable = openable;
+			this.closable = closable;
+			this.open = open;
+			this.visible = visible;
+			this.takeable = takeable;
+			this.dropable = dropable;
+			this.opensoninspection = opensoninspection;
+			this.usable = usable;
+		}
+	}
+	class BlockingPerson extends Thing {
+		position = null;
+		constructor(titel, description, { speakable = true, opensoninspection = false, openable = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false, blockable = true, blocking = true, locked = false } = {}) {
+			super(titel, description);
+			this.speakable = speakable;
+			this.openable = openable;
+			this.closable = closable;
+			this.open = open;
+			this.visible = visible;
+			this.takeable = takeable;
+			this.dropable = dropable;
+			this.opensoninspection = opensoninspection;
+			this.usable = usable;
+			this.blockable = blockable;
+			this.blocking = blocking;
+			this.locked = locked;
+		}
+	}
+	function replaceWords(command, inputcommand, param) {
+		let upper = false;
+		let words = command.split(' ');
+		let words2 = inputcommand.split(' ');
+		let command2 = command;
+		let arrowindex = 0;
+		for (arrowindex in words2) if (words2[arrowindex] === "=>") break;
+		let correction = 0;
+		for (var ii in words) {
+			let i = Number(ii);//carefull: javascript takes indices to arrays as string!!!
+			if (words[i].toUpperCase() == words[i] && words[i] !== "=>") {
+				upper = true;
+				let key = words[i].toLowerCase();
+				if (words2[i + correction]) {
+					if (i == words.length - 1) words[i] = words2.slice(i + correction).join(" ");
+					else if ((i < words.length - 1) && words[i + 1] === "=>") {
+						words[i] = words2.slice(i + correction, Number(arrowindex) + correction).join(" ");
+						correction = Number(arrowindex) - 1 - Number(i);
+					}
+					else words[i] = words2[i + correction];
 				}
-				//console.log(`Arguments: ${args}`);
-				try {
-					if(Commands.command===command2) Commands.recogparam=param;
-					if(!original.toString().startsWith("function ()") && Commands.recogparam===null) return false;//no command match
-					else if(original.toString().startsWith("function ()")) return original.apply(this, args);//handing through parameters for direct call
-					else return original.apply(this, [Commands.recogparam]);//handling match
-				} catch (e) {
-					throw e;
-				}
+				if (words[i].includes("=>")) return "";
+				param[key] = words[i];
 			}
 		}
-		return target;
+		if (upper) {
+			command2 = words.join(" ");
+			//console.log(command2,command,inputcommand);
+			//console.log(JSON.stringify(param));
+		}
+		return command2;
 	}
-}
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
-function lookrecursive(things,at,found=false,key=null,list=false,quiet=false,cnt=1){
-		let thing=null;
-		for(var i in things){
-			var foundhere=false;
-			for(let j in things[i].titel){
-				if(things[i].titel[j].toLowerCase()===at) {
-					thing=things[i];found =true;foundhere=true;
+	function when(command, param = {}) {
+		return function (target) {
+			const original = target.descriptor.value;
+			if (typeof original === 'function') {
+				target.descriptor.value = function (...args) {
+					let command2 = replaceWords(command, Commands.command, param);
+					if (!original.toString().startsWith("function ()") && args[0]) {
+						return original.apply(this, args);//we have direct call
+					}
+					//console.log(`Arguments: ${args}`);
+					try {
+						if (Commands.command === command2) Commands.recogparam = param;
+						if (!original.toString().startsWith("function ()") && Commands.recogparam === null) return false;//no command match
+						else if (original.toString().startsWith("function ()")) return original.apply(this, args);//handing through parameters for direct call
+						else return original.apply(this, [Commands.recogparam]);//handling match
+					} catch (e) {
+						throw e;
+					}
 				}
 			}
-			if(found && !quiet && (key===null || things[i] instanceof key)){
-				if (list) print("\n"+Array(cnt).join('   ')+"&#x26AC; "+things[i].titel[0]);
-				else print("\n"+Array(cnt).join('   ')+"&#x26AC; "+things[i].describe()+"\n"+Array(cnt).join('   '));
+			return target;
+		}
+	}
+	function isEmpty(obj) {
+		for (var key in obj) {
+			if (obj.hasOwnProperty(key))
+				return false;
+		}
+		return true;
+	}
+	function lookrecursive(things, at, found = false, key = null, list = false, quiet = false, cnt = 1) {
+		let thing = null;
+		for (var i in things) {
+			var foundhere = false;
+			for (let j in things[i].titel) {
+				if (things[i].titel[j].toLowerCase() === at) {
+					thing = things[i]; found = true; foundhere = true;
+				}
 			}
-			if(things[i].open && !isEmpty( things[i]["things"])){
-				if(found) if(!quiet && (key===null || things[i] instanceof key)) print(" mit:");
-				if(found) list=true;
-				let foundthere=lookrecursive(things[i]["things"],at,found,key,list,quiet,cnt+1);
-				
-				if(!foundhere && foundthere) return foundthere;
+			if (found && !quiet && (key === null || things[i] instanceof key)) {
+				if (list) print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].titel[0]);
+				else print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].describe() + "\n" + Array(cnt).join('   '));
 			}
-			if(foundhere) return thing;
+			if (things[i].open && !isEmpty(things[i]["things"])) {
+				if (found) if (!quiet && (key === null || things[i] instanceof key)) print(" mit:");
+				if (found) list = true;
+				let foundthere = lookrecursive(things[i]["things"], at, found, key, list, quiet, cnt + 1);
+
+				if (!foundhere && foundthere) return foundthere;
+			}
+			if (foundhere) return thing;
 		}
 		return null;
-}
-function search(thingname,typ=null){
-	let mine=true;
-	let thing=lookrecursive(Commands.actor.things,thingname,false,typ,false,true);
-	if(thing===null && Commands.actor.position.open) {
-		mine=false;
-		thing=lookrecursive(Commands.actor.position.things,thingname,false,typ,false,true);	
 	}
-	return {mine:mine,thing:thing};
-}
-var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-///////////////////////////////////////////////////////
-let ich=new Person("Kai","Du bist interessiert an der Wissenschaft und willst die Welt erforschen."+
-	"</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>",{open:true});
-let omazuhause=new Scene("Haus Oma","<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' "+
-	"src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>Du bist im Haus deiner Grosseltern.</br>"+
-	"Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.");
-let oma=new  Person(["Oma","Omi"],"Deinen liebe Oma.");
-omazuhause.insert(oma);
-ich.position=omazuhause;
-
-oma.dialog=async function* (){
-	return (!isChrome?"Achtung damit alles funktioniert solltest du das Spiel mit einem Chrome Browser starten! ":"")+
-	"Kai, meine Liebe, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk "+
-	"schon bestellt haben. Falls nicht helfe mir doch schnell dabei: "+
-	"<a target='_blank' href='https://www.reichelt.de/my/1978474'>Mintrobi</a>. "+
-	"Und falls du ihn noch nicht zusammengebaut hast dann hat Opa hier ein Video hochgeladen, "+
-	"das du gerne auf unserem Fernseher schauen kannst: "+
-	"<a target='_blank' href='https://www.youtube.com/embed/8m-lXWjnjYI?autoplay=1'>Aufbauvideo</a>.</br>"+
-	"Opa hat übrigens nach dir gefragt. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.";
-}
-
-let strand=new Scene("Strand","<div class='flow'><img class='back' src='s2.png'>"+
-	"<img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'>"+
-	"<img id='s2krabbe2' src='s2krabbe2.png'>"+
-	"<img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'>"+
-	"<img id='s2vase' src='s2vase.png'></div>"+
-	"Du stehst am Strand vorm Haus deiner Grosseltern,</br>"+
-	"an dem sich ein kleiner Steg befindet.</br>"+
-	"Dort sitzt dein Opa und angelt.</br>"+
-	"Nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
-strand.east=omazuhause;
-let bottlemessage=new Item("Flaschenpost","<img src='bottlemessage.png'>eine verschlossene Flaschenpost");
-let opa=new Person("Opa","Dein lieber Opa.");
-strand.insert(opa);
-opa.insert(bottlemessage);
-opa.dialog=async function* (){
-	if(this.has(bottlemessage)){
-		
-		let reply=yield "Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, "+
-			"ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.<p style='color:#0f0;'>"+
-			"1 - Och ne, dafür bin ich jetzt noch viel zu müde.</br>"+
-			"2 - Echt???! Zeig mal her was du gefunden hast.</p>";
-		switch(reply){
-		case "1":
-			return 'Ach Schade. Dann komm doch später nochmal zu mir.'
-			break;
-		case "2":
-			this.open=true;			
-			Commands.actor.take(bottlemessage);
-			this.open=false;
-			return "Hier eine geheimnisvolle Flasche,</br>aber ich bekomme sie leider einfach nicht auf.</br>"+
-				"Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.";
-			break;
-		default: 
-			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+	function search(thingname, typ = null) {
+		let mine = true;
+		let thing = lookrecursive(Commands.actor.things, thingname, false, typ, false, true);
+		if (thing === null && Commands.actor.position.open) {
+			mine = false;
+			thing = lookrecursive(Commands.actor.position.things, thingname, false, typ, false, true);
 		}
-	} else
-	{
-		return "Fischen ist lustig.";
+		return { mine: mine, thing: thing };
 	}
-}
-opa.receiving=function(thing){
-	print("Nein behalte das. Das ist fuer dich.</br>");
-	return false;
-}	
-let scene3=new Scene("Badestrand","<div class='flow'><img class='back' src='s3.png'>"+
-	"<img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'>"+
-	"<img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'>"+
-	"<img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>"+
-	"Du stehst am Strand, um dich herum sind einige Leute.</br>"+
-	"Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,</br>"+
-	"im Westen ist eine Strandbar.")
-scene3.east=strand;
-let frau=new Person("Frau","ein Frau");
-scene3.insert(frau);
-frau.dialog=async function* (){
-	return "Endlich mal Ruhe. In der Stadt hat man nur Theater,</br>"+
-	"mit all den komischen Gestalten, die sich da herumtreiben.</br>Diesen Urlaub habe ich mir echt verdient.";
-}
-let kind=new Person("Kind","ein Kind");
-scene3.insert(kind);
-kind.dialog=async function* (){
-	return "Da sind komisch verkleidete Menschen im Wald.</br>Hast du schonmal einen von denen gesehen?";
-}
-let junge=new Person(["Junge","Jungen"],"ein Junge");
-scene3.insert(junge);
-junge.dialog=async function* (){
-	return "Hey schau mal,</br>diese Sandburg habe ich ganz alleine gebaut!";
-}
+	var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+	///////////////////////////////////////////////////////
+	let ich = new Person("Kai", "Du bist interessiert an der Wissenschaft und willst die Welt erforschen." +
+		"</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
+	let omazuhause = new Scene("Haus Oma", "<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' " +
+		"src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>Du bist im Haus deiner Grosseltern.</br>" +
+		"Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.");
+	let oma = new Person(["Oma", "Omi"], "Deinen liebe Oma.");
+	omazuhause.insert(oma);
+	ich.position = omazuhause;
 
-let scene4=new Scene("Scene4","Barman")
-scene4.east=scene3;
-let seetang=new Door("Seetang","Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!",{blocking:true,usable:true})
-seetang.cnt=0;
-seetang.use=function(){
-	seetang.cnt++;
-	if(seetang.cnt>=3) {
-		seetang.blocking=false;
-		print(scene4.describe());
-		return true;
-	}
-	else {
-		print("Nichts passiert. Aber ich nehme mir ein Stück zum essen. Hm lecker!");
-		return true;
-	}
-}
-scene4.northblock=seetang;
-scene4.insert(seetang);
+	/*
+	mache smiley.
+	https://makecode.microbit.org/_0R1RXr66UftK
+	
+	
+	mache kleinen film.
+	https://makecode.microbit.org/_bzXHoLDAXi0F
+	
+	mache sound
+	https://makecode.microbit.org/_XkLhzm0tVdpm
+	
+	füge Feuerbutton hinzu:
+	https://makecode.microbit.org/_bzzPeU2krfit
+	
+	Spiele die Tonleiter:
+	https://makecode.microbit.org/_Vm009oeb9dw5
+	__________________________
+	
+	zeige deinen namen:
+	https://makecode.microbit.org/_2JDXuq6md7r7
+	*/
 
-scene4.describe=function(){
-	if(seetang.blocking){
-		return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'>"+
-			"<img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'>"+
-			"<img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'>"+
-			"<img id='s4seetang' src='s4seetang.png'></div>"+
-			"Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum he postiert";
-	}
-	else return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'>"+
-		"<img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'>"+
-		"<img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>"+
-		"Oh da ist ja eine geheime Höhle dahinter. Was da wohl drin ist?</br>";
-}
-
-let barmann=new Person("Barmann","ein Barmann");
-scene4.insert(barmann);
-
-barmann.tricked=false;
-
-barmann.dialog=async function* (){
-	if(Commands.actor.has(tortenheber)||barmann.tricked){
-		if(seetang.blocking){
-			let reply = yield "Dankeschön! Dankeschön! "+
-			"Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>"+
-			"Ich dachte schon den sehe ich nie wieder.</br>"+
-			"Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>"+
-			"1 - Ja na klar! Was muss ich tun?</br>"+
-			"2 - Nein, ich habe gerade keine Lust.</p>";
-            switch(reply){
-			  case "1":
-			  let reply13 = yield "Ich habe gehört, dass du Programieren kannst und vielleicht "+
-			  "kannst du auch mier weiter helfen.</br>"+
-			  "Ich muss diese 3-stöckige Torte auf diesen Teller bringen,</br>"+
-			  "doch da gibt es ein Problem.</br>"+
-			  "Ich kann jedes Stück nur alleine bewegen und es</br>"+
-			  "darf nie ein größeres Stueck auf einem kleineren liegen.</br>"+
-			  "Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein!"
-			  if (reply13==="AC,AB,CB,AC,BA,BC,AC,AB,CB,CA,BA,CB,AC,AB,CB,AC,BA,BC,AC,BA,CB,CA,BA,BC,AC,AB,CB,AC,BA,BC,AC") {
-					//seetang.blocking=false;
-					return scene4.describe()+"Das hat geklappt. Hier ich öffne dir die Flasche. "+
-					"Da ist ein verschlüsselter Text drin:</br>"+
-					"<textarea rows='8' cols='80' style='white-space: wrap;' >"+
-					"DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB"+
-					"'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E"+
-					"8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OY"+
-					"B8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0"+
-					"@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'G"+
-					"Y-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>"+
-					"Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:</br>"+
-					"<textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBS"+
-					"EZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT G"+
-					"BLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW N"+
-					"TZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCR"+
-					"EISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT T"+
-					"LLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>"+
-					"Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit "+
-					"einer statistischen Analyse des verwürfelten Textes zu vergleichen. "+
-					"Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. "+
-					"Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. "+
-					"Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach "+
-					"dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, "+
-					"bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, "+
-					"dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. "+
-					"Aber in diesem Falle war das Schicksal gnädig mit uns...</br>";
-				}            
-				else
-				{ return "<img src='bottlemessage.png'>Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. "+
-					"Aber ich backe einfach nochmal eine."
-				break;
-				}
-				break;
-			  case "2":
-				return "Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung öffne ich dir auch deine Flasche.";
-				break;
-	    		default: 
-				return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
-	    	break;}
-		}	
-		else
-		{
-			return "Hallo, Kumpel!";
-		}			
-	}
-	else{
-		let reply = yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, "+
-		"dann die Orangen und jetzt auch noch mein Tortenheber.</br>"+
-		"Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>"+
-			"1 - Nein danke, mir geht es bestens. </br>"+
-			"2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>";
-			switch(reply){
+	oma.dialog = async function* () {
+		let reply = yield (!isChrome ? "Achtung damit alles funktioniert solltest du das Spiel mit einem Chrome Browser starten! " : "") +
+			"Kai, meine Liebe, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk " +
+			"schon bestellt und zusammengebaut haben.<p style='color:#0f0;'>" +
+			"1 - Ja wir haben schon alles bestellt und zusammengebaut.</br>" +
+			"2 - Ich muss noch zusammenbauen!</br>" +
+			"3 - Wir müssen noch bestellen!</p>";
+		switch (reply) {
 			case "1":
-			return 'Dann bis speater'
-			break;
+				let reply2 = "";
+				while (reply2 != 7) {
+					reply2 = yield (reply2 == "" ? "Das Gehirn von dem Mintrobi ist der kleine farbige Chip." +
+						" Den müssen wir erst noch programmieren." +
+						"Hier ein paar Übungen:<p style='color:#0f0;'>" : "Übung macht den Meister:<p style='color:#0f0;'>") +
+						"1 - <a href='https://makecode.microbit.org/_0R1RXr66UftK'>Mache Smiley</a></br>" +
+						"2 - <a href='https://makecode.microbit.org/_bzXHoLDAXi0F'>Mache kleinen Film.</a></br>" +
+						"3 - <a href='https://makecode.microbit.org/_XkLhzm0tVdpm'>Mache Geräusche</a></br>" +
+						"4 - <a href='https://makecode.microbit.org/_bzzPeU2krfit'>Mache ein Feuerknopf hinzu</a></br>" +
+						"5 - <a href='https://makecode.microbit.org/_Vm009oeb9dw5'>Spiele die Tonleiter</a></br>" +
+						"6 - <a href='https://makecode.microbit.org/_2JDXuq6md7r7'>Zeige deinen Namen</a></br>" +
+						"7 - Ich will keine Übungen mehr machen</p>"
+					switch (reply2) {
+						case "1": window.open("https://makecode.microbit.org/_0R1RXr66UftK", "_blank").focus();
+							break;
+						case "2": window.open("https://makecode.microbit.org/_bzXHoLDAXi0F", "_blank").focus();
+							break;
+						case "3": window.open("https://makecode.microbit.org/_XkLhzm0tVdpm", "_blank").focus();
+							break;
+						case "4": window.open("https://makecode.microbit.org/_bzzPeU2krfi", "_blank").focus();
+							break;
+						case "5": window.open("https://makecode.microbit.org/_Vm009oeb9dw5", "_blank").focus();
+							break;
+						case "6": window.open("https://makecode.microbit.org/_2JDXuq6md7r7", "_blank").focus();
+							break;
+						case "7":
+							return "Opa hat übrigens nach dir gefragt. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.";
+							break;
+						default:
+							return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+					}
+				}
+				break;
 			case "2":
-			return "Würde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>"+
-				"Das wird aber echt schwer ohne meinen Tortenheber.";
-			break;
-			case "123":
-			barmann.tricked=true;
-			return "Oh du bist der Programmierer. Dann geht das auch ohne Tortenheber!"
-			break;
-	    	default: 
-			return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
-	    	break;}
-	}
-}
-
-
-let tortenliebhaber=new Person("Tortenliebhaber","ein Tortenliebhaber");
-scene4.insert(tortenliebhaber);
-tortenliebhaber.dialog=async function* (){
-	return "Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte backen.";
-}
-
-
-let scene5=new Scene("Stadt","<div class='flow'><img class='back' src='s5.png'>"+
-	"<img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'>"+
-	"<img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'>"+
-	"<img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>"+
-	"Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>"+
-	"Nach Norden geht über Straße mit Ampel in den Dschungel ,</br>nach Sueden geht es zum Strand.")
-scene5.south=scene3;
-let verkaeufer=new Person("Verkäufer","ein Verkäufer");
-scene5.insert(verkaeufer);
-verkaeufer.dialog=async function* (){
-	return "Hey komm mal her zu mir!</br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!";
-}
-let tratschtante=new Person("Tratschtante","ein Tratschtante");
-scene5.insert(tratschtante);
-tratschtante.dialog=async function* (){
-	return "Psst, hör mal, ich muss dir was erzählen.</br>Der Verkäufer da hinten verlangt bei Touristen</br>"+
-	"den dreifachen Preis!</br>Lass dich nicht übers Ohr hauen!";
-}
-	let kuenstler=new Person("Künstler","ein Künstler");
-scene5.insert(kuenstler);
-kuenstler.dialog=async function* (){
-	return "Fuer dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder doch 3 Millionen?";
-}
-let scene6=new Scene("Dschungel","<div class='flow'><img class='back' src='s6.png'></div>"+
-"Du befindest dich auf einem Pfad im Dschungel."+
-"</br>Nach Norden geht es zu einer Lichtung,</br>"+
-"nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.")
-let kaputteAmpel=new Door("Ampel","Ein eine kaputte Ampel.",{blocking:true,usable:true,speakable:true});
-kaputteAmpel.use=function(){
-	print("Ich sollte darauf tippen ...");
-	return false;
-}
-//https://thecodebarbarian.com/async-generator-functions-in-javascript.html#:~:text=Async%20generator%20functions%20behave%20similarly,()%20function%20returns%20a%20promise.
-//https://www.javascripttutorial.net/es-next/javascript-async-generators/
-//https://stackoverflow.com/questions/71262432/how-can-i-close-a-web-serial-port-that-ive-piped-through-a-transformstream
-async function ampelMicrobit(){
-	if ("serial" in navigator) {
-  		// The Web Serial API is supported.
-
-		 // Prompt user to select any serial port.
-		try{
-			// Get all serial ports the user has previously granted the website access to.
-			const filters = [
-				{ usbVendorId: 0x0D28, usbProductId: 0x0204 },
-				
-			];
-			const ports = await navigator.serial.getPorts();
-			let port=null;
-			console.log(JSON.stringify(filters))
-			for(let i=0;i<ports.length;++i){
-				let info = ports[i].getInfo();
-				console.log(JSON.stringify(info))
-				if(info.usbProductId==filters[0].usbProductId && info.usbVendorId==filters[0].usbVendorId) port=ports[i];
-			}
-			
-			if(!port) port = await navigator.serial.requestPort({ filters });
-			console.log(port)
-			console.log("Available\n"+JSON.stringify(port))
-			await port.open({ 
-				baudRate: 115200,
-				dataBits: 8,
-				stopBits: 1,
-				parity: "none",
-				bufferSize: 1024,
-				flowControl: "none"
-			});
-
-/*			while (port.readable) {
-				const reader = port.readable.getReader();
-				while (true) {
-					const { value, done } = await reader.read();
-					if (done) {
-						// Allow the serial port to be closed later.
-						reader.releaseLock();
-						break;
-					}
-					if (value) {
-						console.log(value);
-					}
-				}
-				
-			}
-*/
-						
-
-			const textEncoder = new TextEncoderStream();
-			const writer = textEncoder.writable.getWriter();
-			const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-
-	
-			await writer.write("1\n");//\r\n
-			// Allow the serial port to be closed later.
-	
-			writer.close();
-			await writableStreamClosed;
-			//await writer.close()
-
-			//port.writable.releaseLock();
-			await port.close()
-			//await port.close();
-			return true;
-		}catch(e){
-			console.log(e)
-			return false;
+				return "Opa hier ein Video hochgeladen, das du gerne auf unserem Fernseher schauen kannst: " +
+					"<a target='_blank' href='https://www.youtube.com/embed/8m-lXWjnjYI?autoplay=1'>Aufbauvideo</a>.</br>" +
+					"Und wenn du fertig bist dann geh doch nach drausen zu Opa. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.";
+			case "3":
+				return "Dann helfe mir doch schnell dabei. Hier ist der Bestelllink: " +
+					"<a target='_blank' href='https://www.reichelt.de/my/1978474'>Mintrobi</a>. Wir reden dann wieder, wenn die Lieferung da ist.";
+				break;
+			default:
+				return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
 		}
 
 	}
-}
-kaputteAmpel.dialog=async function* (){
-    const reply = yield "Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>"+
-	"Du musst dazu den folgenden link öffnen, den Code vervollständigen und Pin 0 mit dem langen Beinchen der roten </br>"+
-	"Leuchtdiode verbinden. Dann musst du den 56Ohm Widerstand einfügen und dann alles mit GND verbinden.</br>"+
-	"In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode.</br>"+
-	"Wenn du fertig bist, dann drücke die [Enter]-Taste."
-	//await new Promise(resolve => setTimeout(resolve, 5000));
-	let result=await ampelMicrobit();
-	if(result) yield "connecting worked [enter]";
-	else yield "connecting did not work [enter]"
-    if (false) {
-		microBitConnect().then(()=>{
-			kaputteAmpel.blocking=false;
-		})
-		while(kaputteAmpel.blocking) yield "Die Ampel ist noch kaputt. Verbinde und drücke die [Enter]-Taste."
-		return "Die Ampel funktioniert wieder."
-     
-    }
-    else return "Falscher Code!"
-}
-scene6.south=scene5;
-scene5.northblock=kaputteAmpel;
-scene5.insert(kaputteAmpel)
-let scene7=new Scene("Lichtung","<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' "+
-	"src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>"+
-	"Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
-scene7.south=scene6;
-let kostuem=new Item("Kostüm","<img src='kostuem.png'>eine Kostüm",{open:true,applicable:true});
-let Forscher=new Person("Forscher","ein Forscher");
-scene7.insert(Forscher);
-Forscher.insert(kostuem);
-Forscher.dialog=async function* (){
-	if(this.has(kostuem)){
-    let reply = yield "Hallo, guten Tag.<p style='color:#0f0;'>"+
-		"1 - Hallo, wer sind Sie denn?.</br>"+
-		"2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>";
-	switch(reply){
-	case "1":
-		return "Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>"+
-		"ich erforsche den hiesigen Stamm der Ureinwohner."
-	break;
-	case "2":
-	this.open=true;			
-			Commands.actor.take(kostuem);
-			this.open=false;
-		return "Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>"+
-		"Meine bisherigen Forschungen habe ich Beobachtungen</br>"+
-		"aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>"+
-		"ueber den Zaun, der das Dorf umgibt spähen konnte.</br>"+
-		"Doch mit deiner Statur ist eventuell möglich dich als einer</br>"+
-		"der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>"+
-		"Hier ist das Kostüm.";
-		break;
-	default: 
-		return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
-	break;}
-} else
-	{
-		return "Wissenschaft ist wunderbar!";
-	}
-	
-}
-Forscher.receiving=function(thing){
-	print("Nein behalte das. Das ist für dich.</br>");
-	return false;
-}
 
+	let strand = new Scene("Strand", "<div class='flow'><img class='back' src='s2.png'>" +
+		"<img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'>" +
+		"<img id='s2krabbe2' src='s2krabbe2.png'>" +
+		"<img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'>" +
+		"<img id='s2vase' src='s2vase.png'></div>" +
+		"Du stehst am Strand vorm Haus deiner Grosseltern,</br>" +
+		"an dem sich ein kleiner Steg befindet.</br>" +
+		"Dort sitzt dein Opa und angelt.</br>" +
+		"Nach Osten geht es in das Haus deiner Grosseltern,</br>im Westen geht der Strand weiter.")
+	strand.east = omazuhause;
+	let bottlemessage = new Item("Flaschenpost", "<img src='bottlemessage.png'>eine verschlossene Flaschenpost");
+	let opa = new Person("Opa", "Dein lieber Opa.");
+	strand.insert(opa);
+	opa.insert(bottlemessage);
+	opa.dialog = async function* () {
+		if (this.has(bottlemessage)) {
 
-let scene8=new Scene("Scene8","")
-scene8.east=scene6;
-let loch=new Item("Loch","Ein tiefes Loch",{open:true,takeable:false});
-let tuer=new Door("Tür","Eine verschlossene Tür.",{blocking:true})
-let torwache=new Person("Torwache","eine Torwache");
-
-scene8.insert(torwache);
-scene8.northblock=tuer;
-
-scene8.describe=function(){
-	if(tuer.blocking){
-		return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'>"+
-			"<img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'>"+
-			"<img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>"+
-			"baut sich eine grossee Holzwand auf der sich oben</br>"+
-			"ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>"+
-			"Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.";
-	}
-	else return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'>"+
-		"<img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'>"+
-		"<img id='s8schild' src='s8schild.png'></div>"+
-		"Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>"+
-		"ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>";
-}
-
-/*
-torwache.insert(schluessel);
-*/
-torwache.dialog=async function* (){
-	if(Commands.actor.has(kostuem)){
-		if(tuer.blocking){
-			let reply = yield "Hallo, Kumpel.</br>"+
-			"Ich dachte zuerst du bist schon wieder einer von diesen</br>"+
-			"bescheuerten Städtern, die uns immer wieder auf</br>"+
-			"die Nerven gehen. Aber manche verkleiden sich,</br>"+
-			"und da wir von klein auf rechnen lernen,</br>"+
-			"fällt es uns leicht die 20te Fibonacci Zahl</br>"+
-			"schnell im Kopf zu berechnen und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>"+
-			"scheitern die bescheuerten Städter immer.</br> "+
-			"Hahaha! Hast du den Code berechnet?"+
-			"</br> Wenn ja dann sage ihn mir doch:";
-			if (reply==="6765") {
-				tuer.blocking=false;
-				return "<img src='s8block.png'>Code akzeptiert.</br>"+scene8.describe();
-			}
-			else return "<img src='s8block.png'>Falscher Code!"
-		}	
-		else
-		{
-			return "Hallo, Kumpel!";
-		}			
-	}
-	else{
-		return "Ugga bugga, blubliblah! Impostor!"
-	}
-}
-
-let scene9=new Scene("Scene9","<div class='flow'><img class='back' src='s9.png'>"+
-	"<img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'>"+
-	"<img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'>"+
-	"<img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'>"+
-	"<img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>"+
-	"Du bist im Dschungel und vor dir</br>"+
-	"baut sich eine grossee Holzwand auf der sich oben</br>"+
-	"ein Ureinwohner als Wache postiert hat.</br>"+
-	"Nach Osten geht es zurueck zum Dschungelpfad.</br>");
-scene9.south=scene8;
-
-let pina=new Person(["Pina","Pina Colada"],"eine Ureinwohnerin");
-let mojito=new Person("Mojito","ein Ureinwohner");
-let daiquiri=new Person("Daiquiri","ein Ureinwohner mit einem Problem");
-scene9.insert(pina);
-scene9.insert(mojito);
-scene9.insert(daiquiri);
-
-pina.dialog=async function* (){
-	return "Uiui, eine neue Maske, schnieke Mann.";
-}
-mojito.dialog=async function* (){
-	return "Hehe, dieser Idiot von nebenan hat</br>"+
-	"auf seinem Kopf so ein komisches silbernes Teil stecken,</br>"+
-	"das sieht total bescheuert aus!";
-}
-let tortenheber=new Item("Tortenheber","<img src='tortenheber.png'>ein Tortenheber");
-
-daiquiri.insert(tortenheber);
-
-daiquiri.dialog=async function* (){
-	if(this.has(tortenheber)){
-		let reply=yield "Ich bin so verzweifelt,</br>"+
-		"ich komme einfach nicht weiter!</br>"+
-		"Die Nachbarn lachen schon alle ueber mich,</br>"+
-		"ich weiss es genau! Meine Frau wird mich bestimmt verlassen,</br>"+
-		"wenn ich es nicht los werde!<p style='color:#0f0;'>"+
-			"1 - Kann ich dir irgendwie helfen.</br>"+
-			"2 - Nee keine Zeit!</p>";
-		switch(reply){
-		case "1":
-			let reply2=yield "Das wäre sehr nett! Ich bin gestern mit diesem</br>"+
-			"seltsamen silbernen Teil auf dem Kopf aufgewacht,</br>"+
-			"aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstören.</br>"+
-			"Bitte mach das weg!?!</br><p style='color:#0f0;'>"+
-				"1 - Kein Problem</br>"+
-				"2 - Nee keine Lust!</p>";
-			switch (reply2){
+			let reply = yield "Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, " +
+				"ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.<p style='color:#0f0;'>" +
+				"1 - Och ne, dafür bin ich jetzt noch viel zu müde.</br>" +
+				"2 - Echt???! Zeig mal her was du gefunden hast.</p>";
+			switch (reply) {
 				case "1":
-					this.open=true;			
-					Commands.actor.take(tortenheber);
-					this.open=false;
-					return "Vielen Dank. Du kannst das Ding behalten. Sieht aus wie ein Tortenheber!";
+					return 'Ach Schade. Dann komm doch später nochmal zu mir.'
+					break;
 				case "2":
-					return "Du hättest das Teil behalten können. O hilf mir doch jemand";
-				default: 
-					return "Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal..."		
+					this.open = true;
+					Commands.actor.take(bottlemessage);
+					this.open = false;
+					return "Hier eine geheimnisvolle Flasche ich mache sie gleich in deinen Rucksack (<em style='color:#0f0;'>schaue in rucksack</em>, <em style='color:#0f0;'>betrachte flaschenpost</em>),</br>aber ich bekomme sie leider einfach nicht auf.</br>" +
+						"Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.";
+					break;
+				default:
+					return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
 			}
-			break;
-		case "2":
-			return "Unhilfsbereit die Jugend..."
-		default: 
-			return "Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal..."
+		} else {
+			return "Fischen ist lustig.";
 		}
-	} else
-	{
-		return "Danke nochmals.";
 	}
-}
-
-
-
-let scene10=new Scene("Geheimes Labor","<img src='s10.png'>"+
-"Du stehst in dem geheimen Labor von einem verrueckten Forscher.</br>"+
-"Doch dieser ist auf mysteriöse Weise verschwunden. </br>"+
-"Auf dem Tisch siehst du einen Roboter, der noch nicht ganz fertig gestellt wurde.</br>"+
-"Ausserdem fällt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth. "+
-"Doch der Weg ist durch eine Tür mit Zahlenschloss verschlossen.</br>"+
-"Nach Sueden geht es zur Strandbar.");
-scene10.south=scene4;
-
-let robo=new Person("robo","Ein kaputter Roboter. Es liegt auch eine 7 Segment Anzeige herum. "+
-"Mit einer Bedienungseinleitung. Da steht drin, dass man die Pins an der Anzeige gegen den Uhrzeigersinn "+
-"von unten Links anfängt zu zählen. Da wo der Punk ist ist also Pin 5. Dann muss man Pin 3 mit 3V3 verbinden. "+
-"Desweiteren mit einem 220Ohm widerstand soll man Pin1->IO2, Pin2->IO3, Pin3->IO4, Pin6->IO17, Pin7->IO18, "+
-"Pin9->IO15, Pin10->IO14 verbinden.");
-scene10.insert(robo);
-let intervalID;
-let codecnt;
-let code=[1,3,1,9];
-
-
-robo.dialog=async function* (){
-	codecnt=0;
-	intervalID=setInterval(displayCode, 1000);
-	return "Sende Computer-Password mit 7-Segment anzeige!";
-}
-
-
-let seg={'a':18,'b':17,'c':4,'d':3,'e':2,'f':15,'g':14};
-
-function reset(pin){
-	for(const key in seg) gpio(seg[key],1);
-}
-function set(pin){
-	gpio(pin,0);
-}
-
-function gpio(pin,val){
-	const response2 = new XMLHttpRequest();
-	response2.open("GET", 'http://raspberrypi/gpio?port='+pin+'&level='+val,false);
-
-	//request.open('GET', '/bar/foo.txt', false);  // `false` makes the request synchronous
-//request.send(null);
-
-//if (request.status === 200) {
-
-
-
-
-	response2.send();
-}
-
-function display7segment(n){
-	
-	switch(n){
-		case 0:
-			reset();
-			set(seg['a']);set(seg['b']);set(seg['c']);set(seg['d']);set(seg['e']);set(seg['f']);
-			break;
-		case 1:
-			reset();
-			set(seg['b']);set(seg['c']);
-			break;
-		case 2:
-			reset();
-			set(seg['a']);set(seg['b']);set(seg['g']);set(seg['d']);set(seg['e']);
-			break;
-		case 3:
-			reset();
-			set(seg['a']);set(seg['b']);set(seg['g']);set(seg['c']);set(seg['d']);
-			break;
-		case 4:
-			reset();
-			set(seg['f']);set(seg['b']);set(seg['g']);set(seg['c']);
-			break;
-		case 5:
-			reset();
-			set(seg['a']);set(seg['f']);set(seg['g']);set(seg['c']);set(seg['d']);
-			break;
-		case 6:
-			reset();
-			set(seg['a']);set(seg['f']);set(seg['e']);set(seg['c']);set(seg['d']);set(seg['g']);
-			break;
-		case 7:
-			reset();
-			set(seg['a']);set(seg['b']);set(seg['c']);
-			break;
-		case 8:
-			reset();
-			set(seg['a']);set(seg['b']);set(seg['c']);set(seg['d']);set(seg['e']);set(seg['f']);set(seg['g']);
-			break;
-		case 9:
-			reset();
-			set(seg['a']);set(seg['b']);set(seg['c']);set(seg['d']);set(seg['f']);set(seg['g']);
-			break;
-
+	opa.receiving = function (thing) {
+		print("Nein behalte das. Das ist fuer dich.</br>");
+		return false;
+	}
+	let scene3 = new Scene("Badestrand", "<div class='flow'><img class='back' src='s3.png'>" +
+		"<img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'>" +
+		"<img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'>" +
+		"<img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>" +
+		"Du stehst am Strand, um dich herum sind einige Leute.</br>" +
+		"Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,</br>" +
+		"im Westen ist eine Strandbar.")
+	scene3.east = strand;
+	let frau = new Person("Frau", "ein Frau");
+	scene3.insert(frau);
+	frau.dialog = async function* () {
+		return "Endlich mal Ruhe. In der Stadt hat man nur Theater,</br>" +
+			"mit all den komischen Gestalten, die sich da herumtreiben.</br>Diesen Urlaub habe ich mir echt verdient.";
+	}
+	let kind = new Person("Kind", "ein Kind");
+	scene3.insert(kind);
+	kind.dialog = async function* () {
+		return "Da sind komisch verkleidete Menschen im Wald.</br>Hast du schonmal einen von denen gesehen?";
+	}
+	let junge = new Person(["Junge", "Jungen"], "ein Junge");
+	scene3.insert(junge);
+	junge.dialog = async function* () {
+		return "Hey schau mal,</br>diese Sandburg habe ich ganz alleine gebaut!";
 	}
 
-}
-
-
-
-function displayCode() {
-	display7segment(code[codecnt]);
-	codecnt++
-	if(codecnt==code.length) clearInterval(intervalID);
-}
-
-scene4.northblock=seetang;
-scene4.insert(seetang);
-
-let numberlockdoor=new Door("Zahlenschlosstür","Ein digitales Eingabefeld ist an der Tür.",{blocking:true,usable:true,speakable:true});
-numberlockdoor.use=function(){
-	print("Ich sollte darauf tippen...");
-	return false;
-}
-numberlockdoor.dialog=async function* (){
-    const reply = yield 'Bitte Zahlencode eingeben</p>';
-    if (reply==="1319") {
-        numberlockdoor.blocking=false;
-		return "Die Tür öffnet sich!"
-    }
-    else return "Falscher Code!"
-}
-scene10.northblock=numberlockdoor;
-scene10.insert(numberlockdoor)
-let scene11=new Scene("Dunkles Labyrinth","Es ist stock dunkel hier. "+
-"Ich glaube ich brauche Robos Hilfe um hier rauszufinden. "+
-"Oh auf dem Boden liegt Ultraschallsensor und eine Anleitung. "+
-"Da steht dass man VCC mit 5V verbinden muss und GND mit GND. "+
-"Dann nur noch TRIG mit IO23. Da wird dann ein Ultraschallpuls ausgesendet. "+
-"Und an Echo kommt dann ein 5V Signal, wenn das Echo empfangen wird. "+
-"Man muss allerdings die 5V auf 3.3V runterteilen. "+
-"Dazu nehmen wir einen 100 Ohm Widerstand von Echo gehen dann an IO24. "+
-"Dann muss man noch von IO24 mit 200Ohm nach GND gehen.");
-scene11.south=scene10;
-let robo2=new Person("robo","Ein kaputter Roboter mit 7 Segment Anzeige.");
-scene11.insert(robo2);
-
-let firsttimedist=true;
-robo2.dialog=async function* (){
-	const response2 = new XMLHttpRequest();
-	response2.open("GET", 'http://raspberrypi/dist',false);
-
-	response2.send();
-
-	if (response2.status === 200) {
-  		if(response2.responseText!="0") {
-		  if(firsttimedist){
-			firsttimedist=false;
-			return "Distanz: "+response2.responseText+ " cm.</br>Super der Ultraschallsensor funktioniert. "+
-			"Der Roboter führt dich aus dem Labyrinth heraus du hast das Spiel gemeistert. "+
-			"Gratulation! Du kannst nun auf http://raspberrypi:3000/  "+
-			"und user root mit passwort raspberry auf den Source code zugreifen. "+
-			"Per ssh pi@raspberrypi mit passwort raspberry kannst du dich auf dem System einloggen."
-		  }
-		  return "Distanz: "+response2.responseText+ " cm."
+	let scene4 = new Scene("Scene4", "Barman")
+	scene4.east = scene3;
+	let seetang = new Door("Seetang", "Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!", { blocking: true, usable: true })
+	seetang.cnt = 0;
+	seetang.use = function () {
+		seetang.cnt++;
+		if (seetang.cnt >= 3) {
+			seetang.blocking = false;
+			print(scene4.describe());
+			return true;
 		}
-		else return "Sensor deffekt!";
-	}
-}
-
-
-/**
- * Prints a string to the canvas at the beginning by adding it to the beginning of Commands.answer.
- *
- * @param {string} x - A string param
- * @return {void}
- *
- * @example
- *
- *     printfront('hello')
- */
-function printfront(x){
-	Commands.answer.unshift(x);
-}
-
-
-/**
- * Prints a string to the canvas by pushing the string to Commands.answer
- *
- * @param {string} x - A string param
- * @return {void}
- *
- * @example
- *
- *     print('hello')
- */
-
-
-function print(x){
-    Commands.answer.push(x)
-};
-
-class Commands{
-	static recogparam=null;
-	static command="";
-	
-	static async execute(cmd){
-		cmd=cmd.toLowerCase();
-		let delstr=["=>","der","die","das","dem","der","dem","den","die","das","ein","einer","ein","einem","einer","einem","einen","eine","ein"];
-		let importantprep=["an","mit","auf","nach","durch","in", "zu"];
-		Commands.answer=[];
-		let recog=false;
-		for(var del in delstr) cmd=cmd.split(" "+delstr[del]+" ").join(' ')
-		for(var del in delstr) cmd=cmd.split(" "+importantprep[del]+" ").join(' => ')
-		cmd=cmd.replace(/\s+/g, ' ');
-		if(cmd==="" && !Commands.lastcommandspeak) return "";
-		Commands.command=cmd.toLowerCase();
-		console.log(cmd);
-		Commands.recogparam=null;
-		recog|=Commands.go();
-		Commands.recogparam=null;
-		recog|=Commands.look();
-		Commands.recogparam=null;
-		recog|=Commands.use();
-		Commands.recogparam=null;
-		recog|=Commands.open();
-		Commands.recogparam=null;
-		recog|=Commands.close();
-		Commands.recogparam=null;
-		recog|=Commands.take();
-		Commands.recogparam=null;
-		recog|=Commands.give();
-		Commands.recogparam=null;
-		recog|=Commands.doapply();
-		Commands.recogparam=null;
-		recog|=Commands.load();
-		Commands.recogparam=null;
-		recog|=Commands.save();
-		Commands.recogparam=null;
-		recog|=Commands.reset();
-		Commands.recogparam=null;
-		recog|=Commands.help();
-		Commands.recogparam=null;
-		let commandspeak=await Commands.speak();
-		recog|=commandspeak;
-		Commands.recogparam=null;
-		
-		if(recog){
-			printfront("Ok.\n")
+		else {
+			print("Nichts passiert. Aber ich nehme mir ein Stück zum essen. Hm lecker!");
+			return true;
 		}
-		else{
-			if(Commands.lastcommandspeak) commandspeak=await Commands.continuespeak(cmd);
-			if(!commandspeak) {
-				 print("Ich verstehe dich nicht oder kann es nicht machen! Schreibe 'hilfe' für Befehlsliste!\n");
-			}
+	}
+	scene4.northblock = seetang;
+	scene4.insert(seetang);
+
+	scene4.describe = function () {
+		if (seetang.blocking) {
+			return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'>" +
+				"<img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'>" +
+				"<img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'>" +
+				"<img id='s4seetang' src='s4seetang.png'></div>" +
+				"Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum he postiert";
 		}
-		Commands.lastcommandspeak=commandspeak && !Commands.endofspeak;
-		return Commands.answer.join("");
+		else return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'>" +
+			"<img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'>" +
+			"<img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>" +
+			"Oh da ist ja eine geheime Höhle dahinter. Was da wohl drin ist?</br>";
 	}
 
-	static actor=ich;
-	static answer=[];
-@when( "hilfe" )
-	@when( "h" )
-	static help(){
-		print("Befehle:\n");
-		print("&#x26AC; hilfe\n");
-		print("     mit Kurzform: h\n");
-		print("&#x26AC; schaue/betrachte/b (auf,...) (ETWAS)\n");
-		print("&#x26AC; schaue/betrachte/b mich (an)\n");
-		print("&#x26AC; schaue/betrachte/b (auf,...) rucksack\n");
-		print("     mit Kurzform: r\n");
-		print("&#x26AC; gehe (nach) norden/süden/westen/osten/...\n");
-		print("     mit Kurzform: n,s,w,o\n");
-		print("&#x26AC; verwende/benutze/drücke/ziehe/v ETWAS\n");
-		print("&#x26AC; verwende/benutze/v ETWAS auf/mit/... ETWAS/JEMANDEN\n");
-		print("&#x26AC; öffne/ö ETWAS\n");
-		print("&#x26AC; schließe/s ETWAS\n");
-		print("&#x26AC; nimm/m ETWAS\n");
-		print("&#x26AC; gib/lege/l ETWAS\n");
-		print("&#x26AC; gib/lege/l ETWAS an/zu/... ETWAS/JEMANDEN\n");
-		print("&#x26AC; sprich/rede/tippe/t (mit/in) PERSON/COMPUTER\n");
-		print("&#x26AC; speichere/save SPIELSTANDSNAME\n");
-		print("&#x26AC; lade/load SPIELSTANDSNAME\n");
-		print("&#x26AC; reset\n");
-		return true;
-	}
-	
-	@when( "schaue",{at:"scene"} )
-	@when( "betrachte",{at:"scene"} )
-	@when( "b",{at:"scene"} )
-	@when( "r",{at:"rucksack"} )
-	@when( "schaue AT" )
-	@when( "betrachte AT" )
-	@when( "b AT" )
-    @when( "schaue => AT" )
-	@when( "betrachte => AT" )
-	@when( "b => AT" )
-	static look({at}) {
-		switch(at){
-			case "scene":
-				print(Commands.actor.position.describe());
-				if(!isEmpty(Commands.actor.position.things) && Commands.actor.position.open ) {
-					print("\nDesweiteren sieht man:");
-					lookrecursive(Commands.actor.position.things,at,true,null,true);
-					print("\n");
+	let barmann = new Person("Barmann", "ein Barmann");
+	scene4.insert(barmann);
+
+	barmann.tricked = false;
+
+	barmann.dialog = async function* () {
+		if (Commands.actor.has(tortenheber) || barmann.tricked) {
+			if (seetang.blocking) {
+				let reply = yield "Dankeschön! Dankeschön! " +
+					"Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>" +
+					"Ich dachte schon den sehe ich nie wieder.</br>" +
+					"Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>" +
+					"1 - Ja na klar! Was muss ich tun?</br>" +
+					"2 - Nein, ich habe gerade keine Lust.</p>";
+				switch (reply) {
+					case "1":
+						let reply13 = yield "Ich habe gehört, dass du Programieren kannst und vielleicht " +
+							"kannst du auch mier weiter helfen.</br>" +
+							"Ich muss diese 3-stöckige Torte auf diesen Teller bringen,</br>" +
+							"doch da gibt es ein Problem.</br>" +
+							"Ich kann jedes Stück nur alleine bewegen und es</br>" +
+							"darf nie ein größeres Stueck auf einem kleineren liegen.</br>" +
+							"Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein!"
+						if (reply13 === "AC,AB,CB,AC,BA,BC,AC,AB,CB,CA,BA,CB,AC,AB,CB,AC,BA,BC,AC,BA,CB,CA,BA,BC,AC,AB,CB,AC,BA,BC,AC") {
+							//seetang.blocking=false;
+							return scene4.describe() + "Das hat geklappt. Hier ich öffne dir die Flasche. " +
+								"Da ist ein verschlüsselter Text drin:</br>" +
+								"<textarea rows='8' cols='80' style='white-space: wrap;' >" +
+								"DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB" +
+								"'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E" +
+								"8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OY" +
+								"B8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0" +
+								"@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'G" +
+								"Y-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>" +
+								"Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:</br>" +
+								"<textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBS" +
+								"EZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT G" +
+								"BLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW N" +
+								"TZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCR" +
+								"EISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT T" +
+								"LLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>" +
+								"Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit " +
+								"einer statistischen Analyse des verwürfelten Textes zu vergleichen. " +
+								"Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. " +
+								"Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. " +
+								"Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach " +
+								"dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, " +
+								"bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, " +
+								"dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. " +
+								"Aber in diesem Falle war das Schicksal gnädig mit uns...</br>";
+						}
+						else {
+							return "<img src='bottlemessage.png'>Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. " +
+								"Aber ich backe einfach nochmal eine."
+							break;
+						}
+						break;
+					case "2":
+						return "Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung öffne ich dir auch deine Flasche.";
+						break;
+					default:
+						return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+						break;
 				}
-				
-				return true;
-			case "mich":
-				print("Du bist "+Commands.actor.describe());
+			}
+			else {
+				return "Hallo, Kumpel!";
+			}
+		}
+		else {
+			let reply = yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, " +
+				"dann die Orangen und jetzt auch noch mein Tortenheber.</br>" +
+				"Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>" +
+				"1 - Nein danke, mir geht es bestens. </br>" +
+				"2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>";
+			switch (reply) {
+				case "1":
+					return 'Dann bis speater'
+					break;
+				case "2":
+					return "Würde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>" +
+						"Das wird aber echt schwer ohne meinen Tortenheber.";
+					break;
+				case "123":
+					barmann.tricked = true;
+					return "Oh du bist der Programmierer. Dann geht das auch ohne Tortenheber!"
+					break;
+				default:
+					return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+					break;
+			}
+		}
+	}
+
+
+	let tortenliebhaber = new Person("Tortenliebhaber", "ein Tortenliebhaber");
+	scene4.insert(tortenliebhaber);
+	tortenliebhaber.dialog = async function* () {
+		return "Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte backen.";
+	}
+
+
+	let scene5 = new Scene("Stadt", "<div class='flow'><img class='back' src='s5.png'>" +
+		"<img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'>" +
+		"<img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'>" +
+		"<img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>" +
+		"Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>" +
+		"Nach Norden geht über Straße mit Ampel in den Dschungel ,</br>nach Sueden geht es zum Strand.")
+	scene5.south = scene3;
+	let verkaeufer = new Person("Verkäufer", "ein Verkäufer");
+	scene5.insert(verkaeufer);
+	verkaeufer.dialog = async function* () {
+		return "Hey komm mal her zu mir!</br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!";
+	}
+	let tratschtante = new Person("Tratschtante", "ein Tratschtante");
+	scene5.insert(tratschtante);
+	tratschtante.dialog = async function* () {
+		return "Psst, hör mal, ich muss dir was erzählen.</br>Der Verkäufer da hinten verlangt bei Touristen</br>" +
+			"den dreifachen Preis!</br>Lass dich nicht übers Ohr hauen!";
+	}
+	let kuenstler = new Person("Künstler", "ein Künstler");
+	scene5.insert(kuenstler);
+	kuenstler.dialog = async function* () {
+		return "Fuer dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder doch 3 Millionen?";
+	}
+	let scene6 = new Scene("Dschungel", "<div class='flow'><img class='back' src='s6.png'></div>" +
+		"Du befindest dich auf einem Pfad im Dschungel." +
+		"</br>Nach Norden geht es zu einer Lichtung,</br>" +
+		"nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.")
+	let kaputteAmpel = new Door("Ampel", "Ein eine kaputte Ampel.", { blocking: true, usable: true, speakable: true });
+	kaputteAmpel.use = function () {
+		print("Ich sollte darauf tippen <em style='color:#0f0;'>tippe auf ampel</em>...");
+		return false;
+	}
+	kaputteAmpel.dialog = async function* () {
+		const reply = yield "Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>" +
+			"Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken." +
+			"<p style='color:#0f0;'>" +
+			"1 - Ok es ist alles verbunden!</br>" +
+			"2 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+		switch (reply) {
+			case "1":
+				while (true) {
+					const reply2 = yield "Als erstes musst du den Taster für die Fußgängerampel reparieren.<p style='color:#0f0;'>" +
+						"1 - Ok los gehts.</br>" +
+						"2 - Teste die Ampel (Drücke innerhalb von 10 Sekunden auf die A Taste)</br>" +
+						"3 - Ich habs mir anders überlegt, ich wollte eigentlich gar nicht über die Ampel.</p>";
+
+					switch (reply2) {
+						case "1":
+							window.open("https://makecode.microbit.org/_CuzgEAHHtgbK", "_blank").focus();
+							break;
+						case "2":
+							let val = "";
+							val = await readMicrobit()
+							console.log(val);
+							if (val == "") {
+								yield "10 Sekunden sind vorbei. Versuchs nochmal. Drücke [ENTER]."
+								continue;
+							}
+							else if (val.startsWith("1")) {
+								const reply3 = yield "Jetzt ist noch die Auto-Ampel kaput. Alle Lampen müssen ersetzt werden." +
+									"Dazu musst du Pin 0 mit dem langen Beinchen der roten </br>" +
+									"Leuchtdiode verbinden. Dann musst du den 56Ohm Widerstand einfügen und dann alles mit GND verbinden.</br>" +
+									"In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode.</br>" +
+									"<p style='color:#0f0;'>" +
+									"1 - Ok es ist alles verbunden!</br>" +
+									"2 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+								switch (reply3) {
+									case "1":
+										while (true) {
+											const reply4 = yield "Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>" +
+												"s für stop also rot</br>" +
+												"b für bereit also gelb</br>" +
+												"f für fahren also grün</br>" +
+												"<p style='color:#0f0;'>" +
+												"1 - Ok ich bin bereit zum Programmieren</br>" +
+												"2 - Programm ist fertig. Ich will die Auto-Ampel testen</br>"
+											"3 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+											switch (reply4) {
+												case "1":
+													window.open("https://makecode.microbit.org/_REjD0A9HE4m9", "_blank").focus();
+													break;
+												case "2":
+													while(true){
+														let result = await writeMicrobit("b");
+														if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
+														let farbe = yield "Welche Farbe hat die Ampel?<p style='color:#0f0;'>" +
+															"1 - Rot</br>" +
+															"2 - Gelb</br>"+
+															"3 - Grün.</br>"+
+															"4 - Ich mache später weiter.</p>";
+														if(farbe =="4") return "Dann bis später"
+														if(farbe!="2") {
+															yield "Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.";
+															continue;
+														}
+
+														result = await writeMicrobit("s");
+														if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
+														farbe = yield "Richtig! Welche Farbe hat die Ampel jetzt?<p style='color:#0f0;'>" +
+															"1 - Rot</br>" +
+															"2 - Gelb</br>"+
+															"3 - Grün.</br>"+
+															"4 - Ich mache später weiter.</p>";
+														if(farbe =="4") return "Dann bis später"
+														if(farbe!="1") {
+															yield "Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.";
+															continue;
+														}
+
+														result = await writeMicrobit("f");
+														if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
+														farbe = yield "Genau! Und welche Farbe hat die Ampel nun?<p style='color:#0f0;'>" +
+															"1 - Rot</br>" +
+															"2 - Gelb</br>"+
+															"3 - Grün.</br>"+
+															"4 - Ich mache später weiter.</p>";
+														if(farbe =="4") return "Dann bis später"
+														if(farbe!="3") {
+															yield "Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.";
+															continue;
+														}
+														kaputteAmpel.blocking=false;
+														return "Super. Du hast die Ampel repariert und kannst jetzt nach Norden in den Djungel." 													
+
+													}
+													break;
+
+												case "3":
+													return "Dann auf ein andermal!";
+												default:
+													return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+											}
+										}
+									case "2":
+										return "Dann auf ein andermal!";
+									default:
+										return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+
+								}
+							}
+						case "3":
+							return "Dann auf ein andermal!";
+						default:
+							return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+					}
+				}
+			case "2":
+				return "Dann auf ein andermal!";
+			default:
+				return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+		}
+		/*
+		//await new Promise(resolve => setTimeout(resolve, 5000));
+		let result=await writeMicrobit("1");
+	
+		if(result){
+			let val="";
+			yield "connecting worked [enter]";
+			while(!val.startsWith("2")){
+			 	
+				  val=await readMicrobit()
+				  console.log(val+val.length)
+			}
+		}
+		else yield "connecting did not work [enter]"
+		if (false) {
+			microBitConnect().then(()=>{
+				kaputteAmpel.blocking=false;
+			})
+			while(kaputteAmpel.blocking) yield "Die Ampel ist noch kaputt. Verbinde und drücke die [Enter]-Taste."
+			return "Die Ampel funktioniert wieder."
+		 
+		}
+		else return "Falscher Code!"
+		*/
+	}
+	scene6.south = scene5;
+	scene5.northblock = kaputteAmpel;
+	scene5.insert(kaputteAmpel)
+	let scene7 = new Scene("Lichtung", "<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' " +
+		"src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>" +
+		"Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
+	scene7.south = scene6;
+	let kostuem = new Item("Kostüm", "<img src='kostuem.png'>eine Kostüm", { open: true, applicable: true });
+	let Forscher = new Person("Forscher", "ein Forscher");
+	scene7.insert(Forscher);
+	Forscher.insert(kostuem);
+	Forscher.dialog = async function* () {
+		if (this.has(kostuem)) {
+			let reply = yield "Hallo, guten Tag.<p style='color:#0f0;'>" +
+				"1 - Hallo, wer sind Sie denn?.</br>" +
+				"2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>";
+			switch (reply) {
+				case "1":
+					return "Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>" +
+						"ich erforsche den hiesigen Stamm der Ureinwohner."
+					break;
+				case "2":
+					this.open = true;
+					Commands.actor.take(kostuem);
+					this.open = false;
+					return "Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>" +
+						"Meine bisherigen Forschungen habe ich Beobachtungen</br>" +
+						"aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>" +
+						"ueber den Zaun, der das Dorf umgibt spähen konnte.</br>" +
+						"Doch mit deiner Statur ist eventuell möglich dich als einer</br>" +
+						"der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>" +
+						"Hier ist das Kostüm.";
+					break;
+				default:
+					return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+					break;
+			}
+		} else {
+			return "Wissenschaft ist wunderbar!";
+		}
+
+	}
+	Forscher.receiving = function (thing) {
+		print("Nein behalte das. Das ist für dich.</br>");
+		return false;
+	}
+
+
+	let scene8 = new Scene("Scene8", "")
+	scene8.east = scene6;
+	let loch = new Item("Loch", "Ein tiefes Loch", { open: true, takeable: false });
+	let tuer = new Door("Tür", "Eine verschlossene Tür.", { blocking: true })
+	let torwache = new Person("Torwache", "eine Torwache");
+
+	scene8.insert(torwache);
+	scene8.northblock = tuer;
+
+	scene8.describe = function () {
+		if (tuer.blocking) {
+			return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'>" +
+				"<img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'>" +
+				"<img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>" +
+				"baut sich eine grossee Holzwand auf der sich oben</br>" +
+				"ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>" +
+				"Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.";
+		}
+		else return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'>" +
+			"<img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'>" +
+			"<img id='s8schild' src='s8schild.png'></div>" +
+			"Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>" +
+			"ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>";
+	}
+
+	/*
+	torwache.insert(schluessel);
+	*/
+	torwache.dialog = async function* () {
+		if (Commands.actor.has(kostuem)) {
+			if (tuer.blocking) {
+				let reply = yield "Hallo, Kumpel.</br>" +
+					"Ich dachte zuerst du bist schon wieder einer von diesen</br>" +
+					"bescheuerten Städtern, die uns immer wieder auf</br>" +
+					"die Nerven gehen. Aber manche verkleiden sich,</br>" +
+					"und da wir von klein auf rechnen lernen,</br>" +
+					"fällt es uns leicht alle zahlen von 0 bis 10 zusammenzuzählen</br>" +
+					"schnell im Kopf zu berechnen und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>" +
+					"scheitern die bescheuerten Städter immer.</br> " +
+					"Hahaha! Hast du den Code berechnet? Das kann dir helfen: <a href=https://makecode.microbit.org/_gCb2aFRTi9M6>Code</a>" +
+					"</br> Wenn ja dann sage ihn mir doch:";
+				if (reply === "55") {
+					tuer.blocking = false;
+					return "<img src='s8block.png'>Code akzeptiert.</br>" + scene8.describe();
+				}
+				else return "<img src='s8block.png'>Falscher Code!"
+			}
+			else {
+				return "Hallo, Kumpel!";
+			}
+		}
+		else {
+			return "Ugga bugga, blubliblah! Impostor!"
+		}
+	}
+
+	let scene9 = new Scene("Scene9", "<div class='flow'><img class='back' src='s9.png'>" +
+		"<img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'>" +
+		"<img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'>" +
+		"<img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'>" +
+		"<img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>" +
+		"Du bist im Dschungel und vor dir</br>" +
+		"baut sich eine grossee Holzwand auf der sich oben</br>" +
+		"ein Ureinwohner als Wache postiert hat.</br>" +
+		"Nach Osten geht es zurueck zum Dschungelpfad.</br>");
+	scene9.south = scene8;
+
+	let pina = new Person(["Pina", "Pina Colada"], "eine Ureinwohnerin");
+	let mojito = new Person("Mojito", "ein Ureinwohner");
+	let daiquiri = new Person("Daiquiri", "ein Ureinwohner mit einem Problem");
+	scene9.insert(pina);
+	scene9.insert(mojito);
+	scene9.insert(daiquiri);
+
+	pina.dialog = async function* () {
+		return "Uiui, eine neue Maske, schnieke Mann.";
+	}
+	mojito.dialog = async function* () {
+		return "Hehe, dieser Idiot von nebenan hat</br>" +
+			"auf seinem Kopf so ein komisches silbernes Teil stecken,</br>" +
+			"das sieht total bescheuert aus!";
+	}
+	let tortenheber = new Item("Tortenheber", "<img src='tortenheber.png'>ein Tortenheber");
+
+	daiquiri.insert(tortenheber);
+
+	daiquiri.dialog = async function* () {
+		if (this.has(tortenheber)) {
+			let reply = yield "Ich bin so verzweifelt,</br>" +
+				"ich komme einfach nicht weiter!</br>" +
+				"Die Nachbarn lachen schon alle ueber mich,</br>" +
+				"ich weiss es genau! Meine Frau wird mich bestimmt verlassen,</br>" +
+				"wenn ich es nicht los werde!<p style='color:#0f0;'>" +
+				"1 - Kann ich dir irgendwie helfen.</br>" +
+				"2 - Nee keine Zeit!</p>";
+			switch (reply) {
+				case "1":
+					let reply2 = yield "Das wäre sehr nett! Ich bin gestern mit diesem</br>" +
+						"seltsamen silbernen Teil auf dem Kopf aufgewacht,</br>" +
+						"aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstören.</br>" +
+						"Bitte mach das weg!?!</br><p style='color:#0f0;'>" +
+						"1 - Kein Problem</br>" +
+						"2 - Nee keine Lust!</p>";
+					switch (reply2) {
+						case "1":
+							this.open = true;
+							Commands.actor.take(tortenheber);
+							this.open = false;
+							return "Vielen Dank. Du kannst das Ding behalten. Sieht aus wie ein Tortenheber!";
+						case "2":
+							return "Du hättest das Teil behalten können. O hilf mir doch jemand";
+						default:
+							return "Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal..."
+					}
+					break;
+				case "2":
+					return "Unhilfsbereit die Jugend..."
+				default:
+					return "Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal..."
+			}
+		} else {
+			return "Danke nochmals.";
+		}
+	}
+
+
+
+	let scene10 = new Scene("Geheimes Labor", "<img src='s10.png'>" +
+		"Du stehst in dem geheimen Labor von einem verrueckten Forscher.</br>" +
+		"Doch dieser ist auf mysteriöse Weise verschwunden. </br>" +
+		"Auf dem Tisch siehst du einen Roboter, der noch nicht ganz fertig gestellt wurde.</br>" +
+		"Ausserdem fällt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth. " +
+		"Doch der Weg ist durch eine Tür mit Zahlenschloss verschlossen.</br>" +
+		"Nach Sueden geht es zur Strandbar.");
+	scene10.south = scene4;
+
+	let robo = new Person("robo", "Ein kaputter Roboter. Es liegt auch eine 7 Segment Anzeige herum. " +
+		"Mit einer Bedienungseinleitung. Da steht drin, dass man die Pins an der Anzeige gegen den Uhrzeigersinn " +
+		"von unten Links anfängt zu zählen. Da wo der Punk ist ist also Pin 5. Dann muss man Pin 3 mit 3V3 verbinden. " +
+		"Desweiteren mit einem 220Ohm widerstand soll man Pin1->IO2, Pin2->IO3, Pin3->IO4, Pin6->IO17, Pin7->IO18, " +
+		"Pin9->IO15, Pin10->IO14 verbinden.");
+	scene10.insert(robo);
+	let intervalID;
+	let codecnt;
+	let code = [1, 3, 1, 9];
+
+
+	robo.dialog = async function* () {
+		codecnt = 0;
+		intervalID = setInterval(displayCode, 1000);
+		return "Sende Computer-Password mit 7-Segment anzeige!";
+	}
+
+
+	let seg = { 'a': 18, 'b': 17, 'c': 4, 'd': 3, 'e': 2, 'f': 15, 'g': 14 };
+
+	function reset(pin) {
+		for (const key in seg) gpio(seg[key], 1);
+	}
+	function set(pin) {
+		gpio(pin, 0);
+	}
+
+	function gpio(pin, val) {
+		const response2 = new XMLHttpRequest();
+		response2.open("GET", 'http://raspberrypi/gpio?port=' + pin + '&level=' + val, false);
+
+		//request.open('GET', '/bar/foo.txt', false);  // `false` makes the request synchronous
+		//request.send(null);
+
+		//if (request.status === 200) {
+
+
+
+
+		response2.send();
+	}
+
+	function display7segment(n) {
+
+		switch (n) {
+			case 0:
+				reset();
+				set(seg['a']); set(seg['b']); set(seg['c']); set(seg['d']); set(seg['e']); set(seg['f']);
+				break;
+			case 1:
+				reset();
+				set(seg['b']); set(seg['c']);
+				break;
+			case 2:
+				reset();
+				set(seg['a']); set(seg['b']); set(seg['g']); set(seg['d']); set(seg['e']);
+				break;
+			case 3:
+				reset();
+				set(seg['a']); set(seg['b']); set(seg['g']); set(seg['c']); set(seg['d']);
+				break;
+			case 4:
+				reset();
+				set(seg['f']); set(seg['b']); set(seg['g']); set(seg['c']);
+				break;
+			case 5:
+				reset();
+				set(seg['a']); set(seg['f']); set(seg['g']); set(seg['c']); set(seg['d']);
+				break;
+			case 6:
+				reset();
+				set(seg['a']); set(seg['f']); set(seg['e']); set(seg['c']); set(seg['d']); set(seg['g']);
+				break;
+			case 7:
+				reset();
+				set(seg['a']); set(seg['b']); set(seg['c']);
+				break;
+			case 8:
+				reset();
+				set(seg['a']); set(seg['b']); set(seg['c']); set(seg['d']); set(seg['e']); set(seg['f']); set(seg['g']);
+				break;
+			case 9:
+				reset();
+				set(seg['a']); set(seg['b']); set(seg['c']); set(seg['d']); set(seg['f']); set(seg['g']);
+				break;
+
+		}
+
+	}
+
+
+
+	function displayCode() {
+		display7segment(code[codecnt]);
+		codecnt++
+		if (codecnt == code.length) clearInterval(intervalID);
+	}
+
+	scene4.northblock = seetang;
+	scene4.insert(seetang);
+
+	let numberlockdoor = new Door("Zahlenschlosstür", "Ein digitales Eingabefeld ist an der Tür.", { blocking: true, usable: true, speakable: true });
+	numberlockdoor.use = function () {
+		print("Ich sollte darauf tippen...");
+		return false;
+	}
+	numberlockdoor.dialog = async function* () {
+		const reply = yield 'Bitte Zahlencode eingeben</p>';
+		if (reply === "1319") {
+			numberlockdoor.blocking = false;
+			return "Die Tür öffnet sich!"
+		}
+		else return "Falscher Code!"
+	}
+	scene10.northblock = numberlockdoor;
+	scene10.insert(numberlockdoor)
+	let scene11 = new Scene("Dunkles Labyrinth", "Es ist stock dunkel hier. " +
+		"Ich glaube ich brauche Robos Hilfe um hier rauszufinden. " +
+		"Oh auf dem Boden liegt Ultraschallsensor und eine Anleitung. " +
+		"Da steht dass man VCC mit 5V verbinden muss und GND mit GND. " +
+		"Dann nur noch TRIG mit IO23. Da wird dann ein Ultraschallpuls ausgesendet. " +
+		"Und an Echo kommt dann ein 5V Signal, wenn das Echo empfangen wird. " +
+		"Man muss allerdings die 5V auf 3.3V runterteilen. " +
+		"Dazu nehmen wir einen 100 Ohm Widerstand von Echo gehen dann an IO24. " +
+		"Dann muss man noch von IO24 mit 200Ohm nach GND gehen.");
+	scene11.south = scene10;
+	let robo2 = new Person("robo", "Ein kaputter Roboter mit 7 Segment Anzeige.");
+	scene11.insert(robo2);
+
+	let firsttimedist = true;
+	robo2.dialog = async function* () {
+		const response2 = new XMLHttpRequest();
+		response2.open("GET", 'http://raspberrypi/dist', false);
+
+		response2.send();
+
+		if (response2.status === 200) {
+			if (response2.responseText != "0") {
+				if (firsttimedist) {
+					firsttimedist = false;
+					return "Distanz: " + response2.responseText + " cm.</br>Super der Ultraschallsensor funktioniert. " +
+						"Der Roboter führt dich aus dem Labyrinth heraus du hast das Spiel gemeistert. " +
+						"Gratulation! Du kannst nun auf http://raspberrypi:3000/  " +
+						"und user root mit passwort raspberry auf den Source code zugreifen. " +
+						"Per ssh pi@raspberrypi mit passwort raspberry kannst du dich auf dem System einloggen."
+				}
+				return "Distanz: " + response2.responseText + " cm."
+			}
+			else return "Sensor deffekt!";
+		}
+	}
+
+
+	/**
+	 * Prints a string to the canvas at the beginning by adding it to the beginning of Commands.answer.
+	 *
+	 * @param {string} x - A string param
+	 * @return {void}
+	 *
+	 * @example
+	 *
+	 *     printfront('hello')
+	 */
+	function printfront(x) {
+		Commands.answer.unshift(x);
+	}
+
+
+	/**
+	 * Prints a string to the canvas by pushing the string to Commands.answer
+	 *
+	 * @param {string} x - A string param
+	 * @return {void}
+	 *
+	 * @example
+	 *
+	 *     print('hello')
+	 */
+
+
+	function print(x) {
+		Commands.answer.push(x)
+	};
+
+	class Commands {
+		static recogparam = null;
+		static command = "";
+
+		static async execute(cmd) {
+			cmd = cmd.toLowerCase();
+			let delstr = ["=>", "der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
+			let importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
+			Commands.answer = [];
+			let recog = false;
+			for (var del in delstr) cmd = cmd.split(" " + delstr[del] + " ").join(' ')
+			for (var del in delstr) cmd = cmd.split(" " + importantprep[del] + " ").join(' => ')
+			cmd = cmd.replace(/\s+/g, ' ');
+			if (cmd === "" && !Commands.lastcommandspeak) return "";
+			Commands.command = cmd.toLowerCase();
+			console.log(cmd);
+			Commands.recogparam = null;
+			recog |= Commands.go();
+			Commands.recogparam = null;
+			recog |= Commands.look();
+			Commands.recogparam = null;
+			recog |= Commands.use();
+			Commands.recogparam = null;
+			recog |= Commands.open();
+			Commands.recogparam = null;
+			recog |= Commands.close();
+			Commands.recogparam = null;
+			recog |= Commands.take();
+			Commands.recogparam = null;
+			recog |= Commands.give();
+			Commands.recogparam = null;
+			recog |= Commands.doapply();
+			Commands.recogparam = null;
+			recog |= Commands.load();
+			Commands.recogparam = null;
+			recog |= Commands.save();
+			Commands.recogparam = null;
+			recog |= Commands.reset();
+			Commands.recogparam = null;
+			recog |= Commands.help();
+			Commands.recogparam = null;
+			let commandspeak = await Commands.speak();
+			recog |= commandspeak;
+			Commands.recogparam = null;
+
+			if (recog) {
+				printfront("Ok.\n")
+			}
+			else {
+				if (Commands.lastcommandspeak) commandspeak = await Commands.continuespeak(cmd);
+				if (!commandspeak) {
+					print("Ich verstehe dich nicht oder kann es nicht machen! Schreibe 'hilfe' für Befehlsliste!\n");
+				}
+			}
+			Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
+			return Commands.answer.join("");
+		}
+
+		static actor = ich;
+		static answer = [];
+		@when("hilfe")
+		@when("h")
+		static help() {
+			print("Befehle:\n");
+			print("&#x26AC; hilfe\n");
+			print("     mit Kurzform: h\n");
+			print("&#x26AC; schaue/betrachte/b (auf,...) (ETWAS)\n");
+			print("&#x26AC; schaue/betrachte/b mich (an)\n");
+			print("&#x26AC; schaue/betrachte/b (auf,...) rucksack\n");
+			print("     mit Kurzform: r\n");
+			print("&#x26AC; gehe (nach) norden/süden/westen/osten/...\n");
+			print("     mit Kurzform: n,s,w,o\n");
+			print("&#x26AC; verwende/benutze/drücke/ziehe/v ETWAS\n");
+			print("&#x26AC; verwende/benutze/v ETWAS auf/mit/... ETWAS/JEMANDEN\n");
+			print("&#x26AC; öffne/ö ETWAS\n");
+			print("&#x26AC; schließe/s ETWAS\n");
+			print("&#x26AC; nimm/m ETWAS\n");
+			print("&#x26AC; gib/lege/l ETWAS\n");
+			print("&#x26AC; gib/lege/l ETWAS an/zu/... ETWAS/JEMANDEN\n");
+			print("&#x26AC; sprich/rede/tippe/t (mit/in) PERSON/COMPUTER\n");
+			print("&#x26AC; speichere/save SPIELSTANDSNAME\n");
+			print("&#x26AC; lade/load SPIELSTANDSNAME\n");
+			print("&#x26AC; reset\n");
+			return true;
+		}
+
+		@when("schaue", { at: "scene" })
+		@when("betrachte", { at: "scene" })
+		@when("b", { at: "scene" })
+		@when("r", { at: "rucksack" })
+		@when("schaue AT")
+		@when("betrachte AT")
+		@when("b AT")
+		@when("schaue => AT")
+		@when("betrachte => AT")
+		@when("b => AT")
+		static look({ at }) {
+			switch (at) {
+				case "scene":
+					print(Commands.actor.position.describe());
+					if (!isEmpty(Commands.actor.position.things) && Commands.actor.position.open) {
+						print("\nDesweiteren sieht man:");
+						lookrecursive(Commands.actor.position.things, at, true, null, true);
+						print("\n");
+					}
+
+					return true;
+				case "mich":
+					print("Du bist " + Commands.actor.describe());
 				//return true;//we du fallthrough on purpuse
 				//do not insert anything here
-			case "rucksack":
-				if(!isEmpty(Commands.actor.things)) print("In deinem Rucksack befinden sich: \n");
-				if(Commands.actor.open) for(var i in Commands.actor.things){
-					print(Commands.actor.things[i].titel[0]);
-					print("\n");
-				}
-				return true;
-			default: 
-				console.log("schaue");
-				let found1,found2;
-				found1=lookrecursive(Commands.actor.things,at,false,null,false);
-				found2=lookrecursive(Commands.actor.position.things,at,false,null,false);
-				
-				return (found1!==null)||(found2!==null);
-		}
-	}
-	
-	@when( "w",{direction:"west"} )
-	@when( "westen",{direction:"west"} )
-	@when( "gehe westen",{direction:"west"} )
-	@when( "gehe => westen",{direction:"west"} )
-	@when( "o",{direction:"east"} )
-	@when( "osten",{direction:"east"} )
-	@when( "gehe osten",{direction:"east"} )
-	@when( "gehe => osten",{direction:"east"} )
-	@when( "s",{direction:"south"} )
-	@when( "süden",{direction:"south"} )
-	@when( "gehe süden",{direction:"south"} )
-	@when( "gehe => süden",{direction:"south"} )
-	@when( "n",{direction:"north"} )
-	@when( "norden",{direction:"north"} )
-    @when( "gehe norden",{direction:"north"} )
-	@when( "gehe => norden",{direction:"north"} )
-	@when( "oben",{direction:"up"} )
-    @when( "gehe oben",{direction:"up"} )
-	@when( "gehe => oben",{direction:"up"} )
-	@when( "hoch",{direction:"up"} )
-    @when( "gehe hoch",{direction:"up"} )
-	@when( "gehe => hoch",{direction:"up"} )
-	@when( "unten",{direction:"down"} )
-    @when( "gehe unten",{direction:"down"} )
-	@when( "gehe => unten",{direction:"down"} )
-	@when( "runter",{direction:"down"} )
-    @when( "gehe runter",{direction:"down"} )
-	@when( "gehe => runter",{direction:"down"} )
-    static go({direction}) {
-		if(Commands.actor.position.hasOwnProperty(direction) || Commands.actor.position[direction] ){
-			if(Commands.actor.position[direction+"block"]!==undefined){
-				if(!Commands.actor.position[direction+"block"].blocking){
-					Commands.actor.position=Commands.actor.position[direction];
-					Commands.look({at:"scene"});	
+				case "rucksack":
+					if (!isEmpty(Commands.actor.things)) print("In deinem Rucksack befinden sich: \n");
+					if (Commands.actor.open) for (var i in Commands.actor.things) {
+						print(Commands.actor.things[i].titel[0]);
+						print("\n");
+					}
 					return true;
-				}
-			}
-			else{
-				Commands.actor.position=Commands.actor.position[direction];
-				Commands.look({at:"scene"});
-				return true;
-			}
-		}
-		print("Da kann ich nicht hin.\n");
-		return false;
-    }
-	
-	@when( "v ITEM" )
-	@when( "verwende ITEM" )
-	@when( "benutze ITEM" )
-	@when( "drücke ITEM" )
-	@when( "ziehe ITEM" )
-    static use({item}) {
-		let {thing}=search(item);
-		if(thing && thing.usable) return thing.use();
-		else {
-			print("Das geht nicht.");
-			return false;
-		}
-	}
-	
-	//when chatte mit echten personen
-	//when rede mit: mit npc
-	@when( "benutze ITEM => TARGET" )
-	@when( "verwende ITEM => TARGET" )
-	@when( "v ITEM => TARGET" )
-    static doapply({item,target}){
-		let retval;
-		let {thing}=search(item);
-		let {thing:targetthing}=search(target);
-		if(thing!==null && targetthing!==null && thing.applicable){
-			if(thing.applytarget.hasOwnProperty(targetthing.name))
-			retval= thing.doapply(targetthing);
-		}
-		if(retval) return retval;
-		else {
-			let {thing}=search(target);
-			let {thing:targetthing}=search(item);
-			if(thing!==null && targetthing!==null && thing.applicable){
-				if(thing.applytarget.hasOwnProperty(targetthing.name))
-					return thing.doapply(targetthing);
-			}
-			else print("Hab ich nicht oder kann es nicht anwenden.");
-			return false;
-		}
-		
-	}
+				default:
+					console.log("schaue");
+					let found1, found2;
+					found1 = lookrecursive(Commands.actor.things, at, false, null, false);
+					found2 = lookrecursive(Commands.actor.position.things, at, false, null, false);
 
-	static openbool(item,state){
-		let {thing}=search(item);
-		if(thing!==null){
-			if(thing.blockable){
-				if(thing.locked){
-					print("Das geht nicht.");
-					return true;
+					return (found1 !== null) || (found2 !== null);
+			}
+		}
+
+		@when("w", { direction: "west" })
+		@when("westen", { direction: "west" })
+		@when("gehe westen", { direction: "west" })
+		@when("gehe => westen", { direction: "west" })
+		@when("o", { direction: "east" })
+		@when("osten", { direction: "east" })
+		@when("gehe osten", { direction: "east" })
+		@when("gehe => osten", { direction: "east" })
+		@when("s", { direction: "south" })
+		@when("süden", { direction: "south" })
+		@when("gehe süden", { direction: "south" })
+		@when("gehe => süden", { direction: "south" })
+		@when("n", { direction: "north" })
+		@when("norden", { direction: "north" })
+		@when("gehe norden", { direction: "north" })
+		@when("gehe => norden", { direction: "north" })
+		@when("oben", { direction: "up" })
+		@when("gehe oben", { direction: "up" })
+		@when("gehe => oben", { direction: "up" })
+		@when("hoch", { direction: "up" })
+		@when("gehe hoch", { direction: "up" })
+		@when("gehe => hoch", { direction: "up" })
+		@when("unten", { direction: "down" })
+		@when("gehe unten", { direction: "down" })
+		@when("gehe => unten", { direction: "down" })
+		@when("runter", { direction: "down" })
+		@when("gehe runter", { direction: "down" })
+		@when("gehe => runter", { direction: "down" })
+		static go({ direction }) {
+			if (Commands.actor.position.hasOwnProperty(direction) || Commands.actor.position[direction]) {
+				if (Commands.actor.position[direction + "block"] !== undefined) {
+					if (!Commands.actor.position[direction + "block"].blocking) {
+						Commands.actor.position = Commands.actor.position[direction];
+						Commands.look({ at: "scene" });
+						return true;
+					}
 				}
 				else {
-					thing.blocking=!state;
-					Commands.look({at:item});
+					Commands.actor.position = Commands.actor.position[direction];
+					Commands.look({ at: "scene" });
 					return true;
 				}
 			}
-			else if((state==true && thing.openable)||(state==false && thing.closable)){
-				thing.open=state;
-				//iterate over all stuff and take it if takeable.
-				Commands.look({at:item});
-				return true;
-			}
-			else print("Das geht nicht.");
-			return false;	
-		}
-		return false;
-	}
-	@when( "öffne ITEM" )
-	@when( "öffne ITEM" )
-	@when( "ö ITEM" )
-    static open({item}) {
-		return Commands.openbool(item,true);
-	}
-	
-	@when( "schließe ITEM" )
-	@when( "s ITEM" )
-    static close({item}) {
-		return Commands.openbool(item,false);
-	}
-		
-	@when( "nimm ITEM" )
-	@when( "m ITEM" )
-	static take({item}){
-		let {mine,thing}=search(item);
-		if(thing!==null && thing.takeable && thing.parent!=ich) {
-			return Commands.actor.take(thing);
-		}
-		else{
+			print("Da kann ich nicht hin.\n");
 			return false;
 		}
-	}
 
-	@when( "gib ITEM => TARGET" )
-	@when( "lege ITEM => TARGET" )
-	@when( "l ITEM => TARGET" )
-	@when( "gib ITEM",{target:"scene"})
-	@when( "lege ITEM",{target:"scene"})
-	@when( "l ITEM",{target:"scene"})
-	static give({item,target}){//todo all logic should be in Thing class
-		let {mine,thing}=search(item);
-		let targetthing;
-		if(target==="scene"){
-			if(!thing.dropable) {
-				print("Kann ich nicht ablegen.");
+		@when("v ITEM")
+		@when("verwende ITEM")
+		@when("benutze ITEM")
+		@when("drücke ITEM")
+		@when("ziehe ITEM")
+		static use({ item }) {
+			let { thing } = search(item);
+			if (thing && thing.usable) return thing.use();
+			else {
+				print("Das geht nicht.");
 				return false;
 			}
-			targetthing=Commands.actor.position;
 		}
-		else ({thing:targetthing}=search(target));
-		if(thing!==null && targetthing!==null && (targetthing.open || targetthing.receiving)&& mine){
-			return targetthing.take(thing);
-		}
-		else print("Hab ich nicht oder kann es nicht geben.");
-		return false;
-	}
-	static lastperson;
-	static lastcommandspeak=false;
-	static async continuespeak(text2){
-		return Commands.speak({person:Commands.lastperson,text:text2});
-	}
-	static endofspeak=false;
-	@when( "sprich => PERSON",{text:""} )
-	@when( "sprich PERSON",{text:""} )
-	@when( "rede => PERSON",{text:""} )
-	@when( "rede PERSON",{text:""} )
-    @when( "tippe => PERSON",{text:""} )
-	@when( "tippe PERSON",{text:""} )
-	@when( "t => PERSON",{text:""} )
-	@when( "t PERSON",{text:""} )
 
-	static async speak({person,text}){
-		let {thing:personobj}=search(person,Person);
-		if(personobj!==null && personobj.speakable){
-			Commands.lastperson=person;
-			let ret=await personobj.speak(text);
-			print(ret.value);
-			Commands.endofspeak=ret.done;
+		//when chatte mit echten personen
+		//when rede mit: mit npc
+		@when("benutze ITEM => TARGET")
+		@when("verwende ITEM => TARGET")
+		@when("v ITEM => TARGET")
+		static doapply({ item, target }) {
+			let retval;
+			let { thing } = search(item);
+			let { thing: targetthing } = search(target);
+			if (thing !== null && targetthing !== null && thing.applicable) {
+				if (thing.applytarget.hasOwnProperty(targetthing.name))
+					retval = thing.doapply(targetthing);
+			}
+			if (retval) return retval;
+			else {
+				let { thing } = search(target);
+				let { thing: targetthing } = search(item);
+				if (thing !== null && targetthing !== null && thing.applicable) {
+					if (thing.applytarget.hasOwnProperty(targetthing.name))
+						return thing.doapply(targetthing);
+				}
+				else print("Hab ich nicht oder kann es nicht anwenden.");
+				return false;
+			}
+
+		}
+
+		static openbool(item, state) {
+			let { thing } = search(item);
+			if (thing !== null) {
+				if (thing.blockable) {
+					if (thing.locked) {
+						print("Das geht nicht.");
+						return true;
+					}
+					else {
+						thing.blocking = !state;
+						Commands.look({ at: item });
+						return true;
+					}
+				}
+				else if ((state == true && thing.openable) || (state == false && thing.closable)) {
+					thing.open = state;
+					//iterate over all stuff and take it if takeable.
+					Commands.look({ at: item });
+					return true;
+				}
+				else print("Das geht nicht.");
+				return false;
+			}
+			return false;
+		}
+		@when("öffne ITEM")
+		@when("öffne ITEM")
+		@when("ö ITEM")
+		static open({ item }) {
+			return Commands.openbool(item, true);
+		}
+
+		@when("schließe ITEM")
+		@when("s ITEM")
+		static close({ item }) {
+			return Commands.openbool(item, false);
+		}
+
+		@when("nimm ITEM")
+		@when("m ITEM")
+		static take({ item }) {
+			let { mine, thing } = search(item);
+			if (thing !== null && thing.takeable && thing.parent != ich) {
+				return Commands.actor.take(thing);
+			}
+			else {
+				return false;
+			}
+		}
+
+		@when("gib ITEM => TARGET")
+		@when("lege ITEM => TARGET")
+		@when("l ITEM => TARGET")
+		@when("gib ITEM", { target: "scene" })
+		@when("lege ITEM", { target: "scene" })
+		@when("l ITEM", { target: "scene" })
+		static give({ item, target }) {//todo all logic should be in Thing class
+			let { mine, thing } = search(item);
+			let targetthing;
+			if (target === "scene") {
+				if (!thing.dropable) {
+					print("Kann ich nicht ablegen.");
+					return false;
+				}
+				targetthing = Commands.actor.position;
+			}
+			else ({ thing: targetthing } = search(target));
+			if (thing !== null && targetthing !== null && (targetthing.open || targetthing.receiving) && mine) {
+				return targetthing.take(thing);
+			}
+			else print("Hab ich nicht oder kann es nicht geben.");
+			return false;
+		}
+		static lastperson;
+		static lastcommandspeak = false;
+		static async continuespeak(text2) {
+			return Commands.speak({ person: Commands.lastperson, text: text2 });
+		}
+		static endofspeak = false;
+		@when("sprich => PERSON", { text: "" })
+		@when("sprich PERSON", { text: "" })
+		@when("rede => PERSON", { text: "" })
+		@when("rede PERSON", { text: "" })
+		@when("tippe => PERSON", { text: "" })
+		@when("tippe PERSON", { text: "" })
+		@when("t => PERSON", { text: "" })
+		@when("t PERSON", { text: "" })
+
+		static async speak({ person, text }) {
+			let { thing: personobj } = search(person, Person);
+			if (personobj !== null && personobj.speakable) {
+				Commands.lastperson = person;
+				let ret = await personobj.speak(text);
+				print(ret.value);
+				Commands.endofspeak = ret.done;
+				return true;
+			}
+			else print("Geht so nicht.");
+			return false;
+		}
+
+		@when("speichere TITEL")
+		@when("save TITEL")
+		static save({ titel }) {
+			let dump2 = Obj.dump();
+			localStorage.setItem(titel, dump2);
 			return true;
 		}
-		else print("Geht so nicht.");
-		return false;
-	}
-	
-	@when( "speichere TITEL" )
-	@when( "save TITEL" )
-	static save({titel}){
-		let dump2=Obj.dump();
-		localStorage.setItem(titel, dump2);
-		return true;
-	}
-	@when( "lade TITEL" )
-	@when( "load TITEL" )
-	static load({titel}){
-		let dump2=localStorage.getItem(titel)
-		if(dump2!==null){
-			Obj.restore(dump2);
-			return true;
-		}else return false;
-	}
-	@when( "reset" )
-	static reset(){
-		return Commands.load({titel:"reset"});
-	}
-	static intro(){
-		let dump=Obj.dump();
-		localStorage.setItem("reset", dump);
-		let dump2=localStorage.getItem("current")
-		if(dump2!==null){
-			Obj.restore(dump2);
+		@when("lade TITEL")
+		@when("load TITEL")
+		static load({ titel }) {
+			let dump2 = localStorage.getItem(titel)
+			if (dump2 !== null) {
+				Obj.restore(dump2);
+				return true;
+			} else return false;
 		}
-		Commands.answer=[];
-		
-		Commands.look({at:"mich"});
-		print("Du trägst einen Rucksack.");
-		print("\n");
-		Commands.look({at:"scene"});
+		@when("reset")
+		static reset() {
+			return Commands.load({ titel: "reset" });
+		}
+		static intro() {
+			let dump = Obj.dump();
+			localStorage.setItem("reset", dump);
+			let dump2 = localStorage.getItem("current")
+			if (dump2 !== null) {
+				Obj.restore(dump2);
+			}
+			Commands.answer = [];
 
-		if(Commands.actor.position==omazuhause){
-			print("Gebe z.B. ein:<em style='color:#0f0;'>rede mit oma</em> oder <em style='color:#0f0;'>w</em>");
-			//Commands.speak({person:"oma",text:""})
+			Commands.look({ at: "mich" });
+			print("Du trägst einen Rucksack.");
+			print("\n");
+			Commands.look({ at: "scene" });
+
+			if (Commands.actor.position == omazuhause) {
+				print("Gebe z.B. ein:<em style='color:#0f0;'>rede mit oma</em> oder <em style='color:#0f0;'>w</em>");
+				//Commands.speak({person:"oma",text:""})
+			}
+
+			return Commands.answer.join("");
 		}
-			
-		return Commands.answer.join("");
 	}
-}
 
 </script>
 
 <!-- Input handler -->
 <script type="text/babel" data-presets="env-plus">
-let story = document.getElementById('story')
-let inp = document.getElementById('inp')
-let prompt = document.getElementById('prompt')
-async function start(){
-	let answer=Commands.intro();
-	let p2 = document.createElement('p');
-	p2.innerHTML  = answer;
+	let story = document.getElementById('story')
+	let inp = document.getElementById('inp')
+	let prompt = document.getElementById('prompt')
+	async function start() {
+		let answer = Commands.intro();
+		let p2 = document.createElement('p');
+		p2.innerHTML = answer;
 
-	story.appendChild(p2);
-	inp.value = '';
-	setTimeout(function(){story.scrollTop = story.scrollHeight - story.clientHeight }, 3000);
-	document.getElementById("inp").addEventListener("keydown", async (e)=>{
+		story.appendChild(p2);
+		inp.value = '';
+		setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 3000);
+		document.getElementById("inp").addEventListener("keydown", async (e) => {
 
-	
-			
-		if (event.keyCode == 13) {
-			document.getElementById("inp").disabled=true;
 
-			let cmd = inp.value;
-			let p = document.createElement('p');
-			p.innerHTML  = cmd;
-			p.className = 'command';
-			story.appendChild(p);
-			
-			let answer=await Commands.execute(cmd);
-			let p2 = document.createElement('p');
-			p2.innerHTML  = answer;
-			story.appendChild(p2);
-			inp.value = '';
-			story.scrollTop = story.scrollHeight ;//- story.offsetHeight;
 
-			setTimeout(function(){story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
-			let dump=Obj.dump();
-			localStorage.setItem("current", dump);
-			document.getElementById("inp").disabled=false
-			document.getElementById("inp").focus();
-			
-		}
+			if (event.keyCode == 13) {
+				document.getElementById("inp").disabled = true;
 
-	}, false);
-}
+				let cmd = inp.value;
+				let p = document.createElement('p');
+				p.innerHTML = cmd;
+				p.className = 'command';
+				story.appendChild(p);
+
+				let answer = await Commands.execute(cmd);
+				let p2 = document.createElement('p');
+				p2.innerHTML = answer;
+				story.appendChild(p2);
+				inp.value = '';
+				story.scrollTop = story.scrollHeight;//- story.offsetHeight;
+
+				setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
+				let dump = Obj.dump();
+				localStorage.setItem("current", dump);
+				document.getElementById("inp").disabled = false
+				document.getElementById("inp").focus();
+
+			}
+
+		}, false);
+	}
 </script>
