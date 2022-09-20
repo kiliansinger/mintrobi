@@ -1375,9 +1375,9 @@ let microBitReadBluetooth=()=>{
 				}
 				break;
 			case "2":
-				return "Opa hier ein Video hochgeladen, das du gerne auf unserem Fernseher schauen kannst: " +
+				return "Opa hat hier ein Video hochgeladen, das du gerne auf unserem Fernseher schauen kannst: " +
 					"<a target='_blank' href='https://www.youtube.com/embed/8m-lXWjnjYI?autoplay=1'>Aufbauvideo</a>.</br>" +
-					"Und wenn du fertig bist dann geh doch nach drausen zu Opa. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.";
+					"Und wenn du fertig bist, dann geh doch nach drausen zu Opa. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.";
 			case "3":
 				return "Dann helfe mir doch schnell dabei. Hier ist der Bestelllink: " +
 					"<a target='_blank' href='https://www.reichelt.de/my/1978474'>Mintrobi</a>. Wir reden dann wieder, wenn die Lieferung da ist.";
@@ -2091,6 +2091,7 @@ let microBitReadBluetooth=()=>{
 		@when("hilfe")
 		@when("h")
 		static help() {
+			print("Credits: Game engine: K.Singer, story-code: M. Mendoza Delgado, J. Proll, story/graphics: M. Singer, crowdfunding: J. Plate, B. Bauerhenne.\n")
 			print("Befehle:\n");
 			print("&#x26AC; hilfe\n");
 			print("     mit Kurzform: h\n");
