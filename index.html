@@ -1452,12 +1452,12 @@ you can make a door also an orc that blocks the road
 					reply2 = yield (reply2 == "" ? "Das Gehirn von dem Mintrobi ist der kleine farbige Chip." +
 						" Den müssen wir erst noch programmieren." +
 						"Hier ein paar Übungen:<p style='color:#0f0;'>" : "Übung macht den Meister:<p style='color:#0f0;'>") +
-						"1 - <a href='https://makecode.microbit.org/_0R1RXr66UftK'>Mache Smiley</a></br>" +
-						"2 - <a href='https://makecode.microbit.org/_bzXHoLDAXi0F'>Mache kleinen Film.</a></br>" +
-						"3 - <a href='https://makecode.microbit.org/_XkLhzm0tVdpm'>Mache Geräusche</a></br>" +
-						"4 - <a href='https://makecode.microbit.org/_bzzPeU2krfit'>Mache ein Feuerknopf hinzu</a></br>" +
-						"5 - <a href='https://makecode.microbit.org/_Vm009oeb9dw5'>Spiele die Tonleiter</a></br>" +
-						"6 - <a href='https://makecode.microbit.org/_2JDXuq6md7r7'>Zeige deinen Namen</a></br>" +
+						"1 - <a target='_blank' href='https://makecode.microbit.org/_0R1RXr66UftK'>Mache Smiley</a></br>" +
+						"2 - <a target='_blank' href='https://makecode.microbit.org/_bzXHoLDAXi0F'>Mache kleinen Film.</a></br>" +
+						"3 - <a target='_blank' href='https://makecode.microbit.org/_XkLhzm0tVdpm'>Mache Geräusche</a></br>" +
+						"4 - <a target='_blank' href='https://makecode.microbit.org/_bzzPeU2krfit'>Mache ein Feuerknopf hinzu</a></br>" +
+						"5 - <a target='_blank' href='https://makecode.microbit.org/_Vm009oeb9dw5'>Spiele die Tonleiter</a></br>" +
+						"6 - <a target='_blank' href='https://makecode.microbit.org/_2JDXuq6md7r7'>Zeige deinen Namen</a></br>" +
 						"7 - Ich will keine Übungen mehr machen</p>"
 					switch (reply2) {
 						case "1": window.open("https://makecode.microbit.org/_0R1RXr66UftK", "_blank").focus();
@@ -1587,7 +1587,7 @@ you can make a door also an orc that blocks the road
 				"<img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'>" +
 				"<img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'>" +
 				"<img id='s4seetang' src='s4seetang.png'></div>" +
-				"Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum he postiert";
+				"Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum Strand.";
 		}
 		else return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'>" +
 			"<img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'>" +
@@ -1616,13 +1616,15 @@ you can make a door also an orc that blocks the road
 							"Ich muss diese 3-stöckige Torte auf diesen Teller bringen,</br>" +
 							"doch da gibt es ein Problem.</br>" +
 							"Ich kann jedes Stück nur alleine bewegen und es</br>" +
-							"darf nie ein größeres Stueck auf einem kleineren liegen.</br>" +
-							"Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein!"
-						if (reply13 === "AC,AB,CB,AC,BA,BC,AC,AB,CB,CA,BA,CB,AC,AB,CB,AC,BA,BC,AC,BA,CB,CA,BA,BC,AC,AB,CB,AC,BA,BC,AC") {
+							"darf nie ein größeres Stueck auf einem kleineren liegen. Es gibt drei Plätze A, B und C. Die Torte ist anfangs auf Platz A und muss nach B. Platz C kann man als Zwischenablage verwenden.</br>" +
+							"Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein! Du kannst das einfach durch überlegen lösen oder ein Computerprogramm schreiben. Hier der link <a target='_blank' href='https://makecode.microbit.org/_7DzXT3eF7iiu'>Code</a>."
+							console.log(reply13)
+						if (reply13 === "ab,ac,bc,ab,ca,cb,ab" || reply ==="ab,ac,bc,ab,ca,cb,ab,") {
 							//seetang.blocking=false;
-							return scene4.describe() + "Das hat geklappt. Hier ich öffne dir die Flasche. " +
-								"Da ist ein verschlüsselter Text drin:</br>" +
+							return "Das hat geklappt. Hier ich öffne dir die Flasche. " +
+								"Da ist ein verschlüsselter Text drin, er wurde rückwärts geschrieben:</br>" +
 								"<textarea rows='8' cols='80' style='white-space: wrap;' >" +
+									/*
 								"DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB" +
 								"'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E" +
 								"8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OY" +
@@ -1635,8 +1637,12 @@ you can make a door also an orc that blocks the road
 								"BLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW N" +
 								"TZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCR" +
 								"EISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT T" +
-								"LLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>" +
-								"Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit " +
+								"LLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP
+								*/
+								"NEKCEURD GNATEES TFO"+
+								"</textarea></br>" +
+								"Kannst du ein Entschlüsslungsprogramm schreiben? Versuchs mal <a target='_blank' href='https://makecode.microbit.org/_DCub8VgW8VX1'>Code</a>."
+								/*"Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit " +
 								"einer statistischen Analyse des verwürfelten Textes zu vergleichen. " +
 								"Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. " +
 								"Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. " +
@@ -1644,7 +1650,8 @@ you can make a door also an orc that blocks the road
 								"dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, " +
 								"bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, " +
 								"dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. " +
-								"Aber in diesem Falle war das Schicksal gnädig mit uns...</br>";
+								"Aber in diesem Falle war das Schicksal gnädig mit uns...</br>";*/
+
 						}
 						else {
 							return "<img src='bottlemessage.png'>Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. " +
@@ -1960,7 +1967,7 @@ you can make a door also an orc that blocks the road
 					"fällt es uns leicht alle zahlen von 0 bis 10 zusammenzuzählen</br>" +
 					"schnell im Kopf zu berechnen und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>" +
 					"scheitern die bescheuerten Städter immer.</br> " +
-					"Hahaha! Hast du den Code berechnet? Das kann dir helfen: <a href=https://makecode.microbit.org/_gCb2aFRTi9M6>Code</a>" +
+					"Hahaha! Hast du den Code berechnet? Das kann dir helfen: <a target='_blank' href=https://makecode.microbit.org/_gCb2aFRTi9M6>Code</a>" +
 					"</br> Wenn ja dann sage ihn mir doch:";
 				if (reply === "55") {
 					tuer.blocking = false;
@@ -2049,111 +2056,15 @@ you can make a door also an orc that blocks the road
 
 
 	let scene10 = new Scene("Geheimes Labor", "<img src='s10.png'>" +
-		"Du stehst in dem geheimen Labor von einem verrueckten Forscher.</br>" +
-		"Doch dieser ist auf mysteriöse Weise verschwunden. </br>" +
-		"Auf dem Tisch siehst du einen Roboter, der noch nicht ganz fertig gestellt wurde.</br>" +
+		"Hier ist ein geheimes mintrobi Programm.<a target='_blank' href='https://makecode.microbit.org/_XyR1M04cH7cR'>Code</a>.</br>" +
 		"Ausserdem fällt dir der gut erhaltene Computer auf.</br>Nach Norden geht es in ein stock dunkles Labyrinth. " +
 		"Doch der Weg ist durch eine Tür mit Zahlenschloss verschlossen.</br>" +
 		"Nach Sueden geht es zur Strandbar.");
 	scene10.south = scene4;
 
-	let robo = new Person("robo", "Ein kaputter Roboter. Es liegt auch eine 7 Segment Anzeige herum. " +
-		"Mit einer Bedienungseinleitung. Da steht drin, dass man die Pins an der Anzeige gegen den Uhrzeigersinn " +
-		"von unten Links anfängt zu zählen. Da wo der Punk ist ist also Pin 5. Dann muss man Pin 3 mit 3V3 verbinden. " +
-		"Desweiteren mit einem 220Ohm widerstand soll man Pin1->IO2, Pin2->IO3, Pin3->IO4, Pin6->IO17, Pin7->IO18, " +
-		"Pin9->IO15, Pin10->IO14 verbinden.");
-	scene10.insert(robo);
-	let intervalID;
-	let codecnt;
-	let code = [1, 3, 1, 9];
+	
 
-
-	robo.dialog = async function* () {
-		codecnt = 0;
-		intervalID = setInterval(displayCode, 1000);
-		return "Sende Computer-Password mit 7-Segment anzeige!";
-	}
-
-
-	let seg = { 'a': 18, 'b': 17, 'c': 4, 'd': 3, 'e': 2, 'f': 15, 'g': 14 };
-
-	function reset(pin) {
-		for (const key in seg) gpio(seg[key], 1);
-	}
-	function set(pin) {
-		gpio(pin, 0);
-	}
-
-	function gpio(pin, val) {
-		const response2 = new XMLHttpRequest();
-		response2.open("GET", 'http://raspberrypi/gpio?port=' + pin + '&level=' + val, false);
-
-		//request.open('GET', '/bar/foo.txt', false);  // `false` makes the request synchronous
-		//request.send(null);
-
-		//if (request.status === 200) {
-
-
-
-
-		response2.send();
-	}
-
-	function display7segment(n) {
-
-		switch (n) {
-			case 0:
-				reset();
-				set(seg['a']); set(seg['b']); set(seg['c']); set(seg['d']); set(seg['e']); set(seg['f']);
-				break;
-			case 1:
-				reset();
-				set(seg['b']); set(seg['c']);
-				break;
-			case 2:
-				reset();
-				set(seg['a']); set(seg['b']); set(seg['g']); set(seg['d']); set(seg['e']);
-				break;
-			case 3:
-				reset();
-				set(seg['a']); set(seg['b']); set(seg['g']); set(seg['c']); set(seg['d']);
-				break;
-			case 4:
-				reset();
-				set(seg['f']); set(seg['b']); set(seg['g']); set(seg['c']);
-				break;
-			case 5:
-				reset();
-				set(seg['a']); set(seg['f']); set(seg['g']); set(seg['c']); set(seg['d']);
-				break;
-			case 6:
-				reset();
-				set(seg['a']); set(seg['f']); set(seg['e']); set(seg['c']); set(seg['d']); set(seg['g']);
-				break;
-			case 7:
-				reset();
-				set(seg['a']); set(seg['b']); set(seg['c']);
-				break;
-			case 8:
-				reset();
-				set(seg['a']); set(seg['b']); set(seg['c']); set(seg['d']); set(seg['e']); set(seg['f']); set(seg['g']);
-				break;
-			case 9:
-				reset();
-				set(seg['a']); set(seg['b']); set(seg['c']); set(seg['d']); set(seg['f']); set(seg['g']);
-				break;
-
-		}
-
-	}
-
-
-
-	function displayCode() {
-		display7segment(code[codecnt]);
-		codecnt++
-		if (codecnt == code.length) clearInterval(intervalID);
-	}
+	
 
 	scene4.northblock = seetang;
 	scene4.insert(seetang);
@@ -2175,40 +2086,22 @@ you can make a door also an orc that blocks the road
 	scene10.insert(numberlockdoor)
 	let scene11 = new Scene("Dunkles Labyrinth", "Es ist stock dunkel hier. " +
 		"Ich glaube ich brauche Robos Hilfe um hier rauszufinden. " +
-		"Oh auf dem Boden liegt Ultraschallsensor und eine Anleitung. " +
-		"Da steht dass man VCC mit 5V verbinden muss und GND mit GND. " +
-		"Dann nur noch TRIG mit IO23. Da wird dann ein Ultraschallpuls ausgesendet. " +
-		"Und an Echo kommt dann ein 5V Signal, wenn das Echo empfangen wird. " +
-		"Man muss allerdings die 5V auf 3.3V runterteilen. " +
-		"Dazu nehmen wir einen 100 Ohm Widerstand von Echo gehen dann an IO24. " +
-		"Dann muss man noch von IO24 mit 200Ohm nach GND gehen.");
+		"");
 	scene11.south = scene10;
-	let robo2 = new Person("robo", "Ein kaputter Roboter mit 7 Segment Anzeige.");
-	scene11.insert(robo2);
+	let robo = new Person("Mintrobi", "Dein lieber Mintrobi.");
+	scene11.insert(robo);
 
-	let firsttimedist = true;
-	robo2.dialog = async function* () {
-		const response2 = new XMLHttpRequest();
-		response2.open("GET", 'http://raspberrypi/dist', false);
-
-		response2.send();
-
-		if (response2.status === 200) {
-			if (response2.responseText != "0") {
-				if (firsttimedist) {
-					firsttimedist = false;
+	
+	/*
 					return "Distanz: " + response2.responseText + " cm.</br>Super der Ultraschallsensor funktioniert. " +
 						"Der Roboter führt dich aus dem Labyrinth heraus du hast das Spiel gemeistert. " +
 						"Gratulation! Du kannst nun auf http://raspberrypi:3000/  " +
 						"und user root mit passwort raspberry auf den Source code zugreifen. " +
 						"Per ssh pi@raspberrypi mit passwort raspberry kannst du dich auf dem System einloggen."
-				}
-				return "Distanz: " + response2.responseText + " cm."
-			}
-			else return "Sensor deffekt!";
-		}
-	}
-
+		
+		 "Distanz: " + response2.responseText + " cm."
+		 "Sensor deffekt!";
+	*/
 
 	/**
 	 * Prints a string to the canvas at the beginning by adding it to the beginning of Commands.answer.
