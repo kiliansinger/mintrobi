@@ -657,7 +657,7 @@ you can make a door also an orc that blocks the road
 	async function microBitWriteBluetooth(string) {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
-			print("Du musst einen modernen Chrome/Edge Browser verwenden damit das geht\n")
+			print("<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n")
 			return;
 		}
 		if (!rxCharacteristic) {
@@ -675,7 +675,7 @@ you can make a door also an orc that blocks the road
 	async function microBitConnect(name) {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
-			print("Du musst einen modernen Chrome/Edge Browser verwenden damit das geht\n")
+			print("<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n")
 			return false;
 		}
 		try {
@@ -778,7 +778,7 @@ let microBitReadBluetooth=()=>{
 	async function writeMicrobit(txt) {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
-			print("Du musst einen modernen Chrome/Edge Browser verwenden damit das geht\n")
+			print("<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n")
 			return false;
 		}
 		if ("serial" in navigator) {
@@ -832,7 +832,7 @@ let microBitReadBluetooth=()=>{
 	async function readMicrobit() {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
-			print("Du musst einen modernen Chrome/Edge Browser verwenden damit das geht\n")
+			print("<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n")
 			return "";
 		}
 		if ("serial" in navigator) {
@@ -1358,7 +1358,7 @@ let microBitReadBluetooth=()=>{
 	ich.position = omazuhause;
 
 	oma.dialog = async function* () {
-		let reply = yield (!isChrome ? "Achtung damit alles funktioniert solltest du das Spiel mit einem Chrome Browser starten! " : "") +
+		let reply = yield (!isChrome ? "<em style='color:#faa;'>Achtung damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten!</em></br>" : "") +
 			"Kai, meine Liebe, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk " +
 			"schon bestellt und zusammengebaut haben.<p style='color:#0f0;'>" +
 			"1 - Ja wir haben schon alles bestellt und zusammengebaut.</br>" +
