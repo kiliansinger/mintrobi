@@ -655,6 +655,11 @@ you can make a door also an orc that blocks the road
 	let rxCharacteristic;
 
 	async function microBitWriteBluetooth(string) {
+		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+		if(!isChrome){
+			print("Du musst einen modernen Chrome/Edge Browser verwenden damit das geht\n")
+			return;
+		}
 		if (!rxCharacteristic) {
 			return;
 		}
@@ -668,6 +673,11 @@ you can make a door also an orc that blocks the road
 	}
 	let bluetooth = false;
 	async function microBitConnect(name) {
+		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+		if(!isChrome){
+			print("Du musst einen modernen Chrome/Edge Browser verwenden damit das geht\n")
+			return false;
+		}
 		try {
 			console.log("Requesting Bluetooth Device...");
 			//TODO use navigator.bluetooth.getDevices similar to usb uart
@@ -766,6 +776,11 @@ let microBitReadBluetooth=()=>{
 	//https://www.javascripttutorial.net/es-next/javascript-async-generators/
 	//https://stackoverflow.com/questions/71262432/how-can-i-close-a-web-serial-port-that-ive-piped-through-a-transformstream
 	async function writeMicrobit(txt) {
+		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+		if(!isChrome){
+			print("Du musst einen modernen Chrome/Edge Browser verwenden damit das geht\n")
+			return false;
+		}
 		if ("serial" in navigator) {
 			// The Web Serial API is supported.
 
@@ -815,6 +830,11 @@ let microBitReadBluetooth=()=>{
 
 
 	async function readMicrobit() {
+		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+		if(!isChrome){
+			print("Du musst einen modernen Chrome/Edge Browser verwenden damit das geht\n")
+			return "";
+		}
 		if ("serial" in navigator) {
 			// The Web Serial API is supported.
 
