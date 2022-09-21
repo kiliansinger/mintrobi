@@ -672,6 +672,7 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	let bluetooth = false;
+	
 	async function microBitConnect(name) {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
@@ -815,7 +816,7 @@ let microBitReadBluetooth=()=>{
 				const textEncoder = new TextEncoderStream();
 				const writer = textEncoder.writable.getWriter();
 				const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-				await writer.write(txt + "\n");//\r\n
+				await writer.write(txt);//\r\n
 				// Allow the serial port to be closed later.
 				writer.close();
 				await writableStreamClosed;
@@ -1681,7 +1682,7 @@ let microBitReadBluetooth=()=>{
 													break;
 												case "2":
 													while(true){
-														let result = await writeMicrobit("b");
+														let result = await writeMicrobit("b\n");
 														if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
 														let farbe = yield "Welche Farbe hat die Ampel?<p style='color:#0f0;'>" +
 															"1 - Rot</br>" +
@@ -1694,7 +1695,7 @@ let microBitReadBluetooth=()=>{
 															continue;
 														}
 
-														result = await writeMicrobit("s");
+														result = await writeMicrobit("s\n");
 														if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
 														farbe = yield "Richtig! Welche Farbe hat die Ampel jetzt?<p style='color:#0f0;'>" +
 															"1 - Rot</br>" +
@@ -1707,7 +1708,7 @@ let microBitReadBluetooth=()=>{
 															continue;
 														}
 
-														result = await writeMicrobit("f");
+														result = await writeMicrobit("f\n");
 														if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
 														farbe = yield "Genau! Und welche Farbe hat die Ampel nun?<p style='color:#0f0;'>" +
 															"1 - Rot</br>" +
@@ -1958,28 +1959,38 @@ let microBitReadBluetooth=()=>{
 	scene11.insert(mintrobi);
 
 	mintrobi.dialog = async function* () {
-		let name = yield "Hallo, endlich können wir miteinander reden.</br>"+
-		"Du musst unbedingt eine Funkverbindung (bluetooth) mit mir aufbauen.</br>"+
-		"Dann meinen Ultraschallsensor testen. Damit ich im dunklen Labyrinth wie eine</br>"+
-		"Fledermaus sehen kann. Damit wir uns immer verbinden können lade bitte das folgende Programm <a target='_blank' href='https://makecode.microbit.org/_5FkUDgK1tE0k'>Code</a> auf mein Gehirn</br>"+
-		"Dann drücke auf die Reset Taste auf der Rückseite vom Gehirn und tippe den Text hier ein, falls es mehrere von mir hier im Raum gibt sonst einfach [ENTER] drücken";
+		if (!("bluetooth" in navigator)) return "Du musst einen Chrome/Edge Browser verwenden."
+		var bluetoothadapter=await navigator.bluetooth.getAvailability()
+		//bluetoothadapter=false;
+		let name="";
+		if(bluetoothadapter) {
+			name = yield "Hallo, endlich können wir miteinander reden.</br>"+
+			"Du musst unbedingt eine Funkverbindung (bluetooth) mit mir aufbauen.</br>"+
+			"Wir wollen meinen Ultraschallsensor testen. Damit ich im dunklen Labyrinth wie eine</br>"+
+			"Fledermaus sehen kann. Damit wir uns immer verbinden können lade bitte das folgende Programm <a target='_blank' href='https://makecode.microbit.org/_5FkUDgK1tE0k'>Code</a> auf mein Gehirn</br>"+
+			"Dann drücke auf die Reset Taste auf der Rückseite vom Gehirn und tippe den Text hier ein, falls es mehrere von mir hier im Raum gibt sonst einfach [ENTER] drücken";
+		}
 
-		await microBitConnect(name);
+		if(bluetoothadapter) await microBitConnect(name);
 		
-		let reply2 = yield "Schreibe jetzt ein Programm, was den Ultraschallsensor ausliest und den Abstand in cm zurückgibt.</br>"+
+		let reply2 = yield "Schreibe jetzt ein Programm, was den Ultraschallsensor ausliest und den Abstand in cm"+(bluetoothadapter?"":" alle 100ms")+" zurückgibt.</br>"+
 		"Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn damit ich nicht vom Tisch falle oder</br>"+
-		"stelle etwas unter mich, während wir programmieren. Wenn Du soweit bist drücke. Mache die Hand nach vor meinen Ultraschallsensor um die Messungen abzubrechen. Hier ist das Programm was du vervollständigen sollst <a target='_blank' href='https://makecode.microbit.org/_C5Eb7Lf537CA'>Code</a>[ENTER]";
+		"stelle etwas unter mich, während wir programmieren.  Mache die Hand nach vor meinen Ultraschallsensor um die Messungen abzubrechen."+
+		" Hier ist das Programm was du vervollständigen sollst <a target='_blank' href='https://makecode.microbit.org/"+
+		(bluetoothadapter?"_C5Eb7Lf537CA":"_J504s0Afb4YH")+"'>Code</a>. "+
+		(bluetoothadapter?"":"Falls Du per in makecode per usb verbunden bist must du die Verbindung nach dem hochladen des codes</br>"+
+		"erst noch trennen <img width='20%' src='unpair.gif'>")+
+		"Wenn Du soweit bist drücke [ENTER]";
 		
-		await microBitConnect(name);
+		if(bluetoothadapter) await microBitConnect(name);
 		
 		try{
 			while(true){
 			let val=await Promise.race([
-							microBitReadBluetooth(),
+							bluetoothadapter? microBitReadBluetooth():readMicrobit(),
 							new Promise((_, reject) => setTimeout(reject, 10000, new Error("timeout")))
 						]);
-						if(val==0) {
-							
+						if(val==0) {	
 							return "Hast du das Gehirn in das Fahrgestell gesteckt?"
 						}
 						let p2 = document.createElement('p');
@@ -1992,10 +2003,12 @@ let microBitReadBluetooth=()=>{
 			}
 			while(true){
 				let reply=yield "Cool. Der Ultraschallsensor funktioniert. Jetzt kann ich dich aus dem Labyrinth herausführen.</br>"+
-				"Du musst dazu die Funksignale (bluetooth) empfangen und decodieren:</br>"+
+				"Du musst dazu die folgenden Signale empfangen und decodieren:</br>"+
 				"L steht für Links</br>"+
 				"R steht für Rechts</br>"+
-				"Bewege den Motor entsprechend und schreibe Dir die Richtungen auf. Hier ist ein Programm den du Erweitern sollst:<a target='_blank' href='https://makecode.microbit.org/_RazDmtJYUimp'>Code</a> "+
+				"Bewege den Motor entsprechend und schreibe Dir die Richtungen auf. Hier ist ein Programm den du Erweitern sollst:"+
+				"<a target='_blank' href='https://makecode.microbit.org/"+
+				(bluetoothadapter?"_RazDmtJYUimp":"_i6e5XyExURhW")+"'>Code</a> "+
 				"Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn damit ich nicht vom Tisch falle oder</br>"+
 				"stelle etwas unter mich, während wir programmieren!<p style='color:#0f0;'>"+
 				"1 - Los gehts</br>"+
@@ -2003,15 +2016,26 @@ let microBitReadBluetooth=()=>{
 				"3 - Ich will später weitermachen.</p>"
 				switch(reply){
 					case "1":
-						await microBitConnect(name);
-						await microBitWriteBluetooth("L\n");
-						await sleep(2000);
-						await microBitWriteBluetooth("R\n");
-						await sleep(2000);
-						await microBitWriteBluetooth("L\n");
-						await sleep(2000);
-						await microBitWriteBluetooth("R\n");
-						await sleep(2000);
+						if(bluetoothadapter) {
+							await microBitConnect(name);
+							await microBitWriteBluetooth("L\n");
+							await sleep(2000);
+							await microBitWriteBluetooth("R\n");
+							await sleep(2000);
+							await microBitWriteBluetooth("L\n");
+							await sleep(2000);
+							await microBitWriteBluetooth("R\n");
+							await sleep(2000);
+						} else {
+							await writeMicrobit("L\n");
+							await sleep(2000);
+							await writeMicrobit("R\n");
+							await sleep(2000);
+							await writeMicrobit("L\n");
+							await sleep(2000);
+							await writeMicrobit("R\n");
+							await sleep(2000);
+						}
 						break;
 					case "2":
 						let reply5=yield "Wie komme ich aus dem Labyrinth. Bitte gebe den Weg in der Form (LLRR...) ein:"
