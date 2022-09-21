@@ -678,6 +678,7 @@ you can make a door also an orc that blocks the road
 			print("<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n")
 			return false;
 		}
+		if(bluetooth) return true;
 		try {
 			console.log("Requesting Bluetooth Device...");
 			//TODO use navigator.bluetooth.getDevices similar to usb uart
