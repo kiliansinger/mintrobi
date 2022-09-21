@@ -879,10 +879,15 @@ let microBitReadBluetooth=()=>{
 				return str;//this is the normal control flow
 			}
 			finally {//executed before return in try and catch
-				reader.cancel();
-				await readableStreamClosed.catch(() => { /* Ignore the error */ });
+				try{
+					reader.cancel();
+					await readableStreamClosed.catch(() => { /* Ignore the error */ });
 
-				await port.close();
+					await port.close();
+				}
+				catch(e){
+
+				}
 			}
 
 		}
