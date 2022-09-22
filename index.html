@@ -1769,100 +1769,107 @@ let microBitReadBluetooth=()=>{
 		if(!isChrome){
 			return "<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n";
 		}
-		const reply = yield "Die Ampel muss wieder repariert werden. Diesmal soll die gelbe Leuchtdiode kaputt sein. Kannst Du"+
-			" mit der Leuchtdiode die 4 Beinchen hat gelb durch Farbmischung herstellen. Verwende dazu das Gehirn von Mintrobi.</br>" +
-			"Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken.</br>"+
-			"Verkabele alles wie in der Abbildung <img width='80%' src='multifarbe.png'>" +
-			"<p style='color:#0f0;'>" +
-			"1 - Ok es ist alles verbunden!</br>" +
-			"2 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
-		switch (reply) {
-			case "1":
-				while (true) {
-							
-					const reply4 = yield "Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>" +
-						"r1 für rotes Licht an</br>" +
-						"r0 für rotes Licht aus</br>" +
-						"g1 für grünes Licht an</br>" +
-						"g0 für grünes Licht aus</br>" +
-						"b1 für blaues Licht an</br>" +
-						"b0 für blaues Licht aus</br>" +
-						"<p style='color:#0f0;'>" +
-						"1 - Ok ich bin bereit zum Programmieren</br>" +
-						"2 - Programm ist fertig. Ich will die Farb-Ampel testen</br>"+
-						"3 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
-					switch (reply4) {
-						case "1":
-							window.open("https://makecode.microbit.org/_fCvCeLT1h7tH", "_blank").focus();
-							break;
-						case "2":
-							let red=false;
-							let green=false;
-							let blue=false;
-							while(true){
-								let farbe = yield "Sende Befehl an Gehirn von Mintrobi?<p style='color:#0f0;'>" +
-									"r1 - für rotes Licht an</br>" +
-									"r0 - für rotes Licht aus</br>" +
-									"g1 - für grünes Licht an</br>" +
-									"g0 - für grünes Licht aus</br>" +
-									"b1 - für blaues Licht an</br>" +
-									"b0 - für blaues Licht aus</br>"+
-									"1  - Ich habe gelb</br>"+
-									"2  - Ich mache später weiter.</p>";
-								switch(farbe){
-									case "r0":
-										red=false;
-										break;
-									case "r1":
-										red=true;
-										break;
-									case "g0":
-										green=false;
-										break;
-									case "g1":
-										green=true;
-										break;
-									case "b0":
-										blue=false;
-										break;
-									case "b1":
-										blue=true;
-										break;
-									case "1":
-									case "2":
-										break;
-									default:
-										print("Das vertehe ich nicht, versuchs nochmal!")
-										continue;
-
-								}
+		while(true){
+			const reply = yield "Die Ampel muss wieder repariert werden. Diesmal soll die gelbe Leuchtdiode kaputt sein. Kannst Du"+
+				" mit der Leuchtdiode die 4 Beinchen hat gelb durch Farbmischung herstellen. Hier erfährst du mehr über Farbmischung <a target='_blank' href='https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1'>Video</a>."+
+				"Verwende dazu das Gehirn von Mintrobi.</br>" +
+				"Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken.</br>"+
+				"Verkabele alles wie in der Abbildung <img width='80%' src='multifarbe.png'>" +
+				"<p style='color:#0f0;'>" +
+				"1 - Hä wie soll man denn aus rot, grün und blau die Farbe gelb mischen?</br>"+
+				"2 - Ok es ist alles verbunden!</br>" +
+				"3 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+			switch (reply) {
+				case "1":
+					window.open("https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1", "_blank").focus();
+					continue;
+				case "2":
+					while (true) {
 								
-								if(farbe =="2") return "Dann bis später"
-								if(farbe=="1") {
-									if(red && green && !blue) {
-										kaputteAmpel2.blocking=false;
-										return "Genau! Richtig wenn man rot und grün mischt bekommt man gelb. Die Ampel ist jetzt wieder ganz."
+						const reply4 = yield "Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>" +
+							"r1 für rotes Licht an</br>" +
+							"r0 für rotes Licht aus</br>" +
+							"g1 für grünes Licht an</br>" +
+							"g0 für grünes Licht aus</br>" +
+							"b1 für blaues Licht an</br>" +
+							"b0 für blaues Licht aus</br>" +
+							"<p style='color:#0f0;'>" +
+							"1 - Ok ich bin bereit zum Programmieren</br>" +
+							"2 - Programm ist fertig. Ich will die Farb-Ampel testen</br>"+
+							"3 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+						switch (reply4) {
+							case "1":
+								window.open("https://makecode.microbit.org/_fCvCeLT1h7tH", "_blank").focus();
+								break;
+							case "2":
+								let red=false;
+								let green=false;
+								let blue=false;
+								while(true){
+									let farbe = yield "Sende Befehl an Gehirn von Mintrobi?<p style='color:#0f0;'>" +
+										"r1 - für rotes Licht an</br>" +
+										"r0 - für rotes Licht aus</br>" +
+										"g1 - für grünes Licht an</br>" +
+										"g0 - für grünes Licht aus</br>" +
+										"b1 - für blaues Licht an</br>" +
+										"b0 - für blaues Licht aus</br>"+
+										"1  - Ich habe gelb</br>"+
+										"2  - Ich mache später weiter.</p>";
+									switch(farbe){
+										case "r0":
+											red=false;
+											break;
+										case "r1":
+											red=true;
+											break;
+										case "g0":
+											green=false;
+											break;
+										case "g1":
+											green=true;
+											break;
+										case "b0":
+											blue=false;
+											break;
+										case "b1":
+											blue=true;
+											break;
+										case "1":
+										case "2":
+											break;
+										default:
+											print("Das vertehe ich nicht, versuchs nochmal!")
+											continue;
+
 									}
-									else{
-										yield "Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.";
-										continue;
+									
+									if(farbe =="2") return "Dann bis später"
+									if(farbe=="1") {
+										if(red && green && !blue) {
+											kaputteAmpel2.blocking=false;
+											return "Genau! Richtig wenn man rot und grün mischt bekommt man gelb. Die Ampel ist jetzt wieder ganz."
+										}
+										else{
+											yield "Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.";
+											continue;
+										}
 									}
+									let result = await writeMicrobit(farbe+"\n");
+									if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
 								}
-								let result = await writeMicrobit(farbe+"\n");
-								if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
-							}
-							break;
-						case "3":
-							return "Dann auf ein andermal!";
-						default:
-							return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+								break;
+							case "3":
+								return "Dann auf ein andermal!";
+							default:
+								return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+						}
+							
 					}
-						
-				}
-			case "2":
-				return "Dann auf ein andermal!";
-			default:
-				return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+				case "3":
+					return "Dann auf ein andermal!";
+				default:
+					return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+			}
 		}
 	}
 	scene6.south = scene5;
