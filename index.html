@@ -854,16 +854,16 @@ let microBitReadBluetooth=()=>{
 				];
 				const ports = await navigator.serial.getPorts();
 
-				console.log(JSON.stringify(filters))
+				//console.log(JSON.stringify(filters))
 				for (let i = 0; i < ports.length; ++i) {
 					let info = ports[i].getInfo();
-					console.log(JSON.stringify(info))
+					//console.log(JSON.stringify(info))
 					if (info.usbProductId == filters[0].usbProductId && info.usbVendorId == filters[0].usbVendorId) port = ports[i];
 				}
 
 				if (!port) port = await navigator.serial.requestPort({ filters });
-				console.log(port)
-				console.log("Available\n" + JSON.stringify(port))
+				//console.log(port)
+				//console.log("Available\n" + JSON.stringify(port))
 				await port.open({
 					baudRate: 115200,
 					dataBits: 8,
@@ -915,6 +915,8 @@ let microBitReadBluetooth=()=>{
 		}
 	}
 </script>
+<script src="pong.js"></script>
+
 <script src="babel.min.js"></script>
 <script>
 	// Define a preset https://medium.com/jspoint/a-minimal-guide-to-ecmascript-decorators-55b70338215e
@@ -1350,6 +1352,24 @@ let microBitReadBluetooth=()=>{
 	///////////////////////////////////////////////////////
 	let ich = new Person("Kai", "Du bist interessiert an der Wissenschaft und willst die Welt erforschen." +
 		"</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
+	var Pong=null;
+	let computer = new Item("Computer","Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.",{usable: true });
+	var pongcanv=null;
+	computer.use = function () {
+	
+		print("Baue ein Steuerung des Spiels. Hier ist der Code: <a target='_blank' href='https://makecode.microbit.org/_AeaiKqX7LTu4'>Code</a>.</br>"+
+		"Und so must du es mit dem Potentiometer verkabeln:<img width='80%' src='poti.png'></br>"
+		)
+		if(pongcanv!=null) pongcanv.remove();
+		pongcanv = document.createElement('canvas');
+		story.appendChild(pongcanv);
+		story.scrollTop = story.scrollHeight - story.clientHeight 
+		
+		Pong=  Object.assign({}, Game);
+		Pong.initialize();
+		
+		return true;
+	}
 	let omazuhause = new Scene("Haus Oma", "<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' " +
 		"src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>Du bist im Haus deiner Grosseltern.</br>" +
 		"Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.</br>"+
@@ -1357,6 +1377,8 @@ let microBitReadBluetooth=()=>{
 		"und dem <a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.");
 	let oma = new Person(["Oma", "Omi"], "Deinen liebe Oma.");
 	omazuhause.insert(oma);
+	omazuhause.insert(computer);
+
 	ich.position = omazuhause;
 
 	oma.dialog = async function* () {
@@ -2084,7 +2106,7 @@ let microBitReadBluetooth=()=>{
 	mintrobi.dialog = async function* () {
 		if (!("bluetooth" in navigator)) return "Du musst einen Chrome/Edge Browser verwenden."
 		var bluetoothadapter=await navigator.bluetooth.getAvailability()
-		//bluetoothadapter=false;
+		bluetoothadapter=false;
 		let name="";
 		if(bluetoothadapter) {
 			name = yield "Hallo, endlich können wir miteinander reden.</br>"+
