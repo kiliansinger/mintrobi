@@ -33,12 +33,12 @@ var Paddle = {
 	new: function (side) {
 		return {
 			width: 18,
-			height: 70,
+			height: side === 'left' ? 140:70,
 			x: side === 'left' ? 150 : this.canvas.width - 150,
 			y: (this.canvas.height / 2) - 35,
 			score: 0,
 			move: DIRECTION.IDLE,
-			speed: 10
+			speed: 1
 		};
 	}
 };
@@ -215,7 +215,7 @@ var Game = {
 				this.color = this._generateRoundColor();
 				this.player.score = this.paddle.score = 0;
 				this.player.speed += 0.5;
-				this.paddle.speed += 1;
+				this.paddle.speed += 0.5;
 				this.ball.speed += 1;
 				this.round += 1;
 
