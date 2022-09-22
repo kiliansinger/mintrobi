@@ -1353,27 +1353,38 @@ let microBitReadBluetooth=()=>{
 	let ich = new Person("Kai", "Du bist interessiert an der Wissenschaft und willst die Welt erforschen." +
 		"</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
 	var Pong=null;
-	let computer = new Item("Computer","Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.",{usable: true });
+	let computer = new Person("Computer","Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>tippe computer</em>.");
 	var pongcanv=null;
-	computer.use = function () {
-	
-		if(pongcanv!=null) pongcanv.remove();
+	computer.dialog = async function*() {
+			
 
-		let p=document.createElement('p');
-		p.innerHTML="Baue ein Steuerung des Spiels. Hier ist der Code: <a target='_blank' href='https://makecode.microbit.org/_XUx3dT0fdM2P'>Code</a>.</br>"+
-		"Falls Du per in makecode per usb verbunden bist must du die Verbindung nach dem hochladen des codes</br>"+
-		"erst noch trennen <img width='20%' src='unpair.gif'></br>"
-		"Und so must du es mit dem Potentiometer verkabeln:<img width='80%' src='poti.png'></br>";
-		story.appendChild(p);
 
-		pongcanv = document.createElement('canvas');
-		story.appendChild(pongcanv);
-		story.scrollTop = story.scrollHeight - story.clientHeight 
-		
-		Pong=  Object.assign({}, Game);
-		Pong.initialize();
-		
-		return true;
+		yield (!isChrome ? "<em style='color:#faa;'>Achtung damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten!</em></br>" : "") +
+		"Baue ein Steuerung des Spiels. Hier ist der Code: <a target='_blank' href='https://makecode.microbit.org/_XUx3dT0fdM2P'>Code</a>.</br>"+
+		"Nachdem du das Programm auf das Gehirn von Mintrobi hochgeladen hast musst du</br>"+
+		"Falls Du in Makecode verbunden bist, must du die Verbindung nach dem Hochladen des Programms</br>"+
+		"erst noch trennen</br><img width='20%' src='unpair.gif'>"+
+		"Drücke [ENTER] wenn du soweit bist.";
+
+		yield "Jetzt musst du nur noch wie folgt verkabeln:"+
+		"<img width='50%' src='poti.png'></br>"+
+		"Drücke [ENTER] wenn du soweit bist.";
+		while(true){
+					
+			if(pongcanv!=null) pongcanv.remove();
+
+			pongcanv = document.createElement('canvas');
+			story.appendChild(pongcanv);
+			story.scrollTop = story.scrollHeight - story.clientHeight 
+			
+			Pong=  Object.assign({}, Game);
+			Pong.initialize();
+			
+			let nochmal = yield "Nochmal?<p style='color:#0f0;'>"+
+				"1 - Ja</br>"+
+				"2 - Nein</p>"
+			if(nochmal!="1") return "Ok.";
+		}
 	}
 	let omazuhause = new Scene("Haus Oma", "<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' " +
 		"src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>Du bist im Haus deiner Grosseltern.</br>" +
