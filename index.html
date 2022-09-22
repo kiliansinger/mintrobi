@@ -1357,10 +1357,13 @@ let microBitReadBluetooth=()=>{
 	var pongcanv=null;
 	computer.use = function () {
 	
-		print("Baue ein Steuerung des Spiels. Hier ist der Code: <a target='_blank' href='https://makecode.microbit.org/_AeaiKqX7LTu4'>Code</a>.</br>"+
-		"Und so must du es mit dem Potentiometer verkabeln:<img width='80%' src='poti.png'></br>"
-		)
 		if(pongcanv!=null) pongcanv.remove();
+
+		let p=document.createElement('p');
+		p.innerHTML="Baue ein Steuerung des Spiels. Hier ist der Code: <a target='_blank' href='https://makecode.microbit.org/_AeaiKqX7LTu4'>Code</a>.</br>"+
+		"Und so must du es mit dem Potentiometer verkabeln:<img width='80%' src='poti.png'></br>";
+		story.appendChild(p);
+
 		pongcanv = document.createElement('canvas');
 		story.appendChild(pongcanv);
 		story.scrollTop = story.scrollHeight - story.clientHeight 
