@@ -1632,6 +1632,10 @@ let microBitReadBluetooth=()=>{
 		return false;
 	}
 	kaputteAmpel.dialog = async function* () {
+		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+		if(!isChrome){
+			return "<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n";
+		}
 		const reply = yield "Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>" +
 			"Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken." +
 			"<p style='color:#0f0;'>" +
@@ -1659,10 +1663,13 @@ let microBitReadBluetooth=()=>{
 							}
 							else if (val.startsWith("1")) {
 								const reply3 = yield "Jetzt ist noch die Auto-Ampel kaput. Alle Lampen müssen ersetzt werden." +
-									"Dazu musst du Pin 0 mit dem langen Beinchen der roten </br>" +
-									"Leuchtdiode verbinden. Dann musst du den 56Ohm Widerstand einfügen und dann alles mit GND verbinden.</br>" +
+									"Dazu musst du Pin 0 mit einem Beinchen des 56 Ohm Widerstands (grün blau schwarz gold braun) verbinden.</br>"+
+									"Der Widerstand ist wichtig, er schützt die Leuchtdiode, das ist wie ein Wasserhahn, den man nicht ganz Aufdreht, der reduziert den Strom.</br>"+
+									"An das andere Bein des widerstands kommt das lange Beinchen der roten </br>" +
+									"Leuchtdiode. Leuchtdioden leuchten nur wenn man sie richtig herum anschließt.</br>" +
+									"Das kurze Beinchen, da ist auch eine Abflachung am Gehäuse der Leuchtdiode musst du dann mit GND verbinden."+
 									"In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode.</br>" +
-									"<p style='color:#0f0;'>" +
+									"<img width='80%' src='ampel.png'><p style='color:#0f0;'>" +
 									"1 - Ok es ist alles verbunden!</br>" +
 									"2 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
 								switch (reply3) {
@@ -1674,8 +1681,8 @@ let microBitReadBluetooth=()=>{
 												"f für fahren also grün</br>" +
 												"<p style='color:#0f0;'>" +
 												"1 - Ok ich bin bereit zum Programmieren</br>" +
-												"2 - Programm ist fertig. Ich will die Auto-Ampel testen</br>"
-											"3 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+												"2 - Programm ist fertig. Ich will die Auto-Ampel testen</br>"+
+												"3 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
 											switch (reply4) {
 												case "1":
 													window.open("https://makecode.microbit.org/_REjD0A9HE4m9", "_blank").focus();
@@ -1751,6 +1758,113 @@ let microBitReadBluetooth=()=>{
 				return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
 		}
 	}
+
+	let kaputteAmpel2 = new Door("Ampel", "Eine Ampel bei der wieder was kaputt ist.", { blocking: true, usable: true, speakable: true });
+	kaputteAmpel2.use = function () {
+		print("Ich sollte darauf tippen <em style='color:#0f0;'>tippe auf ampel</em>...");
+		return false;
+	}
+	kaputteAmpel2.dialog = async function* () {
+		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+		if(!isChrome){
+			return "<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n";
+		}
+		const reply = yield "Die Ampel muss wieder repariert werden. Diesmal soll die gelbe Leuchtdiode kaputt sein. Kannst Du"+
+			" mit der Leuchtdiode die 4 Beinchen hat gelb durch Farbmischung herstellen. Verwende dazu das Gehirn von Mintrobi.</br>" +
+			"Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken.</br>"+
+			"Verkabele alles wie in der Abbildung <img width='80%' src='multifarbe.png'>" +
+			"<p style='color:#0f0;'>" +
+			"1 - Ok es ist alles verbunden!</br>" +
+			"2 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+		switch (reply) {
+			case "1":
+				while (true) {
+							
+					const reply4 = yield "Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>" +
+						"r1 für rotes Licht an</br>" +
+						"r0 für rotes Licht aus</br>" +
+						"g1 für grünes Licht an</br>" +
+						"g0 für grünes Licht aus</br>" +
+						"b1 für blaues Licht an</br>" +
+						"b0 für blaues Licht aus</br>" +
+						"<p style='color:#0f0;'>" +
+						"1 - Ok ich bin bereit zum Programmieren</br>" +
+						"2 - Programm ist fertig. Ich will die Farb-Ampel testen</br>"+
+						"3 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+					switch (reply4) {
+						case "1":
+							window.open("https://makecode.microbit.org/_fCvCeLT1h7tH", "_blank").focus();
+							break;
+						case "2":
+							let red=false;
+							let green=false;
+							let blue=false;
+							while(true){
+								let farbe = yield "Sende Befehl an Gehirn von Mintrobi?<p style='color:#0f0;'>" +
+									"r1 - für rotes Licht an</br>" +
+									"r0 - für rotes Licht aus</br>" +
+									"g1 - für grünes Licht an</br>" +
+									"g0 - für grünes Licht aus</br>" +
+									"b1 - für blaues Licht an</br>" +
+									"b0 - für blaues Licht aus</br>"+
+									"1  - Ich habe gelb</br>"+
+									"2  - Ich mache später weiter.</p>";
+								switch(farbe){
+									case "r0":
+										red=false;
+										break;
+									case "r1":
+										red=true;
+										break;
+									case "g0":
+										green=false;
+										break;
+									case "g1":
+										green=true;
+										break;
+									case "b0":
+										blue=false;
+										break;
+									case "b1":
+										blue=true;
+										break;
+									case "1":
+									case "2":
+										break;
+									default:
+										print("Das vertehe ich nicht, versuchs nochmal!")
+										continue;
+
+								}
+								
+								if(farbe =="2") return "Dann bis später"
+								if(farbe=="1") {
+									if(red && green && !blue) {
+										kaputteAmpel2.blocking=false;
+										return "Genau! Richtig wenn man rot und grün mischt bekommt man gelb. Die Ampel ist jetzt wieder ganz."
+									}
+									else{
+										yield "Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.";
+										continue;
+									}
+								}
+								let result = await writeMicrobit(farbe+"\n");
+								if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
+							}
+							break;
+						case "3":
+							return "Dann auf ein andermal!";
+						default:
+							return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+					}
+						
+				}
+			case "2":
+				return "Dann auf ein andermal!";
+			default:
+				return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+		}
+	}
 	scene6.south = scene5;
 	scene5.northblock = kaputteAmpel;
 	scene5.insert(kaputteAmpel)
@@ -1758,6 +1872,8 @@ let microBitReadBluetooth=()=>{
 		"src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>" +
 		"Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
 	scene7.south = scene6;
+	scene6.southblock=kaputteAmpel2;
+	scene6.insert(kaputteAmpel2);
 	let kostuem = new Item("Kostüm", "<img src='kostuem.png'>eine Kostüm", { open: true, applicable: true });
 	let Forscher = new Person("Forscher", "ein Forscher");
 	scene7.insert(Forscher);
