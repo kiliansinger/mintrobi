@@ -1922,6 +1922,13 @@ let microBitReadBluetooth=()=>{
 	let kostuem = new Item("Kostüm", "<img src='kostuem.png'>eine Kostüm", { open: true, applicable: true });
 	let Forscher = new Person("Forscher", "ein Forscher");
 	scene7.insert(Forscher);
+
+	let sonnenuhranleitung=new Item("Sonnenuhranleitung","Um das Spiel zu lösen musst Du dieses Projekt nicht unbedingt durchführen.</br>"+
+	"Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen.</br>"+
+	"Hier ist die <a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>Anleitung</a>.")
+
+	scene7.insert(sonnenuhranleitung)
+	
 	Forscher.insert(kostuem);
 	Forscher.dialog = async function* () {
 		if (this.has(kostuem)) {
