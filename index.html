@@ -51,6 +51,29 @@ you can make a door also an orc that blocks the road
 	<meta http-equiv="Cache-control" content="no-cache">
 	<meta http-equiv="Cache-control" content="no-store">
 	<style>
+a:link {
+  color: cyan;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: rgb(0, 181, 181);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: red;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:active {
+  color: yellow;
+  background-color: transparent;
+  text-decoration: underline;
+}
 		html {
 			color: #ffaa55;
 			background-color: #000000;
@@ -2336,7 +2359,7 @@ let microBitReadBluetooth=()=>{
 			else {
 				if (Commands.lastcommandspeak) commandspeak = await Commands.continuespeak(cmd);
 				if (!commandspeak) {
-					print("Ich verstehe dich nicht oder kann es nicht machen! Schreibe 'hilfe' für Befehlsliste!\n");
+					print("Ich verstehe dich nicht oder kann es nicht machen! Schreibe <em style='color:#0f0;'>hilfe</em> für Befehlsliste!\n");
 				}
 			}
 			Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
@@ -2650,6 +2673,7 @@ let microBitReadBluetooth=()=>{
 
 <!-- Input handler -->
 <script type="text/babel" data-presets="env-plus">
+	let lastinput="";
 	let story = document.getElementById('story')
 	let inp = document.getElementById('inp')
 	let prompt = document.getElementById('prompt')
@@ -2670,6 +2694,7 @@ let microBitReadBluetooth=()=>{
 					document.getElementById("inp").disabled = true;
 
 					let cmd = inp.value;
+					lastinput=cmd;
 					let p = document.createElement('p');
 					p.innerHTML = cmd;
 					p.className = 'command';
@@ -2687,6 +2712,12 @@ let microBitReadBluetooth=()=>{
 					localStorage.setItem("current", dump);
 					document.getElementById("inp").disabled = false
 					document.getElementById("inp").focus();
+
+				}
+				else if(event.keyCode ==38){//up arrow
+					document.getElementById("inp").focus();
+					document.getElementById("inp").value=lastinput;
+					
 
 				}
 
