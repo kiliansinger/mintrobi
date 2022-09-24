@@ -1590,7 +1590,7 @@ let microBitReadBluetooth=()=>{
 
 	let scene4 = new Scene("Scene4", "Barman")
 	scene4.east = scene3;
-	let seetang = new Door("Seetang", "Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!", { blocking: true, usable: true })
+	let seetang = new Door("Seetang", "Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!", { blocking: true, usable: true,locked: true })
 	seetang.cnt = 0;
 	seetang.use = function () {
 		seetang.cnt++;
