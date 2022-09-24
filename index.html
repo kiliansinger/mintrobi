@@ -2479,6 +2479,10 @@ let microBitReadBluetooth=()=>{
 						Commands.look({ at: "scene" });
 						return true;
 					}
+					else {
+						print("Da kann ich nicht hin wegen: "+Commands.actor.position[direction + "block"].titel+"!\n")
+						return true;
+					}
 				}
 				else {
 					Commands.actor.position = Commands.actor.position[direction];
