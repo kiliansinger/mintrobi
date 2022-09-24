@@ -701,7 +701,9 @@ a:active {
 // @ts-check
 </script>
 <script>
-	
+	var de=true;//default
+	var en=false;
+	var uk=false;
 	// https://lancaster-university.github.io/microbit-docs/resources/bluetooth/bluetooth_profile.html
 	// An implementation of Nordic Semicondutor's UART/Serial Port Emulation over Bluetooth low energy
 	const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -1000,6 +1002,7 @@ let microBitReadBluetooth=()=>{
 </script>
 <!-- Decorator example -->
 <script type="text/babel" data-presets="env-plus">
+
 
 	// @ts-check
 	class Obj {
@@ -1411,7 +1414,7 @@ let microBitReadBluetooth=()=>{
 	}
 	var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 	///////////////////////////////////////////////////////
-	let ich = new Person("Kai", "Du bist interessiert an der Wissenschaft und willst die Welt erforschen." +
+	let ich = new Person("Kai", de?"Du bist interessiert an der Wissenschaft und willst die Welt erforschen.":en?"You are interested in science and want to explore the world.":uk?"Ти цікавишся наукою і хочеш пізнавати світ.":"" +
 		"</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
 	var Pong=null;
 	let computer = new Person("Computer","Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.",{usable:true});
@@ -2364,6 +2367,12 @@ let microBitReadBluetooth=()=>{
 			Commands.recogparam = null;
 			recog |= Commands.reset();
 			Commands.recogparam = null;
+			recog |= Commands.de();
+			Commands.recogparam = null;
+			recog |= Commands.en();
+			Commands.recogparam = null;
+			recog |= Commands.uk();
+			Commands.recogparam = null;
 			recog |= Commands.help();
 			Commands.recogparam = null;
 			let commandspeak = await Commands.speak();
@@ -2415,9 +2424,33 @@ let microBitReadBluetooth=()=>{
 			print("&#x26AC; speichere/save SPIELSTANDSNAME\n");
 			print("&#x26AC; lade/load SPIELSTANDSNAME\n");
 			print("&#x26AC; reset\n");
+			print("&#x26AC; de/en/uk Deutsch/English/Ukrain\n");
+			return true;
+		}
+		@when("de")
+		static de(){
+			console.log("de")
+			de=true;
+			en=false;
+			uk=false;
 			return true;
 		}
 
+		@when("en")
+		static en(){
+			de=false;
+			en=true;
+			uk=false;
+			return true;
+		}
+
+		@when("uk")
+		static uk(){
+			de=false;
+			en=false;
+			uk=true;
+			return true;
+		}
 		@when("schaue", { at: "scene" })
 		@when("betrachte", { at: "scene" })
 		@when("b", { at: "scene" })
