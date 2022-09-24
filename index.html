@@ -1414,7 +1414,7 @@ let microBitReadBluetooth=()=>{
 	let ich = new Person("Kai", "Du bist interessiert an der Wissenschaft und willst die Welt erforschen." +
 		"</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
 	var Pong=null;
-	let computer = new Person("Computer","Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>tippe computer</em>.");
+	let computer = new Person("Computer","Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>tippe auf computer</em>.");
 	var pongcanv=null;
 	computer.dialog = async function*() {
 			
@@ -2320,13 +2320,15 @@ let microBitReadBluetooth=()=>{
 
 		static async execute(cmd) {
 			cmd = cmd.toLowerCase();
-			let delstr = ["=>", "der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
+			let delstr = ["=>","der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
 			let importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
+			let delall=["!",".",","];
 			Commands.answer = [];
 			let recog = false;
+			for(var del in delall) cmd=cmd.split(delall[del]).join(" ");
 			for (var del in delstr) cmd = cmd.split(" " + delstr[del] + " ").join(' ')
 			for (var del in delstr) cmd = cmd.split(" " + importantprep[del] + " ").join(' => ')
-			cmd = cmd.replace(/\s+/g, ' ');
+			cmd = cmd.replace(/\s+/g, ' ').trim();
 			if (cmd === "" && !Commands.lastcommandspeak) return "";
 			Commands.command = cmd.toLowerCase();
 			console.log(cmd);
