@@ -2164,14 +2164,15 @@ let microBitReadBluetooth=()=>{
 	let scene10 = new Scene("Geheimes Labor", "<img src='s10.png'>" +
 		"Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet.<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>.</br>" +
 		"Ausserdem fällt dir der gut erhaltene Computer auf.</br>" +
-		"Im Norden ist eine Tür mit Zahlenschloss.</br>" +
+		"Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.)</br>" +
+		"Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest!</br>"+
 		"Nach Sueden geht es zur Strandbar.");
 	scene10.south = scene4;
 
 	scene4.northblock = seetang;
 	scene4.insert(seetang);
 
-	let numberlockdoor = new Door("Zahlenschlosstür", "Ein digitales Eingabefeld ist an der Tür.", { blocking: true, usable: true, speakable: true });
+	let numberlockdoor = new Door("Zahlenschloss", "Ein digitales Eingabefeld ist an der Tür.", { blocking: true, usable: true, speakable: true, locked:true });
 	numberlockdoor.use = function () {
 		print("Ich sollte darauf tippen...");
 		return false;
