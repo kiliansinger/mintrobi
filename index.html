@@ -2323,7 +2323,7 @@ let microBitReadBluetooth=()=>{
 			cmd = cmd.toLowerCase();
 			let delstr = ["=>","der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
 			let importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
-			let delall=["!",".",","];
+			let delall=["!","."];
 			Commands.answer = [];
 			let recog = false;
 			for(var del in delall) cmd=cmd.split(delall[del]).join(" ");
@@ -2730,8 +2730,6 @@ let microBitReadBluetooth=()=>{
 				else if(event.keyCode ==38){//up arrow
 					document.getElementById("inp").focus();
 					document.getElementById("inp").value=lastinput;
-					
-
 				}
 
 			}, false);
