@@ -701,9 +701,6 @@ a:active {
 // @ts-check
 </script>
 <script>
-	var de=true;//default
-	var en=false;
-	var uk=false;
 	// https://lancaster-university.github.io/microbit-docs/resources/bluetooth/bluetooth_profile.html
 	// An implementation of Nordic Semicondutor's UART/Serial Port Emulation over Bluetooth low energy
 	const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -1002,6 +999,28 @@ let microBitReadBluetooth=()=>{
 </script>
 <!-- Decorator example -->
 <script type="text/babel" data-presets="env-plus">
+//https://dev.to/adam_cyclones/oporator-overloading-in-javascript-292f
+
+
+let DE=new Object();//unique reference to empty object
+let EN=new Object();
+
+
+function T(...args){
+	const _value =args;
+	return{
+		_value,
+		toString(){
+			console.log(_value.map(x=>x===DE))
+			return JSON.stringify(_value)
+		},
+		valueOf(){
+			return this.toString()
+		}
+	}
+}
+
+let aa=T`${DE}dsadfsd${EN}ferfere${DE}fefef`
 
 
 	// @ts-check
@@ -1136,7 +1155,10 @@ let microBitReadBluetooth=()=>{
 			}
 			else return false;
 		}
-		constructor(titel, description) {
+		constructor(titel, description) {//TODO destinguish if description and titel are functions or string for multilang support
+			//it should then generate set and get if function is used....
+			//https://stackoverflow.com/questions/5222209/getter-setter-in-constructor
+			//use function T(
 			let titel2
 			if (typeof titel === "string") titel2 = [titel];
 			else titel2 = titel;
@@ -1414,8 +1436,13 @@ let microBitReadBluetooth=()=>{
 	}
 	var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 	///////////////////////////////////////////////////////
-	let ich = new Person("Kai", de?"Du bist interessiert an der Wissenschaft und willst die Welt erforschen.":en?"You are interested in science and want to explore the world.":uk?"Ти цікавишся наукою і хочеш пізнавати світ.":"" +
-		"</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
+
+//:en?"You are interested in science and want to explore the world.":
+	//uk?"Ти цікавишся наукою і хочеш пізнавати світ.":"" +
+
+	let ich = new Person("Kai", 
+	"Du bist interessiert an der Wissenschaft und willst die Welt erforschen."+
+			"</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
 	var Pong=null;
 	let computer = new Person("Computer","Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.",{usable:true});
 	var pongcanv=null;
@@ -2782,8 +2809,7 @@ let microBitReadBluetooth=()=>{
 			}, false);
 		}catch(e){
 			localStorage.clear()
-			
-			window.location.reload();
+			setTimeout(()=>window.location.reload(),3000);
 		}
 	}
 </script>
