@@ -1001,47 +1001,7 @@ let microBitReadBluetooth=()=>{
 <script type="text/babel" data-presets="env-plus">
 //https://dev.to/adam_cyclones/oporator-overloading-in-javascript-292f
 //https://stackoverflow.com/questions/5222209/getter-setter-in-constructor
-
-let DE=new Object();//unique reference to empty object
-let EN=new Object();
-let LANGUAGES=[DE,EN]
-let LANG=DE;
-
-
-
-function T(...args){
-	const _value =args;
-	return{
-		_value,
-		toString(){
-			let s="";
-			let active=true;
-			_value[0].forEach((el,i)=>{
-				let lastact=active
-				if(active) s+=el;
-				let normalval=""
-				if(_value[i+1]===LANG) active=true;
-				else if(LANGUAGES.includes(_value[i+1]) ) active=false;
-				else{
-					if(i<_value[0].length-1) {
-						normalval=_value[i+1].toString()
-					}
-				
-				}
-				if(lastact) s+=normalval;
-			})
-			//console.log(_value.map(x=>x===DE))
-			return s
-		},
-		valueOf(){
-			return this.toString()
-		}
-	}
-}
-
-
-let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
-//interface is compatible with normal strings. but you need to do s.toString() or s+"" to start conversion
+//!!!!!!!!!  TODO the Translation code below needs to be derived from Obj such that serialization works
 
 
 	// @ts-check
@@ -1071,6 +1031,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 			}
 		}
 
+		
 		static inspect(object, num = 0) {
 			switch (typeof (object)) {
 
@@ -1086,7 +1047,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 					var a = [];
 					if (object instanceof Array) {
 						for (var i in object) {
-							a.push(Obj.inspect(object[i], ++num));
+							if(i!="raw") a.push(Obj.inspect(object[i], ++num));
 						};
 						return "[" + a.join(", ") + "]";
 					} else {
@@ -1130,6 +1091,56 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 			}
 		}
 	}
+
+
+let DE=new Obj();//unique reference to empty object
+let EN=new Obj();
+let ALL=new Obj();
+let LANGUAGES=[DE,EN,ALL]
+let LANG=DE;
+
+class TData extends Obj {
+	_value=null;
+	constructor(...args){
+		super();
+		this._value=args[0]
+		JSON.stringify(args[0]);
+	}
+	toString(){
+		let s="";
+		let active=true;
+		this._value[0].forEach((el,i)=>{
+			let lastact=active
+			if(active) s+=el;
+			let normalval=""
+			if(this._value[i+1]===LANG || this._value[i+1]===ALL) active=true;
+			else if(i<this._value.length-1 && LANGUAGES.includes(this._value[i+1]) ) active=false;
+			else{
+				if(i<this._value.length-1) {
+					console.log(i)
+					normalval=this._value[i+1].toString()
+				}
+			
+			}
+			if(lastact) s+=normalval;
+		})
+		//console.log(_value.map(x=>x===DE))
+		return s
+	}
+	valueOf(){
+		return this.toString()
+	}
+}
+
+
+function T(...args){
+	return new TData(args);
+}
+
+
+let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
+//interface is compatible with normal strings. but you need to do s.toString() or s+"" to start conversion
+
 
 	class Thing extends Obj {
 		/** @member {string} */
@@ -1186,7 +1197,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		}
 		describe() {
 			if (this.opensoninspection) this.open = true;
-			return this.titel[0] + ": " + this.description;
+			return this.titel[0] + ": " + this.description.toString();
 		}
 		insert(thing) {
 			if (thing.name === undefined) Obj.nametag()
@@ -1458,9 +1469,12 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 //:en?"You are interested in science and want to explore the world.":
 	//uk?"Ти цікавишся наукою і хочеш пізнавати світ.":"" +
 
-	let ich = new Person("Kai", 
-	"Du bist interessiert an der Wissenschaft und willst die Welt erforschen."+
-			"</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
+	let ich = new Person("Kai", T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.
+	${EN}You are interested in science and want to explore the world.
+	${ALL}</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>`, { open: true });
+
+//	let ich = new Person("Kai", "Du bist interessiert an der Wissenschaft und willst die Welt erforschen.</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
+
 	var Pong=null;
 	let computer = new Person("Computer","Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.",{usable:true});
 	var pongcanv=null;
@@ -2416,8 +2430,6 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 			Commands.recogparam = null;
 			recog |= Commands.en();
 			Commands.recogparam = null;
-			recog |= Commands.uk();
-			Commands.recogparam = null;
 			recog |= Commands.help();
 			Commands.recogparam = null;
 			let commandspeak = await Commands.speak();
@@ -2475,27 +2487,17 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		@when("de")
 		static de(){
 			console.log("de")
-			de=true;
-			en=false;
-			uk=false;
+			LANG=DE;
 			return true;
 		}
 
 		@when("en")
 		static en(){
-			de=false;
-			en=true;
-			uk=false;
+			LANG=EN;
 			return true;
 		}
 
-		@when("uk")
-		static uk(){
-			de=false;
-			en=false;
-			uk=true;
-			return true;
-		}
+	
 		@when("schaue", { at: "scene" })
 		@when("betrachte", { at: "scene" })
 		@when("b", { at: "scene" })
@@ -2752,7 +2754,9 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 			return Commands.load({ titel: "reset" });
 		}
 		static intro() {
+			//The following lines currently do not work with the Translation T object
 			let dump = Obj.dump();
+
 			localStorage.setItem("reset", dump);
 			let dump2 = localStorage.getItem("current")
 			if (dump2 !== null) {
@@ -2826,8 +2830,8 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 
 			}, false);
 		}catch(e){
-			localStorage.clear()
-			setTimeout(()=>window.location.reload(),3000);
+			//localStorage.clear()
+			//setTimeout(()=>window.location.reload(),3000);
 		}
 	}
 </script>
