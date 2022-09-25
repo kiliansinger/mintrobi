@@ -1000,10 +1000,13 @@ let microBitReadBluetooth=()=>{
 <!-- Decorator example -->
 <script type="text/babel" data-presets="env-plus">
 //https://dev.to/adam_cyclones/oporator-overloading-in-javascript-292f
-
+//https://stackoverflow.com/questions/5222209/getter-setter-in-constructor
 
 let DE=new Object();//unique reference to empty object
 let EN=new Object();
+let LANGUAGES=[DE,EN]
+let LANG=DE;
+
 
 
 function T(...args){
@@ -1011,8 +1014,24 @@ function T(...args){
 	return{
 		_value,
 		toString(){
-			console.log(_value.map(x=>x===DE))
-			return JSON.stringify(_value)
+			let s="";
+			let active=true;
+			_value[0].forEach((el,i)=>{
+				let lastact=active
+				if(active) s+=el;
+				let normalval=""
+				if(_value[i+1]===LANG) active=true;
+				else if(LANGUAGES.includes(_value[i+1]) ) active=false;
+				else{
+					if(i<_value[0].length-1) {
+						normalval=_value[i+1].toString()
+					}
+				
+				}
+				if(lastact) s+=normalval;
+			})
+			//console.log(_value.map(x=>x===DE))
+			return s
 		},
 		valueOf(){
 			return this.toString()
@@ -1020,7 +1039,9 @@ function T(...args){
 	}
 }
 
-let aa=T`${DE}dsadfsd${EN}ferfere${DE}fefef`
+
+let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
+//interface is compatible with normal strings. but you need to do s.toString() or s+"" to start conversion
 
 
 	// @ts-check
@@ -1155,10 +1176,7 @@ let aa=T`${DE}dsadfsd${EN}ferfere${DE}fefef`
 			}
 			else return false;
 		}
-		constructor(titel, description) {//TODO destinguish if description and titel are functions or string for multilang support
-			//it should then generate set and get if function is used....
-			//https://stackoverflow.com/questions/5222209/getter-setter-in-constructor
-			//use function T(
+		constructor(titel, description) {
 			let titel2
 			if (typeof titel === "string") titel2 = [titel];
 			else titel2 = titel;
