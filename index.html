@@ -1098,7 +1098,8 @@ let microBitReadBluetooth=()=>{
 				if (key in Obj.dict) {
 					for (var key2 in Obj.dict[key]) {
 						if (Obj.dict[key].hasOwnProperty(key2))
-							if (key2 in dict2[key]) {
+							if (key2 in dict2[key]) {//currently having problem with titel 
+								//becaus it is an array
 								try{	//TODO use Object.create(eval('TData'))
 									let proto=Object.getPrototypeOf(Obj.dict[key][key2]) 
 									Obj.dict[key][key2] = dict2[key][key2];
@@ -1113,6 +1114,52 @@ let microBitReadBluetooth=()=>{
 			}
 		}
 	}
+
+	/*
+						if(typeof(dict2[key])=="object"){
+							
+							if(dict[key] instanceof Obj){
+								dict[key]=dict2[key]
+							}else{
+								dict[key] = Object.create(eval(dict2[key]["____TYPE____"]))
+								let proto=Object.getPrototypeOf(dict[key])
+								dict[key]=dict2[key]
+								Object.setPrototypeOf(dict[key], proto)
+							}
+							delete dict[key]["____TYPE____"]
+						}
+						else dict[key]=dict2[key];
+						*/
+/*
+			for (var key in dict2) {
+				if (key in Obj.dict) {
+					for (var key2 in Obj.dict[key]) {
+						if (Obj.dict[key].hasOwnProperty(key2))
+							if (key2 in dict2[key]) {
+								if(isIterable(dict2[key][key2])) restore(dict2[key][key2])
+								
+								//TODO use Object.create(eval('TData'))
+								//let proto=Object.getPrototypeOf(Obj.dict[key][key2])
+
+								//we need to do iterative here
+								if(typeof(dict2[key][key2])=="object" && dict2[key][key2] && dict2[key][key2]["____TYPE____"]) {
+									console.log("creating: "+dict2[key][key2]["____TYPE____"])
+							
+									Obj.dict[key][key2] = Object.create(eval(dict2[key][key2]["____TYPE____"]))
+									let proto=Object.getPrototypeOf(Obj.dict[key][key2])
+									Obj.dict[key][key2]=dict2[key][key2];
+									delete Obj.dict[key][key2]["____TYPE____"]
+									Object.setPrototypeOf(Obj.dict[key][key2], proto)
+								} else {
+									Obj.dict[key][key2] = dict2[key][key2];
+								}
+							
+								
+							}
+					}
+				}
+			}
+			*/
 
 
 let DE="DE_asdfjkhwaqluifehwjlajkawe";//unique reference to empty object
