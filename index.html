@@ -717,7 +717,7 @@ a:active {
 	async function microBitWriteBluetooth(string) {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
-			print("<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n")
+			print(T`<em style='color:#faa;'>${DE}Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!${EN}You have to use a modern Chrome/Edge browser for this to work!${ALL}</em>\n`)
 			return;
 		}
 		if (!rxCharacteristic) {
@@ -736,7 +736,7 @@ a:active {
 	async function microBitConnect(name) {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
-			print("<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n")
+			print(T`<em style='color:#faa;'>${DE}Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!${EN}You have to use a modern Chrome/Edge browser for this to work!${ALL}</em>\n`)
 			return false;
 		}
 		if(bluetooth) return true;
@@ -840,7 +840,7 @@ let microBitReadBluetooth=()=>{
 	async function writeMicrobit(txt) {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
-			print("<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n")
+			print(T`<em style='color:#faa;'>${DE}Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!${EN}You have to use a modern Chrome/Edge browser for this to work!${ALL}</em>\n`)
 			return false;
 		}
 		if ("serial" in navigator) {
@@ -894,7 +894,7 @@ let microBitReadBluetooth=()=>{
 	async function readMicrobit() {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
-			print("<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n")
+			print(T`<em style='color:#faa;'>${DE}Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!${EN}You have to use a modern Chrome/Edge browser for this to work!${ALL}</em>\n`)
 			return "";
 		}
 		if ("serial" in navigator) {
@@ -1295,7 +1295,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		}
 		constructor(titel, description) {
 			let titel2
-			if (typeof titel === "string" || typeof titel === "object") titel2 = [titel];
+			if (!(titel instanceof Array)) titel2 = [titel];
 			else titel2 = titel;
 			super();
 			this.titel = titel2;
@@ -1511,7 +1511,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 			const original = target.descriptor.value;
 			if (typeof original === 'function') {
 				target.descriptor.value = function (...args) {
-					let command2 = replaceWords(command, Commands.command, param);
+					let command2 = replaceWords(command.toString(), Commands.command, param);
 					if (!original.toString().startsWith("function ()") && args[0]) {
 						return original.apply(this, args);//we have direct call
 					}
@@ -1540,9 +1540,9 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		let thing = null;
 		for (var i in things) {
 			var foundhere = false;
-			for (let j in things[i].titel.toString()) {
+			for (let j in things[i].titel) {
 				if (things[i].titel[j] && things[i].titel[j].toString().toLowerCase() === at) {
-					thing = things[i].toString(); found = true; foundhere = true;
+					thing = things[i]; found = true; foundhere = true;
 				}
 			}
 			if (found && !quiet && (key === null || things[i] instanceof key)) {
@@ -1576,18 +1576,19 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 	//uk?"Ти цікавишся наукою і хочеш пізнавати світ.":"" +
 		//the text needs to be global such that it can be saved currently
 
-	let ich = new Person(T`${DE}Kai${EN}EJ`,T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.
-	${EN}You are interested in science and want to explore the world.
-	${ALL}</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>`
+	let ich = new Person(T`${DE}Kai${EN}Alex`,T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.
+${EN}You are interested in science and want to explore the world.
+${DE}</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>
+${EN}</br>You can always enter <em style='color:#0f0;'>help</em> when you are stuck.</br>`
  , { open: true });
 
 //	let ich = new Person("Kai", "Du bist interessiert an der Wissenschaft und willst die Welt erforschen.</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
 
 	var Pong=null;
-	let computer = new Person("Computer","Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.",{usable:true});
+	let computer = new Person(T`${DE}Computer${EN}Computer`,T`${DE}Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.${EN}Computer with Pong game. Try typing: <en style='color:#0f0;'>use computer</em>.`,{usable:true});
 	var pongcanv=null;
 	computer.use=function () {
-		Commands.forward_command="tippe auf computer";
+		Commands.forward_command=T`${DE}t computer${EN}t computer`.toString();
 		return false;
 	}
 	computer.dialog = async function*() {
@@ -1601,9 +1602,12 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		"erst noch trennen</br><img width='20%' src='unpair.gif'>"+
 		"Drücke [ENTER] wenn du soweit bist.";
 
-		yield "Jetzt musst du nur noch wie folgt verkabeln:"+
-		"<img width='50%' src='poti.png'></br>"+
-		"Drücke [ENTER] wenn du soweit bist.";
+		yield T`${DE}Jetzt musst du nur noch wie folgt verkabeln:
+<img width='50%' src='poti.png'></br>
+Drücke [ENTER] wenn du soweit bist.
+${EN}Now you just have to wire it as follows:
+<img width='50%' src='poti.png'></br>
+Press [ENTER] when you are ready.`;
 		while(true){
 					
 			if(pongcanv!=null) pongcanv.remove();
@@ -1626,7 +1630,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		"Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.</br>"+
 		"Das Spiel wurde unterstützt durch <a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a></br>"+
 		"und dem <a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.");
-	let oma = new Person(["Oma", "Omi"], "Deinen liebe Oma.");
+	let oma = new Person([T`${DE}Oma${EN}Grandma`, T`{${DE}Omi${EN}Grandmother`], T`${DE}Deine liebe Oma.${EN}Your dear Grandmother.`);
 	omazuhause.insert(oma);
 	omazuhause.insert(computer);
 
@@ -2499,8 +2503,13 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 
 		static async execute(cmd) {
 			cmd = cmd.toLowerCase();
-			let delstr = ["=>","der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
-			let importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
+			let delstr;
+			if(true) delstr = ["=>","der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
+			else if(LANG.lang=EN) delstr = ["=>","the", "a", "an", "that","these"];
+			let importantprep ;
+			if(true) importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
+			else if(LANG.lang=EN) importantprep =  ["to", "with", "towards", "through", "in"];
+			
 			let delall=["!","."];
 			Commands.answer = [];
 			let recog = false;
@@ -2565,13 +2574,13 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 
 		static actor = ich;
 		static answer = [];
-		@when("hilfe")
+		@when(T`${DE}hilfe${EN}help`)
 		@when("h")
 		static help() {
 			print("Credits: Game engine: K.Singer, story-code: M. Mendoza Delgado, J. Proll, story/graphics: M. Singer, crowdfunding: J. Plate, B. Bauerhenne.\n")
-			print("Befehle:\n");
-			print("&#x26AC; hilfe\n");
-			print("     mit Kurzform: h\n");
+			print(T`${DE}Befehle${EN}Commands${ALL}:\n`);
+			print(T`&#x26AC; ${DE}hilfe${EN}help${ALL}\n`); 
+			print(T`     ${DE}mit Kurzform${EN}with shortcut${ALL}: h\n`);
 			print("&#x26AC; schaue/betrachte/b (auf,...) (ETWAS)\n");
 			print("&#x26AC; schaue/betrachte/b mich (an)\n");
 			print("&#x26AC; schaue/betrachte/b (auf,...) rucksack\n");
@@ -2627,8 +2636,8 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 					}
 
 					return true;
-				case "mich":
-					print("Du bist " + Commands.actor.describe());
+				case T`${DE}mich${EN}me`.toString():
+					print(T`${DE}Du bist ${EN}You are ` + Commands.actor.describe());
 				//return true;//we du fallthrough on purpuse
 				//do not insert anything here
 				case "rucksack":
@@ -2650,7 +2659,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 
 		@when("w", { direction: "west" })
 		@when("westen", { direction: "west" })
-		@when("gehe westen", { direction: "west" })
+		@when(T`${DE}gehe westen${EN}go west`, { direction: "west" })
 		@when("gehe => westen", { direction: "west" })
 		@when("o", { direction: "east" })
 		@when("osten", { direction: "east" })
@@ -2827,8 +2836,8 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		@when("tippe PERSON", { text: "" })
 		@when("t => PERSON", { text: "" })
 		@when("t PERSON", { text: "" })
-
 		static async speak({ person, text }) {
+			console.log(JSON.stringify(person))
 			let { thing: personobj } = search(person, Person);
 			if (personobj !== null && personobj.speakable) {
 				Commands.lastperson = person;
@@ -2872,8 +2881,8 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 			}
 			Commands.answer = [];
 
-			Commands.look({ at: "mich" });
-			print("Du trägst einen Rucksack.");
+			Commands.look({ at: T`${DE}mich${EN}me`.toString() });
+			print(T`${DE}Du trägst einen Rucksack.${EN}You are carrying a backpack.`);
 			print("\n");
 			Commands.look({ at: "scene" });
 
