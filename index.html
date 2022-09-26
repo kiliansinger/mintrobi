@@ -1066,6 +1066,10 @@ let microBitReadBluetooth=()=>{
 			}
 		};
 		static dump() {
+			//TODO the save routine cannot currently handle non global objects. Also it cannot handle multiple global references to objects. References need to be stored in Obj classes
+			//also it currently kills all non Obj types by just overwriting the object.
+			//so we loose all methods
+			//we should use: Object.getPrototypeOf(object1) and Object.setPrototypeOf(obj, prototype)
 			Obj.nametag();
 			let a = ["{"];
 
@@ -1085,7 +1089,16 @@ let microBitReadBluetooth=()=>{
 				if (key in Obj.dict) {
 					for (var key2 in Obj.dict[key]) {
 						if (Obj.dict[key].hasOwnProperty(key2))
-							if (key2 in dict2[key]) Obj.dict[key][key2] = dict2[key][key2];
+							if (key2 in dict2[key]) {
+								try{
+									let proto=Object.getPrototypeOf(Obj.dict[key][key2]) 
+									Obj.dict[key][key2] = dict2[key][key2];
+									Object.setPrototypeOf(Obj.dict[key][key2], proto)
+								}catch(e){
+									Obj.dict[key][key2] = dict2[key][key2];
+								}
+								
+							}
 					}
 				}
 			}
@@ -1093,22 +1106,14 @@ let microBitReadBluetooth=()=>{
 	}
 
 
-let DE=new Obj();//unique reference to empty object
-let EN=new Obj();
-let ALL=new Obj();
+let DE="DE_asdfjkhwaqluifehwjlajkawe";//unique reference to empty object
+let EN="EN_asdfjkhwaqluifehwjlajkawe";
+let ALL="ALL_asdfjkhwaqluifehwjlajkawe";
 let LANGUAGES=[DE,EN,ALL]
 
-class LANGClass extends Obj{//we cannot just reference from LANG to e.g. DE because then LANG might be used as object dictionary link on saving. the reference needs to be in a class of type Obj to be properly saved.
-	LANG=null
-	constructor(lang){
-		super()
-		this.LANG=lang
-	}
-}
+let LANG=DE;
 
-let LANG=new LANGClass(DE);
-
-class TData extends Obj {
+class TData extends Object {
 	_value=null;
 	constructor(...args){
 		super();
@@ -1122,7 +1127,7 @@ class TData extends Obj {
 			let lastact=active
 			if(active) s+=el;
 			let normalval=""
-			if(this._value[i+1]===LANG.LANG || this._value[i+1]===ALL) active=true;
+			if(this._value[i+1]==LANG || this._value[i+1]==ALL) active=true;
 			else if(i<this._value.length-1 && LANGUAGES.includes(this._value[i+1]) ) active=false;
 			else{
 				if(i<this._value.length-1) {
@@ -1477,12 +1482,12 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 
 //:en?"You are interested in science and want to explore the world.":
 	//uk?"Ти цікавишся наукою і хочеш пізнавати світ.":"" +
-	let t=T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.
+		//the text needs to be global such that it can be saved currently
+
+	let ich = new Person("Kai",T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.
 	${EN}You are interested in science and want to explore the world.
 	${ALL}</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>`
-	//the text needs to be global such that it can be saved currently
-
-	let ich = new Person("Kai",t , { open: true });
+ , { open: true });
 
 //	let ich = new Person("Kai", "Du bist interessiert an der Wissenschaft und willst die Welt erforschen.</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
 
@@ -2498,13 +2503,13 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		@when("de")
 		static de(){
 			console.log("de")
-			LANG.LANG=DE;
+			LANG=DE;
 			return true;
 		}
 
 		@when("en")
 		static en(){
-			LANG.LANG=EN;
+			LANG=EN;
 			return true;
 		}
 
@@ -2798,7 +2803,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 	let inp = document.getElementById('inp')
 	let prompt = document.getElementById('prompt')
 	async function start() {
-		try{
+		//try{
 			let answer = Commands.intro();
 			let p2 = document.createElement('p');
 			p2.innerHTML = answer;
@@ -2840,9 +2845,9 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 				}
 
 			}, false);
-		}catch(e){
+		//}catch(e){
 			//localStorage.clear()
 			//setTimeout(()=>window.location.reload(),3000);
-		}
+		//}
 	}
 </script>
