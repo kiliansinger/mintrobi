@@ -1194,7 +1194,16 @@ let EN="EN_asdfjkhwaqluifehwjlajkawe";
 let ALL="ALL_asdfjkhwaqluifehwjlajkawe";
 let LANGUAGES=[DE,EN,ALL]
 
-let LANG=DE;
+
+class LANGObj extends Obj{
+	constructor(lang){
+		super();
+		this.lang=lang;
+	}
+}
+
+
+let LANG=new LANGObj(DE)
 
 class TData extends Object {
 	_value=null;
@@ -1210,7 +1219,7 @@ class TData extends Object {
 			let lastact=active
 			if(active) s+=el;
 			let normalval=""
-			if(this._value[i+1]==LANG || this._value[i+1]==ALL) active=true;
+			if(this._value[i+1]==LANG.lang || this._value[i+1]==ALL) active=true;
 			else if(i<this._value.length-1 && LANGUAGES.includes(this._value[i+1]) ) active=false;
 			else{
 				if(i<this._value.length-1) {
@@ -2586,13 +2595,13 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		@when("de")
 		static de(){
 			console.log("de")
-			LANG=DE;
+			LANG.lang=DE;
 			return true;
 		}
 
 		@when("en")
 		static en(){
-			LANG=EN;
+			LANG.lang=EN;
 			return true;
 		}
 
