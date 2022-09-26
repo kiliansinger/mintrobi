@@ -1090,6 +1090,21 @@ let microBitReadBluetooth=()=>{
 		}
 			return typeof obj[Symbol.iterator] === 'function';
 		}
+		static assign(source,skey,target,tkey){//if we use objects and the key then it is passed by reference
+			if( target[tkey] instanceof Obj){
+				target[tkey] = source[skey];
+			}
+			else{
+				try{//we have object not inherited of Obj
+					let proto=Object.getPrototypeOf(target[tkey]) 
+					//let proto=.dict[key][key2].prototype;
+					target[tkey] = source[skey];
+					Object.setPrototypeOf(target[tkey], proto)
+				}catch(e){
+					target[tkey] = source[skey];
+				}
+			}
+		}
 		static restore(data) {
 			//TODO currently we do only the keys inside object and nothing of higher depth
 			//this can be done by using the Obj.dict[key] and sending key2 into recursive function
@@ -1104,35 +1119,12 @@ let microBitReadBluetooth=()=>{
 							if (key2 in dict2[key]) {
 								if( Obj.dict[key][key2] instanceof Array){
 									for (var key3 in Obj.dict[key][key2]) {
-										if( Obj.dict[key][key2][key3] instanceof Obj){
-											Obj.dict[key][key2][key3] = dict2[key][key2][key3];
-										}
-										else{
-											try{//we have object not inherited of Obj
-												let proto=Object.getPrototypeOf(Obj.dict[key][key2][key3]) 
-												//let proto=.dict[key][key2].prototype;
-												Obj.dict[key][key2][key3] = dict2[key][key2][key3];
-												Object.setPrototypeOf(Obj.dict[key][key2][key3], proto)
-											}catch(e){
-												Obj.dict[key][key2][key3] = dict2[key][key2][key3];
-											}
-										}
+										Obj.assign( dict2[key][key2],key3, Obj.dict[key][key2],key3)
 									}
 								}
 
-								if( Obj.dict[key][key2] instanceof Obj){
-									Obj.dict[key][key2] = dict2[key][key2];
-								}
-								else{
-									try{//we have object not inherited of Obj
-										let proto=Object.getPrototypeOf(Obj.dict[key][key2]) 
-										//let proto=.dict[key][key2].prototype;
-										Obj.dict[key][key2] = dict2[key][key2];
-										Object.setPrototypeOf(Obj.dict[key][key2], proto)
-									}catch(e){
-										Obj.dict[key][key2] = dict2[key][key2];
-									}
-								}
+								Obj.assign(dict2[key],key2,Obj.dict[key],key2)
+
 								//try{	//TODO use Object.create(eval('TData'))
 								//https://stackoverflow.com/questions/12690107/clone-object-without-reference-javascript
 						
