@@ -1090,7 +1090,10 @@ let microBitReadBluetooth=()=>{
 		}
 			return typeof obj[Symbol.iterator] === 'function';
 		}
-		static restore(data) {//TODO currently we do only the keys inside object and nothing of higher depth
+		static restore(data) {
+			//TODO currently we do only the keys inside object and nothing of higher depth
+			//this can be done by using the Obj.dict[key] and sending key2 into recursive function
+			//because keys in objects are sent by ref
 			let dict2;
 			eval('dict2=' + data);
 
@@ -1098,8 +1101,7 @@ let microBitReadBluetooth=()=>{
 				if (key in Obj.dict) {
 					for (var key2 in Obj.dict[key]) {
 						if (Obj.dict[key].hasOwnProperty(key2))
-							if (key2 in dict2[key]) {//currently having problem with titel 
-								//becaus it is an array
+							if (key2 in dict2[key]) {
 								if( Obj.dict[key][key2] instanceof Array){
 									for (var key3 in Obj.dict[key][key2]) {
 										if( Obj.dict[key][key2][key3] instanceof Obj){
