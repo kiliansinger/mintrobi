@@ -1018,6 +1018,7 @@ let microBitReadBluetooth=()=>{
 		name = undefined;
 		static nametag() {
 			// search through the global object for a name that resolves to this object
+		
 			for (var name in window) {
 				if (window[name] instanceof Obj) {
 					for (var i in Obj.arr) {
@@ -1073,7 +1074,8 @@ let microBitReadBluetooth=()=>{
 			Obj.nametag();
 			let a = ["{"];
 
-
+	//TODO use Object.create(eval('TData'))
+	//so we need to store obj.constructor.name
 			for (var key in Obj.dict) {
 				a.push('"' + key + '":' + Obj.inspect(Obj.dict[key]) + ",");
 			}
@@ -1081,6 +1083,13 @@ let microBitReadBluetooth=()=>{
 			return a.join('');
 		}
 
+		static isIterable(obj) {
+		// checks for null and undefined
+		if (obj == null) {
+			return false;
+		}
+			return typeof obj[Symbol.iterator] === 'function';
+		}
 		static restore(data) {
 			let dict2;
 			eval('dict2=' + data);
@@ -1090,7 +1099,7 @@ let microBitReadBluetooth=()=>{
 					for (var key2 in Obj.dict[key]) {
 						if (Obj.dict[key].hasOwnProperty(key2))
 							if (key2 in dict2[key]) {
-								try{
+								try{	//TODO use Object.create(eval('TData'))
 									let proto=Object.getPrototypeOf(Obj.dict[key][key2]) 
 									Obj.dict[key][key2] = dict2[key][key2];
 									Object.setPrototypeOf(Obj.dict[key][key2], proto)
@@ -1203,7 +1212,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		}
 		constructor(titel, description) {
 			let titel2
-			if (typeof titel === "string") titel2 = [titel];
+			if (typeof titel === "string" || typeof titel === "object") titel2 = [titel];
 			else titel2 = titel;
 			super();
 			this.titel = titel2;
@@ -1211,7 +1220,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		}
 		describe() {
 			if (this.opensoninspection) this.open = true;
-			return this.titel[0] + ": " + this.description.toString();
+			return this.titel[0].toString() + ": " + this.description.toString();
 		}
 		insert(thing) {
 			if (thing.name === undefined) Obj.nametag()
@@ -1448,13 +1457,13 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 		let thing = null;
 		for (var i in things) {
 			var foundhere = false;
-			for (let j in things[i].titel) {
-				if (things[i].titel[j].toLowerCase() === at) {
-					thing = things[i]; found = true; foundhere = true;
+			for (let j in things[i].titel.toString()) {
+				if (things[i].titel[j] && things[i].titel[j].toString().toLowerCase() === at) {
+					thing = things[i].toString(); found = true; foundhere = true;
 				}
 			}
 			if (found && !quiet && (key === null || things[i] instanceof key)) {
-				if (list) print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].titel[0]);
+				if (list) print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].titel[0].toString());
 				else print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].describe() + "\n" + Array(cnt).join('   '));
 			}
 			if (things[i].open && !isEmpty(things[i]["things"])) {
@@ -1484,7 +1493,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 	//uk?"Ти цікавишся наукою і хочеш пізнавати світ.":"" +
 		//the text needs to be global such that it can be saved currently
 
-	let ich = new Person("Kai",T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.
+	let ich = new Person(T`${DE}Kai${EN}EJ`,T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.
 	${EN}You are interested in science and want to explore the world.
 	${ALL}</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>`
  , { open: true });
@@ -2542,7 +2551,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 				case "rucksack":
 					if (!isEmpty(Commands.actor.things)) print("In deinem Rucksack befinden sich: \n");
 					if (Commands.actor.open) for (var i in Commands.actor.things) {
-						print(Commands.actor.things[i].titel[0]);
+						print(Commands.actor.things[i].titel[0].toString());
 						print("\n");
 					}
 					return true;
@@ -2593,7 +2602,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 						return true;
 					}
 					else {
-						print("Da kann ich nicht hin wegen: "+Commands.actor.position[direction + "block"].titel+"!\n")
+						print("Da kann ich nicht hin wegen: "+Commands.actor.position[direction + "block"].titel.toString()+"!\n")
 						return true;
 					}
 				}
@@ -2803,7 +2812,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 	let inp = document.getElementById('inp')
 	let prompt = document.getElementById('prompt')
 	async function start() {
-		try{
+	//	try{
 			let answer = Commands.intro();
 			let p2 = document.createElement('p');
 			p2.innerHTML = answer;
@@ -2845,10 +2854,10 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 				}
 
 			}, false);
-		}catch(e){
-			console.log(e)
-			localStorage.clear()
-			setTimeout(()=>window.location.reload(),3000);
-		}
+	//	}catch(e){
+	//		console.log(e)
+	//		localStorage.clear()
+	//		setTimeout(()=>window.location.reload(),3000);
+	//	}
 	}
 </script>
