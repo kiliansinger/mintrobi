@@ -2803,7 +2803,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 	let inp = document.getElementById('inp')
 	let prompt = document.getElementById('prompt')
 	async function start() {
-		//try{
+		try{
 			let answer = Commands.intro();
 			let p2 = document.createElement('p');
 			p2.innerHTML = answer;
@@ -2845,9 +2845,10 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 				}
 
 			}, false);
-		//}catch(e){
-			//localStorage.clear()
-			//setTimeout(()=>window.location.reload(),3000);
-		//}
+		}catch(e){
+			console.log(e)
+			localStorage.clear()
+			setTimeout(()=>window.location.reload(),3000);
+		}
 	}
 </script>
