@@ -1579,10 +1579,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 	//uk?"Ти цікавишся наукою і хочеш пізнавати світ.":"" +
 		//the text needs to be global such that it can be saved currently
 
-	let ich = new Person(T`${DE}Kai${EN}Alex`,T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.
-${EN}You are interested in science and want to explore the world.
-${DE}</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>
-${EN}</br>You can always enter <em style='color:#0f0;'>help</em> when you are stuck.</br>`
+	let ich = new Person(T`${DE}Kai${EN}Alex`,T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.${EN}You are interested in science and want to explore the world.${DE}</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>${EN}</br>You can always enter <em style='color:#0f0;'>help</em> when you are stuck.</br>`
  , { open: true });
 
 //	let ich = new Person("Kai", "Du bist interessiert an der Wissenschaft und willst die Welt erforschen.</br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst.</br>", { open: true });
@@ -1597,20 +1594,13 @@ ${EN}</br>You can always enter <em style='color:#0f0;'>help</em> when you are st
 	computer.dialog = async function*() {
 			
 
-		if(MODE.pro) return "Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird."
-		yield (!isChrome ? "<em style='color:#faa;'>Achtung damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten!</em></br>" : "") +
-		"Baue ein Steuerung des Spiels. Hier ist der Code: <a target='_blank' href='https://makecode.microbit.org/#pub:_XUx3dT0fdM2P'>Code</a>.</br>"+
-		"Nachdem du das Programm auf das Gehirn von Mintrobi hochgeladen hast musst du</br>"+
-		"Falls Du in Makecode verbunden bist, must du die Verbindung nach dem Hochladen des Programms</br>"+
-		"erst noch trennen</br><img width='20%' src='unpair.gif'>"+
-		"Drücke [ENTER] wenn du soweit bist.";
+		if(MODE.pro) return T`${DE}Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.
+${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
 
-		yield T`${DE}Jetzt musst du nur noch wie folgt verkabeln:
-<img width='50%' src='poti.png'></br>
-Drücke [ENTER] wenn du soweit bist.
-${EN}Now you just have to wire it as follows:
-<img width='50%' src='poti.png'></br>
-Press [ENTER] when you are ready.`;
+		yield (!isChrome ? T`<em style='color:#faa;'>${DE}Achtung damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN}Attention: For everything to work, you should start the game with a modern Chrome/Edge browser!${ALL}</em></br>` : "")+
+		"Baue ein Steuerung des Spiels. Hier ist der Code: <a target='_blank' href='https://makecode.microbit.org/#pub:_XUx3dT0fdM2P'>Code</a>.</br>Dann must Du das Programm auf das Gehirn von Mintrobi hochgeladen.</br>Falls Du in Makecode verbunden bist, must du die Verbindung nach dem Hochladen des Programms</br>erst noch trennen</br><img width='20%' src='unpair.gif'>Drücke [ENTER] wenn du soweit bist."
+
+		yield T`${DE}Jetzt musst du nur noch wie folgt verkabeln:<img width='50%' src='poti.png'></br>Drücke [ENTER] wenn du soweit bist.${EN}Now you just have to wire it as follows:<img width='50%' src='poti.png'></br>Press [ENTER] when you are ready.`;
 		while(true){
 					
 			if(pongcanv!=null) pongcanv.remove();
@@ -1966,7 +1956,7 @@ Press [ENTER] when you are ready.`;
 
 
 	kaputteAmpel.dialog = async function* () {
-		if(MODE.pro) return "Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird."
+		if(MODE.pro) return T`${DE}Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
 			return "<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n";
@@ -2110,8 +2100,7 @@ Press [ENTER] when you are ready.`;
 		return false;
 	}
 	kaputteAmpel2.dialog = async function* () {
-		if(MODE.pro) return "Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird."
-		
+		if(MODE.pro) return T`${DE}Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
 			return "<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n";
@@ -2450,7 +2439,7 @@ Press [ENTER] when you are ready.`;
 	scene11.insert(mintrobi);
 
 	mintrobi.dialog = async function* () {
-		if(MODE.pro) return "Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird."
+		if(MODE.pro) return T`${DE}Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
 		
 		if (!("bluetooth" in navigator)) return "Du musst einen Chrome/Edge Browser verwenden."
 		var bluetoothadapter=await navigator.bluetooth.getAvailability()
