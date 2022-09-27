@@ -1205,8 +1205,16 @@ class TData extends Object {
 	constructor(...args){
 		super();
 		this._value=args[0]
+		delete this._value[0].raw;
 		JSON.stringify(args[0]);
 	}
+//	[Symbol.for('+')](other) {//collides with value of
+//       let n=new TData("");
+//		n._value=this._value
+//		n._value[0].concat(other._value[0])
+//		n._value.concat(other._value.slice(1))
+//		return n;
+//    }
 	toString(){
 		let s="";
 		let active=true;
