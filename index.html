@@ -1189,15 +1189,16 @@ let ALL="ALL_asdfjkhwaqluifehwjlajkawe";
 let LANGUAGES=[DE,EN,ALL]
 
 
-class LANGObj extends Obj{
-	constructor(lang){
+class MODEObj extends Obj{
+	constructor(lang,pro){
 		super();
 		this.lang=lang;
+		this.pro=pro;
 	}
 }
 
 
-let LANG=new LANGObj(DE)
+let MODE=new MODEObj(DE,false)
 
 class TData extends Object {
 	_value=null;
@@ -1213,7 +1214,7 @@ class TData extends Object {
 			let lastact=active
 			if(active) s+=el;
 			let normalval=""
-			if(this._value[i+1]==LANG.lang || this._value[i+1]==ALL) active=true;
+			if(this._value[i+1]==MODE.lang || this._value[i+1]==ALL) active=true;
 			else if(i<this._value.length-1 && LANGUAGES.includes(this._value[i+1]) ) active=false;
 			else{
 				if(i<this._value.length-1) {
@@ -1588,7 +1589,7 @@ ${EN}</br>You can always enter <em style='color:#0f0;'>help</em> when you are st
 	computer.dialog = async function*() {
 			
 
-
+		if(MODE.pro) return "Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird."
 		yield (!isChrome ? "<em style='color:#faa;'>Achtung damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten!</em></br>" : "") +
 		"Baue ein Steuerung des Spiels. Hier ist der Code: <a target='_blank' href='https://makecode.microbit.org/#pub:_XUx3dT0fdM2P'>Code</a>.</br>"+
 		"Nachdem du das Programm auf das Gehirn von Mintrobi hochgeladen hast musst du</br>"+
@@ -1631,14 +1632,16 @@ Press [ENTER] when you are ready.`;
 	ich.position = omazuhause;
 
 	oma.dialog = async function* () {
-		let reply = yield (!isChrome ? "<em style='color:#faa;'>Achtung damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten!</em></br>" : "") +
-			"Kai, meine Liebe, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk " +
+		let reply = yield (!isChrome&& !MODE.pro? "<em style='color:#faa;'>Achtung damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten!</br>Falls du <em style='color:#0f0;'>4</em> wählst ist der Browser egal!</em></br>" : "") +
+			"Kai, meine Liebe, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi " +
 			"schon bestellt und zusammengebaut haben.<p style='color:#0f0;'>" +
 			"1 - Ja wir haben schon alles bestellt und zusammengebaut.</br>" +
 			"2 - Ich muss noch zusammenbauen!</br>" +
-			"3 - Wir müssen noch bestellen!</p>";
+			"3 - Wir müssen noch bestellen!</br>"+
+			"4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram!</p>"
 		switch (reply) {
 			case "1":
+				MODE.pro=false;
 				let reply2 = "";
 				while (reply2 != 7) {
 					reply2 = yield (reply2 == "" ? "Das Gehirn von dem Mintrobi ist der kleine farbige Chip." +
@@ -1677,15 +1680,22 @@ Press [ENTER] when you are ready.`;
 							return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
 					}
 				}
+				
 				break;
 			case "2":
+				MODE.pro=false;
 				return "Opa hat hier ein Video hochgeladen, das du gerne auf unserem Fernseher schauen kannst: " +
 					"<a target='_blank' href='https://www.youtube.com/embed/8m-lXWjnjYI?autoplay=1'>Aufbauvideo</a>.</br>" +
 					"Und wenn du fertig bist, dann geh doch nach drausen zu Opa. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.";
 			case "3":
-				return "Dann helfe mir doch schnell dabei. Hier ist der Bestelllink: " +
+				MODE.pro=false;
+				break;return "Dann helfe mir doch schnell dabei. Hier ist der Bestelllink: " +
 					"<a target='_blank' href='https://www.reichelt.de/my/1978474'>Mintrobi</a>. Wir reden dann wieder, wenn die Lieferung da ist.";
-				break;
+			case "4":
+				MODE.pro=true;
+				return "Immer cool bleiben! Dann kannst Du alle Bastelaufgaben überspringen statt dessen C++ Programme</br>"+
+				"erstellen. Wenn Du noch keine Ahnung hast oder im Spiel nicht mehr weiter weist, dann</br>"+
+				"kannst Du hier Videos schauen: <a target='_blank' href='https://www.youtube.com/watch?v=E53dZ8mW6tQ&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=1'>Abenteuer Programmieren auf Youtube</a>."
 			default:
 				return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
 		}
@@ -1811,23 +1821,51 @@ Press [ENTER] when you are ready.`;
 					case "1":
 						let reply13 = yield "Ich habe gehört, dass du Programieren kannst und vielleicht " +
 							"kannst du auch mier weiter helfen.</br>" +
-							"Ich muss diese 3-stöckige Torte auf diesen Teller bringen,</br>" +
+							"Ich muss diese "+(MODE.pro?"5":"3")+"-stöckige Torte auf diesen Teller bringen,</br>" +
 							"doch da gibt es ein Problem.</br>" +
 							"Ich kann jedes Stück nur alleine bewegen und es</br>" +
 							"darf nie ein größeres Stueck auf einem kleineren liegen. Es gibt drei Plätze A, B und C. Die Torte ist anfangs auf Platz A und muss nach B. Platz C kann man als Zwischenablage verwenden.</br>" +
-							"Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein! Du kannst das einfach durch überlegen lösen oder ein Computerprogramm schreiben. Hier der link <a target='_blank' href='https://makecode.microbit.org/#pub:_7DzXT3eF7iiu'>Code</a>."
+							"Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein! Du kannst das einfach durch überlegen lösen oder ein Computerprogramm schreiben. "+
+							"Hier der link "+(MODE.pro?"zum <a target='_blank' href='"+
+							"https://www.youtube.com/watch?v=E4wT2HM0VpY&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=24'>Video</a>":"<a target='_blank' href='https://makecode.microbit.org/#pub:_7DzXT3eF7iiu'>Code</a>.");
 							console.log(reply13)
-						if (reply13 === "ab,ac,bc,ab,ca,cb,ab" || reply ==="ab,ac,bc,ab,ca,cb,ab,") {
+						if (reply13 === (MODE.pro?"ac,ab,cb,ac,ba,bc,ac,ab,cb,ca,ba,cb,ac,ab,cb,ac,ba,bc,ac,ba,cb,ca,ba,bc,ac,ab,cb,ac,ba,bc,ac":"ab,ac,bc,ab,ca,cb,ab") || reply13===(MODE.pro?"ac,ab,cb,ac,ba,bc,ac,ab,cb,ca,ba,cb,ac,ab,cb,ac,ba,bc,ac,ba,cb,ca,ba,bc,ac,ab,cb,ac,ba,bc,ac,":"ab,ac,bc,ab,ca,cb,ab,")) {
 							return "Das hat geklappt. Hier ich öffne dir die Flasche. " +
-								"Da ist ein verschlüsselter Text drin, er wurde rückwärts geschrieben:</br>" +
-								"<textarea rows='8' cols='80' style='white-space: wrap;' >" +
+								(
+								MODE.pro?"Da ist ein verschlüsselter Text drin: <textarea rows='8' cols='80' style='white-space: wrap;' >"+
+								"DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB"+
+								"'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E"+
+								"8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OY"+
+								"B8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0"+
+								"@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'G"+
+								"Y-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>"+
+								"Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:</br>"+
+								"<textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBS"+
+								"EZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT G"+
+								"BLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW N"+
+								"TZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCR"+
+								"EISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT T"+
+								"LLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>"+
+								"Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit "+
+								"einer statistischen Analyse des verwürfelten Textes zu vergleichen. "+
+								"Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. "+
+								"Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. "+
+								"Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach "+
+								"dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, "+
+								"bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, "+
+								"dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. "+
+								"Aber in diesem Falle war das Schicksal gnädig mit uns...</br>"+
+								"Du kannst auch das <a target='_blank' href='https://www.youtube.com/watch?v=EHDu5SzsGRE&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=28'>Video</a> zum Rätsel anschauen, aber bitte erstmal nicht das Video danach mit der Lösung!</br>"
+								:
+								"Da ist ein verschlüsselter Text drin, er wurde rückwärts geschrieben:</br><textarea rows='8' cols='80' style='white-space: wrap;' >" +
 								"NEKCEURD GNATEES TFO"+
 								"</textarea></br>" +
 								"Kannst du ein Entschlüsslungsprogramm schreiben? Versuchs mal <a target='_blank' href='https://makecode.microbit.org/#pub:_DCub8VgW8VX1'>Code</a>."
+							);
 						}
 						else {
 							return "<img src='bottlemessage.png'>Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. " +
-								"Aber ich backe einfach nochmal eine."
+								"Aber ich backe einfach nochmal eine. Wenn ich dann das Problem gelöst habe öffne ich Dir die Flasche."
 							break;
 						}
 						break;
@@ -1909,7 +1947,18 @@ Press [ENTER] when you are ready.`;
 		//print("Ich sollte darauf tippen <em style='color:#0f0;'>tippe auf ampel</em>...");
 		return false;
 	}
+	kaputteAmpel.blockingvar=true;
+
+	Object.defineProperty(kaputteAmpel, 'blocking', {
+		get() { return MODE.pro?false:this.blockingvar; },
+		set(val) { this.blockingvar = val; },
+		enumerable: true,
+		configurable: true
+	});
+
+
 	kaputteAmpel.dialog = async function* () {
+		if(MODE.pro) return "Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird."
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
 			return "<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n";
@@ -2038,12 +2087,23 @@ Press [ENTER] when you are ready.`;
 	}
 
 	let kaputteAmpel2 = new Door("Ampel", "Eine Ampel bei der wieder was kaputt ist.", { blocking: true, usable: true, speakable: true,locked:true });
+	kaputteAmpel2.blockingvar=true;
+
+	Object.defineProperty(kaputteAmpel2, 'blocking', {
+		get() { return MODE.pro?false:this.blockingvar; },
+		set(val) { this.blockingvar = val; },
+		enumerable: true,
+		configurable: true
+	});
+
 	kaputteAmpel2.use = function () {a
 		Commands.forward_command="tippe auf ampel"
 		//print("Ich sollte darauf tippen <em style='color:#0f0;'>tippe auf ampel</em>...");
 		return false;
 	}
 	kaputteAmpel2.dialog = async function* () {
+		if(MODE.pro) return "Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird."
+		
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if(!isChrome){
 			return "<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n";
@@ -2244,14 +2304,15 @@ Press [ENTER] when you are ready.`;
 					"bescheuerten Städtern, die uns immer wieder auf</br>" +
 					"die Nerven gehen. Aber manche verkleiden sich,</br>" +
 					"und da wir von klein auf rechnen lernen,</br>" +
-					"fällt es uns leicht alle zahlen von 0 bis 10 zusammenzuzählen</br>" +
+					"und da wir von klein auf rechnen lernen,</br>"+
+					"fällt es uns leicht "+(MODE.pro?"die 20te Fibonacci Zahl":"alle zahlen von 0 bis 10")+" zusammenzuzählen</br>" +
 					"schnell im Kopf zu berechnen und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>" +
 					"scheitern die bescheuerten Städter immer.</br> " +
-					"Hahaha! Hast du den Code berechnet? Das kann dir helfen: <a target='_blank' href=https://makecode.microbit.org/#pub:_gCb2aFRTi9M6>Code</a>" +
+					"Hahaha! Hast du den Code berechnet? Das kann dir helfen: "+(MODE.pro?"<a target='_blank' href='https://www.youtube.com/watch?v=5cE_HfsLpP0&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=22'>Video</a>":"<a target='_blank' href='https://makecode.microbit.org/#pub:_gCb2aFRTi9M6'>Code</a>") +
 					"</br> Wenn ja dann sage ihn mir doch:";
-				if (reply === "55") {
+				if (reply === (MODE.pro?"6765":"55")) {
 					tuer.blocking = false;
-					return "<img src='s8block.png'>Code akzeptiert.</br>" + scene8.describe();
+					return "<img src='s8block.png'>Code akzeptiert. Das Tor nach Norden öffnet sich.</br>" + scene8.describe();
 				}
 				else return "<img src='s8block.png'>Falscher Code!"
 			}
@@ -2335,12 +2396,23 @@ Press [ENTER] when you are ready.`;
 
 
 
-	let scene10 = new Scene("Geheimes Labor", "<img src='s10.png'>" +
+	let scene10 = new Scene("Geheimes Labor", "");
+	
+	scene10.describe = function () {
+		if (MODE.pro) {
+			return "<img src='s10.png'>" +
+		"Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben.</br>"+
+		"Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: <a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a></br>"+
+		"Nach Sueden geht es zur Strandbar.";
+		}
+		else return "<img src='s10.png'>" +
 		"Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet.<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>.</br>" +
 		"Ausserdem fällt dir der gut erhaltene Computer auf.</br>" +
 		"Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.)</br>" +
 		"Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest!</br>"+
-		"Nach Sueden geht es zur Strandbar.");
+		"Nach Sueden geht es zur Strandbar."
+	}
+	
 	scene10.south = scene4;
 
 	scene4.northblock = seetang;
@@ -2370,6 +2442,8 @@ Press [ENTER] when you are ready.`;
 	scene11.insert(mintrobi);
 
 	mintrobi.dialog = async function* () {
+		if(MODE.pro) return "Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird."
+		
 		if (!("bluetooth" in navigator)) return "Du musst einen Chrome/Edge Browser verwenden."
 		var bluetoothadapter=await navigator.bluetooth.getAvailability()
 		bluetoothadapter=false;
@@ -2499,10 +2573,10 @@ Press [ENTER] when you are ready.`;
 			cmd = cmd.toLowerCase();
 			let delstr;
 			if(true) delstr = ["=>","der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
-			else if(LANG.lang=EN) delstr = ["=>","the", "a", "an", "that","these"];
+			else if(MODE.lang=EN) delstr = ["=>","the", "a", "an", "that","these"];
 			let importantprep ;
 			if(true) importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
-			else if(LANG.lang=EN) importantprep =  ["to", "with", "towards", "through", "in"];
+			else if(MODE.lang=EN) importantprep =  ["to", "with", "towards", "through", "in"];
 			
 			let delall=["!","."];
 			Commands.answer = [];
@@ -2598,13 +2672,13 @@ Press [ENTER] when you are ready.`;
 		@when("de")
 		static de(){
 			console.log("de")
-			LANG.lang=DE;
+			MODE.lang=DE;
 			return true;
 		}
 
 		@when("en")
 		static en(){
-			LANG.lang=EN;
+			MODE.lang=EN;
 			return true;
 		}
 
