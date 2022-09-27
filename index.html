@@ -1598,7 +1598,7 @@ let aa=T`${DE}abc${EN}DE${10*2}F${DE}gh${2+2}i`;//${DE} marks german region
 ${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
 
 		yield (!isChrome ? T`<em style='color:#faa;'>${DE}Achtung damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN}Attention: For everything to work, you should start the game with a modern Chrome/Edge browser!${ALL}</em></br>` : "")+
-		"Baue ein Steuerung des Spiels. Hier ist der Code: <a target='_blank' href='https://makecode.microbit.org/#pub:_XUx3dT0fdM2P'>Code</a>.</br>Dann must Du das Programm auf das Gehirn von Mintrobi hochgeladen.</br>Falls Du in Makecode verbunden bist, must du die Verbindung nach dem Hochladen des Programms</br>erst noch trennen</br><img width='20%' src='unpair.gif'>Drücke [ENTER] wenn du soweit bist."
+		T`${DE}Baue eine Steuerung des Spiels. Hier ist der Code:${EN}Build a control of the game. Here is the code: ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_XUx3dT0fdM2P'>Code</a>.</br>${DE}Dann must Du das Programm auf das Gehirn von Mintrobi hochgeladen.</br>${EN}Then you have to upload the programme to Mintrobi's brain.</br>${DE}Falls Du in Makecode verbunden bist, must du die Verbindung nach dem Hochladen des Programms erst noch trennen</br>${EN}If you are connected in Makecode, you must first disconnect after uploading the programme.${ALL}<img width='20%' src='unpair.gif'>${DE}Drücke [ENTER] wenn du soweit bist.${EN}Press [ENTER] when you are ready.`
 
 		yield T`${DE}Jetzt musst du nur noch wie folgt verkabeln:<img width='50%' src='poti.png'></br>Drücke [ENTER] wenn du soweit bist.${EN}Now you just have to wire it as follows:<img width='50%' src='poti.png'></br>Press [ENTER] when you are ready.`;
 		while(true){
@@ -1612,18 +1612,12 @@ ${EN}For this game you must have a Mintrobi. However, you have chosen the C++ pr
 			Pong=  Object.assign({}, Game);
 			Pong.initialize();
 			
-			let nochmal = yield "Nochmal?<p style='color:#0f0;'>"+
-				"1 - Ja</br>"+
-				"2 - Nein</p>"
+			let nochmal = yield T`${DE}Nochmal${EN}Again${ALL}?<p style='color:#0f0;'>1 - ${DE}Ja${EN}Yes${ALL}</br>2 - ${DE}Nein${EN}No${ALL}</p>`
 			if(nochmal!="1") return "Ok.";
 		}
 	}
-	let omazuhause = new Scene("Haus Oma", "<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' " +
-		"src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>Du bist im Haus deiner Grosseltern.</br>" +
-		"Deine Oma steht im Wohnzimmer.</br>Der Ausgang zum Strand ist westlich von dir.</br>"+
-		"Das Spiel wurde unterstützt durch <a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a></br>"+
-		"und dem <a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.");
-	let oma = new Person([T`${DE}Oma${EN}Grandma`, T`{${DE}Omi${EN}Grandmother`], T`${DE}Deine liebe Oma.${EN}Your dear Grandmother.`);
+	let omazuhause = new Scene(T`${DE}Omas Haus${EN}Grandma's house`, T`<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>${DE}Du bist im Haus deiner Grosseltern.</br>${EN}You are at your grandmother's house.</br>${DE}Deine Oma steht im Wohnzimmer.</br>${EN}Your granny is standing in the living room.</br>${DE}Der Ausgang zum Strand ist westlich von dir.</br>${EN}The exit to the beach is to the west of you.</br>${DE}Das Spiel wurde unterstützt durch ${EN}The game was supported by ${ALL}<a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a></br>${DE}und dem ${EN}and the ${ALL}<a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.`);
+	let oma = new Person([T`${DE}Oma${EN}Granny`, T`${DE}Omi${EN}Grandmother`], T`${DE}Deine liebe Oma.${EN}Your dear Grandmother.`);
 	omazuhause.insert(oma);
 	omazuhause.insert(computer);
 
@@ -1826,7 +1820,7 @@ ${EN}For this game you must have a Mintrobi. However, you have chosen the C++ pr
 							"Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein! Du kannst das einfach durch überlegen lösen oder ein Computerprogramm schreiben. "+
 							"Hier der link "+(MODE.pro?"zum <a target='_blank' href='"+
 							"https://www.youtube.com/watch?v=E4wT2HM0VpY&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=24'>Video</a>":"<a target='_blank' href='https://makecode.microbit.org/#pub:_7DzXT3eF7iiu'>Code</a>.");
-							console.log(reply13)
+					
 						if (reply13 === (MODE.pro?"ac,ab,cb,ac,ba,bc,ac,ab,cb,ca,ba,cb,ac,ab,cb,ac,ba,bc,ac,ba,cb,ca,ba,bc,ac,ab,cb,ac,ba,bc,ac":"ab,ac,bc,ab,ca,cb,ab") || reply13===(MODE.pro?"ac,ab,cb,ac,ba,bc,ac,ab,cb,ca,ba,cb,ac,ab,cb,ac,ba,bc,ac,ba,cb,ca,ba,bc,ac,ab,cb,ac,ba,bc,ac,":"ab,ac,bc,ab,ca,cb,ab,")) {
 							return "Das hat geklappt. Hier ich öffne dir die Flasche. " +
 								(
@@ -2569,11 +2563,11 @@ ${EN}For this game you must have a Mintrobi. However, you have chosen the C++ pr
 		static async execute(cmd) {
 			cmd = cmd.toLowerCase();
 			let delstr;
-			if(true) delstr = ["=>","der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
-			else if(MODE.lang=EN) delstr = ["=>","the", "a", "an", "that","these"];
+			if(MODE.lang==DE) delstr = ["=>","der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
+			else if(MODE.lang==EN) delstr = ["=>","the", "a", "an", "that","these"];
 			let importantprep ;
-			if(true) importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
-			else if(MODE.lang=EN) importantprep =  ["to", "with", "towards", "through", "in"];
+			if(MODE.lang==DE) importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
+			else if(MODE.lang==EN) importantprep =  ["to", "with", "towards", "through", "in"];
 			
 			let delall=["!","."];
 			Commands.answer = [];
@@ -2695,7 +2689,7 @@ ${EN}For this game you must have a Mintrobi. However, you have chosen the C++ pr
 				case "scene":
 					print(Commands.actor.position.describe());
 					if (!isEmpty(Commands.actor.position.things) && Commands.actor.position.open) {
-						print("\nDesweiteren sieht man:");
+						print(T`\n${DE}Desweiteren sieht man:${EN}Furthermore, you can see:`);
 						lookrecursive(Commands.actor.position.things, at, true, null, true);
 						print("\n");
 					}
@@ -2705,8 +2699,8 @@ ${EN}For this game you must have a Mintrobi. However, you have chosen the C++ pr
 					print(T`${DE}Du bist ${EN}You are ` + Commands.actor.describe());
 				//return true;//we du fallthrough on purpuse
 				//do not insert anything here
-				case "rucksack":
-					if (!isEmpty(Commands.actor.things)) print("In deinem Rucksack befinden sich: \n");
+				case T`${DE}rucksack${EN}backpack`:
+					if (!isEmpty(Commands.actor.things)) print(T`${DE}In deinem Rucksack befinden sich:${EN}In your backpack you can find:${ALL} \n`);
 					if (Commands.actor.open) for (var i in Commands.actor.things) {
 						print(Commands.actor.things[i].titel[0].toString());
 						print("\n");
@@ -2893,8 +2887,10 @@ ${EN}For this game you must have a Mintrobi. However, you have chosen the C++ pr
 			return Commands.speak({ person: Commands.lastperson, text: text2 });
 		}
 		static endofspeak = false;
-		@when("sprich => PERSON", { text: "" })
-		@when("sprich PERSON", { text: "" })
+		@when(T`${DE}sprich${EN}speak${ALL} => PERSON`, { text: "" })
+		@when(T`${DE}sprich${EN}speak${ALL} PERSON`, { text: "" })
+		@when("spreche => PERSON", { text: "" })
+		@when("spreche PERSON", { text: "" })
 		@when("rede => PERSON", { text: "" })
 		@when("rede PERSON", { text: "" })
 		@when("tippe => PERSON", { text: "" })
@@ -2952,7 +2948,7 @@ ${EN}For this game you must have a Mintrobi. However, you have chosen the C++ pr
 			Commands.look({ at: "scene" });
 
 			if (Commands.actor.position == omazuhause) {
-				print("Gebe z.B. ein:<em style='color:#0f0;'>rede mit oma</em> oder <em style='color:#0f0;'>w</em>");
+				print(T`${DE}Gebe z.B. ein: <em style='color:#0f0;'>rede mit oma</em> oder <em style='color:#0f0;'>w</em>${EN}Enter for example: <em style='color:#0f0;'>speak to granny</em> or <em style='color:#0f0;'>w</em>`);
 				//Commands.speak({person:"oma",text:""})
 			}
 
