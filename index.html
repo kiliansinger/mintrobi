@@ -1512,6 +1512,7 @@ you can make a door also an orc that blocks the road
 		return command2;
 	}
 	function when(command, param = {}) {
+		if(command=="") return false;//here important to use == because then with TData a toValue is done. with === it would be always false
 		return function (target) {
 			const original = target.descriptor.value;
 			if (typeof original === 'function') {
@@ -1680,60 +1681,47 @@ you can make a door also an orc that blocks the road
 	opa.dialog = async function* () {
 		if (this.has(bottlemessage)) {
 
-			let reply = yield "Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, " +
-				"ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.<p style='color:#0f0;'>" +
-				"1 - Och ne, dafür bin ich jetzt noch viel zu müde.</br>" +
-				"2 - Echt???! Zeig mal her was du gefunden hast.</p>";
+			let reply = yield T`${DE}Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.${EN}Hello Kai did you sleep well? Well, it's not that important, I fished a funny message out of the sea. Here, take a look.${ALL}<p style='color:#0f0;'>${DE}1 - Och ne, dafür bin ich jetzt noch viel zu müde.</br>${EN}1 - Oh no, I'm much too tired for that now.</br>${DE}2 - Echt???! Zeig mal her was du gefunden hast.${EN}2 - Really???! Let me see what you found.${ALL}</p>`
 			switch (reply) {
 				case "1":
-					return 'Ach Schade. Dann komm doch später nochmal zu mir.'
-					break;
+					return T`${DE}Ach Schade. Dann komm doch später nochmal zu mir.${EN}Oh, that's too bad. Then come back to me later.`
 				case "2":
 					this.open = true;
 					Commands.actor.take(bottlemessage);
 					this.open = false;
-					return "Hier eine geheimnisvolle Flasche ich mache sie gleich in deinen Rucksack (<em style='color:#0f0;'>schaue in rucksack</em>, <em style='color:#0f0;'>betrachte flaschenpost</em>),</br>aber ich bekomme sie leider einfach nicht auf.</br>" +
-						"Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.";
-					break;
+					return T`${DE}Hier eine geheimnisvolle Flasche ich mache sie gleich in deinen Rucksack${EN}Here's a mystery bottle I'll put in your backpack right away${ALL} (<em style='color:#0f0;'>${DE}schaue in rucksack${EN}look in backpack${ALL}</em>, <em style='color:#0f0;'>${DE}betrachte flaschenpost${EN}look at bootle-message${ALL}</em>),</br>${DE}aber ich bekomme sie leider einfach nicht auf.</br>${EN}but unfortunately I just can't get it open.</br>${DE}Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.${EN}You'll need a bottle opener, maybe you can find one.`;
 				default:
-					return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
 		} else {
-			return "Fischen ist lustig.";
+			return T`${DE}Fischen ist lustig.${EN}Fishing is fun.`;
 		}
 	}
 	opa.receiving = function (thing) {
-		print("Nein behalte das. Das ist fuer dich.</br>");
+		print(T`${DE}Nein behalte das. Das ist fuer dich.</br>${EN}No keep that. That is for you.</br>`);
 		return false;
 	}
-	let scene3 = new Scene("Badestrand", "<div class='flow'><img class='back' src='s3.png'>" +
-		"<img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'>" +
-		"<img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'>" +
-		"<img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>" +
-		"Du stehst am Strand, um dich herum sind einige Leute.</br>" +
-		"Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,</br>" +
-		"im Westen ist eine Strandbar.")
+	let scene3 = new Scene(T`${DE}Badestrand${EN}Beach`, T`<div class='flow'><img class='back' src='s3.png'><img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'><img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'><img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>${DE}Du stehst am Strand, um dich herum sind einige Leute.</br>Nach Norden geht es in die Stadt,</br>nach Osten zum Strandhaus,</br>im Westen ist eine Strandbar.${EN}You are standing on the beach, there are some people around you.</br>To the north it goes to the city,</br>to the east to the beach house,</br>to the west is a beach bar.`)
 	scene3.east = strand;
-	let frau = new Person("Frau", "ein Frau");
+	let frau = new Person(T`${DE}Frau${EN}Woman`, T`${DE}ein Frau${EN}a woman`);
 	scene3.insert(frau);
 	frau.dialog = async function* () {
-		return "Endlich mal Ruhe. In der Stadt ist echt was los,</br>" +
-			"mit all den interessanten Gestalten, die sich da aufhalten.</br>Diesen Urlaub habe ich mir echt verdient.";
+		return T`${DE}Endlich mal Ruhe. In der Stadt ist echt was los.</br>Diesen Urlaub habe ich mir echt verdient.${EN}Peace at last. There's really something going on in the city.</br>I've really earned this holiday.`;
 	}
-	let kind = new Person("Kind", "ein Kind");
+	let kind = new Person(T`${DE}Kind${EN}Child`, T`${DE}ein Kind${EN}a child`);
 	scene3.insert(kind);
 	kind.dialog = async function* () {
-		return "Da sind interesant verkleidete Menschen im Wald.</br>Hast du schonmal einen von denen gesehen?";
+		return T`${DE}Da sind interesant verkleidete Menschen im Wald.</br>Hast du schonmal einen von denen gesehen?${EN}There are interesting people in disguise in the forest.</br>Have you ever seen one of them?`;
 	}
-	let junge = new Person(["Junge", "Jungen"], "ein Junge");
+	let junge = new Person([T`${DE}Junge${EN}Boy`, T`${DE}Jungen`], T`${DE}ein Junge${EN}a boy`);
 	scene3.insert(junge);
 	junge.dialog = async function* () {
-		return "Hey schau mal,</br>diese Sandburg habe ich ganz alleine gebaut!";
+		return T`${DE}Hey schau mal,</br>diese Sandburg habe ich ganz alleine gebaut!${EN}Hey look,</br>I built this sandcastle all by myself!`;
 	}
 
-	let scene4 = new Scene("Scene4", "Barman")
+	let scene4 = new Scene(T`${DE}Strandbar${EN}Beach-bar`, "")
 	scene4.east = scene3;
-	let seetang = new Door("Seetang", "Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!", { blocking: true, usable: true, locked: true })
+	let seetang = new Door(T`${DE}Seetang${EN}Seeweed`, T`${DE}Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!${EN}A pile of smelly seaweed. Mmm, yam, yam, I love sushi rolls!`, { blocking: true, usable: true, locked: true })
 	seetang.cnt = 0;
 	seetang.use = function () {
 		seetang.cnt++;
@@ -1743,7 +1731,7 @@ you can make a door also an orc that blocks the road
 			return true;
 		}
 		else {
-			print("Nichts passiert. Aber ich nehme mir ein Stück zum essen. Hm lecker!");
+			print(T`${DE}Nichts passiert. Aber ich nehme mir ein Stück zum essen. Hm lecker!${EN}Nothing happens. But I take a piece to eat. Mm yummy!`);
 			return true;
 		}
 	}
@@ -2518,7 +2506,7 @@ you can make a door also an orc that blocks the road
 			else if (MODE.lang == EN) delstr = ["=>", "the", "a", "an", "that", "these"];
 			let importantprep;
 			if (MODE.lang == DE) importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
-			else if (MODE.lang == EN) importantprep = ["to", "with", "towards", "through", "in"];
+			else if (MODE.lang == EN) importantprep = ["to", "with", "towards", "through", "in","at","on","into",];
 
 			let delall = ["!", "."];
 			Commands.answer = [];
@@ -2573,7 +2561,7 @@ you can make a door also an orc that blocks the road
 				}
 				else {
 					if (Commands.lastcommandspeak) commandspeak = await Commands.continuespeak(cmd);
-					if (!commandspeak) {
+					if (!commandspeak && Commands.answer.length==0) {
 						print(T`${DE}Ich verstehe Dich nicht oder kann es nicht machen! Schreibe <em style='color:#0f0;'>hilfe</em> für eine Befehlsliste!\n${EN}I don't understand you or can't do it! Write <em style='color:#0f0;'>help</em> for a command list!`);
 					}
 				}
@@ -2591,26 +2579,27 @@ you can make a door also an orc that blocks the road
 			print(T`${DE}Befehle${EN}Commands${ALL}:\n`);
 			print(T`&#x26AC; ${DE}hilfe${EN}help${ALL}\n`);
 			print(T`     ${DE}mit Kurzform${EN}with shortcut${ALL}: h\n`);
-			print("&#x26AC; schaue/betrachte/b (auf,...) (ETWAS)\n");
-			print("&#x26AC; schaue/betrachte/b mich (an)\n");
-			print("&#x26AC; schaue/betrachte/b (auf,...) rucksack\n");
-			print(T`     ${DE}mit Kurzform${EN}with shortcut${ALL}: r\n`);
-			print("&#x26AC; gehe (nach) norden/süden/westen/osten/...\n");
-			print(T`     ${DE}mit Kurzform${EN}with shortcut${ALL}: n,s,w,o\n`);
-			print("&#x26AC; verwende/benutze/drücke/ziehe/v ETWAS\n");
-			print("&#x26AC; verwende/benutze/v ETWAS auf/mit/... ETWAS/JEMANDEN\n");
-			print("&#x26AC; öffne/ö ETWAS\n");
-			print("&#x26AC; schließe/s ETWAS\n");
-			print("&#x26AC; nimm/m ETWAS\n");
-			print("&#x26AC; gib/lege/l ETWAS\n");
-			print("&#x26AC; gib/lege/l ETWAS an/zu/... ETWAS/JEMANDEN\n");
-			print("&#x26AC; sprich/rede/tippe/t (mit/in) PERSON/COMPUTER\n");
-			print("&#x26AC; speichere/save SPIELSTANDSNAME\n");
-			print("&#x26AC; lade/load SPIELSTANDSNAME\n");
+			print(T`&#x26AC; ${DE}schaue/betrachte/b (auf,...) (ETWAS)${EN}look/watch/l (at,...) (SOMETHING)\n`);
+			print(T`&#x26AC; ${DE}schaue/betrachte/b mich (an)${EN}look/watch/l (at...) me\n`);
+			print(T`&#x26AC; ${DE}schaue/betrachte/b (auf,...) rucksack${EN}look/watch/l (at,...) backpack\n`);
+			print(T`     ${DE}mit Kurzform: r\n${EN}with shortcut: b\n`);
+			print(T`&#x26AC; ${DE}gehe (nach) norden/süden/westen/osten/...\n${EN}go (towards,to) north/south/west/east`);
+			print(T`     ${DE}mit Kurzform: n,s,w,o${EN}with shortcut: n,s,w,e${ALL}\n`);
+			print(T`&#x26AC; ${DE}verwende/benutze/drücke/ziehe/v ETWAS\n${EN}use/press/pull/u SOMETHING\n`);
+			print(T`&#x26AC; ${DE}verwende/benutze/v ETWAS auf/mit/... ETWAS/JEMANDEN\n${EN}use/u SOMETHING with/on SOMETHING/SOMEBODY\n`);
+			print(T`&#x26AC; ${DE}öffne/ö ETWAS\n${EN}open/o SOMETHING\n`);
+			print(T`&#x26AC; ${DE}schließe/s ETWAS\n${EN}close/c SOMETHING\n`);
+			print(T`&#x26AC; ${DE}nimm/m ETWAS\n${EN}take/k SOMETHING\n`);
+			print(T`&#x26AC; ${DE}gib/lege/l ETWAS\n${EN}give/drop/put/p SOMETHING\n`);
+			print(T`&#x26AC; ${DE}gib/lege/l ETWAS an/zu/... ETWAS/JEMANDEN\n${EN}give/drop/put/p SOMETHING to/at/on/... SOMETHING/SOMEBODY\n`);
+			print(T`&#x26AC; ${DE}sprich/rede/tippe/t (mit/in/...) PERSON/COMPUTER\n${EN}speak/talk/type/t (with/into/...) PERSON/COMPUTER\n`);
+			print(T`&#x26AC; ${DE}speichere/save SPIELSTANDSNAME\n${EN}save NAMEOFGAMESTATE\n`);
+			print(T`&#x26AC; ${DE}lade/load SPIELSTANDSNAME\n${EN}load NAMEOFGAMESTATE\n`);
 			print("&#x26AC; reset\n");
-			print("&#x26AC; de/en Deutsch/English\n");
+			print(T`&#x26AC; de/en ${DE}Deutsch/Englisch${EN}German/English\n`);
 			return true;
 		}
+
 		@when("de")
 		static de() {
 			console.log("de")
@@ -2625,17 +2614,18 @@ you can make a door also an orc that blocks the road
 		}
 
 
-		@when("schaue", { at: "scene" })
-		@when("betrachte", { at: "scene" })
-		@when("b", { at: "scene" })
-		@when("r", { at: "rucksack" })
-		@when("schaue AT")
-		@when("betrachte AT")
-		@when("b AT")
-		@when("schaue => AT")
-		@when("betrachte => AT")
-		@when("b => AT")
+		@when(T`${DE}schaue${EN}look`, { at: "scene" })
+		@when(T`${DE}betrachte${EN}watch`, { at: "scene" })
+		@when(T`${DE}b${EN}l`, { at: "scene" })
+		@when(T`${DE}r${EN}b`, { at: T`${DE}rucksack${EN}backpack` })
+		@when(T`${DE}schaue${EN}look${ALL} AT`)
+		@when(T`${DE}betrachte${EN}watch${ALL} AT`)
+		@when(T`${DE}b${EN}l${ALL} AT`)
+		@when(T`${DE}schaue${EN}look${ALL} => AT`)
+		@when(T`${DE}betrachte${EN}watch${ALL} => AT`)
+		@when(T`${DE}b${EN}l${ALL} => AT`)
 		static look({ at }) {
+			at=at.toString();
 			switch (at) {
 				case "scene":
 					print(Commands.actor.position.describe());
@@ -2668,33 +2658,33 @@ you can make a door also an orc that blocks the road
 		}
 
 		@when("w", { direction: "west" })
-		@when("westen", { direction: "west" })
+		@when(T`${DE}westen${EN}west`, { direction: "west" })
 		@when(T`${DE}gehe westen${EN}go west`, { direction: "west" })
-		@when("gehe => westen", { direction: "west" })
-		@when("o", { direction: "east" })
-		@when("osten", { direction: "east" })
-		@when("gehe osten", { direction: "east" })
-		@when("gehe => osten", { direction: "east" })
+		@when(T`${DE}gehe => westen${EN}go => west`, { direction: "west" })
+		@when(T`${DE}o${EN}e`, { direction: "east" })
+		@when(T`${DE}osten${EN}east`, { direction: "east" })
+		@when(T`${DE}gehe osten${EN}go east`, { direction: "east" })
+		@when(T`${DE}gehe => osten${EN}go => east`, { direction: "east" })
 		@when("s", { direction: "south" })
-		@when("süden", { direction: "south" })
-		@when("gehe süden", { direction: "south" })
-		@when("gehe => süden", { direction: "south" })
+		@when(T`${DE}süden${EN}south`, { direction: "south" })
+		@when(T`${DE}gehe süden${EN}go south`, { direction: "south" })
+		@when(T`${DE}gehe => süden${EN}go => south`, { direction: "south" })
 		@when("n", { direction: "north" })
-		@when("norden", { direction: "north" })
-		@when("gehe norden", { direction: "north" })
-		@when("gehe => norden", { direction: "north" })
-		@when("oben", { direction: "up" })
-		@when("gehe oben", { direction: "up" })
-		@when("gehe => oben", { direction: "up" })
-		@when("hoch", { direction: "up" })
-		@when("gehe hoch", { direction: "up" })
-		@when("gehe => hoch", { direction: "up" })
-		@when("unten", { direction: "down" })
-		@when("gehe unten", { direction: "down" })
-		@when("gehe => unten", { direction: "down" })
-		@when("runter", { direction: "down" })
-		@when("gehe runter", { direction: "down" })
-		@when("gehe => runter", { direction: "down" })
+		@when(T`${DE}norden${EN}north`, { direction: "north" })
+		@when(T`${DE}gehe norden${EN}go north`, { direction: "north" })
+		@when(T`${DE}gehe => norden${EN}go => north`, { direction: "north" })
+		@when(T`${DE}oben${EN}up`, { direction: "up" })
+		@when(T`${DE}gehe oben${EN}go up`, { direction: "up" })
+		@when(T`${DE}gehe => oben${EN}go => up`, { direction: "up" })
+		@when(T`${DE}hoch${EN}up`, { direction: "up" })
+		@when(T`${DE}gehe hoch${EN}go up`, { direction: "up" })
+		@when(T`${DE}gehe => hoch${EN}go => up`, { direction: "up" })
+		@when(T`${DE}unten${EN}down`, { direction: "down" })
+		@when(T`${DE}gehe unten${EN}go down`, { direction: "down" })
+		@when(T`${DE}gehe => unten${EN}go => down`, { direction: "down" })
+		@when(T`${DE}runter${EN}down`, { direction: "down" })
+		@when(T`${DE}gehe runter${EN}go down`, { direction: "down" })
+		@when(T`${DE}gehe => runter${EN}go => down`, { direction: "down" })
 		static go({ direction }) {
 			if (Commands.actor.position.hasOwnProperty(direction) || Commands.actor.position[direction]) {
 				if (Commands.actor.position[direction + "block"] !== undefined) {
@@ -2718,11 +2708,11 @@ you can make a door also an orc that blocks the road
 			return false;
 		}
 
-		@when("v ITEM")
-		@when("verwende ITEM")
-		@when("benutze ITEM")
-		@when("drücke ITEM")
-		@when("ziehe ITEM")
+		@when(T`${DE}v${EN}u${ALL} ITEM`)
+		@when(T`${DE}verwende${EN}use${ALL} ITEM`)
+		@when(T`${DE}benutze${EN}use${ALL} ITEM`)
+		@when(T`${DE}drücke${EN}push${ALL} ITEM`)
+		@when(T`${DE}ziehe${EN}pull${ALL} ITEM`)
 		static use({ item }) {
 			let { thing } = search(item);
 			if (thing && thing.usable) return thing.use();
@@ -2734,9 +2724,9 @@ you can make a door also an orc that blocks the road
 
 		//when chatte mit echten personen
 		//when rede mit: mit npc
-		@when("benutze ITEM => TARGET")
-		@when("verwende ITEM => TARGET")
-		@when("v ITEM => TARGET")
+		@when(T`${DE}benutze${EN}use${ALL} ITEM => TARGET`)
+		@when(T`${DE}verwende${EN}use${ALL} ITEM => TARGET`)
+		@when(T`${DE}v${EN}u${ALL} ITEM => TARGET`)
 		static doapply({ item, target }) {
 			let retval;
 			let { thing } = search(item);
@@ -2753,7 +2743,7 @@ you can make a door also an orc that blocks the road
 					if (thing.applytarget.hasOwnProperty(targetthing.name))
 						return thing.doapply(targetthing);
 				}
-				else print("Hab ich nicht oder kann es nicht anwenden.");
+				else print(T`${DE}Hab ich nicht oder kann es nicht anwenden.${EN}I don't have it or can't apply it.`);
 				return false;
 			}
 
@@ -2764,7 +2754,7 @@ you can make a door also an orc that blocks the road
 			if (thing !== null) {
 				if (thing.blockable) {
 					if (thing.locked) {
-						print("Das geht nicht.");
+						print(T`${DE}Das geht nicht.${EN}That's not possible.`);
 						return true;
 					}
 					else {
@@ -2779,26 +2769,25 @@ you can make a door also an orc that blocks the road
 					Commands.look({ at: item });
 					return true;
 				}
-				else print("Das geht nicht.");
+				else print(T`${DE}Das geht nicht.${EN}That's not possible.`);
 				return false;
 			}
 			return false;
 		}
-		@when("öffne ITEM")
-		@when("öffne ITEM")
-		@when("ö ITEM")
+		@when(T`${DE}öffne${EN}open${ALL} ITEM`)
+		@when(T`${DE}ö${EN}o${ALL} ITEM`)
 		static open({ item }) {
 			return Commands.openbool(item, true);
 		}
 
-		@when("schließe ITEM")
-		@when("s ITEM")
+		@when(T`${DE}schließe${EN}close${ALL} ITEM`)
+		@when(T`${DE}s${EN}c${ALL} ITEM`)
 		static close({ item }) {
 			return Commands.openbool(item, false);
 		}
 
-		@when("nimm ITEM")
-		@when("m ITEM")
+		@when(T`${DE}nimm${EN}take${ALL} ITEM`)
+		@when(T`${DE}m${EN}k${ALL} ITEM`)
 		static take({ item }) {
 			let { mine, thing } = search(item);
 			if (thing !== null && thing.takeable && thing.parent != ich) {
@@ -2809,28 +2798,36 @@ you can make a door also an orc that blocks the road
 			}
 		}
 
-		@when("gib ITEM => TARGET")
-		@when("lege ITEM => TARGET")
-		@when("l ITEM => TARGET")
-		@when("gib ITEM", { target: "scene" })
-		@when("lege ITEM", { target: "scene" })
-		@when("l ITEM", { target: "scene" })
+		@when(T`${DE}gib${EN}give${ALL} ITEM => TARGET`)
+		@when(T`${DE}lege${EN}put${ALL} ITEM => TARGET`)
+		@when(T`${DE}lege${EN}drop${ALL} ITEM => TARGET`)
+		@when(T`${DE}l${EN}p${ALL} ITEM => TARGET`)
+		@when(T`${DE}gib${EN}give${ALL} ITEM`, { target: "scene" })
+		@when(T`${DE}lege${EN}put${ALL} ITEM`, { target: "scene" })
+		@when(T`${DE}lege${EN}drop${ALL} ITEM`)
+		@when(T`${DE}l${EN}p${ALL} ITEM`, { target: "scene" })
 		static give({ item, target }) {//todo all logic should be in Thing class
 			let { mine, thing } = search(item);
-			let targetthing;
-			if (target === "scene") {
-				if (!thing.dropable) {
-					print("Kann ich nicht ablegen.");
-					return false;
+			if(mine){
+				let targetthing;
+				if (target === "scene") {
+					if (!thing.dropable) {
+						print(T`${DE}Kann ich nicht ablegen.${EN}I cannot drop it.`);
+						return false;
+					}
+					targetthing = Commands.actor.position;
 				}
-				targetthing = Commands.actor.position;
+				else ({ thing: targetthing } = search(target));
+				if (thing !== null && targetthing !== null && (targetthing.open || targetthing.receiving) && mine) {
+					return targetthing.take(thing);
+				}
+				else print(T`${DE}Hab ich nicht oder kann es nicht geben.${EN}I don't have it or cannot give it.`);
+				return false;
+			}else{
+				print(T`${DE}Hab ich nicht oder kann es nicht geben.${EN}I don't have it or cannot give it.`);
+				return false;
 			}
-			else ({ thing: targetthing } = search(target));
-			if (thing !== null && targetthing !== null && (targetthing.open || targetthing.receiving) && mine) {
-				return targetthing.take(thing);
-			}
-			else print("Hab ich nicht oder kann es nicht geben.");
-			return false;
+
 		}
 		static lastperson;
 		static lastcommandspeak = false;
@@ -2838,14 +2835,16 @@ you can make a door also an orc that blocks the road
 			return Commands.speak({ person: Commands.lastperson, text: text2 });
 		}
 		static endofspeak = false;
+
+		//do not use empty language cases
 		@when(T`${DE}sprich${EN}speak${ALL} => PERSON`, { text: "" })
 		@when(T`${DE}sprich${EN}speak${ALL} PERSON`, { text: "" })
-		@when("spreche => PERSON", { text: "" })
-		@when("spreche PERSON", { text: "" })
-		@when("rede => PERSON", { text: "" })
-		@when("rede PERSON", { text: "" })
-		@when("tippe => PERSON", { text: "" })
-		@when("tippe PERSON", { text: "" })
+		@when(T`${DE}spreche${EN}speak${ALL} => PERSON`, { text: "" })
+		@when(T`${DE}spreche${EN}speak${ALL} PERSON`, { text: "" })
+		@when(T`${DE}rede${EN}talk${ALL} => PERSON`, { text: "" })
+		@when(T`${DE}rede${EN}talk${ALL} PERSON`, { text: "" })
+		@when(T`${DE}tippe${EN}type${ALL} => PERSON`, { text: "" })
+		@when(T`${DE}tippe${EN}type${ALL} PERSON`, { text: "" })
 		@when("t => PERSON", { text: "" })
 		@when("t PERSON", { text: "" })
 		static async speak({ person, text }) {
@@ -2858,7 +2857,7 @@ you can make a door also an orc that blocks the road
 				Commands.endofspeak = ret.done;
 				return true;
 			}
-			else print("Geht so nicht.");
+			else print(T`${DE}Geht so nicht.${EN}It doesn't work like that.`);
 			return false;
 		}
 
