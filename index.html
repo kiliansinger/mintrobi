@@ -1689,7 +1689,7 @@ you can make a door also an orc that blocks the road
 					this.open = true;
 					Commands.actor.take(bottlemessage);
 					this.open = false;
-					return T`${DE}Hier eine geheimnisvolle Flasche ich mache sie gleich in deinen Rucksack${EN}Here's a mystery bottle I'll put in your backpack right away${ALL} (<em style='color:#0f0;'>${DE}schaue in rucksack${EN}look in backpack${ALL}</em>, <em style='color:#0f0;'>${DE}betrachte flaschenpost${EN}look at bootle-message${ALL}</em>),</br>${DE}aber ich bekomme sie leider einfach nicht auf.</br>${EN}but unfortunately I just can't get it open.</br>${DE}Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.${EN}You'll need a bottle opener, maybe you can find one.`;
+					return T`${DE}Hier eine geheimnisvolle Flasche ich mache sie gleich in deinen Rucksack${EN}Here's a mystery bottle I'll put in your backpack right away${ALL} (<em style='color:#0f0;'>${DE}schaue in rucksack${EN}look in backpack${ALL}</em>, <em style='color:#0f0;'>${DE}betrachte flaschenpost${EN}look at bootle-message${ALL}</em>),</br>${DE}aber ich bekomme sie leider einfach nicht auf.</br>${EN}but unfortunately I just can't get it open.</br>${DE}Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.</br>${EN}You'll need a bottle opener, maybe you can find one.</br>`+bottlemessage.describe()
 				default:
 					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
@@ -2059,17 +2059,17 @@ you can make a door also an orc that blocks the road
 			let reply = yield T`${DE}Hallo, guten Tag.${EN}Hello, good day${ALL}<p style='color:#0f0;'>${DE}1 - Hallo, wer sind Sie denn?</br>${EN}1 - Hello, who are you?</br>${DE}2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>${EN}2 - How will I be let into the indigenous village?</p>`;
 			switch (reply) {
 				case "1":
-					return T`${DE}Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>ich erforsche den hiesigen Stamm der Ureinwohner.${EN}I am Sir Ernest Wordsworth,</br>a scientist and ethnologist,</br>I am researching the local aboriginal tribe.`
+					return T`${DE}Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>ich erforsche den hiesigen Stamm der Ureinwohner.${EN}I am Sir Ernest Wordsworth,</br>a scientist and ethnologist,</br>I am researching the local native tribe.`
 				case "2":
 					this.open = true;
 					Commands.actor.take(kostuem);
 					this.open = false;
-					return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spähen konnte.</br>Doch mit deiner Statur ist eventuell möglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das Kostüm.${EN}I have not yet succeeded in gaining admittance.</br>I owe my research so far to observations</br>from high up in the treetops, from which I have been able</br>to peer over the fence surrounding the village.</br>But with your stature, it may be possible</br>to pass yourself off as one of their own if you disguise yourself accordingly.</br>Here is the costume.`
+					return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spähen konnte.</br>Doch mit deiner Statur ist eventuell möglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das ${EN}I have not yet succeeded in gaining admittance.</br>I owe my research so far to observations</br>from high up in the treetops, from which I have been able</br>to peer over the fence surrounding the village.</br>But with your stature, it may be possible</br>to pass yourself off as one of their own if you disguise yourself accordingly.</br>Here is the `+kostuem.describe()
 				default:
 					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
 		} else {
-			return `T${DE}Wissenschaft ist wunderbar!${EN}Science is wonderful!`;
+			return T`${DE}Wissenschaft ist wunderbar!${EN}Science is wonderful!`;
 		}
 
 	}
@@ -2078,53 +2078,34 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 
-	let scene8 = new Scene("Scene8", "")
+	let scene8 = new Scene(T`${DE}Eingang zum Ureinwohnerdorf${EN}Entry to the village of the native tribe`, "")
 	scene8.east = scene6;
 
-	let tuer = new Door("Tür", "Eine verschlossene Tür.", { blocking: true })
-	let torwache = new Person("Torwache", "eine Torwache");
+	let tuer = new Door(T`${DE}Tür${EN}Door`, T`${DE}Eine verschlossene Tür.${EN}A locked door.`, { blocking: true })
+	let torwache = new Person(T`${DE}Torwache${EN}Guard`, T`${DE}eine Torwache${EN}a gate guard`);
 
 	scene8.insert(torwache);
 	scene8.northblock = tuer;
 
 	scene8.describe = function () {
 		if (tuer.blocking) {
-			return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'>" +
-				"<img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'>" +
-				"<img id='s8schild' src='s8schild.png'></div>Du bist im Dschungel und vor dir</br>" +
-				"baut sich eine grossee Holzwand auf der sich oben</br>" +
-				"ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>" +
-				"Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.";
+			return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.${EN}You are in the jungle and in front of you</br>there is a big wooden wall on top of which</br>a native person has posted himself as a guard.</br>To the east it goes back to the jungle path.</br>Tip: If you don't understand the gate guard, the explorer might help you.`;
 		}
-		else return "<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'>" +
-			"<img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'>" +
-			"<img id='s8schild' src='s8schild.png'></div>" +
-			"Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>" +
-			"ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>";
+		else return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir</br>baut sich eine grossee Holzwand auf der sich oben</br>ein Ureinwohner als Wache postiert hat.</br>Nach Osten geht es zurueck zum Dschungelpfad.</br>${EN}You are in the jungle and in front of you</br>there is a big wooden wall on top of which</br>a native person has posted himself as a guard.</br>To the east you go back to the jungle path.</br>`;
 	}
 
 	torwache.dialog = async function* () {
 		if (Commands.actor.has(kostuem)) {
 			if (tuer.blocking) {
-				let reply = yield "Hallo, Kumpel.</br>" +
-					"Ich dachte zuerst du bist schon wieder einer von diesen</br>" +
-					"bescheuerten Städtern, die uns immer wieder auf</br>" +
-					"die Nerven gehen. Aber manche verkleiden sich,</br>" +
-					"und da wir von klein auf rechnen lernen,</br>" +
-					"und da wir von klein auf rechnen lernen,</br>" +
-					"fällt es uns leicht " + (MODE.pro ? "die 20te Fibonacci Zahl" : "alle zahlen von 0 bis 10") + " zusammenzuzählen</br>" +
-					"schnell im Kopf zu berechnen und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>" +
-					"scheitern die bescheuerten Städter immer.</br> " +
-					"Hahaha! Hast du den Code berechnet? Das kann dir helfen: " + (MODE.pro ? "<a target='_blank' href='https://www.youtube.com/watch?v=5cE_HfsLpP0&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=22'>Video</a>" : "<a target='_blank' href='https://makecode.microbit.org/#pub:_gCb2aFRTi9M6'>Code</a>") +
-					"</br> Wenn ja dann sage ihn mir doch:";
+				let reply = yield T`${DE}Hallo, Kumpel.</br>Ich dachte zuerst du bist schon wieder einer von diesen</br>bescheuerten Städtern, die uns immer wieder auf</br>die Nerven gehen. Aber manche verkleiden sich,</br>und da wir von klein auf rechnen lernen,</br>und da wir von klein auf rechnen lernen,</br>fällt es uns leicht ${EN}Hello, buddy.</br>At first I thought you were another one of those</br>stupid townies who always get on</br>our nerves. But some dress up,</br>and since we learn to count from a young age,</br>it is easy for us to ` + (MODE.pro ? T`${DE}die 20te Fibonacci Zahl zu schnell im Kopf zu berechnen${EN}calculate the 20th Fibonacci number quickly in your head` : T`${DE}alle zahlen von 0 bis 10 schnell im Kopf zusammenzuzählen${DE}add all numbers from 0 to 10 in your head`) + T`${DE}</br>und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>scheitern die bescheuerten Städter immer.</br>Hahaha! Hast du den Code berechnet? Das kann dir helfen: ${EN}</br>and enter them into the</br>combination lock. And that</br>is the latest thing the stupid city dwellers always fail at.</br>Hahaha! Have you calculated the code? That could help you: ` + (MODE.pro ? "<a target='_blank' href='https://www.youtube.com/watch?v=5cE_HfsLpP0&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=22'>Video</a>" : "<a target='_blank' href='https://makecode.microbit.org/#pub:_gCb2aFRTi9M6'>Code</a>")+T`${DE}</br>Wenn ja dann sage ihn mir doch:${EN}</br>If so, then tell me:`;
 				if (reply === (MODE.pro ? "6765" : "55")) {
 					tuer.blocking = false;
-					return "<img src='s8block.png'>Code akzeptiert. Das Tor nach Norden öffnet sich.</br>" + scene8.describe();
+					return T`<img src='s8block.png'>${DE}Code akzeptiert. Das Tor nach Norden öffnet sich.</br>${EN}Code accepted. The gate to the north opens.</br>` + scene8.describe();
 				}
-				else return "<img src='s8block.png'>Falscher Code!"
+				else return T`<img src='s8block.png'>${DE}Falscher Code!${EN}Wrong code!`
 			}
 			else {
-				return "Hallo, Kumpel!";
+				return T`${DE}Hallo, Kumpel!${EN}Hi, buddy!`;
 			}
 		}
 		else {
@@ -2132,89 +2113,60 @@ you can make a door also an orc that blocks the road
 		}
 	}
 
-	let scene9 = new Scene("Scene9", "<div class='flow'><img class='back' src='s9.png'>" +
-		"<img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'>" +
-		"<img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'>" +
-		"<img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'>" +
-		"<img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>" +
-		"Du bist im Dschungel und vor dir</br>" +
-		"baut sich eine grossee Holzwand auf der sich oben</br>" +
-		"ein Ureinwohner als Wache postiert hat.</br>" +
-		"Nach Osten geht es zurueck zum Dschungelpfad.</br>");
+	let scene9 = new Scene(T`${DE}Ureinwohnerdorf${EN}Village of native tribe`, T`<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>${DE}Du bist im Dorf der Ureinwohner.</br>Nach Süden geht es zurueck Eingang.</br>${EN}You are in the village of the native tribe.</br>To the south you go back entrance.</br>`);
 	scene9.south = scene8;
 
-	let pina = new Person(["Pina", "Pina Colada"], "eine Ureinwohnerin");
-	let mojito = new Person("Mojito", "ein Ureinwohner");
-	let daiquiri = new Person("Daiquiri", "ein Ureinwohner mit einem Problem");
+	let pina = new Person(["Pina", "Pina Colada"], T`${DE}eine Ureinwohnerin${EN}a native woman`);
+	let mojito = new Person("Mojito", T`${DE}ein Ureinwohner${EN}a native man`);
+	let daiquiri = new Person("Daiquiri", T`${DE}ein Ureinwohner mit einem Problem${EN}a native man with a problem`);
 	scene9.insert(pina);
 	scene9.insert(mojito);
 	scene9.insert(daiquiri);
 
 	pina.dialog = async function* () {
-		return "Uiui, eine neue Maske, schnieke Mann.";
+		return T`${DE}Uiui, eine neue Maske, schnieke Mann.${EN}Oooh, a new mask, really beautiful.`;
 	}
 	mojito.dialog = async function* () {
-		return "Hehe, dieser Idiot von nebenan hat</br>" +
-			"auf seinem Kopf so ein komisches silbernes Teil stecken,</br>" +
-			"das sieht total bescheuert aus!";
+		return T`${DE}Hehe, mein Freund von nebenan hat</br>auf seinem Kopf so ein komisches silbernes Teil stecken,</br>das sieht total bescheuert aus!${EN}Hehe, my friend next door has</br>some weird silver thing stuck on his head,</br>it looks totally stupid!`;
 	}
-	let tortenheber = new Item("Tortenheber", "<img src='tortenheber.png'>ein Tortenheber");
+	let tortenheber = new Item(T`${DE}Tortenheber${EN}Cake-server`, T`<img src='tortenheber.png'>${DE}ein Tortenheber${EN}a cake server`);
 
 	daiquiri.insert(tortenheber);
 
 	daiquiri.dialog = async function* () {
 		if (this.has(tortenheber)) {
-			let reply = yield "Ich bin so verzweifelt,</br>" +
-				"ich komme einfach nicht weiter!</br>" +
-				"Die Nachbarn lachen schon alle ueber mich,</br>" +
-				"ich weiss es genau! Meine Frau wird mich bestimmt verlassen,</br>" +
-				"wenn ich es nicht los werde!<p style='color:#0f0;'>" +
-				"1 - Kann ich dir irgendwie helfen.</br>" +
-				"2 - Nee keine Zeit!</p>";
+			let reply = yield T`${DE}Ich bin so verzweifelt,</br>ich komme einfach nicht weiter!</br>Die Nachbarn lachen schon alle ueber mich,</br>ich weiss es genau! Meine Frau wird mich bestimmt verlassen,</br>wenn ich es nicht los werde!<p style='color:#0f0;'>1 - Kann ich dir irgendwie helfen.</br>2 - Nee keine Zeit!</p>${EN}I am so desperate,</br>I just can't get on!</br>The neighbours are all laughing at me already,</br>I know it for sure! My wife will leave me for sure,</br>if I don't get rid of it!<p style='color:#0f0;'>1 - Can I help you somehow.</br>2 - No time!</p>`;
 			switch (reply) {
 				case "1":
-					let reply2 = yield "Das wäre sehr nett! Ich bin gestern mit diesem</br>" +
-						"seltsamen silbernen Teil auf dem Kopf aufgewacht,</br>" +
-						"aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstören.</br>" +
-						"Bitte mach das weg!?!</br><p style='color:#0f0;'>" +
-						"1 - Kein Problem</br>" +
-						"2 - Nee keine Lust!</p>";
+					let reply2 = yield T`${DE}Das wäre sehr nett! Ich bin gestern mit diesem</br>seltsamen silbernen Teil auf dem Kopf aufgewacht,</br>aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstören.</br>Bitte mach das weg!?!</br><p style='color:#0f0;'>1 - Kein Problem</br>2 - Nee keine Lust!</p>${EN}That would be very nice! I woke up yesterday with this</br>strange silver thing on my head,</br>but I can't get to it without destroying my headdress.</br>Please make it go away!?!</br><p style='color:#0f0;'>1 - No problem</br>2 - Nah don't feel like it!</p>`;
 					switch (reply2) {
 						case "1":
 							this.open = true;
 							Commands.actor.take(tortenheber);
 							this.open = false;
-							return "Vielen Dank. Du kannst das Ding behalten. Sieht aus wie ein Tortenheber!";
+							return T`${DE}Vielen Dank. Du kannst das Ding behalten. Sieht aus wie ein Tortenheber!</br>${EN}Thank you very much. You can keep that thing. It looks like a cake server!</br>`+tortenheber.describe()
 						case "2":
-							return "Du hättest das Teil behalten können. O hilf mir doch jemand";
+							return T`${DE}Du hättest das Teil behalten können. O hilf mir doch jemand...${EN}You could have kept that thing. O somebody help me...`
 						default:
-							return "Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal..."
+							return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal...${EN}I didn't quite get that but I hope you'll come back...`
 					}
 					break;
 				case "2":
-					return "Unhilfsbereit die Jugend..."
+					return T`${DE}Unhilfsbereit die Jugend...${EN}Unhelpful youth...`
 				default:
-					return "Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal..."
+					return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal...${EN}I didn't quite get that but I hope you'll come back...`
 			}
 		} else {
-			return "Danke nochmals.";
+			return T`${DE}Danke nochmals.${EN}Thanks again.`;
 		}
 	}
 
-	let scene10 = new Scene("Geheimes Labor", "");
+	let scene10 = new Scene(T`${DE}Geheimes Labor${EN}Secret lab`, "");
 	scene10.describe = function () {
 		if (MODE.pro) {
-			return "<img src='s10.png'>" +
-				"Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben.</br>" +
-				"Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: <a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a></br>" +
-				"Nach Sueden geht es zur Strandbar.";
+			return T`<img src='s10.png'>${DE}Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben.</br>Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: ${EN}Bravo, you have completed the game and can now write your own programmes.</br>Here is the source code so that you can extend the game yourself: ${ALL}<a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a></br>${DE}Nach Sueden geht es zur Strandbar.${EN}To the south you can go to the beach bar.`;
 		}
-		else return "<img src='s10.png'>" +
-			"Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet.<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>.</br>" +
-			"Ausserdem fällt dir der gut erhaltene Computer auf.</br>" +
-			"Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.)</br>" +
-			"Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest!</br>" +
-			"Nach Sueden geht es zur Strandbar."
+		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>.</br>${DE}Ausserdem fällt dir der gut erhaltene Computer auf.</br>Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.)</br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest!</br>Nach Sueden geht es zur Strandbar.${EN}You also notice the well-preserved computer.</br>In the north there is a door with a combination lock (<em style='color:#0f0;'>type on number-lock</em>.)</br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain!</br>To the south you go to the beach bar.`
 	}
 
 	scene10.south = scene4;
@@ -2222,18 +2174,18 @@ you can make a door also an orc that blocks the road
 	scene4.northblock = seetang;
 	scene4.insert(seetang);
 
-	let numberlockdoor = new Door("Zahlenschloss", "Ein digitales Eingabefeld ist an der Tür.", { blocking: true, usable: true, speakable: true, locked: true });
+	let numberlockdoor = new Door(T`${DE}Zahlenschloss${EN}number-lock`, T`${DE}Ein digitales Eingabefeld an der Tür.${EN}A digital input field on the door.`, { blocking: true, usable: true, speakable: true, locked: true });
 	numberlockdoor.use = function () {
-		Commands.forward_command = "tippe auf Zahlenschloss"
+		Commands.forward_command = T`${DE}t Zahlenschloss${EN}t number-lock`
 		return false;
 	}
 	numberlockdoor.dialog = async function* () {
-		const reply = yield 'Bitte Zahlencode eingeben</p>';
+		const reply = yield T`${DE}Bitte Zahlencode eingeben${EN}Please enter numerical code${ALL}</p>`;
 		if (reply === "1319") {
 			numberlockdoor.blocking = false;
-			return "Die Tür öffnet sich!"
+			return T`${DE}Die Tür öffnet sich!${EN}The door opens!`
 		}
-		else return "Falscher Code!"
+		else return T`${DE}Falscher Code!${EN}Wrong code!`
 	}
 	scene10.northblock = numberlockdoor;
 	scene10.insert(numberlockdoor)
@@ -2374,14 +2326,14 @@ you can make a door also an orc that blocks the road
 			else if (MODE.lang == EN) delstr = ["=>", "the", "a", "an", "that", "these"];
 			let importantprep;
 			if (MODE.lang == DE) importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
-			else if (MODE.lang == EN) importantprep = ["to", "with", "towards", "through", "in","at","on","into",];
+			else if (MODE.lang == EN) importantprep = ["to", "with", "towards", "through", "in","at","on","into"];
 
 			let delall = ["!", "."];
 			Commands.answer = [];
 			let recog = false;
 			for (var del in delall) cmd = cmd.split(delall[del]).join(" ");
 			for (var del in delstr) cmd = cmd.split(" " + delstr[del] + " ").join(' ')
-			for (var del in delstr) cmd = cmd.split(" " + importantprep[del] + " ").join(' => ')
+			for (var del in importantprep) cmd = cmd.split(" " + importantprep[del] + " ").join(' => ')
 			cmd = cmd.replace(/\s+/g, ' ').trim();
 			if (cmd === "" && !Commands.lastcommandspeak) return "";
 			Commands.command = cmd.toLowerCase();
