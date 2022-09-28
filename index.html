@@ -1721,7 +1721,7 @@ you can make a door also an orc that blocks the road
 
 	let scene4 = new Scene(T`${DE}Strandbar${EN}Beach-bar`, "")
 	scene4.east = scene3;
-	let seetang = new Door(T`${DE}Seetang${EN}Seeweed`, T`${DE}Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!${EN}A pile of smelly seaweed. Mmm, yam, yam, I love sushi rolls!`, { blocking: true, usable: true, locked: true })
+	let seetang = new Door(T`${DE}Seetang${EN}Seaweed`, T`${DE}Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!${EN}A pile of smelly seaweed. Mmm, yam, yam, I love sushi rolls!`, { blocking: true, usable: true, locked: true })
 	seetang.cnt = 0;
 	seetang.use = function () {
 		seetang.cnt++;
@@ -1740,19 +1740,12 @@ you can make a door also an orc that blocks the road
 
 	scene4.describe = function () {
 		if (seetang.blocking) {
-			return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'>" +
-				"<img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'>" +
-				"<img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'>" +
-				"<img id='s4seetang' src='s4seetang.png'></div>" +
-				"Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum Strand.";
+			return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>${DE}Du stehst in einer offenen Strandbar mit einigen Leuten.</br>Nach Osten geht es zum Strand.${EN}You are standing in an open beach bar with a few people.</br>To the east you go to the beach.`;
 		}
-		else return "<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'>" +
-			"<img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'>" +
-			"<img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>" +
-			"Oh da ist ja eine geheime Höhle dahinter. Was da wohl drin ist?</br>";
+		else return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>${DE}Oh da ist ja eine geheime Höhle dahinter. Was da wohl drin ist?</br>${EN}Ooh, there's a secret cave behind there. I wonder what's in there?</br>`
 	}
 
-	let barmann = new Person("Barmann", "ein Barmann");
+	let barmann = new Person(T`${DE}Barmann${EN}Bartender`, T`${DE}ein Barmann${EN}a bartender`);
 	scene4.insert(barmann);
 
 	barmann.tricked = false;
@@ -1760,74 +1753,34 @@ you can make a door also an orc that blocks the road
 	barmann.dialog = async function* () {
 		if (Commands.actor.has(tortenheber) || barmann.tricked) {
 			if (seetang.blocking) {
-				let reply = yield "Dankeschön! Dankeschön! " +
-					"Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>" +
-					"Ich dachte schon den sehe ich nie wieder.</br>" +
-					"Wenn du schonmal hier bist kannst du mir kurz helfen?<p style='color:#0f0;'>" +
-					"1 - Ja na klar! Was muss ich tun?</br>" +
-					"2 - Nein, ich habe gerade keine Lust.</p>";
+				let reply = yield T`${DE}Dankeschön! Dankeschön! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?${EN}Thanks a lot! That's really cool that you found my cake server.</br>I thought I'd never see it again.</br>While you're here can you give me a hand?${ALL}<p style='color:#0f0;'>${DE}1 - Ja na klar! Was muss ich tun?</br>${EN}1 - Of course! What do I need to do?</br>${DE}2 - Nein, ich habe gerade keine Lust.${EN}2 - No, I don't feel like it right now.${ALL}</p>`;
 				switch (reply) {
 					case "1":
-						let reply13 = yield "Ich habe gehört, dass du Programieren kannst und vielleicht " +
-							"kannst du auch mier weiter helfen.</br>" +
-							"Ich muss diese " + (MODE.pro ? "5" : "3") + "-stöckige Torte auf diesen Teller bringen,</br>" +
-							"doch da gibt es ein Problem.</br>" +
-							"Ich kann jedes Stück nur alleine bewegen und es</br>" +
-							"darf nie ein größeres Stueck auf einem kleineren liegen. Es gibt drei Plätze A, B und C. Die Torte ist anfangs auf Platz A und muss nach B. Platz C kann man als Zwischenablage verwenden.</br>" +
-							"Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein! Du kannst das einfach durch überlegen lösen oder ein Computerprogramm schreiben. " +
-							"Hier der link " + (MODE.pro ? "zum <a target='_blank' href='" +
-								"https://www.youtube.com/watch?v=E4wT2HM0VpY&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=24'>Video</a>" : "<a target='_blank' href='https://makecode.microbit.org/#pub:_7DzXT3eF7iiu'>Code</a>.");
+						let reply13 = yield T`${DE}Ich habe gehört, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese ${EN}I heard that you can programme and maybe you can help me too.</br>I need to get this ` + (MODE.pro ? "5" : "3") + T`${DE}-stöckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein größeres Stueck auf einem kleineren liegen. Es gibt drei Plätze A, B und C. Die Torte ist anfangs auf Platz A und muss nach B. Platz C kann man als Zwischenablage verwenden.</br>Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein! Du kannst das einfach durch überlegen lösen oder ein Computerprogramm schreiben.${EN} tier cake onto this plate, but there is a problem.</br>I can only move each piece on its own and there</br>never has to be a larger piece on top of a smaller one. There are three places A, B and C. The pie is initially on place A and must go to B. Place C can be used as a clipboard.</br>Do you have any idea how I can best do this? Enter the solution in the form AB,CD,....  ! You can solve this simply by thinking or you can write a computer program.${DE} Hier der link zum ${EN} Here is the link to the ` + (MODE.pro ? `<a target='_blank' href='https://www.youtube.com/watch?v=E4wT2HM0VpY&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=24'>Video</a>` : `<a target='_blank' href='https://makecode.microbit.org/#pub:_7DzXT3eF7iiu'>Code</a>.`);
 
 						if (reply13 === (MODE.pro ? "ac,ab,cb,ac,ba,bc,ac,ab,cb,ca,ba,cb,ac,ab,cb,ac,ba,bc,ac,ba,cb,ca,ba,bc,ac,ab,cb,ac,ba,bc,ac" : "ab,ac,bc,ab,ca,cb,ab") || reply13 === (MODE.pro ? "ac,ab,cb,ac,ba,bc,ac,ab,cb,ca,ba,cb,ac,ab,cb,ac,ba,bc,ac,ba,cb,ca,ba,bc,ac,ab,cb,ac,ba,bc,ac," : "ab,ac,bc,ab,ca,cb,ab,")) {
-							return "Das hat geklappt. Hier ich öffne dir die Flasche. " +
+							return T`${DE}Das hat geklappt. Hier ich öffne dir die Flasche. ${EN}That worked. Here, I'll open the bottle for you. ` +
 								(
-									MODE.pro ? "Da ist ein verschlüsselter Text drin: <textarea rows='8' cols='80' style='white-space: wrap;' >" +
-										"DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB" +
-										"'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E" +
-										"8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OY" +
-										"B8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0" +
-										"@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'G" +
-										"Y-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>" +
-										"Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:</br>" +
-										"<textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBS" +
-										"EZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT G" +
-										"BLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW N" +
-										"TZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCR" +
-										"EISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT T" +
-										"LLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>" +
-										"Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit " +
-										"einer statistischen Analyse des verwürfelten Textes zu vergleichen. " +
-										"Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. " +
-										"Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. " +
-										"Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach " +
-										"dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, " +
-										"bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, " +
-										"dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. " +
-										"Aber in diesem Falle war das Schicksal gnädig mit uns...</br>" +
-										"Du kannst auch das <a target='_blank' href='https://www.youtube.com/watch?v=EHDu5SzsGRE&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=28'>Video</a> zum Rätsel anschauen, aber bitte erstmal nicht das Video danach mit der Lösung!</br>"
+									MODE.pro ? T`${DE}Da ist ein verschlüsselter Text drin: ${EN}There is an encrypted text inside (the plain text is German so you need to translate it after decryption with e.g. <a target='_blank' href='https://deepl.com'>Deepl</a>): ${ALL}</br><textarea rows='8' cols='80' style='white-space: wrap;' >DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OYB8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'GY-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>${DE}Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:${EN}And here are some text snippets, if you collect them all you get:${ALL}</br><textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBSEZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT GBLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW NTZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCREISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT TLLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>${DE}Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit einer statistischen Analyse des verwürfelten Textes zu vergleichen. Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. Aber in diesem Falle war das Schicksal gnädig mit uns...</br>${EN}Your task is now to compare a statistical analysis of the encrypted text with a statistical analysis of the scrambled text. In the scrambled text, the characters from the space to Z were permuted. In the scrambled text, the position of the letters in the text was scrambled. After statistical analysis, one then only has to sort the alphabet according to occurrence in both cases. If one then compares the alphabets, one gets the decryption key. This assumes that each letter occurs with a different frequency. But in this case, fate was merciful with us...</br>${DE}Du kannst auch das ${EN}You can also watch the ${ALL}<a target='_blank' href='https://www.youtube.com/watch?v=EHDu5SzsGRE&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=28'>Video</a>${DE} zum Rätsel anschauen, ber bitte schaut das Video mit der Lösung nicht gleich im Anschluss an.</br>${EN} corresponding to the riddle, but please do not watch the video afterwards with the solution right away.</br>`
 										:
-										"Da ist ein verschlüsselter Text drin, er wurde rückwärts geschrieben:</br><textarea rows='8' cols='80' style='white-space: wrap;' >" +
-										"NEKCEURD GNATEES TFO" +
-										"</textarea></br>" +
-										"Kannst du ein Entschlüsslungsprogramm schreiben? Versuchs mal <a target='_blank' href='https://makecode.microbit.org/#pub:_DCub8VgW8VX1'>Code</a>."
+										T`${DE}Da ist ein verschlüsselter Text drin, er wurde rückwärts geschrieben:${EN}There's a coded text in there, it's been written backwards:${ALL}</br><textarea rows='8' cols='80' style='white-space: wrap;' >${DE}NEKCEURD GNATEES TFO${EN}DEEWAES SSERP YLNETFO${ALL}</textarea></br>${DE}Kannst du ein Entschlüsslungsprogramm schreiben? Versuchs mal mit dem ${EN}Can you write a decryption programme? Try the ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_DCub8VgW8VX1'>Code</a>.`
 								);
 						}
 						else {
-							return "<img src='bottlemessage.png'>Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. " +
-								"Aber ich backe einfach nochmal eine. Wenn ich dann das Problem gelöst habe öffne ich Dir die Flasche."
+							return T`<img src='bottlemessage.png'>${DE}Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. Aber ich backe einfach nochmal eine. Wenn du dann das Problem gelöst hast öffne ich Dir die Flasche.${EN}Unfortunately, it didn't work out with the cake - it broke. But I'll just bake another one. When you have solved the problem, I will open the bottle for you.`
 							break;
 						}
 						break;
 					case "2":
-						return "Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung öffne ich dir auch deine Flasche.";
+						return T`${DE}Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung öffne ich dir auch deine Flasche.${EN}That's a pity, but are you sure?</br>In return, I'll also open your bottle.`;
 						break;
 					default:
-						return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
+						return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 						break;
 				}
 			}
 			else {
-				return "Hallo, Kumpel!";
+				return T`${DE}Hallo!${EN}Hello`;
 			}
 		}
 		else {
@@ -1839,58 +1792,45 @@ you can make a door also an orc that blocks the road
 			switch (reply) {
 				case "1":
 					return 'Dann bis speater'
-					break;
 				case "2":
 					return "Würde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>" +
 						"Das wird aber echt schwer ohne meinen Tortenheber.";
-					break;
 				case "123":
 					barmann.tricked = true;
 					return "Oh du bist der Programmierer. Dann geht das auch ohne Tortenheber!"
-					break;
 				default:
-					return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
-					break;
+					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
 		}
 	}
 
-	let tortenliebhaber = new Person("Tortenliebhaber", "ein Tortenliebhaber");
+	let tortenliebhaber = new Person(T`${DE}Tortenliebhaber${EN}cake-lover`, T`${DE}ein Tortenliebhaber${EN}a cake-lover`);
 	scene4.insert(tortenliebhaber);
 	tortenliebhaber.dialog = async function* () {
-		return "Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.";
+		return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server Ben can't serve me my favourite cake.`;
 	}
 
-	let scene5 = new Scene("Stadt", "<div class='flow'><img class='back' src='s5.png'>" +
-		"<img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'>" +
-		"<img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'>" +
-		"<img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>" +
-		"Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>" +
-		"Nach Norden geht über Straße mit Ampel in den Dschungel,</br>nach Sueden geht es zum Strand.")
+	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>Nach Norden geht über Straße mit Ampel in den Dschungel,</br>nach Sueden geht es zum Strand.${EN}You are in a small market place in the city.</br>To the north, there is a road with traffic lights leading into the jungle,</br>to the south, there is the beach.`)
 	scene5.south = scene3;
-	let verkaeufer = new Person("Verkäufer", "ein Verkäufer");
+	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`,T`${DE}ein Verkäufer${EN}a seller`);
 	scene5.insert(verkaeufer);
 	verkaeufer.dialog = async function* () {
-		return "Hey komm mal her zu mir!</br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!";
+		return T`${DE}Hey komm mal her zu mir!</br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!${EN}Hey come here to me!</br>Here you will find souvenirs for every taste! Everyone will be happy with me!`;
 	}
-	let tratschtante = new Person("Tratschtante", "ein Tratschtante");
+	let tratschtante = new Person(T`${DE}Tratschtante${EN}Tattletale`, T`${DE}eine Tratschtante${EN}a tattletale`);
 	scene5.insert(tratschtante);
 	tratschtante.dialog = async function* () {
-		return "Psst, hör mal, ich muss dir was erzählen.</br>Der Verkäufer da hinten verlangt bei Touristen</br>" +
-			"den dreifachen Preis!</br>Lass dich nicht übers Ohr hauen!";
+		return T`${DE}Psst, hör mal, ich muss dir was erzählen.</br>Der Verkäufer da hinten verlangt bei Touristen</br>den dreifachen Preis!</br>Lass dich nicht übers Ohr hauen!${EN}Shh, listen, I have something to tell you.</br>The seller back there charges tourists</br>three times the price!</br>Don't let yourself be taken for a ride!`;
 	}
-	let kuenstler = new Person("Künstler", "ein Künstler");
+	let kuenstler = new Person(T`${DE}Künstler${EN}Artist`, T`${DE}ein Künstler${EN}an artist`);
 	scene5.insert(kuenstler);
 	kuenstler.dialog = async function* () {
-		return "Fuer dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder doch 3 Millionen?";
+		return T`${DE}Für dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder doch 3 Millionen?${EN}For this picture I'll be really rich.</br>Hm, should ask for a million thalers.</br>No, rather 2. Or 3 million?`;
 	}
-	let scene6 = new Scene("Dschungel", "<div class='flow'><img class='back' src='s6.png'></div>" +
-		"Du befindest dich auf einem Pfad im Dschungel." +
-		"</br>Nach Norden geht es zu einer Lichtung,</br>" +
-		"nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.")
-	let kaputteAmpel = new Door("Ampel", "Ein eine kaputte Ampel.", { blocking: true, usable: true, speakable: true, locked: true });
+	let scene6 = new Scene(T`${DE}Dschungel${EN}Jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel.</br>Nach Norden geht es zu einer Lichtung,</br>nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle.</br>To the north is a clearing,</br>to the south is the town</br>and to the west is the entrance to the indigenous village.`)
+	let kaputteAmpel = new Door(T`${DE}Ampel${EN}traffic-light`, T`${DE}Ein eine kaputte Ampel.${EN}A broken traffic-light.`, { blocking: true, usable: true, speakable: true, locked: true });
 	kaputteAmpel.use = function () {
-		Commands.forward_command = "tippe auf ampel";
+		Commands.forward_command = T`${DE}t ampel${EN}t traffic-light`
 		return false;
 	}
 	kaputteAmpel.blockingvar = true;
@@ -1906,132 +1846,102 @@ you can make a door also an orc that blocks the road
 		if (MODE.pro) return T`${DE}Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if (!isChrome) {
-			return "<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n";
+			return T`<em style='color:#faa;'>${DE}Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!${EN}You need to use a modern Chrome/Edge browser for this to work!${ALL}</em>\n`;
 		}
-		const reply = yield "Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>" +
-			"Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken." +
-			"<p style='color:#0f0;'>" +
-			"1 - Ok es ist alles verbunden!</br>" +
-			"2 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+		const reply = yield T`${DE}Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken.<p style='color:#0f0;'>1 - Ok es ist alles verbunden!</br>2 - Ich wollte eigentlich gar nicht über die Ampel.</p>${EN}The traffic light needs to be repaired.Use the brain from Mintrobi.</br>Connect it to your computer with the USB cable. The first time, you must now select the device in the dialogue and click on OK.<p style='color:#0f0;'>1 - Ok, everything is connected!</br> 2 - I didn't actually want to cross the traffic light.</p>`
 		switch (reply) {
 			case "1":
 				while (true) {
-					const reply2 = yield "Als erstes musst du den Taster für die Fußgängerampel reparieren.<p style='color:#0f0;'>" +
-						"1 - Ok los gehts.</br>" +
-						"2 - Teste die Ampel (Drücke innerhalb von 10 Sekunden auf die A Taste)</br>" +
-						"3 - Ich habs mir anders überlegt, ich wollte eigentlich gar nicht über die Ampel.</p>";
-
+					const reply2 = yield T`${DE}Als erstes musst du den Taster für die Fußgängerampel reparieren.<p style='color:#0f0;'>1 - Ok los gehts.</br>2 - Teste die Ampel (Drücke innerhalb von 10 Sekunden auf die A Taste)</br>3 - Ich habs mir anders überlegt, ich wollte eigentlich gar nicht über die Ampel.</p>${EN}First you have to fix the button for the pedestrian traffic light.<p style='color:#0f0;'>1 - Ok let's go.</br>2 - Test the traffic light (press the A button within 10 seconds)</br>3 - I changed my mind, I didn't really want to go through the traffic light.</p>.`;
+					let trick=false;
 					switch (reply2) {
 						case "1":
 							window.open("https://makecode.microbit.org/#pub:_4Mm6dtfmVTY5", "_blank").focus();
 							break;
+						case "123":
+							trick=true;
 						case "2":
 							let val = "";
 							val = await readMicrobit()
+							if(trick)val="111";
 							console.log(val);
 							if (val == "") {
-								yield "10 Sekunden sind vorbei. Versuchs nochmal. Drücke [ENTER]."
+								yield T`${DE}10 Sekunden sind vorbei. Versuchs nochmal. Drücke [ENTER].${EN}10 seconds have passed. Try again. Press [ENTER].`
 								continue;
 							}
 							else if (val.startsWith("1")) {
-								const reply3 = yield "Jetzt ist noch die Auto-Ampel kaput. Alle Lampen müssen ersetzt werden." +
-									"Dazu musst du Pin 0 mit einem Beinchen des 56 Ohm Widerstands (grün blau schwarz gold braun) verbinden.</br>" +
-									"Der Widerstand ist wichtig, er schützt die Leuchtdiode, das ist wie ein Wasserhahn, den man nicht ganz Aufdreht, der reduziert den Strom.</br>" +
-									"An das andere Bein des widerstands kommt das lange Beinchen der roten </br>" +
-									"Leuchtdiode. Leuchtdioden leuchten nur wenn man sie richtig herum anschließt.</br>" +
-									"Das kurze Beinchen, da ist auch eine Abflachung am Gehäuse der Leuchtdiode musst du dann mit GND verbinden." +
-									"In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode.</br>" +
-									"<img width='80%' src='ampel.png'><p style='color:#0f0;'>" +
-									"1 - Ok es ist alles verbunden!</br>" +
-									"2 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+								const reply3 = yield T`${DE}Jetzt ist noch die Auto-Ampel kaputt. Alle Lampen müssen ersetzt werden. Dazu musst du Pin 0 mit einem Beinchen des 56 Ohm Widerstands (grün blau schwarz gold braun) verbinden.</br>Der Widerstand ist wichtig, er schützt die Leuchtdiode, das ist wie ein Wasserhahn, den man nicht ganz Aufdreht, der reduziert den Strom.</br>An das andere Bein des widerstands kommt das lange Beinchen der roten </br>Leuchtdiode. Leuchtdioden leuchten nur wenn man sie richtig herum anschließt.</br>Das kurze Beinchen, da ist auch eine Abflachung am Gehäuse der Leuchtdiode musst du dann mit GND verbinden.In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode.</br><img width='80%' src='ampel.png'><p style='color:#0f0;'>1 - Ok es ist alles verbunden!</br>2 - Ich wollte eigentlich gar nicht über die Ampel.</p>${EN}Now the traffic lights are broken. All lamps must be replaced. To do this, connect pin 0 to one leg of the 56 Ohm resistor (green blue black gold brown).</br>The resistor is important, it protects the light emitting diode, it's like a tap that you don't turn on all the way, it reduces the current.</br>The long leg of the red </br>light-emitting diode is connected to the other leg of the resistor. Light-emitting diodes only light up if you connect them the right way round.</br>The short leg, there is also a flat on the housing of the light emitting diode, must then be connected to GND. Proceed in the same way with pin 1 and the yellow light emitting diode and with pin 2 and the green light emitting diode.</br><img width='80%' src='ampel.png'><p style='color:#0f0;'>1 - Ok, it is all connected!</br>2 - I didn't actually want to go through the traffic light.</p>`
 								switch (reply3) {
 									case "1":
 										while (true) {
-											const reply4 = yield "Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>" +
-												"s für stop also rot</br>" +
-												"b für bereit also gelb</br>" +
-												"f für fahren also grün</br>" +
-												"<p style='color:#0f0;'>" +
-												"1 - Ok ich bin bereit zum Programmieren</br>" +
-												"2 - Programm ist fertig. Ich will die Auto-Ampel testen</br>" +
-												"3 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+											const reply4 = yield T`${DE}Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>${EN}Now you have to continue writing the code. The traffic light receives the characters:</br>${DE}s für stop also rot</br>${EN}s for stop indicated by red</br>${DE}b für bereit also gelb</br>${EN}b for ready indicated by yellow</br>${DE}f für fahren also grün</br>${EN}f for drive indicated by green${ALL}<p style='color:#0f0;'>${DE}1 - Ok, ich bin bereit zum Programmieren</br>${EN}1 - Ok, I am ready to program</br>${DE}2 - Das Programm ist fertig. Ich will die Auto-Ampel testen.</br>${EN}2 - The programme is finished. I want to test the traffic light.</br>${DE}3 - Ich wollte eigentlich gar nicht über die Ampel.${EN}3 - I didn't actually want to go through the traffic lights.${ALL}</p>`;
+											let trick=false;
 											switch (reply4) {
 												case "1":
 													window.open("https://makecode.microbit.org/#pub:_REjD0A9HE4m9", "_blank").focus();
 													break;
+												case "123":
+													trick=true;
 												case "2":
 													while (true) {
 														let result = await writeMicrobit("b\n");
-														if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
-														let farbe = yield "Welche Farbe hat die Ampel?<p style='color:#0f0;'>" +
-															"1 - Rot</br>" +
-															"2 - Gelb</br>" +
-															"3 - Grün.</br>" +
-															"4 - Ich mache später weiter.</p>";
-														if (farbe == "4") return "Dann bis später"
+														if (!result && !trick) return T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`
+														let farbe = yield T`${DE}Welche Farbe hat die Ampel?${EN}Which color does the traffic light show?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
+														if (farbe == "4") return T`${DE}Dann bis später.${EN}.See you then.`;
 														if (farbe != "2") {
-															yield "Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.";
+															yield T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
 															continue;
 														}
 
 														result = await writeMicrobit("s\n");
-														if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
-														farbe = yield "Richtig! Welche Farbe hat die Ampel jetzt?<p style='color:#0f0;'>" +
-															"1 - Rot</br>" +
-															"2 - Gelb</br>" +
-															"3 - Grün.</br>" +
-															"4 - Ich mache später weiter.</p>";
-														if (farbe == "4") return "Dann bis später"
+														if (!result && !trick) return  T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
+														farbe = yield T`${DE}Richtig! Welche Farbe hat die Ampel jetzt?${EN}Right! Which color does the traffic light show now?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
+														if (farbe == "4") return T`${DE}Dann bis später.${EN}.See you then.`;
 														if (farbe != "1") {
-															yield "Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.";
+															yield T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
 															continue;
 														}
 
 														result = await writeMicrobit("f\n");
-														if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
-														farbe = yield "Genau! Und welche Farbe hat die Ampel nun?<p style='color:#0f0;'>" +
-															"1 - Rot</br>" +
-															"2 - Gelb</br>" +
-															"3 - Grün.</br>" +
-															"4 - Ich mache später weiter.</p>";
-														if (farbe == "4") return "Dann bis später"
+														if (!result && !trick) return  T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
+														farbe = yield  T`${DE}Genau! Und welche Farbe hat die Ampel nun?${EN}That's right! And which color does the traffic light show now?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
+														if (farbe == "4") return  T`${DE}Dann bis später.${EN}.See you then.`;
 														if (farbe != "3") {
-															yield "Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.";
+															yield  T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
 															continue;
 														}
 														kaputteAmpel.blocking = false;
-														return "Super. Du hast die Ampel repariert und kannst jetzt nach Norden in den Djungel."
-
+														return T`${DE}Super. Du hast die Ampel repariert und kannst jetzt nach Norden in den Djungel.${EN}Great. You've fixed the traffic lights and can now head north into the jungle.`
 													}
 													break;
 
 												case "3":
-													return "Dann auf ein andermal!";
+													return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 												default:
-													return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+													return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 											}
 										}
 									case "2":
-										return "Dann auf ein andermal!";
+										return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 									default:
-										return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+										return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 
 								}
 							}
 						case "3":
-							return "Dann auf ein andermal!";
+							return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 						default:
-							return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+							return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 					}
 				}
 			case "2":
-				return "Dann auf ein andermal!";
+				return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 			default:
-				return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+				return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 		}
 	}
 
-	let kaputteAmpel2 = new Door("Ampel", "Eine Ampel bei der wieder was kaputt ist.", { blocking: true, usable: true, speakable: true, locked: true });
+	let kaputteAmpel2 = new Door(T`${DE}Ampel${EN}traffic-light`, T`${DE}Ein Ampel bei der wieder was kaputt ist.${EN}A traffic light where something is broken again.`, { blocking: true, usable: true, speakable: true, locked: true });
 	kaputteAmpel2.blockingvar = true;
 
 	Object.defineProperty(kaputteAmpel2, 'blocking', {
@@ -2042,26 +1952,17 @@ you can make a door also an orc that blocks the road
 	});
 
 	kaputteAmpel2.use = function () {
-		a
-		Commands.forward_command = "tippe auf ampel"
+		Commands.forward_command = T`${DE}t ampel${EN}t traffic-light`
 		return false;
 	}
 	kaputteAmpel2.dialog = async function* () {
 		if (MODE.pro) return T`${DE}Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if (!isChrome) {
-			return "<em style='color:#faa;'>Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!</em>\n";
+			return T`<em style='color:#faa;'>${DE}Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!${EN}You need to use a modern Chrome/Edge browser for this to work!${ALL}</em>\n`;;
 		}
 		while (true) {
-			const reply = yield "Die Ampel muss wieder repariert werden. Diesmal soll die gelbe Leuchtdiode kaputt sein. Kannst Du" +
-				" mit der Leuchtdiode die 4 Beinchen hat gelb durch Farbmischung herstellen. Hier erfährst du mehr über Farbmischung <a target='_blank' href='https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1'>Video</a>." +
-				"Verwende dazu das Gehirn von Mintrobi.</br>" +
-				"Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken.</br>" +
-				"Verkabele alles wie in der Abbildung <img width='80%' src='multifarbe.png'>" +
-				"<p style='color:#0f0;'>" +
-				"1 - Hä wie soll man denn aus rot, grün und blau die Farbe gelb mischen?</br>" +
-				"2 - Ok es ist alles verbunden!</br>" +
-				"3 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+			const reply = yield T`${DE}Die Ampel muss wieder repariert werden. Diesmal soll die gelbe Leuchtdiode kaputt sein. Kannst Du mit der Leuchtdiode die 4 Beinchen hat gelb durch Farbmischung herstellen. Hier erfährst du mehr über Farbmischung ${EN}The traffic lights need to be repaired again. This time the yellow light-emitting diode is supposed to be broken. Can you use the light-emitting diode that has 4 legs to make yellow by mixing colours? Learn more about colour mixing here. ${ALL}<a target='_blank' href='https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1'>Video</a>. ${DE}Verwende dazu das Gehirn von Mintrobi.</br>Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken.</br>Verkabele alles wie in der Abbildung${EN}Use the brain from Mintrobi.</br>Connect it to your computer with the USB cable. The first time you do this, select the device in the dialogue and click OK.</br> Connect everything as shown in the picture ${ALL} <img width='80%' src='multifarbe.png'><p style='color:#0f0;'>${DE}1 - Wie soll man denn aus rot, grün und blau die Farbe gelb mischen?</br>${EN}1 - How are you supposed to mix red, green and blue to make yellow?</br>${DE}2 - Ok, es ist alles verbunden!</br>${EN}2 - Ok, it is all connected!</br>${DE}3 - Ich wollte eigentlich gar nicht über die Ampel.${EN} I didn't actually want to go through the traffic light.${ALL}</p>`;
 			switch (reply) {
 				case "1":
 					window.open("https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1", "_blank").focus();
@@ -2069,35 +1970,20 @@ you can make a door also an orc that blocks the road
 				case "2":
 					while (true) {
 
-						const reply4 = yield "Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>" +
-							"r1 für rotes Licht an</br>" +
-							"r0 für rotes Licht aus</br>" +
-							"g1 für grünes Licht an</br>" +
-							"g0 für grünes Licht aus</br>" +
-							"b1 für blaues Licht an</br>" +
-							"b0 für blaues Licht aus</br>" +
-							"<p style='color:#0f0;'>" +
-							"1 - Ok ich bin bereit zum Programmieren</br>" +
-							"2 - Programm ist fertig. Ich will die Farb-Ampel testen</br>" +
-							"3 - Ich wollte eigentlich gar nicht über die Ampel.</p>";
+						const reply4 = yield T`${DE}Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>${EN}Now you have to continue writing the code. The traffic light receives the characters via usb:</br>${DE}r1 für rotes Licht an</br>${EN}r1 for red light on</br>${DE}r0 für rotes Licht aus</br>${EN}r0 for red light off</br>${DE}g1 für grünes Licht an</br>${EN}g1 for green light on</br>${DE}g0 für grünes Licht aus</br>${EN}g0 for green light off</br>${DE}b1 für blaues Licht an</br>${EN}b1 for blue light on</br>${DE}b0 für blaues Licht aus</br>${EN}b0 for blue light off</br>${ALL}<p style='color:#0f0;'>${DE}1 - Ok, ich bin bereit zum Programmieren</br>${EN}1 - Ok, I am ready to program</br>${DE}2 - Programm ist fertig. Ich will die Farb-Ampel testen</br>${EN}2 - Programme is finished. I want to test the colour traffic light.</br>${DE}3 - Ich wollte eigentlich gar nicht über die Ampel.${EN}I didn't actually want to go through the traffic light.${ALL}</p>`;
+						let trick=false;
 						switch (reply4) {
 							case "1":
 								window.open("https://makecode.microbit.org/#pub:_fCvCeLT1h7tH", "_blank").focus();
 								break;
+							case "123":
+								trick=true;
 							case "2":
 								let red = false;
 								let green = false;
 								let blue = false;
 								while (true) {
-									let farbe = yield "Sende Befehl an Gehirn von Mintrobi?<p style='color:#0f0;'>" +
-										"r1 - für rotes Licht an</br>" +
-										"r0 - für rotes Licht aus</br>" +
-										"g1 - für grünes Licht an</br>" +
-										"g0 - für grünes Licht aus</br>" +
-										"b1 - für blaues Licht an</br>" +
-										"b0 - für blaues Licht aus</br>" +
-										"1  - Ich habe gelb</br>" +
-										"2  - Ich mache später weiter.</p>";
+									let farbe = yield T`${DE}Sende Befehl an Gehirn von Mintrobi?${EN}Send command to brain of Mintrobi?${ALL}<p style='color:#0f0;'>${DE}r1 für rotes Licht an</br>${EN}r1 for red light on</br>${DE}r0 für rotes Licht aus</br>${EN}r0 for red light off</br>${DE}g1 für grünes Licht an</br>${EN}g1 for green light on</br>${DE}g0 für grünes Licht aus</br>${EN}g0 for green light off</br>${DE}b1 für blaues Licht an</br>${EN}b1 for blue light on</br>${DE}b0 für blaues Licht aus</br>${EN}b0 for blue light off</br>${DE}1  - Ich habe gelb</br>${EN}1 - I have realized yellow</br>${DE}2 - Ich mache später weiter.${EN}2 - I will continue later.${ALL}</p>`;
 									switch (farbe) {
 										case "r0":
 											red = false;
@@ -2121,92 +2007,74 @@ you can make a door also an orc that blocks the road
 										case "2":
 											break;
 										default:
-											print("Das vertehe ich nicht, versuchs nochmal!")
+											print(T`${DE}Das vertehe ich nicht, versuchs nochmal!${EN}I didn't get that, try again.`)
 											continue;
-
 									}
-
-									if (farbe == "2") return "Dann bis später"
+									if (farbe == "2") return T`${DE}Dann bis später.${EN}.See you then.`;
 									if (farbe == "1") {
 										if (red && green && !blue) {
 											kaputteAmpel2.blocking = false;
-											return "Genau! Richtig wenn man rot und grün mischt bekommt man gelb. Die Ampel ist jetzt wieder ganz."
+											return T`${DE}Genau! Richtig wenn man rot und grün mischt bekommt man gelb. Die Ampel ist jetzt wieder ganz.${EN}Exactly! That's right, if you mix red and green you get yellow. The traffic light is now working again.`
 										}
 										else {
-											yield "Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.";
+											yield T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
 											continue;
 										}
 									}
 									let result = await writeMicrobit(farbe + "\n");
-									if (!result) return "Fehler in der Kommunikation. Versuche es nochmal von vorne.";
+									if (!result && !trick) return T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
 								}
 								break;
 							case "3":
-								return "Dann auf ein andermal!";
+								return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 							default:
-								return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+								return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 						}
 					}
 				case "3":
-					return "Dann auf ein andermal!";
+					return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 				default:
-					return "Ich habe das nicht ganz verstanden. Auf ein andermal!";
+					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
 		}
 	}
 	scene6.south = scene5;
 	scene5.northblock = kaputteAmpel;
 	scene5.insert(kaputteAmpel)
-	let scene7 = new Scene("Lichtung", "<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' " +
-		"src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>" +
-		"Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.")
+	let scene7 = new Scene(T`${DE}Lichtung${EN}Clearance`, T`<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>${DE}Du befindest dich auf einer Lichtung im Dschungel.</br>Nach Sueden geht es zurueck zum Dschungelpfad.${EN}You are in a clearance in the jungle.</br>To the south you go back to the jungle path.`)
 	scene7.south = scene6;
 	scene6.southblock = kaputteAmpel2;
 	scene6.insert(kaputteAmpel2);
-	let kostuem = new Item("Kostüm", "<img src='kostuem.png'>eine Kostüm", { open: true, applicable: true });
-	let Forscher = new Person("Forscher", "ein Forscher");
+	let kostuem = new Item(T`${DE}Kostüm${EN}Costume`, T`<img src='kostuem.png'>${DE}eine Kostüm${EN}a costume`, { open: true, applicable: true });
+	let Forscher = new Person(T`${DE}Forscher${EN}Scientist`, T`${DE}ein Forscher${EN}a scientist`);
 	scene7.insert(Forscher);
 
-	let sonnenuhranleitung = new Item("Sonnenuhranleitung", "Um das Spiel zu lösen musst Du dieses Projekt nicht unbedingt durchführen.</br>" +
-		"Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen.</br>" +
-		"Hier ist die <a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>Anleitung</a>.")
+	let sonnenuhranleitung = new Item(T`${DE}Sonnenuhranleitung${EN}Sundial-plan`, T`${DE}Um das Spiel zu lösen musst Du dieses Projekt nicht unbedingt durchführen.</br>${EN}You don't have to do this project to solve the game.</br>${DE}Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen.</br>${EN}If you feel like it and it's sunny outside, make a sundial with Mintrobi's brain. All you need is a cotton bud.</br>${DE}Hier ist die ${EN}Here is the ${ALL}<a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>${DE}Anleitung${EN}Instruction${ALL}</a>.`)
 
 	scene7.insert(sonnenuhranleitung)
 
 	Forscher.insert(kostuem);
 	Forscher.dialog = async function* () {
 		if (this.has(kostuem)) {
-			let reply = yield "Hallo, guten Tag.<p style='color:#0f0;'>" +
-				"1 - Hallo, wer sind Sie denn?.</br>" +
-				"2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>";
+			let reply = yield T`${DE}Hallo, guten Tag.${EN}Hello, good day${ALL}<p style='color:#0f0;'>${DE}1 - Hallo, wer sind Sie denn?</br>${EN}1 - Hello, who are you?</br>${DE}2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>${EN}2 - How will I be let into the indigenous village?</p>`;
 			switch (reply) {
 				case "1":
-					return "Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>" +
-						"ich erforsche den hiesigen Stamm der Ureinwohner."
-					break;
+					return T`${DE}Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>ich erforsche den hiesigen Stamm der Ureinwohner.${EN}I am Sir Ernest Wordsworth,</br>a scientist and ethnologist,</br>I am researching the local aboriginal tribe.`
 				case "2":
 					this.open = true;
 					Commands.actor.take(kostuem);
 					this.open = false;
-					return "Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>" +
-						"Meine bisherigen Forschungen habe ich Beobachtungen</br>" +
-						"aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>" +
-						"ueber den Zaun, der das Dorf umgibt spähen konnte.</br>" +
-						"Doch mit deiner Statur ist eventuell möglich dich als einer</br>" +
-						"der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>" +
-						"Hier ist das Kostüm.";
-					break;
+					return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spähen konnte.</br>Doch mit deiner Statur ist eventuell möglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das Kostüm.${EN}I have not yet succeeded in gaining admittance.</br>I owe my research so far to observations</br>from high up in the treetops, from which I have been able</br>to peer over the fence surrounding the village.</br>But with your stature, it may be possible</br>to pass yourself off as one of their own if you disguise yourself accordingly.</br>Here is the costume.`
 				default:
-					return "Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch..."
-					break;
+					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
 		} else {
-			return "Wissenschaft ist wunderbar!";
+			return `T${DE}Wissenschaft ist wunderbar!${EN}Science is wonderful!`;
 		}
 
 	}
 	Forscher.receiving = function (thing) {
-		print("Nein behalte das. Das ist für dich.</br>");
+		print(T`${DE}Nein behalte das. Das ist für dich.</br>${EN}No, you keep that. This is for you.</br>`);
 		return false;
 	}
 
@@ -2500,7 +2368,7 @@ you can make a door also an orc that blocks the road
 		static forward_command = "";
 
 		static async execute(cmd) {//TODO it does not recognize split words like "bottle message"
-			cmd = cmd.toLowerCase();
+			cmd = cmd.toString().toLowerCase();
 			let delstr;
 			if (MODE.lang == DE) delstr = ["=>", "der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
 			else if (MODE.lang == EN) delstr = ["=>", "the", "a", "an", "that", "these"];
