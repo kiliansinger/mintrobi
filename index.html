@@ -2203,7 +2203,7 @@ you can make a door also an orc that blocks the road
 
 		if (!("bluetooth" in navigator)) return T`${DE}Du musst einen Chrome/Edge Browser verwenden.${EN}You must use a Chrome/Edge browser.`
 		var bluetoothadapter = await navigator.bluetooth.getAvailability()
-		bluetoothadapter = false;
+		//bluetoothadapter = false;
 		let name = "";
 		if (bluetoothadapter) {
 			name = yield T`${DE}Hallo, endlich können wir miteinander reden.</br>Du musst unbedingt eine Funkverbindung (bluetooth) mit mir aufbauen.</br>Wir wollen meinen Ultraschallsensor testen. Damit ich im dunklen Labyrinth wie eine</br>Fledermaus sehen kann. Damit wir uns immer verbinden können lade bitte das folgende Programm <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> auf mein Gehirn</br>Dann drücke auf die Reset Taste auf der Rückseite vom Gehirn und tippe den Text hier ein, falls es mehrere von mir hier im Raum gibt sonst einfach [ENTER] drücken${EN}Hello, finally we can talk to each other.</br>You absolutely have to establish a radio connection (bluetooth) with me.</br>We want to test my ultrasonic sensor. So that I can see in the dark labyrinth like a</br>bat. So that we can always connect, please load the following programme <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> onto my brain</br>Then press the reset button on the back of the brain and type in the text here, if there are more than one of me in the room otherwise just press [ENTER].`;
