@@ -2199,28 +2199,17 @@ you can make a door also an orc that blocks the road
 	mintrobi.dialog = async function* () {
 		if (MODE.pro) return T`${DE}Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
 
-		if (!("bluetooth" in navigator)) return "Du musst einen Chrome/Edge Browser verwenden."
+		if (!("bluetooth" in navigator)) return T`${DE}Du musst einen Chrome/Edge Browser verwenden.${EN}You must use a Chrome/Edge browser.`
 		var bluetoothadapter = await navigator.bluetooth.getAvailability()
 		bluetoothadapter = false;
 		let name = "";
 		if (bluetoothadapter) {
-			name = yield "Hallo, endlich können wir miteinander reden.</br>" +
-				"Du musst unbedingt eine Funkverbindung (bluetooth) mit mir aufbauen.</br>" +
-				"Wir wollen meinen Ultraschallsensor testen. Damit ich im dunklen Labyrinth wie eine</br>" +
-				"Fledermaus sehen kann. Damit wir uns immer verbinden können lade bitte das folgende Programm <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> auf mein Gehirn</br>" +
-				"Dann drücke auf die Reset Taste auf der Rückseite vom Gehirn und tippe den Text hier ein, falls es mehrere von mir hier im Raum gibt sonst einfach [ENTER] drücken";
+			name = yield T`${DE}Hallo, endlich können wir miteinander reden.</br>Du musst unbedingt eine Funkverbindung (bluetooth) mit mir aufbauen.</br>Wir wollen meinen Ultraschallsensor testen. Damit ich im dunklen Labyrinth wie eine</br>Fledermaus sehen kann. Damit wir uns immer verbinden können lade bitte das folgende Programm <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> auf mein Gehirn</br>Dann drücke auf die Reset Taste auf der Rückseite vom Gehirn und tippe den Text hier ein, falls es mehrere von mir hier im Raum gibt sonst einfach [ENTER] drücken${EN}Hello, finally we can talk to each other.</br>You absolutely have to establish a radio connection (bluetooth) with me.</br>We want to test my ultrasonic sensor. So that I can see in the dark labyrinth like a</br>bat. So that we can always connect, please load the following programme <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> onto my brain</br>Then press the reset button on the back of the brain and type in the text here, if there are more than one of me in the room otherwise just press [ENTER].`;
 		}
 
 		if (bluetoothadapter) await microBitConnect(name);
 
-		let reply2 = yield "Schreibe jetzt ein Programm, was den Ultraschallsensor ausliest und den Abstand in cm" + (bluetoothadapter ? "" : " alle 100ms") + " zurückgibt.</br>" +
-			"Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn damit ich nicht vom Tisch falle oder</br>" +
-			"stelle etwas unter mich, während wir programmieren.  Mache die Hand nach vor meinen Ultraschallsensor um die Messungen abzubrechen." +
-			" Hier ist das Programm was du vervollständigen sollst <a target='_blank' href='https://makecode.microbit.org/#pub:" +
-			(bluetoothadapter ? "_C5Eb7Lf537CA" : "_J504s0Afb4YH") + "'>Code</a>. " +
-			(bluetoothadapter ? "" : "Falls Du per in makecode per usb verbunden bist must du die Verbindung nach dem hochladen des codes</br>" +
-				"erst noch trennen <img width='20%' src='unpair.gif'>") +
-			"Wenn Du soweit bist drücke [ENTER]";
+		let reply2 = yield T`${EN}Schreibe jetzt ein Programm, was den Ultraschallsensor ausliest und den Abstand in cm${EN}Now write a programme that reads the ultrasonic sensor and calculates the distance in cm` + (bluetoothadapter ? "" : T`${DE} alle 100ms zurückgibt.</br>${EN} every 100ms.</b>`)+T`${DE}Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn damit ich nicht vom Tisch falle oder</br>stelle etwas unter mich, während wir programmieren.  Mache die Hand nach vor meinen Ultraschallsensor um die Messungen abzubrechen. Hier ist das Programm was du vervollständigen sollst <a target='_blank' href='https://makecode.microbit.org/#pub:${EN}Then put the brain in the chassis. Make sure I am standing on the floor so I don't fall off the table or put something under me while we program.  Put your hand in front of my ultrasonic sensor to stop the measurements. Here is the program I want you to complete <a target='_blank' href='https://makecode.microbit.org/#pub:`+(bluetoothadapter ? "_C5Eb7Lf537CA" : "_J504s0Afb4YH") + "'>Code</a>. " +(bluetoothadapter ? "" : T`${DE}Falls Du per in makecode per usb verbunden bist must du die Verbindung nach dem hochladen des codes</br>erst noch trennen.${EN}If you are connected by makecode via usb, you must first disconnect the connection after uploading the code.${ALL}<img width='20%' src='unpair.gif'>`) +T`${DE}Wenn Du soweit bist drücke [ENTER]${EN}When you are ready, press [ENTER].`;
 		if (bluetoothadapter) await microBitConnect(name);
 		try {
 			while (true) {
@@ -2229,7 +2218,7 @@ you can make a door also an orc that blocks the road
 					new Promise((_, reject) => setTimeout(reject, 10000, new Error("timeout")))
 				]);
 				if (val == 0) {
-					return "Hast du das Gehirn in das Fahrgestell gesteckt?"
+					return T`${DE}Hast du das Gehirn in das Fahrgestell gesteckt?${EN}Did you put the brain in the chassis?`
 				}
 				let p2 = document.createElement('p');
 				p2.innerHTML = val;
@@ -2240,18 +2229,7 @@ you can make a door also an orc that blocks the road
 				console.log(val);
 			}
 			while (true) {
-				let reply = yield "Cool. Der Ultraschallsensor funktioniert. Jetzt kann ich dich aus dem Labyrinth herausführen.</br>" +
-					"Du musst dazu die folgenden Signale empfangen und decodieren:</br>" +
-					"L steht für Links</br>" +
-					"R steht für Rechts</br>" +
-					"Bewege den Motor entsprechend und schreibe Dir die Richtungen auf. Hier ist ein Programm den du Erweitern sollst:" +
-					"<a target='_blank' href='https://makecode.microbit.org/#pub:" +
-					(bluetoothadapter ? "_RazDmtJYUimp" : "_i6e5XyExURhW") + "'>Code</a> " +
-					"Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn damit ich nicht vom Tisch falle oder</br>" +
-					"stelle etwas unter mich, während wir programmieren!<p style='color:#0f0;'>" +
-					"1 - Los gehts</br>" +
-					"2 - Ich will den Weg aus dem Labyrinth eingeben.</br>" +
-					"3 - Ich will später weitermachen.</p>"
+				let reply = yield T`${DE}Cool. Der Ultraschallsensor funktioniert. Jetzt kann ich dich aus dem Labyrinth herausführen.</br>Du musst dazu die folgenden Signale empfangen und decodieren:</br>L steht für Links</br>R steht für Rechts</br>Bewege den Motor entsprechend und schreibe Dir die Richtungen auf. Hier ist ein Programm den du Erweitern sollst: ${EN}Cool. The ultrasonic sensor is working. Now I can lead you out of the maze.</br>You have to receive and decode the following signals:</br>L stands for left</br>R stands for right</br>Move the motor accordingly and write down the directions. Here is a program that you should extend: ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:`+(bluetoothadapter ? "_RazDmtJYUimp" : "_i6e5XyExURhW") + "'>Code</a> " +T`${DE}Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn damit ich nicht vom Tisch falle oder</br>stelle etwas unter mich, während wir programmieren!${EN}Then put the brain into the chassis. Make sure I stand on the floor if so I don't fall off the table or</br>put something under me while we program!${ALL}<p style='color:#0f0;'>${DE}1 - Los gehts</br>2 - Ich will den Weg aus dem Labyrinth eingeben.</br>3 - Ich will später weitermachen.${EN}1 - Let's go</br>2 - I want to enter the way out of the labyrinth.</br>3 - I want to continue later.${ALL}</p>`
 				switch (reply) {
 					case "1":
 						if (bluetoothadapter) {
@@ -2276,23 +2254,20 @@ you can make a door also an orc that blocks the road
 						}
 						break;
 					case "2":
-						let reply5 = yield "Wie komme ich aus dem Labyrinth. Bitte gebe den Weg in der Form (LLRR...) ein:"
-						if (reply5 == "lrlr") return "Gratulation Du hast das Spiel gemeistert!</br>" +
-							"Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: <a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a></br>" +
-							"Deiner Fantasie sind keine Grenzen gesetzt. Hier sind tolle <a target='_blank' href='https://joycar.joy-it.net/de/garage/makecode'>Anleitungen</a>. Da kannst du z.B. eine <a target='_blank' href='https://joycar.joy-it.net/de/garage/makecode/13-joy-car-remote-control'>Fernsteuerung</a> bauen.</br>" +
-							"Oder baue eine Sonnenuhr und interessante Elektronikprojekte <a target='_blank' href='https://www.electronic-adventure.com/de/your-journey/part-1'>Abenteuer Elektronik</a>. Alle Bauteile dazu solltest du bereits besitzen.";
+						let reply5 = yield T`${DE}Wie komme ich aus dem Labyrinth? Bitte gebe den Weg in der Form (LLRR...) ein:${EN}How do I get out of the labyrinth? Please enter the way in the form (LLRR...):`
+						if (reply5 == "lrlr") return T`${DE}Gratulation Du hast das Spiel gemeistert!</br>Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: <a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a></br>Deiner Fantasie sind keine Grenzen gesetzt. Hier sind tolle <a target='_blank' href='https://joycar.joy-it.net/de/garage/makecode'>Anleitungen</a>. Da kannst du z.B. eine <a target='_blank' href='https://joycar.joy-it.net/de/garage/makecode/13-joy-car-remote-control'>Fernsteuerung</a> bauen.</br>Oder baue eine Sonnenuhr und interessante Elektronikprojekte <a target='_blank' href='https://www.electronic-adventure.com/de/your-journey/part-1'>Abenteuer Elektronik</a>. Alle Bauteile dazu solltest du bereits besitzen.${EN}Congratulations you have mastered the game!</br>Here is the source code so that you can extend the game yourself: <a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a></br>There are no limits to your imagination. Here are great <a target='_blank' href='https://joycar.joy-it.net/de/garage/makecode'>instructions</a>. For example, you can build a <a target='_blank' href='https://joycar.joy-it.net/de/garage/makecode/13-joy-car-remote-control'>remote control</a>.</br>Or build a sundial and interesting electronics projects <a target='_blank' href='https://www.electronic-adventure.com/de/your-journey/part-1'>Adventure Electronics</a>. You should already have all the components.`;
 						else {
-							yield "Hm leider passt der Weg nicht aber ich habe nochmal an den Anfang des Labyriths zurückgefunden. Bitte [ENTER] drücken."
+							yield T`${DE}Hm leider passt der Weg nicht aber ich habe nochmal an den Anfang des Labyriths zurückgefunden. Bitte [ENTER] drücken.${EN}Unfortunately, the path does not fit but I have found my way back to the beginning of the labyrinth. Please press [ENTER].`
 							break;
 						}
 					case "3":
-						return "Bis später dann."
+						return T`${DE}Bis später dann.${EN}See you later.`
 					default:
-						return "Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal...";
+						return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal vorbei...${EN}I didn't quite understand, but I hope you'll come back...`;
 				}
 			}
 		} catch {
-			return "Das hat zulange gedauert. Versuche es einfach nochmal von vorne."
+			return T`${DE}Das hat zulange gedauert. Versuche es einfach nochmal von vorne.${EN}It took too long. Just try it again from the beginning.`
 		}
 	}
 
