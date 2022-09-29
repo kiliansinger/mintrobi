@@ -2,9 +2,9 @@
 
 # MINT-Robi: Playfully creative in Math-Computer-Science and Technology / Spielerisch kreativ in MINT-Fächern
 
-[Click to play the adventure game...](https://mintrobi.de/mintrobi?lang=en)
+[Click to play the adventure game...](https://kiliansinger.github.io/mintrobi/?lang=EN)
 
-[Klicke hier um das Abenteuerspiel zu spielen..](https://mintrobi.de/mintrobi)
+[Klicke hier um das Abenteuerspiel zu spielen..](https://kiliansinger.github.io/mintrobi/)
 
 Credits: 
 
