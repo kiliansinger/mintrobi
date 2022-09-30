@@ -2713,7 +2713,7 @@ you can make a door also an orc that blocks the road
 						Commands.dospeachrecog=false;
 						Commands.recognition.abort();
 						var msg = new SpeechSynthesisUtterance();
-						msg.text = answer
+						msg.text = answer.toString.str.replace( /(<([^>]+)>)/ig, '');
 						msg.lang = 	(MODE.lang == EN?'en-US':'de-DE');
 						msg.volume = 1; // 0 to 1
 						msg.rate = 1; // 0.1 to 10
