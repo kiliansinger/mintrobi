@@ -1213,17 +1213,17 @@ you can make a door also an orc that blocks the road
 		constructor(...args) {
 			super();
 			this._value = args[0]
-			try{delete this._value[0].raw;}catch(e){}
+			try { delete this._value[0].raw; } catch (e) { }
 			JSON.stringify(args[0]);
 		}
 		/*	[Symbol.for('+')](other) {//https://www.delftstack.com/howto/javascript/javascript-operator-overloading/
 				console.log("!!!!!!!!!!!!!")
-		       let n=new TData("");
+			   let n=new TData("");
 				n._value=this._value
 				n._value[0].concat(other._value[0])
 				n._value.concat(other._value.slice(1))
 				return n;
-		    }
+			}
 			*/
 		toString() {
 			let s = "";
@@ -1514,7 +1514,7 @@ you can make a door also an orc that blocks the road
 		return command2;
 	}
 	function when(command, param = {}) {
-		if(command=="") return false;//here important to use == because then with TData a toValue is done. with === it would be always false
+		if (command == "") return false;//here important to use == because then with TData a toValue is done. with === it would be always false
 		return function (target) {
 			const original = target.descriptor.value;
 			if (typeof original === 'function') {
@@ -1691,7 +1691,7 @@ you can make a door also an orc that blocks the road
 					this.open = true;
 					Commands.actor.take(bottlemessage);
 					this.open = false;
-					return T`${DE}Hier eine geheimnisvolle Flasche ich mache sie gleich in deinen Rucksack${EN}Here's a mystery bottle I'll put in your backpack right away${ALL} (<em style='color:#0f0;'>${DE}schaue in rucksack${EN}look in backpack${ALL}</em>, <em style='color:#0f0;'>${DE}betrachte flaschenpost${EN}look at bootle-message${ALL}</em>),</br>${DE}aber ich bekomme sie leider einfach nicht auf.</br>${EN}but unfortunately I just can't get it open.</br>${DE}Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.</br>${EN}You'll need a bottle opener, maybe you can find one.</br>`+bottlemessage.describe()
+					return T`${DE}Hier eine geheimnisvolle Flasche ich mache sie gleich in deinen Rucksack${EN}Here's a mystery bottle I'll put in your backpack right away${ALL} (<em style='color:#0f0;'>${DE}schaue in rucksack${EN}look in backpack${ALL}</em>, <em style='color:#0f0;'>${DE}betrachte flaschenpost${EN}look at bootle-message${ALL}</em>),</br>${DE}aber ich bekomme sie leider einfach nicht auf.</br>${EN}but unfortunately I just can't get it open.</br>${DE}Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.</br>${EN}You'll need a bottle opener, maybe you can find one.</br>` + bottlemessage.describe()
 				default:
 					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
@@ -1814,7 +1814,7 @@ you can make a door also an orc that blocks the road
 
 	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt.</br>Nach Norden geht über Straße mit Ampel in den Dschungel,</br>nach Sueden geht es zum Strand.${EN}You are in a small market place in the city.</br>To the north, there is a road with traffic lights leading into the jungle,</br>to the south, there is the beach.`)
 	scene5.south = scene3;
-	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`,T`${DE}ein Verkäufer${EN}a seller`);
+	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}ein Verkäufer${EN}a seller`);
 	scene5.insert(verkaeufer);
 	verkaeufer.dialog = async function* () {
 		return T`${DE}Hey komm mal her zu mir!</br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!${EN}Hey come here to me!</br>Here you will find souvenirs for every taste! Everyone will be happy with me!`;
@@ -1855,17 +1855,17 @@ you can make a door also an orc that blocks the road
 			case "1":
 				while (true) {
 					const reply2 = yield T`${DE}Als erstes musst du den Taster für die Fußgängerampel reparieren.<p style='color:#0f0;'>1 - Ok los gehts.</br>2 - Teste die Ampel (Drücke innerhalb von 10 Sekunden auf die A Taste)</br>3 - Ich habs mir anders überlegt, ich wollte eigentlich gar nicht über die Ampel.</p>${EN}First you have to fix the button for the pedestrian traffic light.<p style='color:#0f0;'>1 - Ok let's go.</br>2 - Test the traffic light (press the A button within 10 seconds)</br>3 - I changed my mind, I didn't really want to go through the traffic light.</p>.`;
-					let trick=false;
+					let trick = false;
 					switch (reply2) {
 						case "1":
 							window.open("https://makecode.microbit.org/#pub:_4Mm6dtfmVTY5", "_blank").focus();
 							break;
 						case "123":
-							trick=true;
+							trick = true;
 						case "2":
 							let val = "";
 							val = await readMicrobit()
-							if(trick)val="111";
+							if (trick) val = "111";
 							console.log(val);
 							if (val == "") {
 								yield T`${DE}10 Sekunden sind vorbei. Versuchs nochmal. Drücke [ENTER].${EN}10 seconds have passed. Try again. Press [ENTER].`
@@ -1877,13 +1877,13 @@ you can make a door also an orc that blocks the road
 									case "1":
 										while (true) {
 											const reply4 = yield T`${DE}Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>${EN}Now you have to continue writing the code. The traffic light receives the characters:</br>${DE}s für stop also rot</br>${EN}s for stop indicated by red</br>${DE}b für bereit also gelb</br>${EN}b for ready indicated by yellow</br>${DE}f für fahren also grün</br>${EN}f for drive indicated by green${ALL}<p style='color:#0f0;'>${DE}1 - Ok, ich bin bereit zum Programmieren</br>${EN}1 - Ok, I am ready to program</br>${DE}2 - Das Programm ist fertig. Ich will die Auto-Ampel testen.</br>${EN}2 - The programme is finished. I want to test the traffic light.</br>${DE}3 - Ich wollte eigentlich gar nicht über die Ampel.${EN}3 - I didn't actually want to go through the traffic lights.${ALL}</p>`;
-											let trick=false;
+											let trick = false;
 											switch (reply4) {
 												case "1":
 													window.open("https://makecode.microbit.org/#pub:_REjD0A9HE4m9", "_blank").focus();
 													break;
 												case "123":
-													trick=true;
+													trick = true;
 												case "2":
 													while (true) {
 														let result = await writeMicrobit("b\n");
@@ -1896,7 +1896,7 @@ you can make a door also an orc that blocks the road
 														}
 
 														result = await writeMicrobit("s\n");
-														if (!result && !trick) return  T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
+														if (!result && !trick) return T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
 														farbe = yield T`${DE}Richtig! Welche Farbe hat die Ampel jetzt?${EN}Right! Which color does the traffic light show now?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
 														if (farbe == "4") return T`${DE}Dann bis später.${EN}.See you then.`;
 														if (farbe != "1") {
@@ -1905,11 +1905,11 @@ you can make a door also an orc that blocks the road
 														}
 
 														result = await writeMicrobit("f\n");
-														if (!result && !trick) return  T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
-														farbe = yield  T`${DE}Genau! Und welche Farbe hat die Ampel nun?${EN}That's right! And which color does the traffic light show now?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
-														if (farbe == "4") return  T`${DE}Dann bis später.${EN}.See you then.`;
+														if (!result && !trick) return T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
+														farbe = yield T`${DE}Genau! Und welche Farbe hat die Ampel nun?${EN}That's right! And which color does the traffic light show now?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
+														if (farbe == "4") return T`${DE}Dann bis später.${EN}.See you then.`;
 														if (farbe != "3") {
-															yield  T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
+															yield T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
 															continue;
 														}
 														kaputteAmpel.blocking = false;
@@ -1973,13 +1973,13 @@ you can make a door also an orc that blocks the road
 					while (true) {
 
 						const reply4 = yield T`${DE}Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>${EN}Now you have to continue writing the code. The traffic light receives the characters via usb:</br>${DE}r1 für rotes Licht an</br>${EN}r1 for red light on</br>${DE}r0 für rotes Licht aus</br>${EN}r0 for red light off</br>${DE}g1 für grünes Licht an</br>${EN}g1 for green light on</br>${DE}g0 für grünes Licht aus</br>${EN}g0 for green light off</br>${DE}b1 für blaues Licht an</br>${EN}b1 for blue light on</br>${DE}b0 für blaues Licht aus</br>${EN}b0 for blue light off</br>${ALL}<p style='color:#0f0;'>${DE}1 - Ok, ich bin bereit zum Programmieren</br>${EN}1 - Ok, I am ready to program</br>${DE}2 - Programm ist fertig. Ich will die Farb-Ampel testen</br>${EN}2 - Programme is finished. I want to test the colour traffic light.</br>${DE}3 - Ich wollte eigentlich gar nicht über die Ampel.${EN}I didn't actually want to go through the traffic light.${ALL}</p>`;
-						let trick=false;
+						let trick = false;
 						switch (reply4) {
 							case "1":
 								window.open("https://makecode.microbit.org/#pub:_fCvCeLT1h7tH", "_blank").focus();
 								break;
 							case "123":
-								trick=true;
+								trick = true;
 							case "2":
 								let red = false;
 								let green = false;
@@ -2066,7 +2066,7 @@ you can make a door also an orc that blocks the road
 					this.open = true;
 					Commands.actor.take(kostuem);
 					this.open = false;
-					return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spähen konnte.</br>Doch mit deiner Statur ist eventuell möglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das ${EN}I have not yet succeeded in gaining admittance.</br>I owe my research so far to observations</br>from high up in the treetops, from which I have been able</br>to peer over the fence surrounding the village.</br>But with your stature, it may be possible</br>to pass yourself off as one of their own if you disguise yourself accordingly.</br>Here is the `+kostuem.describe()
+					return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spähen konnte.</br>Doch mit deiner Statur ist eventuell möglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das ${EN}I have not yet succeeded in gaining admittance.</br>I owe my research so far to observations</br>from high up in the treetops, from which I have been able</br>to peer over the fence surrounding the village.</br>But with your stature, it may be possible</br>to pass yourself off as one of their own if you disguise yourself accordingly.</br>Here is the ` + kostuem.describe()
 				default:
 					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
@@ -2099,7 +2099,7 @@ you can make a door also an orc that blocks the road
 	torwache.dialog = async function* () {
 		if (Commands.actor.has(kostuem)) {
 			if (tuer.blocking) {
-				let reply = yield T`${DE}Hallo, Kumpel.</br>Ich dachte zuerst du bist schon wieder einer von diesen</br>bescheuerten Städtern, die uns immer wieder auf</br>die Nerven gehen. Aber manche verkleiden sich,</br>und da wir von klein auf rechnen lernen,</br>und da wir von klein auf rechnen lernen,</br>fällt es uns leicht ${EN}Hello, buddy.</br>At first I thought you were another one of those</br>stupid townies who always get on</br>our nerves. But some dress up,</br>and since we learn to count from a young age,</br>it is easy for us to ` + (MODE.pro ? T`${DE}die 20te Fibonacci Zahl zu schnell im Kopf zu berechnen${EN}calculate the 20th Fibonacci number quickly in your head` : T`${DE}alle zahlen von 0 bis 10 schnell im Kopf zusammenzuzählen${DE}add all numbers from 0 to 10 in your head`) + T`${DE}</br>und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>scheitern die bescheuerten Städter immer.</br>Hahaha! Hast du den Code berechnet? Das kann dir helfen: ${EN}</br>and enter them into the</br>combination lock. And that</br>is the latest thing the stupid city dwellers always fail at.</br>Hahaha! Have you calculated the code? That could help you: ` + (MODE.pro ? "<a target='_blank' href='https://www.youtube.com/watch?v=5cE_HfsLpP0&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=22'>Video</a>" : "<a target='_blank' href='https://makecode.microbit.org/#pub:_gCb2aFRTi9M6'>Code</a>")+T`${DE}</br>Wenn ja dann sage ihn mir doch:${EN}</br>If so, then tell me:`;
+				let reply = yield T`${DE}Hallo, Kumpel.</br>Ich dachte zuerst du bist schon wieder einer von diesen</br>bescheuerten Städtern, die uns immer wieder auf</br>die Nerven gehen. Aber manche verkleiden sich,</br>und da wir von klein auf rechnen lernen,</br>und da wir von klein auf rechnen lernen,</br>fällt es uns leicht ${EN}Hello, buddy.</br>At first I thought you were another one of those</br>stupid townies who always get on</br>our nerves. But some dress up,</br>and since we learn to count from a young age,</br>it is easy for us to ` + (MODE.pro ? T`${DE}die 20te Fibonacci Zahl zu schnell im Kopf zu berechnen${EN}calculate the 20th Fibonacci number quickly in your head` : T`${DE}alle zahlen von 0 bis 10 schnell im Kopf zusammenzuzählen${DE}add all numbers from 0 to 10 in your head`) + T`${DE}</br>und sie in das</br>Zahlenschloss einzugeben. Und spätestens daran</br>scheitern die bescheuerten Städter immer.</br>Hahaha! Hast du den Code berechnet? Das kann dir helfen: ${EN}</br>and enter them into the</br>combination lock. And that</br>is the latest thing the stupid city dwellers always fail at.</br>Hahaha! Have you calculated the code? That could help you: ` + (MODE.pro ? "<a target='_blank' href='https://www.youtube.com/watch?v=5cE_HfsLpP0&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=22'>Video</a>" : "<a target='_blank' href='https://makecode.microbit.org/#pub:_gCb2aFRTi9M6'>Code</a>") + T`${DE}</br>Wenn ja dann sage ihn mir doch:${EN}</br>If so, then tell me:`;
 				if (reply === (MODE.pro ? "6765" : "55")) {
 					tuer.blocking = false;
 					return T`<img src='s8block.png'>${DE}Code akzeptiert. Das Tor nach Norden öffnet sich.</br>${EN}Code accepted. The gate to the north opens.</br>` + scene8.describe();
@@ -2146,7 +2146,7 @@ you can make a door also an orc that blocks the road
 							this.open = true;
 							Commands.actor.take(tortenheber);
 							this.open = false;
-							return T`${DE}Vielen Dank. Du kannst das Ding behalten. Sieht aus wie ein Tortenheber!</br>${EN}Thank you very much. You can keep that thing. It looks like a cake server!</br>`+tortenheber.describe()
+							return T`${DE}Vielen Dank. Du kannst das Ding behalten. Sieht aus wie ein Tortenheber!</br>${EN}Thank you very much. You can keep that thing. It looks like a cake server!</br>` + tortenheber.describe()
 						case "2":
 							return T`${DE}Du hättest das Teil behalten können. O hilf mir doch jemand...${EN}You could have kept that thing. O somebody help me...`
 						default:
@@ -2211,7 +2211,7 @@ you can make a door also an orc that blocks the road
 
 		if (bluetoothadapter) await microBitConnect(name);
 
-		let reply2 = yield T`${DE}Schreibe jetzt ein Programm, was den Ultraschallsensor ausliest und den Abstand in cm${EN}Now write a programme that reads the ultrasonic sensor and calculates the distance in cm` + (bluetoothadapter ? "" : T`${DE} alle 100ms zurückgibt.</br>${EN} every 100ms.</b>`)+T`${DE}Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn mich bewege damit ich nicht vom Tisch falle oder stelle etwas unter mich, während wir programmieren.  Mache die Hand nach vor meinen Ultraschallsensor um die Messungen abzubrechen. Hier ist das Programm was du vervollständigen sollst <a target='_blank' href='https://makecode.microbit.org/#pub:${EN}Then put the brain in the chassis. Make sure I am standing on the floor so I don't fall off the table when I move or put something under me while we program. Put your hand in front of my ultrasonic sensor to stop the measurements. Here is the program I want you to complete <a target='_blank' href='https://makecode.microbit.org/#pub:`+(bluetoothadapter ? "_C5Eb7Lf537CA" : "_J504s0Afb4YH") + "'>Code</a>. " +(bluetoothadapter ? "" : T`${DE}Falls Du per in makecode per usb verbunden bist must du die Verbindung nach dem hochladen des codes</br>erst noch trennen.${EN}If you are connected by makecode via usb, you must first disconnect the connection after uploading the code.${ALL}<img width='20%' src='unpair.gif'>`) +T`${DE}Wenn Du soweit bist drücke [ENTER]${EN}When you are ready, press [ENTER].`;
+		let reply2 = yield T`${DE}Schreibe jetzt ein Programm, was den Ultraschallsensor ausliest und den Abstand in cm${EN}Now write a programme that reads the ultrasonic sensor and calculates the distance in cm` + (bluetoothadapter ? "" : T`${DE} alle 100ms zurückgibt.</br>${EN} every 100ms.</b>`) + T`${DE}Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn mich bewege damit ich nicht vom Tisch falle oder stelle etwas unter mich, während wir programmieren.  Mache die Hand nach vor meinen Ultraschallsensor um die Messungen abzubrechen. Hier ist das Programm was du vervollständigen sollst <a target='_blank' href='https://makecode.microbit.org/#pub:${EN}Then put the brain in the chassis. Make sure I am standing on the floor so I don't fall off the table when I move or put something under me while we program. Put your hand in front of my ultrasonic sensor to stop the measurements. Here is the program I want you to complete <a target='_blank' href='https://makecode.microbit.org/#pub:` + (bluetoothadapter ? "_C5Eb7Lf537CA" : "_J504s0Afb4YH") + "'>Code</a>. " + (bluetoothadapter ? "" : T`${DE}Falls Du per in makecode per usb verbunden bist must du die Verbindung nach dem hochladen des codes</br>erst noch trennen.${EN}If you are connected by makecode via usb, you must first disconnect the connection after uploading the code.${ALL}<img width='20%' src='unpair.gif'>`) + T`${DE}Wenn Du soweit bist drücke [ENTER]${EN}When you are ready, press [ENTER].`;
 		if (bluetoothadapter) await microBitConnect(name);
 		try {
 			while (true) {
@@ -2231,7 +2231,7 @@ you can make a door also an orc that blocks the road
 				console.log(val);
 			}
 			while (true) {
-				let reply = yield T`${DE}Cool. Der Ultraschallsensor funktioniert. Jetzt kann ich dich aus dem Labyrinth herausführen.</br>Du musst dazu die folgenden Signale empfangen und decodieren:</br>L steht für Links</br>R steht für Rechts</br>Bewege den Motor entsprechend und schreibe Dir die Richtungen auf. Hier ist ein Programm den du Erweitern sollst: ${EN}Cool. The ultrasonic sensor is working. Now I can lead you out of the maze.</br>You have to receive and decode the following signals:</br>L stands for left</br>R stands for right</br>Move the motor accordingly and write down the directions. Here is a program that you should extend: ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:`+(bluetoothadapter ? "_RazDmtJYUimp" : "_i6e5XyExURhW") + "'>Code</a> " +T`${DE}Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn damit ich nicht vom Tisch falle oder</br>stelle etwas unter mich, während wir programmieren!${EN}Then put the brain into the chassis. Make sure I stand on the floor if so I don't fall off the table or</br>put something under me while we program!${ALL}<p style='color:#0f0;'>${DE}1 - Los gehts</br>2 - Ich will den Weg aus dem Labyrinth eingeben.</br>3 - Ich will später weitermachen.${EN}1 - Let's go</br>2 - I want to enter the way out of the labyrinth.</br>3 - I want to continue later.${ALL}</p>`
+				let reply = yield T`${DE}Cool. Der Ultraschallsensor funktioniert. Jetzt kann ich dich aus dem Labyrinth herausführen.</br>Du musst dazu die folgenden Signale empfangen und decodieren:</br>L steht für Links</br>R steht für Rechts</br>Bewege den Motor entsprechend und schreibe Dir die Richtungen auf. Hier ist ein Programm den du Erweitern sollst: ${EN}Cool. The ultrasonic sensor is working. Now I can lead you out of the maze.</br>You have to receive and decode the following signals:</br>L stands for left</br>R stands for right</br>Move the motor accordingly and write down the directions. Here is a program that you should extend: ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:` + (bluetoothadapter ? "_RazDmtJYUimp" : "_i6e5XyExURhW") + "'>Code</a> " + T`${DE}Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn damit ich nicht vom Tisch falle oder</br>stelle etwas unter mich, während wir programmieren!${EN}Then put the brain into the chassis. Make sure I stand on the floor if so I don't fall off the table or</br>put something under me while we program!${ALL}<p style='color:#0f0;'>${DE}1 - Los gehts</br>2 - Ich will den Weg aus dem Labyrinth eingeben.</br>3 - Ich will später weitermachen.${EN}1 - Let's go</br>2 - I want to enter the way out of the labyrinth.</br>3 - I want to continue later.${ALL}</p>`
 				switch (reply) {
 					case "1":
 						if (bluetoothadapter) {
@@ -2303,7 +2303,7 @@ you can make a door also an orc that blocks the road
 			else if (MODE.lang == EN) delstr = ["=>", "the", "a", "an", "that", "these"];
 			let importantprep;
 			if (MODE.lang == DE) importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
-			else if (MODE.lang == EN) importantprep = ["to", "with", "towards", "through", "in","at","on","into"];
+			else if (MODE.lang == EN) importantprep = ["to", "with", "towards", "through", "in", "at", "on", "into"];
 
 			let delall = ["!", "."];
 			Commands.answer = [];
@@ -2334,6 +2334,8 @@ you can make a door also an orc that blocks the road
 			Commands.recogparam = null;
 			recog |= Commands.load();
 			Commands.recogparam = null;
+			recog |= Commands.speachrecog();
+			Commands.recogparam = null;
 			recog |= Commands.save();
 			Commands.recogparam = null;
 			recog |= Commands.reset();
@@ -2358,7 +2360,7 @@ you can make a door also an orc that blocks the road
 				}
 				else {
 					if (Commands.lastcommandspeak) commandspeak = await Commands.continuespeak(cmd);
-					if (!commandspeak && Commands.answer.length==0) {
+					if (!commandspeak && Commands.answer.length == 0) {
 						print(T`${DE}Ich verstehe Dich nicht oder kann es nicht machen! Schreibe <em style='color:#0f0;'>hilfe</em> für eine Befehlsliste!\n${EN}I don't understand you or can't do it! Write <em style='color:#0f0;'>help</em> for a command list!`);
 					}
 				}
@@ -2392,6 +2394,7 @@ you can make a door also an orc that blocks the road
 			print(T`&#x26AC; ${DE}sprich/rede/tippe/t (mit/in/...) PERSON/COMPUTER\n${EN}speak/talk/type/t (with/into/...) PERSON/COMPUTER\n`);
 			print(T`&#x26AC; ${DE}speichere/save SPIELSTANDSNAME\n${EN}save NAMEOFGAMESTATE\n`);
 			print(T`&#x26AC; ${DE}lade/load SPIELSTANDSNAME\n${EN}load NAMEOFGAMESTATE\n`);
+			print(T`&#x26AC; ${DE}spracherkennung/sp an/aus\n${EN}speechrecognition/sp on/off\n`);
 			print("&#x26AC; reset\n");
 			print(T`&#x26AC; de/en ${DE}Deutsch/Englisch${EN}German/English\n`);
 			return true;
@@ -2401,12 +2404,20 @@ you can make a door also an orc that blocks the road
 		static de() {
 			console.log("de")
 			MODE.lang = DE;
+			if(Commands.dospeachrecog){  
+				Commands.recognition.stop();
+				Commands.dospeachrecog=false;
+			}
 			return true;
 		}
 
 		@when("en")
 		static en() {
 			MODE.lang = EN;
+			if(Commands.dospeachrecog){  
+				Commands.recognition.stop();
+				Commands.dospeachrecog=false;
+			}
 			return true;
 		}
 
@@ -2422,7 +2433,7 @@ you can make a door also an orc that blocks the road
 		@when(T`${DE}betrachte${EN}watch${ALL} => AT`)
 		@when(T`${DE}b${EN}l${ALL} => AT`)
 		static look({ at }) {
-			at=at.toString();
+			at = at.toString();
 			switch (at) {
 				case "scene":
 					print(Commands.actor.position.describe());
@@ -2605,7 +2616,7 @@ you can make a door also an orc that blocks the road
 		@when(T`${DE}l${EN}p${ALL} ITEM`, { target: "scene" })
 		static give({ item, target }) {//todo all logic should be in Thing class
 			let { mine, thing } = search(item);
-			if(mine){
+			if (mine) {
 				let targetthing;
 				if (target === "scene") {
 					if (!thing.dropable) {
@@ -2620,7 +2631,7 @@ you can make a door also an orc that blocks the road
 				}
 				else print(T`${DE}Hab ich nicht oder kann es nicht geben.${EN}I don't have it or cannot give it.`);
 				return false;
-			}else{
+			} else {
 				print(T`${DE}Hab ich nicht oder kann es nicht geben.${EN}I don't have it or cannot give it.`);
 				return false;
 			}
@@ -2656,6 +2667,80 @@ you can make a door also an orc that blocks the road
 			}
 			else print(T`${DE}Geht so nicht.${EN}It doesn't work like that.`);
 			return false;
+		}
+		static dospeachrecog=false;
+
+		static recognition=null;
+		@when(T`${DE}spracherkennung${EN}speachrecognition${ALL} ONOFF`)
+		@when("sp ONOFF")
+		static speachrecog({ onoff }){
+			if(onoff.toLowerCase()==T`${DE}an${EN}on`){
+				if(Commands.dospeachrecog) return true
+				 Commands.dospeachrecog=true;
+				 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+				// setup SpeechRecognation
+				if(!Commands.recognition) Commands.recognition= new SpeechRecognition();
+				Commands.recognition.interimResults = true;
+				Commands.recognition.lang = 	(MODE.lang == EN?'en-US':'de-DE');
+				// waiting for speech results
+				Commands.recognition.addEventListener('result', async (event) => {
+					
+					const transcript = event.results[0][0].transcript;
+					console.log(transcript)
+					// check if the voice input has ended
+					if(event.results[0].isFinal) {
+						console.log(transcript);
+
+						let cmd = transcript;
+						lastinput = cmd;
+						let p = document.createElement('p');
+						p.innerHTML = cmd;
+						p.className = 'command';
+						story.appendChild(p);
+
+						let answer = await Commands.execute(cmd);
+						let p2 = document.createElement('p');
+						p2.innerHTML = answer;
+						story.appendChild(p2);
+						inp.value = '';
+						story.scrollTop = story.scrollHeight;//- story.offsetHeight;
+
+						setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
+						let dump = Obj.dump();
+						localStorage.setItem("current", dump);
+						document.getElementById("inp").disabled = false
+						document.getElementById("inp").focus();
+						Commands.dospeachrecog=false;
+						Commands.recognition.abort();
+						var msg = new SpeechSynthesisUtterance();
+						msg.text = answer
+						msg.lang = 	(MODE.lang == EN?'en-US':'de-DE');
+						msg.volume = 1; // 0 to 1
+						msg.rate = 1; // 0.1 to 10
+						msg.pitch = 2; //0 to 2
+						window.speechSynthesis.speak(msg);
+					
+						msg.onend = function(e){
+							Commands.dospeachrecog=true;
+							Commands.recognition.start();//function(e) {
+						}
+						//    document.querySelector('#output').innerText = (event.elapsedTime/1000) + ' Sek';
+						//};
+						
+					}
+					
+				});
+				Commands.recognition.addEventListener('end', ()=>{
+					if(Commands.dospeachrecog) Commands.recognition.start()
+				});
+				Commands.recognition.start();
+				return true;
+			}
+			else{ 
+				Commands.dospeachrecog=false;
+				if(Commands.recognition)  Commands.recognition.stop();
+				return true;
+			}
 		}
 
 		@when("speichere TITEL")
@@ -2748,10 +2833,11 @@ you can make a door also an orc that blocks the road
 				}
 
 			}, false);
+			
 		} catch (e) {
-			console.log(e)
-			localStorage.clear()
-			setTimeout(() => window.location.reload(), 3000);
+		//	console.log(e)
+		//	localStorage.clear()
+	//		setTimeout(() => window.location.reload(), 3000);
 		}
 	}
 </script>
