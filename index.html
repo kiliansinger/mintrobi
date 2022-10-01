@@ -1831,7 +1831,7 @@ you can make a door also an orc that blocks the road
 		}
 	}
 
-	let tortenliebhaber = new Person(T`${DE}Tortenliebhaber${EN}cake-lover`, T`${DE}ein Tortenliebhaber${EN}a cakelover`);
+	let tortenliebhaber = new Person([T`${DE}Tortenliebhaber${EN}cake lover`,T`${DE}Torten liebhaber`], T`${DE}ein Tortenliebhaber${EN}a cakelover`);
 	scene4.insert(tortenliebhaber);
 	tortenliebhaber.dialog = async function* () {
 		return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server Ben can't serve me my favourite cake.`;
