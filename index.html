@@ -2735,7 +2735,8 @@ you can make a door also an orc that blocks the road
 				 Commands.dospeachrecog=true;
 				 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 				// setup SpeechRecognation
-				if(!Commands.recognition){
+				if(Commands.recognition) 	Commands.recognition.lang = 	(MODE.lang == EN?'en-US':'de-DE');
+				else{
 					 Commands.recognition= new SpeechRecognition();
 					Commands.recognition.interimResults = true;
 					Commands.recognition.lang = 	(MODE.lang == EN?'en-US':'de-DE');
