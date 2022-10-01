@@ -1481,6 +1481,13 @@ you can make a door also an orc that blocks the road
 			this.locked = locked;
 		}
 	}
+	/*
+	replaceWords works as follows
+		param={thing:""}
+		ret=replaceWords("look => THING","look at bottle message",param) 
+		ret:	'look => bottle message'
+		param: {thing: 'bottle message'}
+	*/
 	function replaceWords(command, inputcommand, param) {
 		let upper = false;
 		let words = command.split(' ');
@@ -1513,13 +1520,14 @@ you can make a door also an orc that blocks the road
 		}
 		return command2;
 	}
+	//https://isamatov.com/javascript-decorators-tutorial/
 	function when(command, param = {}) {
-		if (command == "") return false;//here important to use == because then with TData a toValue is done. with === it would be always false
+		if (command == "") return false;//here important to use == because then with TData a toValue is done. with === it would be always false, this is needed if we specify only one language and not the other alternatives
 		return function (target) {
 			const original = target.descriptor.value;
 			if (typeof original === 'function') {
 				target.descriptor.value = function (...args) {
-					let command2 = replaceWords(command.toString(), Commands.command, param);
+					let command2 = replaceWords(command.toString(), Commands.command, param);//Commands.command is the input
 					if (!original.toString().startsWith("function ()") && args[0]) {
 						return original.apply(this, args);//we have direct call
 					}
@@ -1624,76 +1632,85 @@ you can make a door also an orc that blocks the road
 	ich.position = omazuhause;
 
 	oma.dialog = async function* () {
-		let reply = yield (!isChrome && !MODE.pro ? T`<em style='color:#faa;'>${DE}Achtung: Damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN}</br>Attention: For everything to work, you should start the game with a modern Chrome/Edge browser! ${DE}Falls du <em style='color:#0f0;'>4</em> wählst ist der Browser egal!</em></br>${EN}In case you choose <em style='color:#0f0;'>4</em>, then the choice of browser is irrelevant!</em></br>` : "") +
-			T`${DE}Kai, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi schon bestellt und zusammengebaut haben.${EN}Alex, you have finally woken up! I don't even know if we have already ordered and assembled your birthday present, the Mintrobi.${ALL}<p style='color:#0f0;'>${DE}1 - Ja, wir haben schon alles bestellt und zusammengebaut.</br>${EN}1 - Yes, we have already ordered and assembled everything.</br>${DE}2 - Ich muss ihn noch zusammenbauen!</br>${EN}2 - I still have to assemble it!</br>${DE}3 - Wir müssen ihn noch bestellen!</br>${EN}3 - We still have to order it!</br>${DE}4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram!${EN}4 - Mintrobi? Piece of cake, I want to become a C++ programming expert without this kid stuff!${ALL}</p>`
-		switch (reply) {
-			case "1":
-				MODE.pro = false;
-				let reply2 = "";
-				while (reply2 != 7) {
-					reply2 = yield (reply2 == "" ? T`${DE}Das Gehirn von dem Mintrobi ist der kleine farbige Chip. Den müssen wir erst noch programmieren. Hier ein paar Übungen:${EN}The brain of the Mintrobi is the little coloured chip. We still have to programme it. Here are a few exercises:${ALL}<p style='color:#0f0;'>` : T`${DE}Übung macht den Meister${EN}Practice makes perfect${ALL}:<p style='color:#0f0;'>`) +
-						T`1 - <a target='_blank' href='https://makecode.microbit.org/#pub:_VyuiWdV2LhE8'>${DE}Mache einen Smiley${EN}Make a smiley${ALL}</a></br>2 - <a target='_blank' href='https://makecode.microbit.org/#pub:_C90eVc79ADWv'>${DE}Mache kleinen Film${EN}Make a small movie${ALL}</a></br>3 - <a target='_blank' href='https://makecode.microbit.org/#pub:_HufEVJRw52vP'>${DE}Mache Geräusche${EN}Make noise${ALL}</a></br>4 - <a target='_blank' href='https://makecode.microbit.org/#pub:_itjWEp51qUU7'>${DE}Mache ein Feuerknopf hinzu${EN}Add a fire button${ALL}</a></br>5 - <a target='_blank' href='https://makecode.microbit.org/#pub:_8muMDLDucUxu'>${DE}Spiele die Tonleiter${EN}Play the scale${ALL}</a></br>6 - <a target='_blank' href='https://makecode.microbit.org/#pub:_gma3HXbP56wz'>${DE}Zeige deinen Namen${EN}Show your name${ALL}</a></br>7 - <a target='_blank' href='https://makecode.microbit.org/#pub:_2YsaPx2FrPdt'>${DE}Mache einen Zahlenwürfel${EN}Make a number dice${ALL}</a></br>8 - <a target='_blank' href='https://makecode.microbit.org/#pub:_4XRfVyFpzbV6'>${DE}Mache einen Würfel mit Augen${EN}Make a dice with spots${ALL}</a></br>9 - ${DE}Ich will keine Übungen mehr machen sondern mal was richtiges Spielen.${EN}I don't want to do any more exercises, I want to play something real for a change.${ALL}</p>`
-					switch (reply2) {
-						case "1": window.open("https://makecode.microbit.org/#pub:_VyuiWdV2LhE8", "_blank").focus();
-							break;
-						case "2": window.open("https://makecode.microbit.org/#pub:_C90eVc79ADWv", "_blank").focus();
-							break;
-						case "3": window.open("https://makecode.microbit.org/#pub:_HufEVJRw52vP", "_blank").focus();
-							break;
-						case "4": window.open("https://makecode.microbit.org/#pub:_itjWEp51qUU7", "_blank").focus();
-							break;
-						case "5": window.open("https://makecode.microbit.org/#pub:_8muMDLDucUxu", "_blank").focus();
-							break;
-						case "6": window.open("https://makecode.microbit.org/#pub:_gma3HXbP56wz", "_blank").focus();
-							break;
-						case "7": window.open("https://makecode.microbit.org/#pub:_2YsaPx2FrPdt", "_blank").focus();
-							break;
-						case "8": window.open("https://makecode.microbit.org/#pub:_4XRfVyFpzbV6", "_blank").focus();
-							break;
-						case "9":
-							return T`${DE}Ah dann kannst Du ja mal versuchen den Computer zu reparieren. Ich würde gerne mal wieder Computer spielen. Was war noch? Ah, Opa hat nach dir gefragt. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.${EN}Ah, then you can try to repair the computer. I'd like to play computer games again. What else? Ah, grandpa was asking about you. He found something mysterious that he wants to show you.`;
-							break;
-						default:
-							return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+		while(true){
+			let reply = yield (!isChrome && !MODE.pro ? T`<em style='color:#faa;'>${DE}Achtung: Damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN}</br>Attention: For everything to work, you should start the game with a modern Chrome/Edge browser! ${DE}Falls du <em style='color:#0f0;'>4</em> wählst ist der Browser egal!</em></br>${EN}In case you choose <em style='color:#0f0;'>4</em>, then the choice of browser is irrelevant!</em></br>` : "") +
+				T`${DE}Kai, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi schon bestellt und zusammengebaut haben.${EN}Alex, you have finally woken up! I don't even know if we have already ordered and assembled your birthday present, the Mintrobi.${ALL}<p style='color:#0f0;'>${DE}1 - Ja, wir haben schon alles bestellt und zusammengebaut.</br>${EN}1 - Yes, we have already ordered and assembled everything.</br>${DE}2 - Ich muss ihn noch zusammenbauen!</br>${EN}2 - I still have to assemble it!</br>${DE}3 - Wir müssen ihn noch bestellen!</br>${EN}3 - We still have to order it!</br>${DE}4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram!</br>${EN}4 - Mintrobi? Piece of cake, I want to become a C++ programming expert without this kid stuff!</br>${DE}5 - Ich geh mal spazieren!${EN}5 - I'll go for a walk!${ALL}</p>`
+			switch (reply) {
+				case "1":
+					MODE.pro = false;
+					let reply2="";
+					while (reply2 != 7){
+						reply2 = yield (reply2 == "" ? T`${DE}Das Gehirn von dem Mintrobi ist der kleine farbige Chip. Den müssen wir erst noch programmieren. Hier ein paar Übungen:${EN}The brain of the Mintrobi is the little coloured chip. We still have to programme it. Here are a few exercises:${ALL}<p style='color:#0f0;'>` : T`${DE}Übung macht den Meister${EN}Practice makes perfect${ALL}:<p style='color:#0f0;'>`) +
+							T`1 - <a target='_blank' href='https://makecode.microbit.org/#pub:_VyuiWdV2LhE8'>${DE}Mache einen Smiley${EN}Make a smiley${ALL}</a></br>2 - <a target='_blank' href='https://makecode.microbit.org/#pub:_C90eVc79ADWv'>${DE}Mache kleinen Film${EN}Make a small movie${ALL}</a></br>3 - <a target='_blank' href='https://makecode.microbit.org/#pub:_HufEVJRw52vP'>${DE}Mache Geräusche${EN}Make noise${ALL}</a></br>4 - <a target='_blank' href='https://makecode.microbit.org/#pub:_itjWEp51qUU7'>${DE}Mache ein Feuerknopf hinzu${EN}Add a fire button${ALL}</a></br>5 - <a target='_blank' href='https://makecode.microbit.org/#pub:_8muMDLDucUxu'>${DE}Spiele die Tonleiter${EN}Play the scale${ALL}</a></br>6 - <a target='_blank' href='https://makecode.microbit.org/#pub:_gma3HXbP56wz'>${DE}Zeige deinen Namen${EN}Show your name${ALL}</a></br>7 - <a target='_blank' href='https://makecode.microbit.org/#pub:_2YsaPx2FrPdt'>${DE}Mache einen Zahlenwürfel${EN}Make a number dice${ALL}</a></br>8 - <a target='_blank' href='https://makecode.microbit.org/#pub:_4XRfVyFpzbV6'>${DE}Mache einen Würfel mit Augen${EN}Make a dice with spots${ALL}</a></br>9 - ${DE}Ich will keine Übungen mehr machen sondern mal was richtiges Spielen.${EN}I don't want to do any more exercises, I want to play something real for a change.${ALL}</p>`
+						switch (reply2) {
+							case "1": window.open("https://makecode.microbit.org/#pub:_VyuiWdV2LhE8", "_blank").focus();
+								break;
+							case "2": window.open("https://makecode.microbit.org/#pub:_C90eVc79ADWv", "_blank").focus();
+								break;
+							case "3": window.open("https://makecode.microbit.org/#pub:_HufEVJRw52vP", "_blank").focus();
+								break;
+							case "4": window.open("https://makecode.microbit.org/#pub:_itjWEp51qUU7", "_blank").focus();
+								break;
+							case "5": window.open("https://makecode.microbit.org/#pub:_8muMDLDucUxu", "_blank").focus();
+								break;
+							case "6": window.open("https://makecode.microbit.org/#pub:_gma3HXbP56wz", "_blank").focus();
+								break;
+							case "7": window.open("https://makecode.microbit.org/#pub:_2YsaPx2FrPdt", "_blank").focus();
+								break;
+							case "8": window.open("https://makecode.microbit.org/#pub:_4XRfVyFpzbV6", "_blank").focus();
+								break;
+							case "9":
+								return T`${DE}Ah dann kannst Du ja mal versuchen den Computer zu reparieren. Ich würde gerne mal wieder Computer spielen. Was war noch? Ah, Opa hat nach dir gefragt. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.${EN}Ah, then you can try to repair the computer. I'd like to play computer games again. What else? Ah, grandpa was asking about you. He found something mysterious that he wants to show you.`;
+							default:
+								Commands.understood=false;
+								continue;
+								//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+						}
 					}
-				}
 
-				break;
-			case "2":
-				MODE.pro = false;
-				return T`${DE}Opa hat hier ein Video hochgeladen, das du gerne auf unserem Fernseher schauen kannst${EN}Grandpa has uploaded a video here that you are welcome to watch on our TV${ALL}: <a target='_blank' href='https://www.youtube.com/embed/8m-lXWjnjYI?autoplay=1'>${DE}Aufbauvideo${EN}Assembly video${ALL}</a>.</br>${DE}Und wenn du fertig bist, dann geh doch nach drausen zu Opa. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.${EN}And when you're done, why don't you go outside and see grandpa? He has found something mysterious that he would like to show you.`;
-			case "3":
-				MODE.pro = false;
-				return T`${DE}Dann helfe mir doch schnell dabei. Hier ist der Bestelllink${EN}Then help me with it quickly. Here is the order link${ALL}: <a target='_blank' href='https://www.reichelt.de/my/1978474'>Mintrobi</a>. ${DE}Wir reden dann wieder, wenn die Lieferung da ist.${EN}We'll talk again when the shipment arrives.`;
-			case "4":
-				MODE.pro = true;
-				return T`${DE}Kein Problem! Dann kannst Du alle Bastelaufgaben überspringen statt dessen C++ Programme erstellen. Wenn Du noch keine Ahnung hast oder im Spiel nicht mehr weiter weist, dann kannst Du hier Videos schauen: ${EN}No problem! Then you can skip all the tinkering tasks and create C++ programmes instead. If you still have no idea or are stuck in the game, you can watch videos here: ${ALL}<a target='_blank' href='https://www.youtube.com/watch?v=E53dZ8mW6tQ&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=1'>${DE}Abenteuer Programmieren auf Youtube${EN}Adventure Programming on Youtube${ALL}</a>.`
-			default:
-				return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+					break;
+				case "2":
+					MODE.pro = false;
+					return T`${DE}Opa hat hier ein Video hochgeladen, das du gerne auf unserem Fernseher schauen kannst${EN}Grandpa has uploaded a video here that you are welcome to watch on our TV${ALL}: <a target='_blank' href='https://www.youtube.com/embed/8m-lXWjnjYI?autoplay=1'>${DE}Aufbauvideo${EN}Assembly video${ALL}</a>.</br>${DE}Und wenn du fertig bist, dann geh doch nach drausen zu Opa. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.${EN}And when you're done, why don't you go outside and see grandpa? He has found something mysterious that he would like to show you.`;
+				case "3":
+					MODE.pro = false;
+					return T`${DE}Dann helfe mir doch schnell dabei. Hier ist der Bestelllink${EN}Then help me with it quickly. Here is the order link${ALL}: <a target='_blank' href='https://www.reichelt.de/my/1978474'>Mintrobi</a>. ${DE}Wir reden dann wieder, wenn die Lieferung da ist.${EN}We'll talk again when the shipment arrives.`;
+				case "4":
+					MODE.pro = true;
+					return T`${DE}Kein Problem! Dann kannst Du alle Bastelaufgaben überspringen statt dessen C++ Programme erstellen. Wenn Du noch keine Ahnung hast oder im Spiel nicht mehr weiter weist, dann kannst Du hier Videos schauen: ${EN}No problem! Then you can skip all the tinkering tasks and create C++ programmes instead. If you still have no idea or are stuck in the game, you can watch videos here: ${ALL}<a target='_blank' href='https://www.youtube.com/watch?v=E53dZ8mW6tQ&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=1'>${DE}Abenteuer Programmieren auf Youtube${EN}Adventure Programming on Youtube${ALL}</a>.`
+				case "5":
+					return T`${DE}Tschüß${EN}Bye!`;
+				default:
+					Commands.understood=false;
+					continue;
+					//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+			}
 		}
-
 	}
 
 	let strand = new Scene(T`${DE}Strand${EN}Beach`, T`<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>${DE}Du stehst am Strand vorm Haus deiner Grosseltern,</br>an dem sich ein kleiner Steg befindet.</br>${EN}You are standing on the beach in front of your grandparents' house,</br>where there is a small walkway.</br>${DE}Dort sitzt dein Opa und angelt.</br>Nach Osten geht es in das Haus deiner Grosseltern, im Westen geht der Strand weiter.</br>${EN}That's where your grandfather sits and fishes.</br>To the east, you can go to your grandparents' house,</br>to the west, the beach continues.`)
 	strand.east = omazuhause;
-	let bottlemessage = new Item(T`${DE}Flaschenpost${EN}bottle-message`, T`<img src='bottlemessage.png'>${DE}eine verschlossene Flaschenpost${EN}a sealed message in a bottle`);
+	let bottlemessage = new Item(T`${DE}Flaschenpost${EN}bottle message`, T`<img src='bottlemessage.png'>${DE}eine verschlossene Flaschenpost${EN}a sealed message in a bottle`);
 	let opa = new Person(T`${DE}Opa${EN}Grandpa`, T`${DE}Dein lieber Opa.${EN}Your dear grandpa.`);
 	strand.insert(opa);
 	opa.insert(bottlemessage);
 	opa.dialog = async function* () {
 		if (this.has(bottlemessage)) {
-
-			let reply = yield T`${DE}Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.${EN}Hello Kai did you sleep well? Well, it's not that important, I fished a funny message out of the sea. Here, take a look.${ALL}<p style='color:#0f0;'>${DE}1 - Och ne, dafür bin ich jetzt noch viel zu müde.</br>${EN}1 - Oh no, I'm much too tired for that now.</br>${DE}2 - Echt???! Zeig mal her was du gefunden hast.${EN}2 - Really???! Let me see what you found.${ALL}</p>`
-			switch (reply) {
-				case "1":
-					return T`${DE}Ach Schade. Dann komm doch später nochmal zu mir.${EN}Oh, that's too bad. Then come back to me later.`
-				case "2":
-					this.open = true;
-					Commands.actor.take(bottlemessage);
-					this.open = false;
-					return T`${DE}Hier eine geheimnisvolle Flasche ich mache sie gleich in deinen Rucksack${EN}Here's a mystery bottle I'll put in your backpack right away${ALL} (<em style='color:#0f0;'>${DE}schaue in rucksack${EN}look in backpack${ALL}</em>, <em style='color:#0f0;'>${DE}betrachte flaschenpost${EN}look at bootle-message${ALL}</em>),</br>${DE}aber ich bekomme sie leider einfach nicht auf.</br>${EN}but unfortunately I just can't get it open.</br>${DE}Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.</br>${EN}You'll need a bottle opener, maybe you can find one.</br>` + bottlemessage.describe()
-				default:
-					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+			while(true){
+				let reply = yield T`${DE}Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.${EN}Hello Kai did you sleep well? Well, it's not that important, I fished a funny message out of the sea. Here, take a look.${ALL}<p style='color:#0f0;'>${DE}1 - Och ne, dafür bin ich jetzt noch viel zu müde.</br>${EN}1 - Oh no, I'm much too tired for that now.</br>${DE}2 - Echt???! Zeig mal her was du gefunden hast.${EN}2 - Really???! Let me see what you found.${ALL}</p>`
+				switch (reply) {
+					case "1":
+						return T`${DE}Ach Schade. Dann komm doch später nochmal zu mir.${EN}Oh, that's too bad. Then come back to me later.`
+					case "2":
+						this.open = true;
+						Commands.actor.take(bottlemessage);
+						this.open = false;
+						return T`${DE}Hier eine geheimnisvolle Flasche ich mache sie gleich in deinen Rucksack${EN}Here's a mystery bottle I'll put in your backpack right away${ALL} (<em style='color:#0f0;'>${DE}schaue in rucksack${EN}look in backpack${ALL}</em>, <em style='color:#0f0;'>${DE}betrachte flaschenpost${EN}look at bootle-message${ALL}</em>),</br>${DE}aber ich bekomme sie leider einfach nicht auf.</br>${EN}but unfortunately I just can't get it open.</br>${DE}Du brauchst einen Flaschenöffner, vielleicht findest du ja einen.</br>${EN}You'll need a bottle opener, maybe you can find one.</br>` + bottlemessage.describe()
+					default:
+						Commands.understood=false;
+						continue;
+						//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+				}
 			}
 		} else {
 			return T`${DE}Fischen ist lustig.${EN}Fishing is fun.`;
@@ -1755,30 +1772,34 @@ you can make a door also an orc that blocks the road
 	barmann.dialog = async function* () {
 		if (Commands.actor.has(tortenheber) || barmann.tricked) {
 			if (seetang.blocking) {
-				let reply = yield T`${DE}Dankeschön! Dankeschön! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?${EN}Thanks a lot! That's really cool that you found my cake server.</br>I thought I'd never see it again.</br>While you're here can you give me a hand?${ALL}<p style='color:#0f0;'>${DE}1 - Ja na klar! Was muss ich tun?</br>${EN}1 - Of course! What do I need to do?</br>${DE}2 - Nein, ich habe gerade keine Lust.${EN}2 - No, I don't feel like it right now.${ALL}</p>`;
-				switch (reply) {
-					case "1":
-						let reply13 = yield T`${DE}Ich habe gehört, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese ${EN}I heard that you can programme and maybe you can help me too.</br>I need to get this ` + (MODE.pro ? "5" : "3") + T`${DE}-stöckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein größeres Stueck auf einem kleineren liegen. Es gibt drei Plätze A, B und C. Die Torte ist anfangs auf Platz A und muss nach B. Platz C kann man als Zwischenablage verwenden.</br>Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein! Du kannst das einfach durch überlegen lösen oder ein Computerprogramm schreiben.${EN} tier cake onto this plate, but there is a problem.</br>I can only move each piece on its own and there</br>never has to be a larger piece on top of a smaller one. There are three places A, B and C. The pie is initially on place A and must go to B. Place C can be used as a clipboard.</br>Do you have any idea how I can best do this? Enter the solution in the form AB,CD,....  ! You can solve this simply by thinking or you can write a computer program.${DE} Hier der link zum ${EN} Here is the link to the ` + (MODE.pro ? `<a target='_blank' href='https://www.youtube.com/watch?v=E4wT2HM0VpY&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=24'>Video</a>` : `<a target='_blank' href='https://makecode.microbit.org/#pub:_7DzXT3eF7iiu'>Code</a>.`);
+				let reply;
+				while(true){
+					reply = yield T`${DE}Dankeschön! Dankeschön! Das ist echt mega, dass du meinen Tortenheber gefunden hast.</br>Ich dachte schon den sehe ich nie wieder.</br>Wenn du schonmal hier bist kannst du mir kurz helfen?${EN}Thanks a lot! That's really cool that you found my cake server.</br>I thought I'd never see it again.</br>While you're here can you give me a hand?${ALL}<p style='color:#0f0;'>${DE}1 - Ja na klar! Was muss ich tun?</br>${EN}1 - Of course! What do I need to do?</br>${DE}2 - Nein, ich habe gerade keine Lust.${EN}2 - No, I don't feel like it right now.${ALL}</p>`;
+					switch (reply) {
+						case "1":
+							let reply13 = yield T`${DE}Ich habe gehört, dass du Programieren kannst und vielleicht kannst du auch mier weiter helfen.</br>Ich muss diese ${EN}I heard that you can programme and maybe you can help me too.</br>I need to get this ` + (MODE.pro ? "5" : "3") + T`${DE}-stöckige Torte auf diesen Teller bringen,</br>doch da gibt es ein Problem.</br>Ich kann jedes Stück nur alleine bewegen und es</br>darf nie ein größeres Stueck auf einem kleineren liegen. Es gibt drei Plätze A, B und C. Die Torte ist anfangs auf Platz A und muss nach B. Platz C kann man als Zwischenablage verwenden.</br>Hast du eine Idee wie ich das am besten mache? Gib die Lösung in der Form AB,CD,...  ein! Du kannst das einfach durch überlegen lösen oder ein Computerprogramm schreiben.${EN} tier cake onto this plate, but there is a problem.</br>I can only move each piece on its own and there</br>never has to be a larger piece on top of a smaller one. There are three places A, B and C. The pie is initially on place A and must go to B. Place C can be used as a clipboard.</br>Do you have any idea how I can best do this? Enter the solution in the form AB,CD,....  ! You can solve this simply by thinking or you can write a computer program.${DE} Hier der link zum ${EN} Here is the link to the ` + (MODE.pro ? `<a target='_blank' href='https://www.youtube.com/watch?v=E4wT2HM0VpY&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=24'>Video</a>` : `<a target='_blank' href='https://makecode.microbit.org/#pub:_7DzXT3eF7iiu'>Code</a>.`);
 
-						if (reply13 === (MODE.pro ? "ac,ab,cb,ac,ba,bc,ac,ab,cb,ca,ba,cb,ac,ab,cb,ac,ba,bc,ac,ba,cb,ca,ba,bc,ac,ab,cb,ac,ba,bc,ac" : "ab,ac,bc,ab,ca,cb,ab") || reply13 === (MODE.pro ? "ac,ab,cb,ac,ba,bc,ac,ab,cb,ca,ba,cb,ac,ab,cb,ac,ba,bc,ac,ba,cb,ca,ba,bc,ac,ab,cb,ac,ba,bc,ac," : "ab,ac,bc,ab,ca,cb,ab,")) {
-							return T`${DE}Das hat geklappt. Hier ich öffne dir die Flasche. ${EN}That worked. Here, I'll open the bottle for you. ` +
-								(
-									MODE.pro ? T`${DE}Da ist ein verschlüsselter Text drin: ${EN}There is an encrypted text inside (the plain text is German so you need to translate it after decryption with e.g. <a target='_blank' href='https://deepl.com'>Deepl</a>): ${ALL}</br><textarea rows='8' cols='80' style='white-space: wrap;' >DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OYB8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'GY-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>${DE}Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:${EN}And here are some text snippets, if you collect them all you get:${ALL}</br><textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBSEZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT GBLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW NTZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCREISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT TLLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>${DE}Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit einer statistischen Analyse des verwürfelten Textes zu vergleichen. Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. Aber in diesem Falle war das Schicksal gnädig mit uns...</br>${EN}Your task is now to compare a statistical analysis of the encrypted text with a statistical analysis of the scrambled text. In the scrambled text, the characters from the space to Z were permuted. In the scrambled text, the position of the letters in the text was scrambled. After statistical analysis, one then only has to sort the alphabet according to occurrence in both cases. If one then compares the alphabets, one gets the decryption key. This assumes that each letter occurs with a different frequency. But in this case, fate was merciful with us...</br>${DE}Du kannst auch das ${EN}You can also watch the ${ALL}<a target='_blank' href='https://www.youtube.com/watch?v=EHDu5SzsGRE&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=28'>Video</a>${DE} zum Rätsel anschauen, ber bitte schaut das Video mit der Lösung nicht gleich im Anschluss an.</br>${EN} corresponding to the riddle, but please do not watch the video afterwards with the solution right away.</br>`
-										:
-										T`${DE}Da ist ein verschlüsselter Text drin, er wurde rückwärts geschrieben:${EN}There's a coded text in there, it's been written backwards:${ALL}</br><textarea rows='8' cols='80' style='white-space: wrap;' >${DE}NEKCEURD GNATEES TFO${EN}DEEWAES SSERP YLNETFO${ALL}</textarea></br>${DE}Kannst du ein Entschlüsslungsprogramm schreiben? Versuchs mal mit dem ${EN}Can you write a decryption programme? Try the ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_DCub8VgW8VX1'>Code</a>.`
-								);
-						}
-						else {
-							return T`<img src='bottlemessage.png'>${DE}Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. Aber ich backe einfach nochmal eine. Wenn du dann das Problem gelöst hast öffne ich Dir die Flasche.${EN}Unfortunately, it didn't work out with the cake - it broke. But I'll just bake another one. When you have solved the problem, I will open the bottle for you.`
+							if (reply13 === (MODE.pro ? "ac,ab,cb,ac,ba,bc,ac,ab,cb,ca,ba,cb,ac,ab,cb,ac,ba,bc,ac,ba,cb,ca,ba,bc,ac,ab,cb,ac,ba,bc,ac" : "ab,ac,bc,ab,ca,cb,ab") || reply13 === (MODE.pro ? "ac,ab,cb,ac,ba,bc,ac,ab,cb,ca,ba,cb,ac,ab,cb,ac,ba,bc,ac,ba,cb,ca,ba,bc,ac,ab,cb,ac,ba,bc,ac," : "ab,ac,bc,ab,ca,cb,ab,")) {
+								return T`${DE}Das hat geklappt. Hier ich öffne dir die Flasche. ${EN}That worked. Here, I'll open the bottle for you. ` +
+									(
+										MODE.pro ? T`${DE}Da ist ein verschlüsselter Text drin: ${EN}There is an encrypted text inside (the plain text is German so you need to translate it after decryption with e.g. <a target='_blank' href='https://deepl.com'>Deepl</a>): ${ALL}</br><textarea rows='8' cols='80' style='white-space: wrap;' >DFOEM-+8O/BGO/FG@+0O.=0OMBG-8+0OYB8O/->>+0OF+*+G>-QQ+0<OEB+ODF7 8+0OB'G+O -QB*+G<O='0+ODFOD=+R+G0<O/-EO>F+GO+B0O>QF7'<OB7'O'-*+ORQF+7 OE=0E8O'-8O0B+Y-0@OF+*+GQ+*8<O8G=8DO'='+GOE++O =008+OB7'OYB7'OR+G-@+O0=7'OYB8O+B0+YO*+B*==8OG+88+0<Y=GR+0EO/FG@+O@+GOE7'-8DO-F>O@+GOB0E+QO-YOE8G-0@MQ-8DOB0O+B0+GO'=+'Q+O'B08+GOE++8-0RO*Q-+88+GO.+GE8+7 8<OY-0OYFEEOY+'GY-QEO-F>O@B+OE++8-0RO*Q-+88+GO@GF+7 +02O@-YB8OEB7'O@+GO+B0R-0RO=+>>0+8<</textarea></br>${DE}Und hier noch Textschnipsel, wenn man sie alle sammelt bekommt man:${EN}And here are some text snippets, if you collect them all you get:${ALL}</br><textarea rows='8' cols='80' style='white-space: wrap;' >NM.. NNEDALESN HR.EBEZBSEZTM TUGTFOE SBCI E OHER RFFENSAEEE  H TZIE. FZETC D  AHEC NFNN  NRAU N URHCDOS AT GBLRHNNEIARINGMHANRBREILTDZ BCTSI  L  CGZERK GRTEA HKWUSHIO RRHEOID EN.OTNLEAASTGEUW NTZNETE.ND ISECEE AMDEIEKDT BHEFI RTSBTEAS . IAAMIUT STMGEEEEUE  US,RRFN EEWNUEO TEKHCREISVNEEDIMA RRMEEEUFSFEENAUWM. ESR  CCT NSREODAHUEL ENO TNE RM AOI    PNTTTA NNTR IAT TLLLAENAMMR PET EIEGAKIOLL  IECKE U HLEOH AROVIU HWRHBDIP</textarea></br>${DE}Eure Aufgabe ist es nun eine statistische Analyse des verschlüsselten Textes mit einer statistischen Analyse des verwürfelten Textes zu vergleichen. Bei dem verschlüsselten Text wurden die Zeichen vom Leerzeichen bis zu Z permutiert. Bei dem verwürfelten Text wurde die Position der Buchstaben im Text verwürfelt. Nach statistischer Analyse muss man dann nur noch das Alphabet in beiden Fällen nach dem Vorkommen sortieren. Wenn man dann die Alphabete vergleicht, bekommt man den Entschlüsselungsschlüssel. Dies setzt voraus, dass jeder Buchstabe mit unterschiedlicher Häufigkeit vorkommt. Aber in diesem Falle war das Schicksal gnädig mit uns...</br>${EN}Your task is now to compare a statistical analysis of the encrypted text with a statistical analysis of the scrambled text. In the scrambled text, the characters from the space to Z were permuted. In the scrambled text, the position of the letters in the text was scrambled. After statistical analysis, one then only has to sort the alphabet according to occurrence in both cases. If one then compares the alphabets, one gets the decryption key. This assumes that each letter occurs with a different frequency. But in this case, fate was merciful with us...</br>${DE}Du kannst auch das ${EN}You can also watch the ${ALL}<a target='_blank' href='https://www.youtube.com/watch?v=EHDu5SzsGRE&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=28'>Video</a>${DE} zum Rätsel anschauen, ber bitte schaut das Video mit der Lösung nicht gleich im Anschluss an.</br>${EN} corresponding to the riddle, but please do not watch the video afterwards with the solution right away.</br>`
+											:
+											T`${DE}Da ist ein verschlüsselter Text drin, er wurde rückwärts geschrieben:${EN}There's a coded text in there, it's been written backwards:${ALL}</br><textarea rows='8' cols='80' style='white-space: wrap;' >${DE}NEKCEURD GNATEES TFO${EN}DEEWAES SSERP YLNETFO${ALL}</textarea></br>${DE}Kannst du ein Entschlüsslungsprogramm schreiben? Versuchs mal mit dem ${EN}Can you write a decryption programme? Try the ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_DCub8VgW8VX1'>Code</a>.`
+									);
+							}
+							else {
+								return T`<img src='bottlemessage.png'>${DE}Leider hat das mit der Torte nicht geklappt sie ist leider zerbrochen. Aber ich backe einfach nochmal eine. Wenn du dann das Problem gelöst hast öffne ich Dir die Flasche.${EN}Unfortunately, it didn't work out with the cake - it broke. But I'll just bake another one. When you have solved the problem, I will open the bottle for you.`
+								break;
+							}
 							break;
-						}
-						break;
-					case "2":
-						return T`${DE}Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung öffne ich dir auch deine Flasche.${EN}That's a pity, but are you sure?</br>In return, I'll also open your bottle.`;
-						break;
-					default:
-						return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
-						break;
+						case "2":
+							return T`${DE}Das ist Schade, aber bist du dir sicher?</br>Als Gegenleistung öffne ich dir auch deine Flasche.${EN}That's a pity, but are you sure?</br>In return, I'll also open your bottle.`;
+							break;
+						default:
+							Commands.understood=false;
+							continue;
+							//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+					}
 				}
 			}
 			else {
@@ -1786,27 +1807,31 @@ you can make a door also an orc that blocks the road
 			}
 		}
 		else {
-			let reply = yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, " +
-				"dann die Orangen und jetzt auch noch mein Tortenheber.</br>" +
-				"Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>" +
-				"1 - Nein danke, mir geht es bestens. </br>" +
-				"2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>";
-			switch (reply) {
-				case "1":
-					return 'Dann bis speater'
-				case "2":
-					return "Würde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>" +
-						"Das wird aber echt schwer ohne meinen Tortenheber.";
-				case "123":
-					barmann.tricked = true;
-					return "Oh du bist der Programmierer. Dann geht das auch ohne Tortenheber!"
-				default:
-					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+			while(true){
+				let reply = yield "Ach in dieser Bar geht aber auch echt alles verloren,</br>zuerst die Mini-Schirmchen, " +
+					"dann die Orangen und jetzt auch noch mein Tortenheber.</br>" +
+					"Oh Entschuldigung Kumpel, ich habe dich nicht gesehen.</br>Kann ich dir helfen?<p style='color:#0f0;'>" +
+					"1 - Nein danke, mir geht es bestens. </br>" +
+					"2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>";
+				switch (reply) {
+					case "1":
+						return 'Dann bis speater'
+					case "2":
+						return "Würde ich liebend gerne machen,</br>aber vorher muss ich noch eine Torte backen.</br>" +
+							"Das wird aber echt schwer ohne meinen Tortenheber.";
+					case "123":
+						barmann.tricked = true;
+						return "Oh du bist der Programmierer. Dann geht das auch ohne Tortenheber!"
+					default:
+						Commands.understood=false;
+						continue;
+						//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+				}
 			}
 		}
 	}
 
-	let tortenliebhaber = new Person(T`${DE}Tortenliebhaber${EN}cake-lover`, T`${DE}ein Tortenliebhaber${EN}a cake-lover`);
+	let tortenliebhaber = new Person(T`${DE}Tortenliebhaber${EN}cake-lover`, T`${DE}ein Tortenliebhaber${EN}a cakelover`);
 	scene4.insert(tortenliebhaber);
 	tortenliebhaber.dialog = async function* () {
 		return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server Ben can't serve me my favourite cake.`;
@@ -1830,9 +1855,9 @@ you can make a door also an orc that blocks the road
 		return T`${DE}Für dieses Bild werde ich richtig reich.</br>Hm, soll eine Million Taler verlangen.</br>Nee, lieber 2. Oder doch 3 Millionen?${EN}For this picture I'll be really rich.</br>Hm, should ask for a million thalers.</br>No, rather 2. Or 3 million?`;
 	}
 	let scene6 = new Scene(T`${DE}Dschungel${EN}Jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel.</br>Nach Norden geht es zu einer Lichtung,</br>nach Sueden geht es zur Stadt</br>und im Westen liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle.</br>To the north is a clearing,</br>to the south is the town</br>and to the west is the entrance to the indigenous village.`)
-	let kaputteAmpel = new Door(T`${DE}Ampel${EN}traffic-light`, T`${DE}Ein eine kaputte Ampel.${EN}A broken traffic-light.`, { blocking: true, usable: true, speakable: true, locked: true });
+	let kaputteAmpel = new Door(T`${DE}Ampel${EN}traffic light`, T`${DE}Ein eine kaputte Ampel.${EN}A broken traffic-light.`, { blocking: true, usable: true, speakable: true, locked: true });
 	kaputteAmpel.use = function () {
-		Commands.forward_command = T`${DE}t ampel${EN}t traffic-light`
+		Commands.forward_command = T`${DE}t ampel${EN}t traffic light`
 		return false;
 	}
 	kaputteAmpel.blockingvar = true;
@@ -1850,100 +1875,112 @@ you can make a door also an orc that blocks the road
 		if (!isChrome) {
 			return T`<em style='color:#faa;'>${DE}Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!${EN}You need to use a modern Chrome/Edge browser for this to work!${ALL}</em>\n`;
 		}
-		const reply = yield T`${DE}Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken.<p style='color:#0f0;'>1 - Ok es ist alles verbunden!</br>2 - Ich wollte eigentlich gar nicht über die Ampel.</p>${EN}The traffic light needs to be repaired.Use the brain from Mintrobi.</br>Connect it to your computer with the USB cable. The first time, you must now select the device in the dialogue and click on OK.<p style='color:#0f0;'>1 - Ok, everything is connected!</br> 2 - I didn't actually want to cross the traffic light.</p>`
-		switch (reply) {
-			case "1":
-				while (true) {
-					const reply2 = yield T`${DE}Als erstes musst du den Taster für die Fußgängerampel reparieren.<p style='color:#0f0;'>1 - Ok los gehts.</br>2 - Teste die Ampel (Drücke innerhalb von 10 Sekunden auf die A Taste)</br>3 - Ich habs mir anders überlegt, ich wollte eigentlich gar nicht über die Ampel.</p>${EN}First you have to fix the button for the pedestrian traffic light.<p style='color:#0f0;'>1 - Ok let's go.</br>2 - Test the traffic light (press the A button within 10 seconds)</br>3 - I changed my mind, I didn't really want to go through the traffic light.</p>.`;
-					let trick = false;
-					switch (reply2) {
-						case "1":
-							window.open("https://makecode.microbit.org/#pub:_4Mm6dtfmVTY5", "_blank").focus();
-							break;
-						case "123":
-							trick = true;
-						case "2":
-							let val = "";
-							val = await readMicrobit()
-							if (trick) val = "111";
-							console.log(val);
-							if (val == "") {
-								yield T`${DE}10 Sekunden sind vorbei. Versuchs nochmal. Drücke [ENTER].${EN}10 seconds have passed. Try again. Press [ENTER].`
-								continue;
-							}
-							else if (val.startsWith("1")) {
-								const reply3 = yield T`${DE}Jetzt ist noch die Auto-Ampel kaputt. Alle Lampen müssen ersetzt werden. Dazu musst du Pin 0 mit einem Beinchen des 56 Ohm Widerstands (grün blau schwarz gold braun) verbinden.</br>Der Widerstand ist wichtig, er schützt die Leuchtdiode, das ist wie ein Wasserhahn, den man nicht ganz Aufdreht, der reduziert den Strom.</br>An das andere Bein des widerstands kommt das lange Beinchen der roten </br>Leuchtdiode. Leuchtdioden leuchten nur wenn man sie richtig herum anschließt.</br>Das kurze Beinchen, da ist auch eine Abflachung am Gehäuse der Leuchtdiode musst du dann mit GND verbinden.In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode.</br><img width='80%' src='ampel.png'><p style='color:#0f0;'>1 - Ok es ist alles verbunden!</br>2 - Ich wollte eigentlich gar nicht über die Ampel.</p>${EN}Now the traffic lights are broken. All lamps must be replaced. To do this, connect pin 0 to one leg of the 56 Ohm resistor (green blue black gold brown).</br>The resistor is important, it protects the light emitting diode, it's like a tap that you don't turn on all the way, it reduces the current.</br>The long leg of the red </br>light-emitting diode is connected to the other leg of the resistor. Light-emitting diodes only light up if you connect them the right way round.</br>The short leg, there is also a flat on the housing of the light emitting diode, must then be connected to GND. Proceed in the same way with pin 1 and the yellow light emitting diode and with pin 2 and the green light emitting diode.</br><img width='80%' src='ampel.png'><p style='color:#0f0;'>1 - Ok, it is all connected!</br>2 - I didn't actually want to go through the traffic light.</p>`
-								switch (reply3) {
-									case "1":
-										while (true) {
-											const reply4 = yield T`${DE}Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>${EN}Now you have to continue writing the code. The traffic light receives the characters:</br>${DE}s für stop also rot</br>${EN}s for stop indicated by red</br>${DE}b für bereit also gelb</br>${EN}b for ready indicated by yellow</br>${DE}f für fahren also grün</br>${EN}f for drive indicated by green${ALL}<p style='color:#0f0;'>${DE}1 - Ok, ich bin bereit zum Programmieren</br>${EN}1 - Ok, I am ready to program</br>${DE}2 - Das Programm ist fertig. Ich will die Auto-Ampel testen.</br>${EN}2 - The programme is finished. I want to test the traffic light.</br>${DE}3 - Ich wollte eigentlich gar nicht über die Ampel.${EN}3 - I didn't actually want to go through the traffic lights.${ALL}</p>`;
-											let trick = false;
-											switch (reply4) {
-												case "1":
-													window.open("https://makecode.microbit.org/#pub:_REjD0A9HE4m9", "_blank").focus();
-													break;
-												case "123":
-													trick = true;
-												case "2":
-													while (true) {
-														let result = await writeMicrobit("b\n");
-														if (!result && !trick) return T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`
-														let farbe = yield T`${DE}Welche Farbe hat die Ampel?${EN}Which color does the traffic light show?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
-														if (farbe == "4") return T`${DE}Dann bis später.${EN}.See you then.`;
-														if (farbe != "2") {
-															yield T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
-															continue;
-														}
-
-														result = await writeMicrobit("s\n");
-														if (!result && !trick) return T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
-														farbe = yield T`${DE}Richtig! Welche Farbe hat die Ampel jetzt?${EN}Right! Which color does the traffic light show now?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
-														if (farbe == "4") return T`${DE}Dann bis später.${EN}.See you then.`;
-														if (farbe != "1") {
-															yield T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
-															continue;
-														}
-
-														result = await writeMicrobit("f\n");
-														if (!result && !trick) return T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
-														farbe = yield T`${DE}Genau! Und welche Farbe hat die Ampel nun?${EN}That's right! And which color does the traffic light show now?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
-														if (farbe == "4") return T`${DE}Dann bis später.${EN}.See you then.`;
-														if (farbe != "3") {
-															yield T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
-															continue;
-														}
-														kaputteAmpel.blocking = false;
-														return T`${DE}Super. Du hast die Ampel repariert und kannst jetzt nach Norden in den Djungel.${EN}Great. You've fixed the traffic lights and can now head north into the jungle.`
-													}
-													break;
-
-												case "3":
-													return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
-												default:
-													return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
-											}
-										}
-									case "2":
-										return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
-									default:
-										return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
-
+		while(true){
+			const reply = yield T`${DE}Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi.</br>Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken.<p style='color:#0f0;'>1 - Ok es ist alles verbunden!</br>2 - Ich wollte eigentlich gar nicht über die Ampel.</p>${EN}The traffic light needs to be repaired.Use the brain from Mintrobi.</br>Connect it to your computer with the USB cable. The first time, you must now select the device in the dialogue and click on OK.<p style='color:#0f0;'>1 - Ok, everything is connected!</br> 2 - I didn't actually want to cross the traffic light.</p>`
+			switch (reply) {
+				case "1":
+					while (true) {
+						const reply2 = yield T`${DE}Als erstes musst du den Taster für die Fußgängerampel reparieren.<p style='color:#0f0;'>1 - Ok los gehts.</br>2 - Teste die Ampel (Drücke innerhalb von 10 Sekunden auf die A Taste)</br>3 - Ich habs mir anders überlegt, ich wollte eigentlich gar nicht über die Ampel.</p>${EN}First you have to fix the button for the pedestrian traffic light.<p style='color:#0f0;'>1 - Ok let's go.</br>2 - Test the traffic light (press the A button within 10 seconds)</br>3 - I changed my mind, I didn't really want to go through the traffic light.</p>.`;
+						let trick = false;
+						switch (reply2) {
+							case "1":
+								window.open("https://makecode.microbit.org/#pub:_4Mm6dtfmVTY5", "_blank").focus();
+								break;
+							case "123":
+								trick = true;
+							case "2":
+								let val = "";
+								val = await readMicrobit()
+								if (trick) val = "111";
+								console.log(val);
+								if (val == "") {
+									yield T`${DE}10 Sekunden sind vorbei. Versuchs nochmal. Drücke [ENTER].${EN}10 seconds have passed. Try again. Press [ENTER].`
+									continue;
 								}
-							}
-						case "3":
-							return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
-						default:
-							return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+								else if (val.startsWith("1")) {
+									while(true){
+										const reply3 = yield T`${DE}Jetzt ist noch die Auto-Ampel kaputt. Alle Lampen müssen ersetzt werden. Dazu musst du Pin 0 mit einem Beinchen des 56 Ohm Widerstands (grün blau schwarz gold braun) verbinden.</br>Der Widerstand ist wichtig, er schützt die Leuchtdiode, das ist wie ein Wasserhahn, den man nicht ganz Aufdreht, der reduziert den Strom.</br>An das andere Bein des widerstands kommt das lange Beinchen der roten </br>Leuchtdiode. Leuchtdioden leuchten nur wenn man sie richtig herum anschließt.</br>Das kurze Beinchen, da ist auch eine Abflachung am Gehäuse der Leuchtdiode musst du dann mit GND verbinden.In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode.</br><img width='80%' src='ampel.png'><p style='color:#0f0;'>1 - Ok es ist alles verbunden!</br>2 - Ich wollte eigentlich gar nicht über die Ampel.</p>${EN}Now the traffic lights are broken. All lamps must be replaced. To do this, connect pin 0 to one leg of the 56 Ohm resistor (green blue black gold brown).</br>The resistor is important, it protects the light emitting diode, it's like a tap that you don't turn on all the way, it reduces the current.</br>The long leg of the red </br>light-emitting diode is connected to the other leg of the resistor. Light-emitting diodes only light up if you connect them the right way round.</br>The short leg, there is also a flat on the housing of the light emitting diode, must then be connected to GND. Proceed in the same way with pin 1 and the yellow light emitting diode and with pin 2 and the green light emitting diode.</br><img width='80%' src='ampel.png'><p style='color:#0f0;'>1 - Ok, it is all connected!</br>2 - I didn't actually want to go through the traffic light.</p>`
+										switch (reply3) {
+											case "1":
+												while (true) {
+													const reply4 = yield T`${DE}Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen:</br>${EN}Now you have to continue writing the code. The traffic light receives the characters:</br>${DE}s für stop also rot</br>${EN}s for stop indicated by red</br>${DE}b für bereit also gelb</br>${EN}b for ready indicated by yellow</br>${DE}f für fahren also grün</br>${EN}f for drive indicated by green${ALL}<p style='color:#0f0;'>${DE}1 - Ok, ich bin bereit zum Programmieren</br>${EN}1 - Ok, I am ready to program</br>${DE}2 - Das Programm ist fertig. Ich will die Auto-Ampel testen.</br>${EN}2 - The programme is finished. I want to test the traffic light.</br>${DE}3 - Ich wollte eigentlich gar nicht über die Ampel.${EN}3 - I didn't actually want to go through the traffic lights.${ALL}</p>`;
+													let trick = false;
+													switch (reply4) {
+														case "1":
+															window.open("https://makecode.microbit.org/#pub:_REjD0A9HE4m9", "_blank").focus();
+															break;
+														case "123":
+															trick = true;
+														case "2":
+															while (true) {
+																let result = await writeMicrobit("b\n");
+																if (!result && !trick) return T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`
+																let farbe = yield T`${DE}Welche Farbe hat die Ampel?${EN}Which color does the traffic light show?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
+																if (farbe == "4") return T`${DE}Dann bis später.${EN}.See you then.`;
+																if (farbe != "2") {
+																	yield T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
+																	continue;
+																}
+
+																result = await writeMicrobit("s\n");
+																if (!result && !trick) return T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
+																farbe = yield T`${DE}Richtig! Welche Farbe hat die Ampel jetzt?${EN}Right! Which color does the traffic light show now?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
+																if (farbe == "4") return T`${DE}Dann bis später.${EN}.See you then.`;
+																if (farbe != "1") {
+																	yield T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
+																	continue;
+																}
+
+																result = await writeMicrobit("f\n");
+																if (!result && !trick) return T`${DE}Fehler in der Kommunikation.Versuche es nochmal von vorne.${EN}Error in communication. Try it again from the beginning.`;
+																farbe = yield T`${DE}Genau! Und welche Farbe hat die Ampel nun?${EN}That's right! And which color does the traffic light show now?${ALL}<p style='color:#0f0;'>${DE}1 - Rot</br>${EN}1 - Red</br>${DE}2 - Gelb</br>${EN}2 - Yellow</br>${DE}3 - Grün</br>${EN}3 - Green</br>${DE}4 - Ich mache später weiter.${EN}4 - I'll continue later${ALL}</p>`;
+																if (farbe == "4") return T`${DE}Dann bis später.${EN}.See you then.`;
+																if (farbe != "3") {
+																	yield T`${DE}Das war nicht ganz richtig. Überprüfe das Programm und die Verkablung. Drücke [ENTER] um weiterzumachen.${EN}That was not quite right. Check the programme and the wiring. Press [ENTER] to continue.`;
+																	continue;
+																}
+																kaputteAmpel.blocking = false;
+																return T`${DE}Super. Du hast die Ampel repariert und kannst jetzt nach Norden in den Djungel.${EN}Great. You've fixed the traffic lights and can now head north into the jungle.`
+															}
+															break;
+
+														case "3":
+															return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
+														default:
+															Commands.understood=false;
+															continue;
+															//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+													}
+												}
+											case "2":
+												return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
+											default:
+												Commands.understood=false;
+												continue;
+												//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+
+										}
+									}
+								}
+							case "3":
+								return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
+							default:
+								Commands.understood=false;
+								continue;
+								//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+						}
 					}
-				}
-			case "2":
-				return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
-			default:
-				return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+				case "2":
+					return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
+				default:
+					Commands.understood=false;
+					continue;
+					//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+			}
 		}
 	}
 
-	let kaputteAmpel2 = new Door(T`${DE}Ampel${EN}traffic-light`, T`${DE}Ein Ampel bei der wieder was kaputt ist.${EN}A traffic light where something is broken again.`, { blocking: true, usable: true, speakable: true, locked: true });
+	let kaputteAmpel2 = new Door(T`${DE}Ampel${EN}traffic light`, T`${DE}Ein Ampel bei der wieder was kaputt ist.${EN}A traffic light where something is broken again.`, { blocking: true, usable: true, speakable: true, locked: true });
 	kaputteAmpel2.blockingvar = true;
 
 	Object.defineProperty(kaputteAmpel2, 'blocking', {
@@ -1954,7 +1991,7 @@ you can make a door also an orc that blocks the road
 	});
 
 	kaputteAmpel2.use = function () {
-		Commands.forward_command = T`${DE}t ampel${EN}t traffic-light`
+		Commands.forward_command = T`${DE}t ampel${EN}t traffic light`
 		return false;
 	}
 	kaputteAmpel2.dialog = async function* () {
@@ -2030,13 +2067,17 @@ you can make a door also an orc that blocks the road
 							case "3":
 								return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 							default:
-								return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+								Commands.understood=false;
+								continue;
+								//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 						}
 					}
 				case "3":
 					return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 				default:
-					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+					Commands.understood=false;
+					continue;
+					//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
 		}
 	}
@@ -2058,17 +2099,21 @@ you can make a door also an orc that blocks the road
 	Forscher.insert(kostuem);
 	Forscher.dialog = async function* () {
 		if (this.has(kostuem)) {
-			let reply = yield T`${DE}Hallo, guten Tag.${EN}Hello, good day${ALL}<p style='color:#0f0;'>${DE}1 - Hallo, wer sind Sie denn?</br>${EN}1 - Hello, who are you?</br>${DE}2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>${EN}2 - How will I be let into the indigenous village?</p>`;
-			switch (reply) {
-				case "1":
-					return T`${DE}Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>ich erforsche den hiesigen Stamm der Ureinwohner.${EN}I am Sir Ernest Wordsworth,</br>a scientist and ethnologist,</br>I am researching the local native tribe.`
-				case "2":
-					this.open = true;
-					Commands.actor.take(kostuem);
-					this.open = false;
-					return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spähen konnte.</br>Doch mit deiner Statur ist eventuell möglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das ${EN}I have not yet succeeded in gaining admittance.</br>I owe my research so far to observations</br>from high up in the treetops, from which I have been able</br>to peer over the fence surrounding the village.</br>But with your stature, it may be possible</br>to pass yourself off as one of their own if you disguise yourself accordingly.</br>Here is the ` + kostuem.describe()
-				default:
-					return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+			while(true){
+				let reply = yield T`${DE}Hallo, guten Tag.${EN}Hello, good day${ALL}<p style='color:#0f0;'>${DE}1 - Hallo, wer sind Sie denn?</br>${EN}1 - Hello, who are you?</br>${DE}2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>${EN}2 - How will I be let into the indigenous village?</p>`;
+				switch (reply) {
+					case "1":
+						return T`${DE}Ich bin Sir Ernest Wordsworth,</br>meines Zeichens Wissenschaftler und Ethnologe,</br>ich erforsche den hiesigen Stamm der Ureinwohner.${EN}I am Sir Ernest Wordsworth,</br>a scientist and ethnologist,</br>I am researching the local native tribe.`
+					case "2":
+						this.open = true;
+						Commands.actor.take(kostuem);
+						this.open = false;
+						return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen.</br>Meine bisherigen Forschungen habe ich Beobachtungen</br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich</br>ueber den Zaun, der das Dorf umgibt spähen konnte.</br>Doch mit deiner Statur ist eventuell möglich dich als einer</br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.</br>Hier ist das ${EN}I have not yet succeeded in gaining admittance.</br>I owe my research so far to observations</br>from high up in the treetops, from which I have been able</br>to peer over the fence surrounding the village.</br>But with your stature, it may be possible</br>to pass yourself off as one of their own if you disguise yourself accordingly.</br>Here is the ` + kostuem.describe()
+					default:
+						Commands.understood=false;
+						continue;	
+						//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+				}
 			}
 		} else {
 			return T`${DE}Wissenschaft ist wunderbar!${EN}Science is wonderful!`;
@@ -2137,26 +2182,34 @@ you can make a door also an orc that blocks the road
 
 	daiquiri.dialog = async function* () {
 		if (this.has(tortenheber)) {
-			let reply = yield T`${DE}Ich bin so verzweifelt,</br>ich komme einfach nicht weiter!</br>Die Nachbarn lachen schon alle ueber mich,</br>ich weiss es genau! Meine Frau wird mich bestimmt verlassen,</br>wenn ich es nicht los werde!<p style='color:#0f0;'>1 - Kann ich dir irgendwie helfen.</br>2 - Nee keine Zeit!</p>${EN}I am so desperate,</br>I just can't get on!</br>The neighbours are all laughing at me already,</br>I know it for sure! My wife will leave me for sure,</br>if I don't get rid of it!<p style='color:#0f0;'>1 - Can I help you somehow.</br>2 - No time!</p>`;
-			switch (reply) {
-				case "1":
-					let reply2 = yield T`${DE}Das wäre sehr nett! Ich bin gestern mit diesem</br>seltsamen silbernen Teil auf dem Kopf aufgewacht,</br>aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstören.</br>Bitte mach das weg!?!</br><p style='color:#0f0;'>1 - Kein Problem</br>2 - Nee keine Lust!</p>${EN}That would be very nice! I woke up yesterday with this</br>strange silver thing on my head,</br>but I can't get to it without destroying my headdress.</br>Please make it go away!?!</br><p style='color:#0f0;'>1 - No problem</br>2 - Nah don't feel like it!</p>`;
-					switch (reply2) {
-						case "1":
-							this.open = true;
-							Commands.actor.take(tortenheber);
-							this.open = false;
-							return T`${DE}Vielen Dank. Du kannst das Ding behalten. Sieht aus wie ein Tortenheber!</br>${EN}Thank you very much. You can keep that thing. It looks like a cake server!</br>` + tortenheber.describe()
-						case "2":
-							return T`${DE}Du hättest das Teil behalten können. O hilf mir doch jemand...${EN}You could have kept that thing. O somebody help me...`
-						default:
-							return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal...${EN}I didn't quite get that but I hope you'll come back...`
-					}
-					break;
-				case "2":
-					return T`${DE}Unhilfsbereit die Jugend...${EN}Unhelpful youth...`
-				default:
-					return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal...${EN}I didn't quite get that but I hope you'll come back...`
+			while(true){
+				let reply = yield T`${DE}Ich bin so verzweifelt,</br>ich komme einfach nicht weiter!</br>Die Nachbarn lachen schon alle ueber mich,</br>ich weiss es genau! Meine Frau wird mich bestimmt verlassen,</br>wenn ich es nicht los werde!<p style='color:#0f0;'>1 - Kann ich dir irgendwie helfen.</br>2 - Nee keine Zeit!</p>${EN}I am so desperate,</br>I just can't get on!</br>The neighbours are all laughing at me already,</br>I know it for sure! My wife will leave me for sure,</br>if I don't get rid of it!<p style='color:#0f0;'>1 - Can I help you somehow.</br>2 - No time!</p>`;
+				switch (reply) {
+					case "1":
+						while(true){
+							let reply2 = yield T`${DE}Das wäre sehr nett! Ich bin gestern mit diesem</br>seltsamen silbernen Teil auf dem Kopf aufgewacht,</br>aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstören.</br>Bitte mach das weg!?!</br><p style='color:#0f0;'>1 - Kein Problem</br>2 - Nee keine Lust!</p>${EN}That would be very nice! I woke up yesterday with this</br>strange silver thing on my head,</br>but I can't get to it without destroying my headdress.</br>Please make it go away!?!</br><p style='color:#0f0;'>1 - No problem</br>2 - Nah don't feel like it!</p>`;
+							switch (reply2) {
+								case "1":
+									this.open = true;
+									Commands.actor.take(tortenheber);
+									this.open = false;
+									return T`${DE}Vielen Dank. Du kannst das Ding behalten. Sieht aus wie ein Tortenheber!</br>${EN}Thank you very much. You can keep that thing. It looks like a cake server!</br>` + tortenheber.describe()
+								case "2":
+									return T`${DE}Du hättest das Teil behalten können. O hilf mir doch jemand...${EN}You could have kept that thing. O somebody help me...`
+								default:
+									Commands.understood=false;
+									continue;
+									//return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal...${EN}I didn't quite get that but I hope you'll come back...`
+							}
+						}
+						break;
+					case "2":
+						return T`${DE}Unhilfsbereit die Jugend...${EN}Unhelpful youth...`
+					default:
+						Commands.understood=false;
+						continue;
+						//return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal...${EN}I didn't quite get that but I hope you'll come back...`
+				}
 			}
 		} else {
 			return T`${DE}Danke nochmals.${EN}Thanks again.`;
@@ -2265,7 +2318,9 @@ you can make a door also an orc that blocks the road
 					case "3":
 						return T`${DE}Bis später dann.${EN}See you later.`
 					default:
-						return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal vorbei...${EN}I didn't quite understand, but I hope you'll come back...`;
+						Commands.understood=false;
+						continue;
+						//return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal vorbei...${EN}I didn't quite understand, but I hope you'll come back...`;
 				}
 			}
 		} catch {
@@ -2346,7 +2401,7 @@ you can make a door also an orc that blocks the road
 			Commands.recogparam = null;
 			recog |= Commands.help();
 			Commands.recogparam = null;
-			let commandspeak = await Commands.speak();
+			let commandspeak = await Commands.speak();//needs to be last in line
 			recog |= commandspeak;
 			Commands.recogparam = null;
 			if (Commands.forward_command != "") {
@@ -2361,7 +2416,7 @@ you can make a door also an orc that blocks the road
 				else {
 					if (Commands.lastcommandspeak) commandspeak = await Commands.continuespeak(cmd);
 					if (!commandspeak && Commands.answer.length == 0) {
-						print(T`${DE}Ich verstehe Dich nicht oder kann es nicht machen! Schreibe <em style='color:#0f0;'>hilfe</em> für eine Befehlsliste!\n${EN}I don't understand you or can't do it! Write <em style='color:#0f0;'>help</em> for a command list!`);
+						print(T`${DE}Was? Geht nicht! Tippe: <em style='color:#0f0;'>hilfe</em>!\n${EN}What? Doesn't work! Type: <em style='color:#0f0;'>help</em>!`);
 					}
 				}
 				Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
@@ -2396,11 +2451,12 @@ you can make a door also an orc that blocks the road
 			print(T`&#x26AC; ${DE}lade/load SPIELSTANDSNAME\n${EN}load NAMEOFGAMESTATE\n`);
 			print(T`&#x26AC; ${DE}spracherkennung/sp an/aus\n${EN}speechrecognition/sp on/off\n`);
 			print("&#x26AC; reset\n");
-			print(T`&#x26AC; de/en ${DE}Deutsch/Englisch${EN}German/English\n`);
+			print(T`&#x26AC; ${DE}Deutsch/de/Englisch/en${EN}German/de/English/en\n`);
 			return true;
 		}
 
 		@when("de")
+		@when(T`${DE}deutsch${EN}german`)
 		static de() {
 			console.log("de")
 			MODE.lang = DE;
@@ -2412,6 +2468,7 @@ you can make a door also an orc that blocks the road
 		}
 
 		@when("en")
+		@when(T`${DE}englisch${EN}english`)
 		static en() {
 			MODE.lang = EN;
 			if(Commands.dospeachrecog){  
@@ -2512,7 +2569,7 @@ you can make a door also an orc that blocks the road
 					return true;
 				}
 			}
-			print(T`${DE}Da kann ich nicht hin.\n${EN}I cannot go there.\n`);
+			//print(T`${DE}Da kann ich nicht hin.\n${EN}I cannot go there.\n`);
 			return false;
 		}
 
@@ -2525,7 +2582,7 @@ you can make a door also an orc that blocks the road
 			let { thing } = search(item);
 			if (thing && thing.usable) return thing.use();
 			else {
-				print(T`${DE}Das geht nicht.\n${EN}That doesn't work.\n`);
+				//print(T`${DE}Das geht nicht.\n${EN}That doesn't work.\n`);
 				return false;
 			}
 		}
@@ -2551,7 +2608,7 @@ you can make a door also an orc that blocks the road
 					if (thing.applytarget.hasOwnProperty(targetthing.name))
 						return thing.doapply(targetthing);
 				}
-				else print(T`${DE}Hab ich nicht oder kann es nicht anwenden.${EN}I don't have it or can't apply it.`);
+				//else print(T`${DE}Hab ich nicht oder kann es nicht anwenden.${EN}I don't have it or can't apply it.`);
 				return false;
 			}
 
@@ -2577,7 +2634,7 @@ you can make a door also an orc that blocks the road
 					Commands.look({ at: item });
 					return true;
 				}
-				else print(T`${DE}Das geht nicht.${EN}That's not possible.`);
+				//else print(T`${DE}Das geht nicht.${EN}That's not possible.`);
 				return false;
 			}
 			return false;
@@ -2620,7 +2677,7 @@ you can make a door also an orc that blocks the road
 				let targetthing;
 				if (target === "scene") {
 					if (!thing.dropable) {
-						print(T`${DE}Kann ich nicht ablegen.${EN}I cannot drop it.`);
+						//print(T`${DE}Kann ich nicht ablegen.${EN}I cannot drop it.`);
 						return false;
 					}
 					targetthing = Commands.actor.position;
@@ -2629,10 +2686,10 @@ you can make a door also an orc that blocks the road
 				if (thing !== null && targetthing !== null && (targetthing.open || targetthing.receiving) && mine) {
 					return targetthing.take(thing);
 				}
-				else print(T`${DE}Hab ich nicht oder kann es nicht geben.${EN}I don't have it or cannot give it.`);
+				//else print(T`${DE}Hab ich nicht oder kann es nicht geben.${EN}I don't have it or cannot give it.`);
 				return false;
 			} else {
-				print(T`${DE}Hab ich nicht oder kann es nicht geben.${EN}I don't have it or cannot give it.`);
+				//print(T`${DE}Hab ich nicht oder kann es nicht geben.${EN}I don't have it or cannot give it.`);
 				return false;
 			}
 
@@ -2659,13 +2716,14 @@ you can make a door also an orc that blocks the road
 			console.log(JSON.stringify(person))
 			let { thing: personobj } = search(person, Person);
 			if (personobj !== null && personobj.speakable) {
+				Commands.understood=true;
 				Commands.lastperson = person;
 				let ret = await personobj.speak(text);
-				print(ret.value);
+				print((!Commands.understood?T`${DE}Was? ${EN}What? `:"")+ret.value);
 				Commands.endofspeak = ret.done;
 				return true;
 			}
-			else print(T`${DE}Geht so nicht.${EN}It doesn't work like that.`);
+			//else print(T`${DE}Geht so nicht.${EN}It doesn't work like that.`);
 			return false;
 		}
 		static dospeachrecog=false;
@@ -2682,6 +2740,17 @@ you can make a door also an orc that blocks the road
 				if(!Commands.recognition) Commands.recognition= new SpeechRecognition();
 				Commands.recognition.interimResults = true;
 				Commands.recognition.lang = 	(MODE.lang == EN?'en-US':'de-DE');
+				Commands.recognition.maxAlternatives =10;
+
+				//https://www.w3.org/TR/jsgf/
+				//const grammar = '#JSGF V1.0; grammar colors; public <color> = aqua | azure | beige | bisque | black | blue | brown | chocolate | coral | crimson | cyan | fuchsia | ghostwhite | gold | goldenrod | gray | green | indigo | ivory | khaki | lavender | lime | linen | magenta | maroon | moccasin | navy | olive | orange | orchid | peru | pink | plum | purple | red | salmon | sienna | silver | snow | tan | teal | thistle | tomato | turquoise | violet | white | yellow ;'
+				//window.SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
+				//const speechRecognitionList = new SpeechGrammarList();
+				//speechRecognitionList.addFromString(grammar, 1);
+				//Commands.recognition.grammars = speechRecognitionList;
+
+
+				//
 				// waiting for speech results
 				Commands.recognition.addEventListener('result', async (event) => {
 					
@@ -2689,7 +2758,8 @@ you can make a door also an orc that blocks the road
 					console.log(transcript)
 					// check if the voice input has ended
 					if(event.results[0].isFinal) {
-						console.log(transcript);
+						for(let a=0;a<event.results[0].length;++a) console.log(""+a+event.results[0][a].transcript)
+					//	console.log(transcript);
 
 						let cmd = transcript;
 						lastinput = cmd;
