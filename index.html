@@ -1634,7 +1634,7 @@ you can make a door also an orc that blocks the road
 	oma.dialog = async function* () {
 		while(true){
 			let reply = yield (!isChrome && !MODE.pro ? T`<em style='color:#faa;'>${DE}Achtung: Damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN} </br>Attention: For everything to work, you should start the game with a modern Chrome/Edge browser! ${DE}Falls du <em style='color:#0f0;'>4</em> wählst ist der Browser egal!</em> </br>${EN}In case you choose <em style='color:#0f0;'>4</em>, then the choice of browser is irrelevant!</em> </br>` : "") +
-				T`${DE}Kai, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi schon bestellt und zusammengebaut haben.${EN}Alex, you have finally woken up! I don't even know if we have already ordered and assembled your birthday present, the Mintrobi.${ALL}<p style='color:#0f0;'>${DE}1 - Ja, wir haben schon alles bestellt und zusammengebaut. </br>${EN}1 - Yes, we have already ordered and assembled everything. </br>${DE}2 - Ich muss ihn noch zusammenbauen! </br>${EN}2 - I still have to assemble it! </br>${DE}3 - Wir müssen ihn noch bestellen! </br>${EN}3 - We still have to order it! </br>${DE}4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram! </br>${EN}4 - Mintrobi? Piece of cake, I want to become a C++ programming expert without this kid stuff! </br>${DE}5 - Ich geh mal spazieren!${EN}5 - I'll go for a walk!${ALL}</p>`
+				T`${DE}Kai, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi schon bestellt und zusammengebaut haben.${EN}Alex, you have finally woken up! I don't even know if we have already ordered and assembled your birthday present, the Mintrobi. ${ALL}<p style='color:#0f0;'>${DE}1 - Ja, wir haben schon alles bestellt und zusammengebaut. </br>${EN}1 - Yes, we have already ordered and assembled everything. </br>${DE}2 - Ich muss ihn noch zusammenbauen! </br>${EN}2 - I still have to assemble it! </br>${DE}3 - Wir müssen ihn noch bestellen! </br>${EN}3 - We still have to order it! </br>${DE}4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram! </br>${EN}4 - Mintrobi? Piece of cake, I want to become a C++ programming expert without this kid stuff! </br>${DE}5 - Ich geh mal spazieren!${EN}5 - I'll go for a walk!${ALL}</p>`
 			switch (reply) {
 				case "1":
 					MODE.pro = false;
@@ -1837,14 +1837,14 @@ you can make a door also an orc that blocks the road
 		return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server Ben can't serve me my favourite cake.`;
 	}
 
-	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach Norden geht über Straße mit Ampel in den Dschungel, </br>nach Sueden geht es zum Strand.${EN}You are in a small market place in the city. </br>To the north, there is a road with traffic lights leading into the jungle, </br>to the south, there is the beach.`)
+	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach Norden geht es über Straße mit Ampel in den Dschungel, </br>nach Sueden geht es zum Strand.${EN}You are in a small market place in the city. </br>To the north, there is a road with traffic lights leading into the jungle, </br>to the south, there is the beach.`)
 	scene5.south = scene3;
 	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}ein Verkäufer${EN}a seller`);
 	scene5.insert(verkaeufer);
 	verkaeufer.dialog = async function* () {
 		return T`${DE}Hey komm mal her zu mir! </br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!${EN}Hey come here to me! </br>Here you will find souvenirs for every taste! Everyone will be happy with me!`;
 	}
-	let tratschtante = new Person(T`${DE}Tratschtante${EN}Tattletale`, T`${DE}eine Tratschtante${EN}a tattletale`);
+	let tratschtante = new Person([T`${DE}Tratschtante${EN}Tattletale`,T`${DE}Tratsch Tante`], T`${DE}eine Tratschtante${EN}a tattletale`);
 	scene5.insert(tratschtante);
 	tratschtante.dialog = async function* () {
 		return T`${DE}Psst, hör mal, ich muss dir was erzählen. </br>Der Verkäufer da hinten verlangt bei Touristen </br>den dreifachen Preis! </br>Lass dich nicht übers Ohr hauen!${EN}Shh, listen, I have something to tell you. </br>The seller back there charges tourists </br>three times the price! </br>Don't let yourself be taken for a ride!`;
@@ -1852,7 +1852,7 @@ you can make a door also an orc that blocks the road
 	let kuenstler = new Person(T`${DE}Künstler${EN}Artist`, T`${DE}ein Künstler${EN}an artist`);
 	scene5.insert(kuenstler);
 	kuenstler.dialog = async function* () {
-		return T`${DE}Für dieses Bild werde ich richtig reich. </br>Hm, soll eine Million Taler verlangen. </br>Nee, lieber 2. Oder doch 3 Millionen?${EN}For this picture I'll be really rich. </br>Hm, should ask for a million thalers. </br>No, rather 2. Or 3 million?`;
+		return T`${DE}Für dieses Bild werde ich richtig reich. </br>Hm, soll ich eine Million Taler verlangen. </br>Nee, lieber 2. Oder doch 3 Millionen?${EN}For this picture I'll be really rich. </br>Hm, should I ask for a million thalers. </br>No, rather 2. Or 3 million?`;
 	}
 	let scene6 = new Scene(T`${DE}Dschungel${EN}Jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel. </br>Nach Norden geht es zu einer Lichtung, </br>nach Sueden geht es zur Stadt </br>und im Westen liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle. </br>To the north is a clearing, </br>to the south is the town </br>and to the west is the entrance to the indigenous village.`)
 	let kaputteAmpel = new Door(T`${DE}Ampel${EN}traffic light`, T`${DE}Ein eine kaputte Ampel.${EN}A broken traffic-light.`, { blocking: true, usable: true, speakable: true, locked: true });
@@ -2740,95 +2740,97 @@ you can make a door also an orc that blocks the road
 				 Commands.dospeachrecog=true;
 				 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 				// setup SpeechRecognation
-				if(!Commands.recognition) Commands.recognition= new SpeechRecognition();
-				Commands.recognition.interimResults = true;
-				Commands.recognition.lang = 	(MODE.lang == EN?'en-US':'de-DE');
-				Commands.recognition.maxAlternatives =10;
+				if(!Commands.recognition){
+					 Commands.recognition= new SpeechRecognition();
+					Commands.recognition.interimResults = true;
+					Commands.recognition.lang = 	(MODE.lang == EN?'en-US':'de-DE');
+					Commands.recognition.maxAlternatives =10;
 
-				//https://www.w3.org/TR/jsgf/
-				//const grammar = '#JSGF V1.0; grammar colors; public <color> = aqua | azure | beige | bisque | black | blue | brown | chocolate | coral | crimson | cyan | fuchsia | ghostwhite | gold | goldenrod | gray | green | indigo | ivory | khaki | lavender | lime | linen | magenta | maroon | moccasin | navy | olive | orange | orchid | peru | pink | plum | purple | red | salmon | sienna | silver | snow | tan | teal | thistle | tomato | turquoise | violet | white | yellow ;'
-				//window.SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
-				//const speechRecognitionList = new SpeechGrammarList();
-				//speechRecognitionList.addFromString(grammar, 1);
-				//Commands.recognition.grammars = speechRecognitionList;
+					//https://www.w3.org/TR/jsgf/
+					//const grammar = '#JSGF V1.0; grammar colors; public <color> = aqua | azure | beige | bisque | black | blue | brown | chocolate | coral | crimson | cyan | fuchsia | ghostwhite | gold | goldenrod | gray | green | indigo | ivory | khaki | lavender | lime | linen | magenta | maroon | moccasin | navy | olive | orange | orchid | peru | pink | plum | purple | red | salmon | sienna | silver | snow | tan | teal | thistle | tomato | turquoise | violet | white | yellow ;'
+					//window.SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
+					//const speechRecognitionList = new SpeechGrammarList();
+					//speechRecognitionList.addFromString(grammar, 1);
+					//Commands.recognition.grammars = speechRecognitionList;
 
 
-				//
-				// waiting for speech results
-				Commands.recognition.addEventListener('result', async (event) => {
-					
-					const transcript = event.results[0][0].transcript;
-					console.log(transcript)
-					// check if the voice input has ended
-					
-					if(event.results[0].isFinal) {
-						let answer="";
-						let found=false;
-						let cmd="";
-						for(let a=0;a<event.results[0].length;++a) {
-							cmd=event.results[0][a].transcript;
-							let intermediateanswer=await Commands.execute(cmd,true);
-							if(intermediateanswer!="TRYOTHERPOSSIBILITY"){
-								answer=intermediateanswer;
-								found=true;
-								break;
+					//
+					// waiting for speech results
+					Commands.recognition.addEventListener('result', async (event) => {
+						
+						const transcript = event.results[0][0].transcript;
+						console.log(transcript)
+						// check if the voice input has ended
+						
+						if(event.results[0].isFinal) {
+							let answer="";
+							let found=false;
+							let cmd="";
+							for(let a=0;a<event.results[0].length;++a) {
+								cmd=event.results[0][a].transcript;
+								let intermediateanswer=await Commands.execute(cmd,true);
+								if(intermediateanswer!="TRYOTHERPOSSIBILITY"){
+									answer=intermediateanswer;
+									found=true;
+									break;
+								}
+								console.log("!!!!!"+a+event.results[0][a].transcript)
 							}
-							console.log("!!!!!"+a+event.results[0][a].transcript)
-						}
-						if(!found) {
-							cmd=event.results[0][0].transcript;
-							answer=await Commands.execute(cmd,false);
-						}
-					//	console.log(transcript);
+							if(!found) {
+								cmd=event.results[0][0].transcript;
+								answer=await Commands.execute(cmd,false);
+							}
+						//	console.log(transcript);
 
-						
-						lastinput = cmd;
-						let p = document.createElement('p');
-						p.innerHTML = cmd;
-						p.className = 'command';
-						story.appendChild(p);
+							
+							lastinput = cmd;
+							let p = document.createElement('p');
+							p.innerHTML = cmd;
+							p.className = 'command';
+							story.appendChild(p);
 
-						
-						let p2 = document.createElement('p');
-						p2.innerHTML = answer;
-						story.appendChild(p2);
-						inp.value = '';
-						story.scrollTop = story.scrollHeight;//- story.offsetHeight;
+							
+							let p2 = document.createElement('p');
+							p2.innerHTML = answer;
+							story.appendChild(p2);
+							inp.value = '';
+							story.scrollTop = story.scrollHeight;//- story.offsetHeight;
 
-						setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
-						let dump = Obj.dump();
-						localStorage.setItem("current", dump);
-						document.getElementById("inp").disabled = false
-						document.getElementById("inp").focus();
-						Commands.dospeachrecog=false;
-						Commands.recognition.abort();
-						var msg = new SpeechSynthesisUtterance();
-						msg.text = answer.toString().replace( /(<([^>]+)>)/ig, '').replace("&#x26AC;","")
-						msg.lang = 	(MODE.lang == EN?'en-US':'de-DE');
-						msg.volume = 1; // 0 to 1
-						msg.rate = 1; // 0.1 to 10
-						msg.pitch = 2; //0 to 2
-						window.speechSynthesis.speak(msg);
-					
-						msg.onend = function(e){
-							Commands.dospeachrecog=true;
-							Commands.recognition.start();//function(e) {
+							setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
+							let dump = Obj.dump();
+							localStorage.setItem("current", dump);
+							document.getElementById("inp").disabled = false
+							document.getElementById("inp").focus();
+							Commands.dospeachrecog=false;
+							Commands.recognition.abort();
+							var msg = new SpeechSynthesisUtterance();
+							msg.text = answer.toString().replace( /(<([^>]+)>)/ig, '').replace("&#x26AC;","")
+							msg.lang = 	(MODE.lang == EN?'en-US':'de-DE');
+							msg.volume = 1; // 0 to 1
+							msg.rate = 1; // 0.1 to 10
+							msg.pitch = 2; //0 to 2
+							window.speechSynthesis.speak(msg);
+						
+							msg.onend = function(e){
+								Commands.dospeachrecog=true;
+								Commands.recognition.start();//function(e) {
+							}
+							//    document.querySelector('#output').innerText = (event.elapsedTime/1000) + ' Sek';
+							//};
+							
 						}
-						//    document.querySelector('#output').innerText = (event.elapsedTime/1000) + ' Sek';
-						//};
 						
-					}
-					
-				});
-				Commands.recognition.addEventListener('end', ()=>{
-					if(Commands.dospeachrecog) Commands.recognition.start()
-				});
+					});
+					Commands.recognition.addEventListener('end', ()=>{
+						if(Commands.dospeachrecog) Commands.recognition.start()
+					});
+				}
 				Commands.recognition.start();
 				return true;
 			}
 			else{ 
 				Commands.dospeachrecog=false;
-				if(Commands.recognition)  Commands.recognition.stop();
+				if(Commands.recognition)  Commands.recognition.abort();
 				return true;
 			}
 		}
