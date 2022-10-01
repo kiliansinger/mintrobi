@@ -2459,6 +2459,7 @@ you can make a door also an orc that blocks the road
 			if(Commands.dospeachrecog){  
 				Commands.recognition.stop();
 				Commands.dospeachrecog=false;
+				Commands.forward_command = T`${DE}sp an${EN}sp on`.toString();
 			}
 			return true;
 		}
@@ -2470,6 +2471,7 @@ you can make a door also an orc that blocks the road
 			if(Commands.dospeachrecog){  
 				Commands.recognition.stop();
 				Commands.dospeachrecog=false;
+				Commands.forward_command = T`${DE}sp an${EN}sp on`.toString();
 			}
 			return true;
 		}
@@ -2725,6 +2727,7 @@ you can make a door also an orc that blocks the road
 		static dospeachrecog=false;
 
 		static recognition=null;
+		static synthesis=null;
 		@when(T`${DE}spracherkennung${EN}speachrecognition${ALL} ONOFF`)
 		@when("sp ONOFF")
 		static speachrecog({ onoff }){
@@ -2771,7 +2774,18 @@ you can make a door also an orc that blocks the road
 								console.log("!!!!!"+a+event.results[0][a].transcript)
 							}
 							if(!found) {
-								cmd=event.results[0][0].transcript;
+								cmd=event.results[0][0].transcript
+								.replaceAll(T`${DE}eins${EN}one`,"1")
+								.replaceAll(T`${DE}zwei${EN}two`,"2")
+								.replaceAll(T`${DE}drei${EN}three`,"3")
+								.replaceAll(T`${DE}vier${EN}four`,"4")
+								.replaceAll(T`${DE}fünf${EN}five`,"5")
+								.replaceAll(T`${DE}sechs${EN}six`,"6")
+								.replaceAll(T`${DE}sieben${EN}seven`,"7")
+								.replaceAll(T`${DE}acht${EN}eight`,"8")
+								.replaceAll(T`${DE}neuen${EN}nine`,"9")
+								.replaceAll(T`${DE}zehn${EN}ten`,"10")
+
 								answer=await Commands.execute(cmd,false);
 							}
 						//	console.log(transcript);
@@ -2797,15 +2811,15 @@ you can make a door also an orc that blocks the road
 							document.getElementById("inp").focus();
 							Commands.dospeachrecog=false;
 							Commands.recognition.abort();
-							var msg = new SpeechSynthesisUtterance();
-							msg.text = answer.toString().replace( /(<([^>]+)>)/ig, '').replaceAll("&#x26AC;","-")
-							msg.lang = 	(MODE.lang == EN?'en-US':'de-DE');
-							msg.volume = 1; // 0 to 1
-							msg.rate = 1; // 0.1 to 10
-							msg.pitch = 1; //0 to 2
-							window.speechSynthesis.speak(msg);
+							Commands.synthesis = new SpeechSynthesisUtterance();
+							Commands.synthesis.text = answer.toString().replace( /(<([^>]+)>)/ig, '').replaceAll("&#x26AC;","-")
+							Commands.synthesis.lang = 	(MODE.lang == EN?'en-US':'de-DE');
+							Commands.synthesis.volume = 1; // 0 to 1
+							Commands.synthesis.rate = 1; // 0.1 to 10
+							Commands.synthesis.pitch = 1; //0 to 2
+							window.speechSynthesis.speak(Commands.synthesis);
 						
-							msg.onend = function(e){
+							Commands.synthesis.onend = function(e){
 								Commands.dospeachrecog=true;
 								Commands.recognition.start();//function(e) {
 							}
@@ -2819,13 +2833,13 @@ you can make a door also an orc that blocks the road
 						if(Commands.dospeachrecog) Commands.recognition.start()
 					});
 				}
-				Commands.recognition.start();
+				if(Commands.recognition)try{  Commands.recognition.start();}catch(e){}
 				print(T`${DE}Spracherkennung aktiviert! Anstatt ENTER drücken kannst du immer enter sagen.${EN}Speech recognition activated! Instead of pressing ENTER, you can always say enter.`)
 				return true;
 			}
 			else{ 
 				Commands.dospeachrecog=false;
-				if(Commands.recognition)  Commands.recognition.abort();
+				if(Commands.recognition)try{  Commands.recognition.abort();}catch(e){}
 				print(T`${DE}Spracherkennung deaktiviert!${EN}Speech recognition deactivated!`)
 				return true;
 			}
@@ -2893,6 +2907,9 @@ you can make a door also an orc that blocks the road
 			setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 3000);
 			document.getElementById("inp").addEventListener("keydown", async (e) => {
 				if (event.keyCode == 13) {
+					if(window.speechSynthesis){
+						window.speechSynthesis.cancel();
+					}
 					document.getElementById("inp").disabled = true;
 
 					let cmd = inp.value;
