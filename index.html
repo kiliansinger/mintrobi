@@ -705,16 +705,12 @@ you can make a door also an orc that blocks the road
 	// https://lancaster-university.github.io/microbit-docs/resources/bluetooth/bluetooth_profile.html
 	// An implementation of Nordic Semicondutor's UART/Serial Port Emulation over Bluetooth low energy
 	const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-
 	// Allows the micro:bit to transmit a byte array
 	const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
-
 	// Allows a connected client to send a byte array
 	const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
-
 	let uBitDevice;
 	let rxCharacteristic;
-
 	async function microBitWriteBluetooth(string) {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if (!isChrome) {
@@ -724,7 +720,6 @@ you can make a door also an orc that blocks the road
 		if (!rxCharacteristic) {
 			return;
 		}
-
 		try {
 			let encoder = new TextEncoder();
 			rxCharacteristic.writeValue(encoder.encode(string));
@@ -733,7 +728,6 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	let bluetooth = false;
-
 	async function microBitConnect(name) {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if (!isChrome) {
@@ -744,9 +738,6 @@ you can make a door also an orc that blocks the road
 		try {
 			console.log("Requesting Bluetooth Device...");
 			//TODO use navigator.bluetooth.getDevices similar to usb uart
-
-
-
 			uBitDevice = await navigator.bluetooth.requestDevice({
 				filters: [{ namePrefix: "BBC micro:bit" + (name == "" ? "" : " [" + name + "]") }],
 				optionalServices: [UART_SERVICE_UUID]
@@ -784,25 +775,17 @@ you can make a door also an orc that blocks the road
 		bluetooth = false;
 		// Object event.target is Bluetooth Device getting disconnected.
 		console.log('Bluetooth Device disonnected');
-
-
-
 	}
-
 	function microBitDisconnect() {
 		if (!uBitDevice) {
 			return;
 		}
-
 		if (uBitDevice.gatt.connected) {
 			uBitDevice.gatt.disconnect();
 			console.log("Disconnected");
 		}
 	}
-
 	let microBitReceivedMessageCB;
-
-
 	// A function that returns a promise to resolve into the data //fetched from the API or an error
 	let microBitReadBluetooth = () => {
 		return new Promise(
@@ -812,10 +795,6 @@ you can make a door also an orc that blocks the road
 			}
 		)
 	}
-
-
-
-
 	function onTxCharacteristicValueChanged(event) {
 		let receivedData = [];
 		for (var i = 0; i < event.target.value.byteLength; i++) {
@@ -890,8 +869,6 @@ you can make a door also an orc that blocks the road
 
 		}
 	}
-
-
 	async function readMicrobit() {
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if (!isChrome) {
@@ -1250,8 +1227,6 @@ you can make a door also an orc that blocks the road
 			return this.toString()
 		}
 	}
-
-
 	function T(...args) {
 		return new TData(args);
 	}
@@ -1347,7 +1322,6 @@ you can make a door also an orc that blocks the road
 		}
 
 	}
-
 	class Scene extends Thing {//is not takeable
 		constructor(titel, description, { openable = false, opensoninspection = false, closable = false, open = true, visible = true } = {}) {
 			super(titel, description);
@@ -1447,7 +1421,6 @@ you can make a door also an orc that blocks the road
 			this.applicable = applicable;
 		}
 	}
-
 	class Person extends Thing {
 		position = null;
 		constructor(titel, description, { speakable = true, opensoninspection = false, openable = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false } = {}) {
@@ -1587,14 +1560,8 @@ you can make a door also an orc that blocks the road
 	}
 	var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 	///////////////////////////////////////////////////////
-
-	//:en?"You are interested in science and want to explore the world.":
-	//uk?"Ти цікавишся наукою і хочеш пізнавати світ.":"" +
-	//the text needs to be global such that it can be saved currently
-
 	let ich = new Person(T`${DE}Kai${EN}Kai`, T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.${EN}You are interested in science and want to explore the world.${DE} </br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst. </br>${EN} </br>You can always enter <em style='color:#0f0;'>help</em> when you are stuck. </br>`
 		, { open: true });
-
 	var Pong = null;
 	let computer = new Person(T`${DE}Computer${EN}Computer`, T`${DE}Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.${EN}Computer with Pong game. Try typing: <en style='color:#0f0;'>use computer</em>.`, { usable: true });
 	var pongcanv = null;
@@ -1604,42 +1571,34 @@ you can make a door also an orc that blocks the road
 	}
 	computer.dialog = async function* () {
 		if (MODE.pro) return T`${DE}Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
-
 		yield (!isChrome ? T`<em style='color:#faa;'>${DE}Achtung damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN}Attention: For everything to work, you should start the game with a modern Chrome/Edge browser!${ALL}</em> </br>` : "") +
 			T`${DE}Baue eine Steuerung des Spiels. Hier ist der Code:${EN}Build a control of the game. Here is the code: ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_XUx3dT0fdM2P'>Code</a>. </br>${DE}Dann must Du das Programm auf das Gehirn von Mintrobi hochgeladen. </br>${EN}Then you have to upload the programme to Mintrobi's brain. </br>${DE}Falls Du in Makecode verbunden bist, must du die Verbindung nach dem Hochladen des Programms erst noch trennen </br>${EN}If you are connected in Makecode, you must first disconnect after uploading the programme.${ALL}<img width='20%' src='unpair.gif'>${DE}Drücke [ENTER] wenn du soweit bist.${EN}Press [ENTER] when you are ready.`
-
 		yield T`${DE}Jetzt musst du nur noch wie folgt verkabeln:<img width='50%' src='poti.png'> </br>Drücke [ENTER] wenn du soweit bist.${EN}Now you just have to wire it as follows:<img width='50%' src='poti.png'> </br>Press [ENTER] when you are ready.`;
 		while (true) {
-
 			if (pongcanv != null) pongcanv.remove();
-
 			pongcanv = document.createElement('canvas');
 			story.appendChild(pongcanv);
 			story.scrollTop = story.scrollHeight - story.clientHeight
-
 			Pong = Object.assign({}, Game);
 			Pong.initialize();
-
 			let nochmal = yield T`${DE}Nochmal${EN}Again${ALL}? <p style='color:#0f0;'>1 - ${DE}Ja${EN}Yes${ALL} </br>2 - ${DE}Nein${EN}No${ALL}</p>`
 			if (nochmal != "1") return "Ok.";
 		}
 	}
 	let omazuhause = new Scene(T`${DE}Omas Haus${EN}Grandma's house`, T`<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>${DE}Du bist im Haus deiner Grosseltern. </br>${EN}You are at your grandmother's house. </br>${DE}Deine Oma steht im Wohnzimmer. </br>${EN}Your granny is standing in the living room. </br>${DE}Der Ausgang zum Strand ist westlich von dir. </br>${EN}The exit to the beach is to the west of you. </br>${DE}Das Spiel wurde unterstützt durch ${EN}The game was supported by ${ALL}<a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a> </br>${DE}und dem ${EN}and the ${ALL}<a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.`);
-	let oma = new Person([T`${DE}Oma${EN}Granny`, T`${DE}Großmutter${EN}Grandmother`,T`${DE}Omi`], T`${DE}Deine liebe Oma.${EN}Your dear Grandmother.`);
+	let oma = new Person([T`${DE}Oma${EN}Granny`, T`${DE}Großmutter${EN}Grandmother`, T`${DE}Omi`], T`${DE}Deine liebe Oma.${EN}Your dear Grandmother.`);
 	omazuhause.insert(oma);
 	omazuhause.insert(computer);
-
 	ich.position = omazuhause;
-
 	oma.dialog = async function* () {
-		while(true){
+		while (true) {
 			let reply = yield (!isChrome && !MODE.pro ? T`<em style='color:#faa;'>${DE}Achtung: Damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN} </br>Attention: For everything to work, you should start the game with a modern Chrome/Edge browser! ${DE}Falls du <em style='color:#0f0;'>4</em> wählst ist der Browser egal!</em> </br>${EN}In case you choose <em style='color:#0f0;'>4</em>, then the choice of browser is irrelevant!</em> </br>` : "") +
 				T`${DE}Kai, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi schon bestellt und zusammengebaut haben. ${EN}Kai, you have finally woken up! I don't even know if we have already ordered and assembled your birthday present, the Mintrobi. ${ALL}<p style='color:#0f0;'>${DE}1 - Ja, wir haben schon alles bestellt und zusammengebaut. </br>${EN}1 - Yes, we have already ordered and assembled everything. </br>${DE}2 - Ich muss ihn noch zusammenbauen! </br>${EN}2 - I still have to assemble it! </br>${DE}3 - Wir müssen ihn noch bestellen! </br>${EN}3 - We still have to order it! </br>${DE}4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram! </br>${EN}4 - Mintrobi? Piece of cake, I want to become a C++ programming expert without this kid stuff! </br>${DE}5 - Ich geh mal spazieren!${EN}5 - I'll go for a walk!${ALL}</p>`
 			switch (reply) {
 				case "1":
 					MODE.pro = false;
-					let reply2="";
-					while (reply2 != 7){
+					let reply2 = "";
+					while (reply2 != 7) {
 						reply2 = yield (reply2 == "" ? T`${DE}Das Gehirn von dem Mintrobi ist der kleine farbige Chip. Den müssen wir erst noch programmieren. Hier ein paar Übungen: ${EN}The brain of the Mintrobi is the little coloured chip. We still have to programme it. Here are a few exercises: ${ALL}<p style='color:#0f0;'>` : T`${DE}Übung macht den Meister${EN}Practice makes perfect${ALL}: <p style='color:#0f0;'>`) +
 							T`1 - <a target='_blank' href='https://makecode.microbit.org/#pub:_VyuiWdV2LhE8'>${DE}Mache einen Smiley${EN}Make a smiley${ALL}</a> </br>2 - <a target='_blank' href='https://makecode.microbit.org/#pub:_C90eVc79ADWv'>${DE}Mache kleinen Film${EN}Make a small movie${ALL}</a> </br>3 - <a target='_blank' href='https://makecode.microbit.org/#pub:_HufEVJRw52vP'>${DE}Mache Geräusche${EN}Make noise${ALL}</a> </br>4 - <a target='_blank' href='https://makecode.microbit.org/#pub:_itjWEp51qUU7'>${DE}Mache ein Feuerknopf hinzu${EN}Add a fire button${ALL}</a> </br>5 - <a target='_blank' href='https://makecode.microbit.org/#pub:_8muMDLDucUxu'>${DE}Spiele die Tonleiter${EN}Play the scale${ALL}</a> </br>6 - <a target='_blank' href='https://makecode.microbit.org/#pub:_gma3HXbP56wz'>${DE}Zeige deinen Namen${EN}Show your name${ALL}</a> </br>7 - <a target='_blank' href='https://makecode.microbit.org/#pub:_2YsaPx2FrPdt'>${DE}Mache einen Zahlenwürfel${EN}Make a number dice${ALL}</a> </br>8 - <a target='_blank' href='https://makecode.microbit.org/#pub:_4XRfVyFpzbV6'>${DE}Mache einen Würfel mit Augen${EN}Make a dice with spots${ALL}</a> </br>9 - ${DE}Ich will keine Übungen mehr machen sondern mal was richtiges Spielen.${EN}I don't want to do any more exercises, I want to play something real for a change.${ALL}</p>`
 						switch (reply2) {
@@ -1662,12 +1621,10 @@ you can make a door also an orc that blocks the road
 							case "9":
 								return T`${DE}Ah dann kannst Du ja mal versuchen den Computer zu reparieren. Ich würde gerne mal wieder Computer spielen. Was war noch? Ah, Opa hat nach dir gefragt. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.${EN}Ah, then you can try to repair the computer. I'd like to play computer games again. What else? Ah, grandpa was asking about you. He found something mysterious that he wants to show you.`;
 							default:
-								Commands.understood=false;
+								Commands.understood = false;
 								continue;
-								//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 						}
 					}
-
 					break;
 				case "2":
 					MODE.pro = false;
@@ -1681,22 +1638,20 @@ you can make a door also an orc that blocks the road
 				case "5":
 					return T`${DE}Tschüß${EN}Bye!`;
 				default:
-					Commands.understood=false;
+					Commands.understood = false;
 					continue;
-					//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
 		}
 	}
-
 	let strand = new Scene(T`${DE}Strand${EN}Beach`, T`<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>${DE}Du stehst am Strand vorm Haus deiner Grosseltern, </br>an dem sich ein kleiner Steg befindet. </br>${EN}You are standing on the beach in front of your grandparents' house, </br>where there is a small walkway. </br>${DE}Dort sitzt dein Opa und angelt. </br>Nach Osten geht es in das Haus deiner Grosseltern, im Westen geht der Strand weiter. </br>${EN}That's where your grandfather sits and fishes. </br>To the east, you can go to your grandparents' house, </br>to the west, the beach continues.`)
 	strand.east = omazuhause;
 	let bottlemessage = new Item(T`${DE}Flaschenpost${EN}bottle message`, T`<img src='bottlemessage.png'>${DE}eine verschlossene Flaschenpost${EN}a sealed message in a bottle`);
-	let opa = new Person([T`${DE}Opa${EN}Grandpa`,T`${DE}Großvater${EN}Grandfather`], T`${DE}Dein lieber Opa.${EN}Your dear grandpa.`);
+	let opa = new Person([T`${DE}Opa${EN}Grandpa`, T`${DE}Großvater${EN}Grandfather`], T`${DE}Dein lieber Opa.${EN}Your dear grandpa.`);
 	strand.insert(opa);
 	opa.insert(bottlemessage);
 	opa.dialog = async function* () {
 		if (this.has(bottlemessage)) {
-			while(true){
+			while (true) {
 				let reply = yield T`${DE}Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.${EN}Hello Kai did you sleep well? Well, it's not that important, I fished a funny message out of the sea. Here, take a look.${ALL} <p style='color:#0f0;'>${DE}1 - Och ne, dafür bin ich jetzt noch viel zu müde. </br>${EN}1 - Oh no, I'm much too tired for that now. </br>${DE}2 - Echt???! Zeig mal her was du gefunden hast.${EN}2 - Really???! Let me see what you found.${ALL}</p>`
 				switch (reply) {
 					case "1":
@@ -1707,9 +1662,8 @@ you can make a door also an orc that blocks the road
 						this.open = false;
 						return T`${DE}Hier eine geheimnisvolle Flasche ich mache sie gleich in deinen Rucksack${EN}Here's a mystery bottle I'll put in your backpack right away${ALL} (<em style='color:#0f0;'>${DE}schaue in rucksack${EN}look in backpack${ALL}</em>, <em style='color:#0f0;'>${DE}betrachte flaschenpost${EN}look at bottle message${ALL}</em>), </br>${DE}aber ich bekomme sie leider einfach nicht auf. </br>${EN}but unfortunately I just can't get it open. </br>${DE}Du brauchst einen Flaschenöffner, vielleicht findest du ja einen. </br>${EN}You'll need a bottle opener, maybe you can find one. </br>` + bottlemessage.describe()
 					default:
-						Commands.understood=false;
+						Commands.understood = false;
 						continue;
-						//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 				}
 			}
 		} else {
@@ -1737,7 +1691,6 @@ you can make a door also an orc that blocks the road
 	junge.dialog = async function* () {
 		return T`${DE}Hey schau mal, </br>diese Sandburg habe ich ganz alleine gebaut!${EN}Hey look, </br>I built this sandcastle all by myself!`;
 	}
-
 	let scene4 = new Scene(T`${DE}Strandbar${EN}Beach-bar`, "")
 	scene4.east = scene3;
 	let seetang = new Door(T`${DE}Seetang${EN}Seaweed`, T`${DE}Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!${EN}A pile of smelly seaweed. Mmm, yam, yam, I love sushi rolls!`, { blocking: true, usable: true, locked: true })
@@ -1756,24 +1709,20 @@ you can make a door also an orc that blocks the road
 	}
 	scene4.northblock = seetang;
 	scene4.insert(seetang);
-
 	scene4.describe = function () {
 		if (seetang.blocking) {
 			return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>${DE}Du stehst in einer offenen Strandbar mit einigen Leuten. </br>Nach Osten geht es zum Strand.${EN}You are standing in an open beach bar with a few people. </br>To the east you can go to the beach.`;
 		}
 		else return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>${DE}Oh da ist ja eine geheime Höhle dahinter im Norden. Was da wohl drin ist? </br>${EN}Ooh, there's a secret cave behind there in the north. I wonder what's in there? </br>`
 	}
-
 	let barmann = new Person(T`${DE}Barmann${EN}Bartender`, T`${DE}ein Barmann${EN}a bartender`);
 	scene4.insert(barmann);
-
 	barmann.tricked = false;
-
 	barmann.dialog = async function* () {
 		if (Commands.actor.has(tortenheber) || barmann.tricked) {
 			if (seetang.blocking) {
 				let reply;
-				while(true){
+				while (true) {
 					reply = yield T`${DE}Dankeschön! Dankeschön! Das ist echt mega, dass du meinen Tortenheber gefunden hast. </br>Ich dachte schon den sehe ich nie wieder. </br>Wenn du schonmal hier bist kannst du mir kurz helfen?${EN}Thanks a lot! That's really cool that you found my cake server. </br>I thought I'd never see it again. </br>While you're here can you give me a hand?${ALL} <p style='color:#0f0;'>${DE}1 - Ja na klar! Was muss ich tun? </br>${EN}1 - Of course! What do I need to do? </br>${DE}2 - Nein, ich habe gerade keine Lust.${EN}2 - No, I don't feel like it right now.${ALL}</p>`;
 					switch (reply) {
 						case "1":
@@ -1796,9 +1745,8 @@ you can make a door also an orc that blocks the road
 							return T`${DE}Das ist Schade, aber bist du dir sicher? </br>Als Gegenleistung öffne ich dir auch deine Flasche.${EN}That's a pity, but are you sure? </br>In return, I'll also open your bottle.`;
 							break;
 						default:
-							Commands.understood=false;
+							Commands.understood = false;
 							continue;
-							//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 					}
 				}
 			}
@@ -1807,7 +1755,7 @@ you can make a door also an orc that blocks the road
 			}
 		}
 		else {
-			while(true){
+			while (true) {
 				let reply = yield T`${DE}Ach in dieser Bar geht aber auch echt alles verloren, </br>zuerst die Mini-Schirmchen, dann die Orangen und jetzt auch noch mein Tortenheber. </br>Oh Entschuldigung Kumpel, ich habe dich nicht gesehen. </br>Kann ich dir helfen? <p style='color:#0f0;'>1 - Nein danke, mir geht es bestens. </br>2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>${EN}Oh, everything gets lost in this bar, </br>first the mini umbrellas, then the oranges and now my cake server. </br>Oh sorry buddy, I didn't see you. </br>Can I help you? <p style='color:#0f0;'>1 - No thanks, I'm fine. </br>2 - Yes, can you help me open this bottle?</p>`;
 				switch (reply) {
 					case "1":
@@ -1818,20 +1766,17 @@ you can make a door also an orc that blocks the road
 						barmann.tricked = true;
 						return T`${DE}Oh du bist der Programmierer. Dann geht das auch ohne Tortenheber!${EN}Oh, you're the programmer. Then you can do it without a cake server!`
 					default:
-						Commands.understood=false;
+						Commands.understood = false;
 						continue;
-						//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 				}
 			}
 		}
 	}
-
-	let tortenliebhaber = new Person([T`${DE}Tortenliebhaber${EN}cake lover`,T`${DE}Torten Liebhaber`], T`${DE}ein Tortenliebhaber${EN}a cakelover`);
+	let tortenliebhaber = new Person([T`${DE}Tortenliebhaber${EN}cake lover`, T`${DE}Torten Liebhaber`], T`${DE}ein Tortenliebhaber${EN}a cakelover`);
 	scene4.insert(tortenliebhaber);
 	tortenliebhaber.dialog = async function* () {
 		return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server, Ben can't serve me my favourite cake.`;
 	}
-
 	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach Norden geht es über Straße mit Ampel in den Dschungel, </br>nach Süden geht es zum Strand.${EN}You are in a small market place in the city. </br>To the north, there is a road with traffic lights leading into the jungle, </br>to the south, there is the beach.`)
 	scene5.south = scene3;
 	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}ein Verkäufer${EN}a seller`);
@@ -1839,7 +1784,7 @@ you can make a door also an orc that blocks the road
 	verkaeufer.dialog = async function* () {
 		return T`${DE}Hey komm mal her zu mir! </br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!${EN}Hey come here to me! </br>Here you will find souvenirs for every taste! Everyone will be happy with me!`;
 	}
-	let tratschtante = new Person([T`${DE}Tratschtante${EN}Tattletale`,T`${DE}Tratsch Tante`], T`${DE}eine Tratschtante${EN}a tattletale`);
+	let tratschtante = new Person([T`${DE}Tratschtante${EN}Tattletale`, T`${DE}Tratsch Tante`], T`${DE}eine Tratschtante${EN}a tattletale`);
 	scene5.insert(tratschtante);
 	tratschtante.dialog = async function* () {
 		return T`${DE}Psst, hör mal, ich muss dir was erzählen. </br>Der Verkäufer da hinten verlangt bei Touristen </br>den dreifachen Preis! </br>Lass dich nicht übers Ohr hauen!${EN}Shh, listen, I have something to tell you. </br>The seller back there charges tourists </br>three times the price! </br>Don't let yourself be taken for a ride!`;
@@ -1856,21 +1801,19 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 	kaputteAmpel.blockingvar = true;
-
 	Object.defineProperty(kaputteAmpel, 'blocking', {
 		get() { return MODE.pro ? false : this.blockingvar; },
 		set(val) { this.blockingvar = val; },
 		enumerable: true,
 		configurable: true
 	});
-
 	kaputteAmpel.dialog = async function* () {
 		if (MODE.pro) return T`${DE}Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		if (!isChrome) {
 			return T`<em style='color:#faa;'>${DE}Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!${EN}You need to use a modern Chrome/Edge browser for this to work!${ALL}</em>\n`;
 		}
-		while(true){
+		while (true) {
 			const reply = yield T`${DE}Die Ampel muss repariert werden. Verwende dazu das Gehirn von Mintrobi. </br>Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken. <p style='color:#0f0;'>1 - Ok es ist alles verbunden! </br>2 - Ich wollte eigentlich gar nicht über die Ampel. </p>${EN}The traffic light needs to be repaired. Use the brain from Mintrobi. </br>Connect it to your computer with the USB cable. The first time, you must now select the device in the dialogue and click on OK. <p style='color:#0f0;'>1 - Ok, everything is connected! </br> 2 - I didn't actually want to cross the traffic light.</p>`
 			switch (reply) {
 				case "1":
@@ -1893,7 +1836,7 @@ you can make a door also an orc that blocks the road
 									continue;
 								}
 								else if (val.startsWith("1")) {
-									while(true){
+									while (true) {
 										const reply3 = yield T`${DE}Jetzt ist noch die Auto-Ampel kaputt. Alle Lampen müssen ersetzt werden. Dazu musst du Pin 0 mit einem Beinchen des 56 Ohm Widerstands (grün blau schwarz gold braun) verbinden. </br>Der Widerstand ist wichtig, er schützt die Leuchtdiode, das ist wie ein Wasserhahn, den man nicht ganz Aufdreht, der reduziert den Strom. </br>An das andere Bein des widerstands kommt das lange Beinchen der roten  </br>Leuchtdiode. Leuchtdioden leuchten nur wenn man sie richtig herum anschließt. </br>Das kurze Beinchen, da ist auch eine Abflachung am Gehäuse der Leuchtdiode musst du dann mit GND verbinden.In gleicher Weise verfahre mit Pin 1 und der gelben Leuchtdiode und mit Pin 2 und der grünen Leuchtdiode. </br><img width='80%' src='ampel.png'><p style='color:#0f0;'>1 - Ok es ist alles verbunden! </br>2 - Ich wollte eigentlich gar nicht über die Ampel. </p>${EN}Now the traffic lights are broken. All lamps must be replaced. To do this, connect pin 0 to one leg of the 56 Ohm resistor (green blue black gold brown). </br>The resistor is important, it protects the light emitting diode, it's like a tap that you don't turn on all the way, it reduces the current. </br>The long leg of the red  </br>light-emitting diode is connected to the other leg of the resistor. Light-emitting diodes only light up if you connect them the right way round. </br>The short leg, there is also a flat on the housing of the light emitting diode, must then be connected to GND. Proceed in the same way with pin 1 and the yellow light emitting diode and with pin 2 and the green light emitting diode. </br><img width='80%' src='ampel.png'><p style='color:#0f0;'>1 - Ok, it is all connected! </br>2 - I didn't actually want to go through the traffic light.</p>`
 										switch (reply3) {
 											case "1":
@@ -1942,49 +1885,41 @@ you can make a door also an orc that blocks the road
 														case "3":
 															return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 														default:
-															Commands.understood=false;
+															Commands.understood = false;
 															continue;
-															//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 													}
 												}
 											case "2":
 												return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 											default:
-												Commands.understood=false;
+												Commands.understood = false;
 												continue;
-												//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
-
 										}
 									}
 								}
 							case "3":
 								return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 							default:
-								Commands.understood=false;
+								Commands.understood = false;
 								continue;
-								//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 						}
 					}
 				case "2":
 					return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 				default:
-					Commands.understood=false;
+					Commands.understood = false;
 					continue;
-					//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
 		}
 	}
-
 	let kaputteAmpel2 = new Door(T`${DE}Ampel${EN}traffic light`, T`${DE}Ein Ampel bei der wieder was kaputt ist.${EN}A traffic light where something is broken again.`, { blocking: true, usable: true, speakable: true, locked: true });
 	kaputteAmpel2.blockingvar = true;
-
 	Object.defineProperty(kaputteAmpel2, 'blocking', {
 		get() { return MODE.pro ? false : this.blockingvar; },
 		set(val) { this.blockingvar = val; },
 		enumerable: true,
 		configurable: true
 	});
-
 	kaputteAmpel2.use = function () {
 		Commands.forward_command = T`${DE}t ampel${EN}t traffic light`
 		return false;
@@ -2003,7 +1938,6 @@ you can make a door also an orc that blocks the road
 					continue;
 				case "2":
 					while (true) {
-
 						const reply4 = yield T`${DE}Jetzt musst Du noch den Code weiterschreiben. Die Ampel bekommt per usb die Zeichen: </br>${EN}Now you have to continue writing the code. The traffic light receives the characters via usb: </br>${DE}r1 für rotes Licht an </br>${EN}r1 for red light on </br>${DE}r0 für rotes Licht aus </br>${EN}r0 for red light off </br>${DE}g1 für grünes Licht an </br>${EN}g1 for green light on </br>${DE}g0 für grünes Licht aus </br>${EN}g0 for green light off </br>${DE}b1 für blaues Licht an </br>${EN}b1 for blue light on </br>${DE}b0 für blaues Licht aus </br>${EN}b0 for blue light off </br>${ALL} <p style='color:#0f0;'>${DE}1 - Ok, ich bin bereit zum Programmieren </br>${EN}1 - Ok, I am ready to program </br>${DE}2 - Programm ist fertig. Ich will die Farb-Ampel testen </br>${EN}2 - Programme is finished. I want to test the colour traffic light. </br>${DE}3 - Ich wollte eigentlich gar nicht über die Ampel.${EN}I didn't actually want to go through the traffic light.${ALL}</p>`;
 						let trick = false;
 						switch (reply4) {
@@ -2062,17 +1996,15 @@ you can make a door also an orc that blocks the road
 							case "3":
 								return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 							default:
-								Commands.understood=false;
+								Commands.understood = false;
 								continue;
-								//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 						}
 					}
 				case "3":
 					return T`${DE}Dann auf ein andermal!${EN}I'll see you around!`;
 				default:
-					Commands.understood=false;
+					Commands.understood = false;
 					continue;
-					//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
 			}
 		}
 	}
@@ -2086,15 +2018,12 @@ you can make a door also an orc that blocks the road
 	let kostuem = new Item(T`${DE}Kostüm${EN}Costume`, T`<img src='kostuem.png'>${DE}eine Kostüm${EN}a costume`, { open: true, applicable: true });
 	let Forscher = new Person(T`${DE}Forscher${EN}Scientist`, T`${DE}ein Forscher${EN}a scientist`);
 	scene7.insert(Forscher);
-
 	let sonnenuhranleitung = new Item(T`${DE}Sonnenuhranleitung${EN}Sundial plan`, T`${DE}Um das Spiel zu lösen musst Du dieses Projekt nicht unbedingt durchführen. </br>${EN}You don't have to do this project to solve the game. </br>${DE}Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen. </br>${EN}If you feel like it and it's sunny outside, make a sundial with Mintrobi's brain. All you need is a cotton bud. </br>${DE}Hier ist die ${EN}Here is the ${ALL}<a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>${DE}Anleitung${EN}Instruction${ALL}</a>.`)
-
 	scene7.insert(sonnenuhranleitung)
-
 	Forscher.insert(kostuem);
 	Forscher.dialog = async function* () {
 		if (this.has(kostuem)) {
-			while(true){
+			while (true) {
 				let reply = yield T`${DE}Hallo, guten Tag. ${EN}Hello, good day. ${ALL}<p style='color:#0f0;'>${DE}1 - Hallo, wer sind Sie denn? </br>${EN}1 - Hello, who are you? </br>${DE}2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>${EN}2 - How will I be let into the native tribe village?</p>`;
 				switch (reply) {
 					case "1":
@@ -2103,39 +2032,32 @@ you can make a door also an orc that blocks the road
 						this.open = true;
 						Commands.actor.take(kostuem);
 						this.open = false;
-						return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen. </br>Meine bisherigen Forschungen habe ich Beobachtungen </br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich </br>ueber den Zaun, der das Dorf umgibt spähen konnte. </br>Doch mit deiner Statur ist eventuell möglich dich als einer </br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest. </br>Hier ist das ${EN}I have not yet succeeded in gaining admittance. </br>I owe my research so far to observations </br>from high up in the treetops, from which I have been able </br>to peer over the fence surrounding the village. </br>But with your stature, it may be possible </br>to pass yourself off as one of their own if you disguise yourself accordingly. </br>Here is the ` + kostuem.describe()
+						return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen. </br>Meine bisherigen Forschungen habe ich Beobachtungen </br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich </br>über den Zaun, der das Dorf umgibt spähen konnte. </br>Doch mit deiner Statur ist eventuell möglich dich als einer </br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest. </br>Hier ist das ${EN}I have not yet succeeded in gaining admittance. </br>I owe my research so far to observations </br>from high up in the treetops, from which I have been able </br>to peer over the fence surrounding the village. </br>But with your stature, it may be possible </br>to pass yourself off as one of their own if you disguise yourself accordingly. </br>Here is the ` + kostuem.describe()
 					default:
-						Commands.understood=false;
-						continue;	
-						//return T`${DE}Ich habe das nicht ganz verstanden aber wir sehen uns sicher noch...${EN}I didn't quite get that but I'm sure I'll see you around...`
+						Commands.understood = false;
+						continue;
 				}
 			}
 		} else {
 			return T`${DE}Wissenschaft ist wunderbar!${EN}Science is wonderful!`;
 		}
-
 	}
 	Forscher.receiving = function (thing) {
 		print(T`${DE}Nein behalte das. Das ist für dich. </br>${EN}No, you keep that. This is for you. </br>`);
 		return false;
 	}
-
 	let scene8 = new Scene(T`${DE}Eingang zum Ureinwohnerdorf${EN}Entry to the village of the native tribe`, "")
 	scene8.east = scene6;
-
 	let tuer = new Door(T`${DE}Tür${EN}Door`, T`${DE}Eine verschlossene Tür.${EN}A locked door.`, { blocking: true })
 	let torwache = new Person(T`${DE}Torwache${EN}Guard`, T`${DE}eine Torwache${EN}a gate guard`);
-
 	scene8.insert(torwache);
 	scene8.northblock = tuer;
-
 	scene8.describe = function () {
 		if (tuer.blocking) {
 			return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east it goes back to the jungle path. </br>Tip: If you don't understand the gate guard, the explorer might help you.`;
 		}
 		else return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east you go back to the jungle path. </br>`;
 	}
-
 	torwache.dialog = async function* () {
 		if (Commands.actor.has(kostuem)) {
 			if (tuer.blocking) {
@@ -2154,17 +2076,14 @@ you can make a door also an orc that blocks the road
 			return "Ugga bugga, blubliblah! Impostor!"
 		}
 	}
-
 	let scene9 = new Scene(T`${DE}Ureinwohnerdorf${EN}Village of native tribe`, T`<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>${DE}Du bist im Dorf der Ureinwohner. </br>Nach Süden geht es zurück zum Eingang. </br>${EN}You are in the village of the native tribe. </br>To the south you can go back to the entrance. </br>`);
 	scene9.south = scene8;
-
 	let pina = new Person(["Pina", "Pina Colada"], T`${DE}eine Ureinwohnerin${EN}a native woman`);
 	let mojito = new Person("Mojito", T`${DE}ein Ureinwohner${EN}a native man`);
-	let daiquiri = new Person(["Daiquiri","Daikiri",T`${EN}Dietary`], T`${DE}ein Ureinwohner mit einem Problem${EN}a native man with a problem`);
+	let daiquiri = new Person(["Daiquiri", "Daikiri", T`${EN}Dietary`], T`${DE}ein Ureinwohner mit einem Problem${EN}a native man with a problem`);
 	scene9.insert(pina);
 	scene9.insert(mojito);
 	scene9.insert(daiquiri);
-
 	pina.dialog = async function* () {
 		return T`${DE}Uiui, eine neue Maske, schnieke Mann.${EN}Oooh, a new mask, really beautiful.`;
 	}
@@ -2172,16 +2091,14 @@ you can make a door also an orc that blocks the road
 		return T`${DE}Hehe, mein Freund von nebenan hat </br>auf seinem Kopf so ein komisches silbernes Teil stecken, </br>das sieht total bescheuert aus!${EN}Hehe, my friend next door has </br>some weird silver thing stuck on his head, </br>it looks totally stupid!`;
 	}
 	let tortenheber = new Item(T`${DE}Tortenheber${EN}Cake-server`, T`<img src='tortenheber.png'>${DE}ein Tortenheber${EN}a cake server`);
-
 	daiquiri.insert(tortenheber);
-
 	daiquiri.dialog = async function* () {
 		if (this.has(tortenheber)) {
-			while(true){
+			while (true) {
 				let reply = yield T`${DE}Ich bin so verzweifelt, </br>ich komme einfach nicht weiter! </br>Die Nachbarn lachen schon alle über mich, </br>ich weiss es genau! Meine Frau wird mich bestimmt verlassen, </br>wenn ich es nicht los werde! <p style='color:#0f0;'>1 - Kann ich dir irgendwie helfen. </br>2 - Nee keine Zeit!</p>${EN}I am so desperate, </br>I just can't get on! </br>The neighbours are all laughing at me already, </br>I know it for sure! My wife will leave me for sure, </br>if I don't get rid of it! <p style='color:#0f0;'>1 - Can I help you somehow. </br>2 - No time!</p>`;
 				switch (reply) {
 					case "1":
-						while(true){
+						while (true) {
 							let reply2 = yield T`${DE}Das wäre sehr nett! Ich bin gestern mit diesem </br>seltsamen silbernen Teil auf dem Kopf aufgewacht, </br>aber ich komme nicht daran ohne meinen Kopfschmuck zu zerstören. </br>Bitte mach das weg!?! </br><p style='color:#0f0;'>1 - Kein Problem </br>2 - Nee keine Lust!</p>${EN}That would be very nice! I woke up yesterday with this </br>strange silver thing on my head, </br>but I can't get to it without destroying my headdress. </br>Please make it go away!?! </br><p style='color:#0f0;'>1 - No problem </br>2 - Nah don't feel like it!</p>`;
 							switch (reply2) {
 								case "1":
@@ -2192,25 +2109,22 @@ you can make a door also an orc that blocks the road
 								case "2":
 									return T`${DE}Du hättest das Teil behalten können. O hilf mir doch jemand...${EN}You could have kept that thing. O somebody help me...`
 								default:
-									Commands.understood=false;
+									Commands.understood = false;
 									continue;
-									//return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal...${EN}I didn't quite get that but I hope you'll come back...`
 							}
 						}
 						break;
 					case "2":
 						return T`${DE}Unhilfsbereit die Jugend...${EN}Unhelpful youth...`
 					default:
-						Commands.understood=false;
+						Commands.understood = false;
 						continue;
-						//return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal...${EN}I didn't quite get that but I hope you'll come back...`
 				}
 			}
 		} else {
 			return T`${DE}Danke nochmals.${EN}Thanks again.`;
 		}
 	}
-
 	let scene10 = new Scene(T`${DE}Geheimes Labor${EN}Secret lab`, "");
 	scene10.describe = function () {
 		if (MODE.pro) {
@@ -2218,12 +2132,9 @@ you can make a door also an orc that blocks the road
 		}
 		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>. </br>${DE}Ausserdem fällt dir der gut erhaltene Computer auf. </br>Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.) </br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest! </br>Nach Süden geht es zur Strandbar.${EN}You also notice the well-preserved computer. </br>In the north there is a door with a combination lock (<em style='color:#0f0;'>type on number lock</em>.) </br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain! </br>To the south you can go to the beach bar.`
 	}
-
 	scene10.south = scene4;
-
 	scene4.northblock = seetang;
 	scene4.insert(seetang);
-
 	let numberlockdoor = new Door(T`${DE}Zahlenschloss${EN}number lock`, T`${DE}Ein digitales Eingabefeld an der Tür.${EN}A digital input field on the door.`, { blocking: true, usable: true, speakable: true, locked: true });
 	numberlockdoor.use = function () {
 		Commands.forward_command = T`${DE}t Zahlenschloss${EN}t number lock`
@@ -2243,20 +2154,15 @@ you can make a door also an orc that blocks the road
 	scene11.south = scene10;
 	let mintrobi = new Person(T`${DE}Roboter${EN}Robot`, T`${DE}Dein lieber Mintrobi.${EN}Your dear Mintrobi.`);
 	scene11.insert(mintrobi);
-
 	mintrobi.dialog = async function* () {
 		if (MODE.pro) return T`${DE}Für dieses Spiel must du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
-
 		if (!("bluetooth" in navigator)) return T`${DE}Du musst einen Chrome/Edge Browser verwenden.${EN}You must use a Chrome/Edge browser.`
 		var bluetoothadapter = await navigator.bluetooth.getAvailability()
-		//bluetoothadapter = false;
 		let name = "";
 		if (bluetoothadapter) {
 			name = yield T`${DE}Hallo, endlich können wir miteinander reden. </br>Du musst unbedingt eine Funkverbindung (bluetooth) mit mir aufbauen. </br>Wir wollen meinen Ultraschallsensor testen. Damit ich im dunklen Labyrinth wie eine </br>Fledermaus sehen kann. Damit wir uns immer verbinden können lade bitte das folgende Programm <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> auf mein Gehirn </br>Dann drücke auf die Reset Taste auf der Rückseite vom Gehirn und tippe den Text hier ein, falls es mehrere von mir hier im Raum gibt sonst einfach [ENTER] drücken${EN}Hello, finally we can talk to each other. </br>You absolutely have to establish a radio connection (bluetooth) with me. </br>We want to test my ultrasonic sensor. So that I can see in the dark labyrinth like a </br>bat. So that we can always connect, please load the following programme <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> onto my brain. </br>Then press the reset button on the back of the brain and type in the text here, if there are more than one of me in the room otherwise just press [ENTER].`;
 		}
-
 		if (bluetoothadapter) await microBitConnect(name);
-
 		let reply2 = yield T`${DE}Schreibe jetzt ein Programm, was den Ultraschallsensor ausliest und den Abstand in cm${EN}Now write a programme that reads the ultrasonic sensor and calculates the distance in cm` + (bluetoothadapter ? "" : T`${DE} alle 100ms zurückgibt. </br>${EN} every 100ms. </b>`) + T`${DE}Stecke dann das Gehirn in das Fahrgestell. Achte darauf, dass ich auf dem Boden stehe, wenn mich bewege damit ich nicht vom Tisch falle oder stelle etwas unter mich, während wir programmieren.  Mache die Hand nach vor meinen Ultraschallsensor um die Messungen abzubrechen. Hier ist das Programm was du vervollständigen sollst <a target='_blank' href='https://makecode.microbit.org/#pub:${EN}Then put the brain in the chassis. Make sure I am standing on the floor so I don't fall off the table when I move or put something under me while we program. Put your hand in front of my ultrasonic sensor to stop the measurements. Here is the program I want you to complete <a target='_blank' href='https://makecode.microbit.org/#pub:` + (bluetoothadapter ? "_C5Eb7Lf537CA" : "_J504s0Afb4YH") + "'>Code</a>. " + (bluetoothadapter ? "" : T`${DE}Falls Du per in makecode per usb verbunden bist must du die Verbindung nach dem hochladen des codes </br>erst noch trennen.${EN}If you are connected by makecode via usb, you must first disconnect the connection after uploading the code.${ALL}<img width='20%' src='unpair.gif'>`) + T`${DE}Wenn Du soweit bist drücke [ENTER]${EN}When you are ready, press [ENTER].`;
 		if (bluetoothadapter) await microBitConnect(name);
 		try {
@@ -2311,16 +2217,14 @@ you can make a door also an orc that blocks the road
 					case "3":
 						return T`${DE}Bis später dann.${EN}See you later.`
 					default:
-						Commands.understood=false;
+						Commands.understood = false;
 						continue;
-						//return T`${DE}Ich habe das nicht ganz verstanden aber ich hoffe du kommst nochmal vorbei...${EN}I didn't quite understand, but I hope you'll come back...`;
 				}
 			}
 		} catch {
 			return T`${DE}Das hat zulange gedauert. Versuche es einfach nochmal von vorne.${EN}It took too long. Just try it again from the beginning.`
 		}
 	}
-
 	/**
 	 * Prints a string to the canvas at the beginning by adding it to the beginning of Commands.answer.
 	 *
@@ -2334,17 +2238,14 @@ you can make a door also an orc that blocks the road
 	function printfront(x) {
 		Commands.answer.unshift(x);
 	}
-
 	function print(x) {
 		Commands.answer.push(x)
 	};
-
 	class Commands {
 		static recogparam = null;
 		static command = "";
 		static forward_command = "";
-
-		static async execute(cmd,isspeechrecog) {//TODO it does not recognize split words like "bottle message"
+		static async execute(cmd, isspeechrecog) {//TODO it does not recognize split words like "bottle message"
 			cmd = cmd.toString().toLowerCase();
 			let delstr;
 			if (MODE.lang == DE) delstr = ["=>", "der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
@@ -2352,8 +2253,7 @@ you can make a door also an orc that blocks the road
 			let importantprep;
 			if (MODE.lang == DE) importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
 			else if (MODE.lang == EN) importantprep = ["to", "with", "towards", "through", "in", "at", "on", "into"];
-
-			let delall = ["!", ".","?"];
+			let delall = ["!", ".", "?"];
 			Commands.answer = [];
 			let recog = false;
 			for (var del in delall) cmd = cmd.split(delall[del]).join(" ");
@@ -2398,7 +2298,7 @@ you can make a door also an orc that blocks the road
 			recog |= commandspeak;
 			Commands.recogparam = null;
 			if (Commands.forward_command != "") {
-				var ret = Commands.execute(Commands.forward_command,false)//forwarded commands are never called as isspeechrecog=true
+				var ret = Commands.execute(Commands.forward_command, false)//forwarded commands are never called as isspeechrecog=true
 				Commands.forward_command = ""
 				return ret;
 			} else {
@@ -2410,16 +2310,15 @@ you can make a door also an orc that blocks the road
 					if (Commands.lastcommandspeak) commandspeak = await Commands.continuespeak(cmd);
 					if (!commandspeak && Commands.answer.length == 0) {
 						Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
-						if(isspeechrecog) return "TRYOTHERPOSSIBILITY";
+						if (isspeechrecog) return "TRYOTHERPOSSIBILITY";
 						else print(T`${DE}Was? Geht nicht! Tippe: <em style='color:#0f0;'>hilfe</em>!\n${EN}What? Doesn't work! Type: <em style='color:#0f0;'>help</em>!`);
 					}
 				}
 				Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
-				if(isspeechrecog && commandspeak && !Commands.understood) return "TRYOTHERPOSSIBILITY";
+				if (isspeechrecog && commandspeak && !Commands.understood) return "TRYOTHERPOSSIBILITY";
 				return Commands.answer.join("");
 			}
 		}
-
 		static actor = ich;
 		static answer = [];
 		@when(T`${DE}hilfe${EN}help`)
@@ -2450,33 +2349,29 @@ you can make a door also an orc that blocks the road
 			print(T`&#x26AC; ${DE}Deutsch/de/Englisch/en${EN}German/de/English/en\n`);
 			return true;
 		}
-
 		@when("de")
 		@when(T`${DE}deutsch${EN}german`)
 		static de() {
 			console.log("de")
 			MODE.lang = DE;
-			if(Commands.dospeachrecog){  
+			if (Commands.dospeachrecog) {
 				Commands.recognition.stop();
-				Commands.dospeachrecog=false;
+				Commands.dospeachrecog = false;
 				Commands.forward_command = T`${DE}sp an${EN}sp on`.toString();
 			}
 			return true;
 		}
-
 		@when("en")
 		@when(T`${DE}englisch${EN}english`)
 		static en() {
 			MODE.lang = EN;
-			if(Commands.dospeachrecog){  
+			if (Commands.dospeachrecog) {
 				Commands.recognition.stop();
-				Commands.dospeachrecog=false;
+				Commands.dospeachrecog = false;
 				Commands.forward_command = T`${DE}sp an${EN}sp on`.toString();
 			}
 			return true;
 		}
-
-
 		@when(T`${DE}schaue${EN}look`, { at: "scene" })
 		@when(T`${DE}betrachte${EN}watch`, { at: "scene" })
 		@when(T`${DE}b${EN}l`, { at: "scene" })
@@ -2497,7 +2392,6 @@ you can make a door also an orc that blocks the road
 						lookrecursive(Commands.actor.position.things, at, true, null, true);
 						print("\n");
 					}
-
 					return true;
 				case T`${DE}mich${EN}me`.toString():
 					print(T`${DE}Du bist ${EN}You are ` + Commands.actor.describe());
@@ -2515,11 +2409,9 @@ you can make a door also an orc that blocks the road
 					let found1, found2;
 					found1 = lookrecursive(Commands.actor.things, at, false, null, false);
 					found2 = lookrecursive(Commands.actor.position.things, at, false, null, false);
-
 					return (found1 !== null) || (found2 !== null);
 			}
 		}
-
 		@when("w", { direction: "west" })
 		@when(T`${DE}westen${EN}west`, { direction: "west" })
 		@when(T`${DE}gehe westen${EN}go west`, { direction: "west" })
@@ -2567,10 +2459,8 @@ you can make a door also an orc that blocks the road
 					return true;
 				}
 			}
-			//print(T`${DE}Da kann ich nicht hin.\n${EN}I cannot go there.\n`);
 			return false;
 		}
-
 		@when(T`${DE}v${EN}u${ALL} ITEM`)
 		@when(T`${DE}verwende${EN}use${ALL} ITEM`)
 		@when(T`${DE}benutze${EN}use${ALL} ITEM`)
@@ -2580,13 +2470,9 @@ you can make a door also an orc that blocks the road
 			let { thing } = search(item);
 			if (thing && thing.usable) return thing.use();
 			else {
-				//print(T`${DE}Das geht nicht.\n${EN}That doesn't work.\n`);
 				return false;
 			}
 		}
-
-		//when chatte mit echten personen
-		//when rede mit: mit npc
 		@when(T`${DE}benutze${EN}use${ALL} ITEM => TARGET`)
 		@when(T`${DE}verwende${EN}use${ALL} ITEM => TARGET`)
 		@when(T`${DE}v${EN}u${ALL} ITEM => TARGET`)
@@ -2606,12 +2492,10 @@ you can make a door also an orc that blocks the road
 					if (thing.applytarget.hasOwnProperty(targetthing.name))
 						return thing.doapply(targetthing);
 				}
-				//else print(T`${DE}Hab ich nicht oder kann es nicht anwenden.${EN}I don't have it or can't apply it.`);
 				return false;
 			}
 
 		}
-
 		static openbool(item, state) {
 			let { thing } = search(item);
 			if (thing !== null) {
@@ -2632,7 +2516,6 @@ you can make a door also an orc that blocks the road
 					Commands.look({ at: item });
 					return true;
 				}
-				//else print(T`${DE}Das geht nicht.${EN}That's not possible.`);
 				return false;
 			}
 			return false;
@@ -2642,13 +2525,11 @@ you can make a door also an orc that blocks the road
 		static open({ item }) {
 			return Commands.openbool(item, true);
 		}
-
 		@when(T`${DE}schließe${EN}close${ALL} ITEM`)
 		@when(T`${DE}s${EN}c${ALL} ITEM`)
 		static close({ item }) {
 			return Commands.openbool(item, false);
 		}
-
 		@when(T`${DE}nimm${EN}take${ALL} ITEM`)
 		@when(T`${DE}m${EN}k${ALL} ITEM`)
 		static take({ item }) {
@@ -2660,7 +2541,6 @@ you can make a door also an orc that blocks the road
 				return false;
 			}
 		}
-
 		@when(T`${DE}gib${EN}give${ALL} ITEM => TARGET`)
 		@when(T`${DE}lege${EN}put${ALL} ITEM => TARGET`)
 		@when(T`${DE}lege${EN}drop${ALL} ITEM => TARGET`)
@@ -2675,7 +2555,6 @@ you can make a door also an orc that blocks the road
 				let targetthing;
 				if (target === "scene") {
 					if (!thing.dropable) {
-						//print(T`${DE}Kann ich nicht ablegen.${EN}I cannot drop it.`);
 						return false;
 					}
 					targetthing = Commands.actor.position;
@@ -2684,13 +2563,10 @@ you can make a door also an orc that blocks the road
 				if (thing !== null && targetthing !== null && (targetthing.open || targetthing.receiving) && mine) {
 					return targetthing.take(thing);
 				}
-				//else print(T`${DE}Hab ich nicht oder kann es nicht geben.${EN}I don't have it or cannot give it.`);
 				return false;
 			} else {
-				//print(T`${DE}Hab ich nicht oder kann es nicht geben.${EN}I don't have it or cannot give it.`);
 				return false;
 			}
-
 		}
 		static lastperson;
 		static lastcommandspeak = false;
@@ -2698,7 +2574,6 @@ you can make a door also an orc that blocks the road
 			return Commands.speak({ person: Commands.lastperson, text: text2 });
 		}
 		static endofspeak = false;
-
 		//do not use empty language cases
 		@when(T`${DE}sprich${EN}speak${ALL} => PERSON`, { text: "" })
 		@when(T`${DE}sprich${EN}speak${ALL} PERSON`, { text: "" })
@@ -2714,34 +2589,33 @@ you can make a door also an orc that blocks the road
 			console.log(JSON.stringify(person))
 			let { thing: personobj } = search(person, Person);
 			if (personobj !== null && personobj.speakable) {
-				Commands.understood=true;
+				Commands.understood = true;
 				Commands.lastperson = person;
 				let ret = await personobj.speak(text);
-				print((!Commands.understood?T`${DE}Was? ${EN}What? `:"")+ret.value);
+				print((!Commands.understood ? T`${DE}Was? ${EN}What? ` : "") + ret.value);
 				Commands.endofspeak = ret.done;
 				return true;
 			}
 			//else print(T`${DE}Geht so nicht.${EN}It doesn't work like that.`);
 			return false;
 		}
-		static dospeachrecog=false;
-
-		static recognition=null;
-		static synthesis=null;
+		static dospeachrecog = false;
+		static recognition = null;
+		static synthesis = null;
 		@when(T`${DE}spracherkennung${EN}speachrecognition${ALL} ONOFF`)
 		@when("sp ONOFF")
-		static speachrecog({ onoff }){
-			if(onoff.toLowerCase()==T`${DE}an${EN}on`){
-				if(Commands.dospeachrecog) return true
-				 Commands.dospeachrecog=true;
-				 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+		static speachrecog({ onoff }) {
+			if (onoff.toLowerCase() == T`${DE}an${EN}on`) {
+				if (Commands.dospeachrecog) return true
+				Commands.dospeachrecog = true;
+				window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 				// setup SpeechRecognation
-				if(Commands.recognition) 	Commands.recognition.lang = 	(MODE.lang == EN?'en-US':'de-DE');
-				else{
-					 Commands.recognition= new SpeechRecognition();
+				if (Commands.recognition) Commands.recognition.lang = (MODE.lang == EN ? 'en-US' : 'de-DE');
+				else {
+					Commands.recognition = new SpeechRecognition();
 					Commands.recognition.interimResults = true;
-					Commands.recognition.lang = 	(MODE.lang == EN?'en-US':'de-DE');
-					Commands.recognition.maxAlternatives =10;
+					Commands.recognition.lang = (MODE.lang == EN ? 'en-US' : 'de-DE');
+					Commands.recognition.maxAlternatives = 10;
 
 					//https://www.w3.org/TR/jsgf/
 					//const grammar = '#JSGF V1.0; grammar colors; public <color> = aqua | azure | beige | bisque | black | blue | brown | chocolate | coral | crimson | cyan | fuchsia | ghostwhite | gold | goldenrod | gray | green | indigo | ivory | khaki | lavender | lime | linen | magenta | maroon | moccasin | navy | olive | orange | orchid | peru | pink | plum | purple | red | salmon | sienna | silver | snow | tan | teal | thistle | tomato | turquoise | violet | white | yellow ;'
@@ -2754,97 +2628,82 @@ you can make a door also an orc that blocks the road
 					//
 					// waiting for speech results
 					Commands.recognition.addEventListener('result', async (event) => {
-						
 						const transcript = event.results[0][0].transcript;
 						console.log(transcript)
 						// check if the voice input has ended
-						
-						if(event.results[0].isFinal) {
-							let answer="";
-							let found=false;
-							let cmd="";
-							for(let a=0;a<event.results[0].length;++a) {
-								cmd=event.results[0][a].transcript;
-								let intermediateanswer=await Commands.execute(cmd,true);
-								if(intermediateanswer!="TRYOTHERPOSSIBILITY"){
-									answer=intermediateanswer;
-									found=true;
+						if (event.results[0].isFinal) {
+							let answer = "";
+							let found = false;
+							let cmd = "";
+							for (let a = 0; a < event.results[0].length; ++a) {
+								cmd = event.results[0][a].transcript;
+								let intermediateanswer = await Commands.execute(cmd, true);
+								if (intermediateanswer != "TRYOTHERPOSSIBILITY") {
+									answer = intermediateanswer;
+									found = true;
 									break;
 								}
-								console.log("!!!!!"+a+event.results[0][a].transcript)
+								console.log("!!!!!" + a + event.results[0][a].transcript)
 							}
-							if(!found) {
-								cmd=event.results[0][0].transcript
-								.replaceAll(T`${DE}eins${EN}one`,"1")
-								.replaceAll(T`${DE}zwei${EN}two`,"2")
-								.replaceAll(T`${DE}drei${EN}three`,"3")
-								.replaceAll(T`${DE}vier${EN}four`,"4")
-								.replaceAll(T`${DE}fünf${EN}five`,"5")
-								.replaceAll(T`${DE}sechs${EN}six`,"6")
-								.replaceAll(T`${DE}sieben${EN}seven`,"7")
-								.replaceAll(T`${DE}acht${EN}eight`,"8")
-								.replaceAll(T`${DE}neuen${EN}nine`,"9")
-								.replaceAll(T`${DE}zehn${EN}ten`,"10")
-
-								answer=await Commands.execute(cmd,false);
+							if (!found) {
+								cmd = event.results[0][0].transcript
+									.replaceAll(T`${DE}eins${EN}one`, "1")
+									.replaceAll(T`${DE}zwei${EN}two`, "2")
+									.replaceAll(T`${DE}drei${EN}three`, "3")
+									.replaceAll(T`${DE}vier${EN}four`, "4")
+									.replaceAll(T`${DE}fünf${EN}five`, "5")
+									.replaceAll(T`${DE}sechs${EN}six`, "6")
+									.replaceAll(T`${DE}sieben${EN}seven`, "7")
+									.replaceAll(T`${DE}acht${EN}eight`, "8")
+									.replaceAll(T`${DE}neuen${EN}nine`, "9")
+									.replaceAll(T`${DE}zehn${EN}ten`, "10")
+								answer = await Commands.execute(cmd, false);
 							}
-						//	console.log(transcript);
-
-							
 							lastinput = cmd;
 							let p = document.createElement('p');
 							p.innerHTML = cmd;
 							p.className = 'command';
 							story.appendChild(p);
-
-							
 							let p2 = document.createElement('p');
 							p2.innerHTML = answer;
 							story.appendChild(p2);
 							inp.value = '';
 							story.scrollTop = story.scrollHeight;//- story.offsetHeight;
-
 							setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
 							let dump = Obj.dump();
 							localStorage.setItem("current", dump);
 							document.getElementById("inp").disabled = false
 							document.getElementById("inp").focus();
-							Commands.dospeachrecog=false;
+							Commands.dospeachrecog = false;
 							Commands.recognition.abort();
 							Commands.synthesis = new SpeechSynthesisUtterance();
-							Commands.synthesis.text = answer.toString().replace( /(<([^>]+)>)/ig, '').replaceAll("&#x26AC;","-")
-							Commands.synthesis.lang = 	(MODE.lang == EN?'en-US':'de-DE');
+							Commands.synthesis.text = answer.toString().replace(/(<([^>]+)>)/ig, '').replaceAll("&#x26AC;", "-")
+							Commands.synthesis.lang = (MODE.lang == EN ? 'en-US' : 'de-DE');
 							Commands.synthesis.volume = 1; // 0 to 1
 							Commands.synthesis.rate = 1; // 0.1 to 10
 							Commands.synthesis.pitch = 1; //0 to 2
 							window.speechSynthesis.speak(Commands.synthesis);
-						
-							Commands.synthesis.onend = function(e){
-								Commands.dospeachrecog=true;
+							Commands.synthesis.onend = function (e) {
+								Commands.dospeachrecog = true;
 								Commands.recognition.start();//function(e) {
 							}
-							//    document.querySelector('#output').innerText = (event.elapsedTime/1000) + ' Sek';
-							//};
-							
 						}
-						
 					});
-					Commands.recognition.addEventListener('end', ()=>{
-						if(Commands.dospeachrecog) Commands.recognition.start()
+					Commands.recognition.addEventListener('end', () => {
+						if (Commands.dospeachrecog) Commands.recognition.start()
 					});
 				}
-				if(Commands.recognition)try{  Commands.recognition.start();}catch(e){}
+				if (Commands.recognition) try { Commands.recognition.start(); } catch (e) { }
 				print(T`${DE}Spracherkennung aktiviert! Anstatt ENTER drücken kannst du immer enter sagen.${EN}Speech recognition activated! Instead of pressing ENTER, you can always say enter.`)
 				return true;
 			}
-			else{ 
-				Commands.dospeachrecog=false;
-				if(Commands.recognition)try{  Commands.recognition.abort();}catch(e){}
+			else {
+				Commands.dospeachrecog = false;
+				if (Commands.recognition) try { Commands.recognition.abort(); } catch (e) { }
 				print(T`${DE}Spracherkennung deaktiviert!${EN}Speech recognition deactivated!`)
 				return true;
 			}
 		}
-
 		@when("speichere TITEL")
 		@when("save TITEL")
 		static save({ titel }) {
@@ -2867,27 +2726,22 @@ you can make a door also an orc that blocks the road
 		}
 		static intro() {
 			let dump = Obj.dump();
-
 			localStorage.setItem("reset", dump);
 			let dump2 = localStorage.getItem("current")
 			if (dump2 !== null) {
 				Obj.restore(dump2);
 			}
 			Commands.answer = [];
-
 			Commands.look({ at: T`${DE}mich${EN}me`.toString() });
 			print(T`${DE}Du trägst einen Rucksack.${EN}You are carrying a backpack.`);
 			print("\n");
 			Commands.look({ at: "scene" });
-
 			if (Commands.actor.position == omazuhause) {
 				print(T`${DE}Gebe z.B. ein: <em style='color:#0f0;'>rede mit oma</em> oder <em style='color:#0f0;'>w</em>${EN}Enter for example: <em style='color:#0f0;'>speak to granny</em> or <em style='color:#0f0;'>w</em>`);
 			}
-
 			return Commands.answer.join("");
 		}
 	}
-
 </script>
 
 <!-- Input handler -->
@@ -2907,7 +2761,7 @@ you can make a door also an orc that blocks the road
 			setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 3000);
 			document.getElementById("inp").addEventListener("keydown", async (e) => {
 				if (event.keyCode == 13) {
-					if(window.speechSynthesis){
+					if (window.speechSynthesis) {
 						window.speechSynthesis.cancel();
 					}
 					document.getElementById("inp").disabled = true;
@@ -2919,7 +2773,7 @@ you can make a door also an orc that blocks the road
 					p.className = 'command';
 					story.appendChild(p);
 
-					let answer = await Commands.execute(cmd,false);
+					let answer = await Commands.execute(cmd, false);
 					let p2 = document.createElement('p');
 					p2.innerHTML = answer;
 					story.appendChild(p2);
@@ -2936,13 +2790,11 @@ you can make a door also an orc that blocks the road
 					document.getElementById("inp").focus();
 					document.getElementById("inp").value = lastinput;
 				}
-
 			}, false);
-			
 		} catch (e) {
-		//	console.log(e)
-		//	localStorage.clear()
-	//		setTimeout(() => window.location.reload(), 3000);
+			console.log(e)
+			localStorage.clear()
+			setTimeout(() => window.location.reload(), 3000);
 		}
 	}
 </script>
