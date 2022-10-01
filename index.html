@@ -1730,7 +1730,7 @@ you can make a door also an orc that blocks the road
 	let kind = new Person(T`${DE}Kind${EN}Child`, T`${DE}ein Kind${EN}a child`);
 	scene3.insert(kind);
 	kind.dialog = async function* () {
-		return T`${DE}Da sind interesant verkleidete Menschen im Wald. </br>Hast du schonmal einen von denen gesehen?${EN}There are interesting people in disguise in the forest. </br>Have you ever seen one of them?`;
+		return T`${DE}Da sind interessant verkleidete Menschen im Wald. </br>Hast du schonmal einen von denen gesehen?${EN}There are interesting people in disguise in the forest. </br>Have you ever seen one of them?`;
 	}
 	let junge = new Person([T`${DE}Junge${EN}Boy`, T`${DE}Jungen`], T`${DE}ein Junge${EN}a boy`);
 	scene3.insert(junge);
@@ -1750,7 +1750,7 @@ you can make a door also an orc that blocks the road
 			return true;
 		}
 		else {
-			print(T`${DE}Nichts passiert. Aber ich nehme mir ein Stück zum essen. Hm lecker!${EN}Nothing happens. But I take a piece to eat. Mm yummy!`);
+			print(T`${DE}Nichts passiert. Aber ich nehme mir ein Stück zum essen. Hm, lecker!${EN}Nothing happens. But I take a piece to eat. Hm, yummy!`);
 			return true;
 		}
 	}
@@ -1761,7 +1761,7 @@ you can make a door also an orc that blocks the road
 		if (seetang.blocking) {
 			return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>${DE}Du stehst in einer offenen Strandbar mit einigen Leuten. </br>Nach Osten geht es zum Strand.${EN}You are standing in an open beach bar with a few people. </br>To the east you can go to the beach.`;
 		}
-		else return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>${DE}Oh da ist ja eine geheime Höhle dahinter. Was da wohl drin ist? </br>${EN}Ooh, there's a secret cave behind there. I wonder what's in there? </br>`
+		else return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>${DE}Oh da ist ja eine geheime Höhle dahinter im Norden. Was da wohl drin ist? </br>${EN}Ooh, there's a secret cave behind there in the north. I wonder what's in there? </br>`
 	}
 
 	let barmann = new Person(T`${DE}Barmann${EN}Bartender`, T`${DE}ein Barmann${EN}a bartender`);
@@ -1829,7 +1829,7 @@ you can make a door also an orc that blocks the road
 	let tortenliebhaber = new Person([T`${DE}Tortenliebhaber${EN}cake lover`,T`${DE}Torten Liebhaber`], T`${DE}ein Tortenliebhaber${EN}a cakelover`);
 	scene4.insert(tortenliebhaber);
 	tortenliebhaber.dialog = async function* () {
-		return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server Ben can't serve me my favourite cake.`;
+		return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server, Ben can't serve me my favourite cake.`;
 	}
 
 	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach Norden geht es über Straße mit Ampel in den Dschungel, </br>nach Sueden geht es zum Strand.${EN}You are in a small market place in the city. </br>To the north, there is a road with traffic lights leading into the jungle, </br>to the south, there is the beach.`)
@@ -2095,7 +2095,7 @@ you can make a door also an orc that blocks the road
 	Forscher.dialog = async function* () {
 		if (this.has(kostuem)) {
 			while(true){
-				let reply = yield T`${DE}Hallo, guten Tag. ${EN}Hello, good day. ${ALL}<p style='color:#0f0;'>${DE}1 - Hallo, wer sind Sie denn? </br>${EN}1 - Hello, who are you? </br>${DE}2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>${EN}2 - How will I be let into the indigenous village?</p>`;
+				let reply = yield T`${DE}Hallo, guten Tag. ${EN}Hello, good day. ${ALL}<p style='color:#0f0;'>${DE}1 - Hallo, wer sind Sie denn? </br>${EN}1 - Hello, who are you? </br>${DE}2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>${EN}2 - How will I be let into the native tribe village?</p>`;
 				switch (reply) {
 					case "1":
 						return T`${DE}Ich bin Sir Ernest Wordsworth, </br>meines Zeichens Wissenschaftler und Ethnologe, </br>ich erforsche den hiesigen Stamm der Ureinwohner.${EN}I am Sir Ernest Wordsworth, </br>a scientist and ethnologist, </br>I am researching the local native tribe.`
@@ -2131,9 +2131,9 @@ you can make a door also an orc that blocks the road
 
 	scene8.describe = function () {
 		if (tuer.blocking) {
-			return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine grossee Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east it goes back to the jungle path. </br>Tip: If you don't understand the gate guard, the explorer might help you.`;
+			return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east it goes back to the jungle path. </br>Tip: If you don't understand the gate guard, the explorer might help you.`;
 		}
-		else return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine grossee Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east you go back to the jungle path. </br>`;
+		else return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east you go back to the jungle path. </br>`;
 	}
 
 	torwache.dialog = async function* () {
@@ -2155,12 +2155,12 @@ you can make a door also an orc that blocks the road
 		}
 	}
 
-	let scene9 = new Scene(T`${DE}Ureinwohnerdorf${EN}Village of native tribe`, T`<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>${DE}Du bist im Dorf der Ureinwohner. </br>Nach Süden geht es zurueck Eingang. </br>${EN}You are in the village of the native tribe. </br>To the south you go back entrance. </br>`);
+	let scene9 = new Scene(T`${DE}Ureinwohnerdorf${EN}Village of native tribe`, T`<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>${DE}Du bist im Dorf der Ureinwohner. </br>Nach Süden geht es zurück zum Eingang. </br>${EN}You are in the village of the native tribe. </br>To the south you can go back to the entrance. </br>`);
 	scene9.south = scene8;
 
 	let pina = new Person(["Pina", "Pina Colada"], T`${DE}eine Ureinwohnerin${EN}a native woman`);
 	let mojito = new Person("Mojito", T`${DE}ein Ureinwohner${EN}a native man`);
-	let daiquiri = new Person("Daiquiri", T`${DE}ein Ureinwohner mit einem Problem${EN}a native man with a problem`);
+	let daiquiri = new Person(["Daiquiri","Daikiri",T`${EN}Dietary`], T`${DE}ein Ureinwohner mit einem Problem${EN}a native man with a problem`);
 	scene9.insert(pina);
 	scene9.insert(mojito);
 	scene9.insert(daiquiri);
@@ -2178,7 +2178,7 @@ you can make a door also an orc that blocks the road
 	daiquiri.dialog = async function* () {
 		if (this.has(tortenheber)) {
 			while(true){
-				let reply = yield T`${DE}Ich bin so verzweifelt, </br>ich komme einfach nicht weiter! </br>Die Nachbarn lachen schon alle ueber mich, </br>ich weiss es genau! Meine Frau wird mich bestimmt verlassen, </br>wenn ich es nicht los werde! <p style='color:#0f0;'>1 - Kann ich dir irgendwie helfen. </br>2 - Nee keine Zeit!</p>${EN}I am so desperate, </br>I just can't get on! </br>The neighbours are all laughing at me already, </br>I know it for sure! My wife will leave me for sure, </br>if I don't get rid of it! <p style='color:#0f0;'>1 - Can I help you somehow. </br>2 - No time!</p>`;
+				let reply = yield T`${DE}Ich bin so verzweifelt, </br>ich komme einfach nicht weiter! </br>Die Nachbarn lachen schon alle über mich, </br>ich weiss es genau! Meine Frau wird mich bestimmt verlassen, </br>wenn ich es nicht los werde! <p style='color:#0f0;'>1 - Kann ich dir irgendwie helfen. </br>2 - Nee keine Zeit!</p>${EN}I am so desperate, </br>I just can't get on! </br>The neighbours are all laughing at me already, </br>I know it for sure! My wife will leave me for sure, </br>if I don't get rid of it! <p style='color:#0f0;'>1 - Can I help you somehow. </br>2 - No time!</p>`;
 				switch (reply) {
 					case "1":
 						while(true){
@@ -2216,7 +2216,7 @@ you can make a door also an orc that blocks the road
 		if (MODE.pro) {
 			return T`<img src='s10.png'>${DE}Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben. </br>Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: ${EN}Bravo, you have completed the game and can now write your own programmes. </br>Here is the source code so that you can extend the game yourself: ${ALL}<a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a> </br>${DE}Nach Sueden geht es zur Strandbar.${EN}To the south you can go to the beach bar.`;
 		}
-		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>. </br>${DE}Ausserdem fällt dir der gut erhaltene Computer auf. </br>Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.) </br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest! </br>Nach Sueden geht es zur Strandbar.${EN}You also notice the well-preserved computer. </br>In the north there is a door with a combination lock (<em style='color:#0f0;'>type on number-lock</em>.) </br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain! </br>To the south you can go to the beach bar.`
+		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>. </br>${DE}Ausserdem fällt dir der gut erhaltene Computer auf. </br>Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.) </br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest! </br>Nach Süden geht es zur Strandbar.${EN}You also notice the well-preserved computer. </br>In the north there is a door with a combination lock (<em style='color:#0f0;'>type on number lock</em>.) </br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain! </br>To the south you can go to the beach bar.`
 	}
 
 	scene10.south = scene4;
@@ -2224,9 +2224,9 @@ you can make a door also an orc that blocks the road
 	scene4.northblock = seetang;
 	scene4.insert(seetang);
 
-	let numberlockdoor = new Door(T`${DE}Zahlenschloss${EN}number-lock`, T`${DE}Ein digitales Eingabefeld an der Tür.${EN}A digital input field on the door.`, { blocking: true, usable: true, speakable: true, locked: true });
+	let numberlockdoor = new Door(T`${DE}Zahlenschloss${EN}number lock`, T`${DE}Ein digitales Eingabefeld an der Tür.${EN}A digital input field on the door.`, { blocking: true, usable: true, speakable: true, locked: true });
 	numberlockdoor.use = function () {
-		Commands.forward_command = T`${DE}t Zahlenschloss${EN}t number-lock`
+		Commands.forward_command = T`${DE}t Zahlenschloss${EN}t number lock`
 		return false;
 	}
 	numberlockdoor.dialog = async function* () {
@@ -2239,11 +2239,9 @@ you can make a door also an orc that blocks the road
 	}
 	scene10.northblock = numberlockdoor;
 	scene10.insert(numberlockdoor)
-	let scene11 = new Scene("Dunkles Labyrinth", "Es ist stockdunkel hier. " +
-		"Ich glaube ich brauche Mintrobis Hilfe um hier rauszufinden. " +
-		"");
+	let scene11 = new Scene(T`${DE}Dunkles Labyrinth${EN}Dark labyrinth`, T`${DE}Es ist stockdunkel hier. Ich glaube ich brauche Mintrobis Hilfe um hier rauszufinden.${EN}It's pitch black in here. I think I need Mintrobi's help to find my way out.`);
 	scene11.south = scene10;
-	let mintrobi = new Person("Mintrobi", "Dein lieber Mintrobi.");
+	let mintrobi = new Person(T`${DE}Roboter${EN}Robot`, T`${DE}Dein lieber Mintrobi.${EN}Your dear Mintrobi.`);
 	scene11.insert(mintrobi);
 
 	mintrobi.dialog = async function* () {
@@ -2254,7 +2252,7 @@ you can make a door also an orc that blocks the road
 		//bluetoothadapter = false;
 		let name = "";
 		if (bluetoothadapter) {
-			name = yield T`${DE}Hallo, endlich können wir miteinander reden. </br>Du musst unbedingt eine Funkverbindung (bluetooth) mit mir aufbauen. </br>Wir wollen meinen Ultraschallsensor testen. Damit ich im dunklen Labyrinth wie eine </br>Fledermaus sehen kann. Damit wir uns immer verbinden können lade bitte das folgende Programm <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> auf mein Gehirn </br>Dann drücke auf die Reset Taste auf der Rückseite vom Gehirn und tippe den Text hier ein, falls es mehrere von mir hier im Raum gibt sonst einfach [ENTER] drücken${EN}Hello, finally we can talk to each other. </br>You absolutely have to establish a radio connection (bluetooth) with me. </br>We want to test my ultrasonic sensor. So that I can see in the dark labyrinth like a </br>bat. So that we can always connect, please load the following programme <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> onto my brain </br>Then press the reset button on the back of the brain and type in the text here, if there are more than one of me in the room otherwise just press [ENTER].`;
+			name = yield T`${DE}Hallo, endlich können wir miteinander reden. </br>Du musst unbedingt eine Funkverbindung (bluetooth) mit mir aufbauen. </br>Wir wollen meinen Ultraschallsensor testen. Damit ich im dunklen Labyrinth wie eine </br>Fledermaus sehen kann. Damit wir uns immer verbinden können lade bitte das folgende Programm <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> auf mein Gehirn </br>Dann drücke auf die Reset Taste auf der Rückseite vom Gehirn und tippe den Text hier ein, falls es mehrere von mir hier im Raum gibt sonst einfach [ENTER] drücken${EN}Hello, finally we can talk to each other. </br>You absolutely have to establish a radio connection (bluetooth) with me. </br>We want to test my ultrasonic sensor. So that I can see in the dark labyrinth like a </br>bat. So that we can always connect, please load the following programme <a target='_blank' href='https://makecode.microbit.org/#pub:_5FkUDgK1tE0k'>Code</a> onto my brain. </br>Then press the reset button on the back of the brain and type in the text here, if there are more than one of me in the room otherwise just press [ENTER].`;
 		}
 
 		if (bluetoothadapter) await microBitConnect(name);
@@ -2822,11 +2820,13 @@ you can make a door also an orc that blocks the road
 					});
 				}
 				Commands.recognition.start();
+				print(T`${DE}Spracherkennung aktiviert! Anstatt ENTER drücken kannst du immer enter sagen.${EN}Speech recognition activated! Instead of pressing ENTER, you can always say enter.`)
 				return true;
 			}
 			else{ 
 				Commands.dospeachrecog=false;
 				if(Commands.recognition)  Commands.recognition.abort();
+				print(T`${DE}Spracherkennung deaktiviert!${EN}Speech recognition deactivated!`)
 				return true;
 			}
 		}
