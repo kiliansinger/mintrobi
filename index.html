@@ -2351,7 +2351,7 @@ you can make a door also an orc that blocks the road
 		static command = "";
 		static forward_command = "";
 
-		static async execute(cmd) {//TODO it does not recognize split words like "bottle message"
+		static async execute(cmd,isspeechrecog) {//TODO it does not recognize split words like "bottle message"
 			cmd = cmd.toString().toLowerCase();
 			let delstr;
 			if (MODE.lang == DE) delstr = ["=>", "der", "die", "das", "dem", "der", "dem", "den", "die", "das", "ein", "einer", "ein", "einem", "einer", "einem", "einen", "eine", "ein"];
@@ -2405,7 +2405,7 @@ you can make a door also an orc that blocks the road
 			recog |= commandspeak;
 			Commands.recogparam = null;
 			if (Commands.forward_command != "") {
-				var ret = Commands.execute(Commands.forward_command)
+				var ret = Commands.execute(Commands.forward_command,false)//forwarded commands are never called as isspeechrecog=true
 				Commands.forward_command = ""
 				return ret;
 			} else {
@@ -2416,10 +2416,13 @@ you can make a door also an orc that blocks the road
 				else {
 					if (Commands.lastcommandspeak) commandspeak = await Commands.continuespeak(cmd);
 					if (!commandspeak && Commands.answer.length == 0) {
-						print(T`${DE}Was? Geht nicht! Tippe: <em style='color:#0f0;'>hilfe</em>!\n${EN}What? Doesn't work! Type: <em style='color:#0f0;'>help</em>!`);
+						Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
+						if(isspeechrecog) return "TRYOTHERPOSSIBILITY";
+						else print(T`${DE}Was? Geht nicht! Tippe: <em style='color:#0f0;'>hilfe</em>!\n${EN}What? Doesn't work! Type: <em style='color:#0f0;'>help</em>!`);
 					}
 				}
 				Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
+				if(isspeechrecog && commandspeak && !Commands.understood) return "TRYOTHERPOSSIBILITY";
 				return Commands.answer.join("");
 			}
 		}
@@ -2757,18 +2760,35 @@ you can make a door also an orc that blocks the road
 					const transcript = event.results[0][0].transcript;
 					console.log(transcript)
 					// check if the voice input has ended
+					
 					if(event.results[0].isFinal) {
-						for(let a=0;a<event.results[0].length;++a) console.log(""+a+event.results[0][a].transcript)
+						let answer="";
+						let found=false;
+						let cmd="";
+						for(let a=0;a<event.results[0].length;++a) {
+							cmd=event.results[0][a].transcript;
+							let intermediateanswer=await Commands.execute(cmd,true);
+							if(intermediateanswer!="TRYOTHERPOSSIBILITY"){
+								answer=intermediateanswer;
+								found=true;
+								break;
+							}
+							console.log("!!!!!"+a+event.results[0][a].transcript)
+						}
+						if(!found) {
+							cmd=event.results[0][0].transcript;
+							answer=await Commands.execute(cmd,false);
+						}
 					//	console.log(transcript);
 
-						let cmd = transcript;
+						
 						lastinput = cmd;
 						let p = document.createElement('p');
 						p.innerHTML = cmd;
 						p.className = 'command';
 						story.appendChild(p);
 
-						let answer = await Commands.execute(cmd);
+						
 						let p2 = document.createElement('p');
 						p2.innerHTML = answer;
 						story.appendChild(p2);
@@ -2884,7 +2904,7 @@ you can make a door also an orc that blocks the road
 					p.className = 'command';
 					story.appendChild(p);
 
-					let answer = await Commands.execute(cmd);
+					let answer = await Commands.execute(cmd,false);
 					let p2 = document.createElement('p');
 					p2.innerHTML = answer;
 					story.appendChild(p2);
