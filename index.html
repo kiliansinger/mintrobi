@@ -1832,7 +1832,7 @@ you can make a door also an orc that blocks the road
 		return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server, Ben can't serve me my favourite cake.`;
 	}
 
-	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach Norden geht es über Straße mit Ampel in den Dschungel, </br>nach Sueden geht es zum Strand.${EN}You are in a small market place in the city. </br>To the north, there is a road with traffic lights leading into the jungle, </br>to the south, there is the beach.`)
+	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach Norden geht es über Straße mit Ampel in den Dschungel, </br>nach Süden geht es zum Strand.${EN}You are in a small market place in the city. </br>To the north, there is a road with traffic lights leading into the jungle, </br>to the south, there is the beach.`)
 	scene5.south = scene3;
 	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}ein Verkäufer${EN}a seller`);
 	scene5.insert(verkaeufer);
@@ -1849,7 +1849,7 @@ you can make a door also an orc that blocks the road
 	kuenstler.dialog = async function* () {
 		return T`${DE}Für dieses Bild werde ich richtig reich. </br>Hm, soll ich eine Million Taler verlangen. </br>Nee, lieber 2. Oder doch 3 Millionen?${EN}For this picture I'll be really rich. </br>Hm, should I ask for a million thalers. </br>No, rather 2. Or 3 million?`;
 	}
-	let scene6 = new Scene(T`${DE}Dschungel${EN}Jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel. </br>Nach Norden geht es zu einer Lichtung, </br>nach Sueden geht es zur Stadt </br>und im Westen liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle. </br>To the north is a clearing, </br>to the south is the town </br>and to the west is the entrance to the native tribe village.`)
+	let scene6 = new Scene(T`${DE}Dschungel${EN}Jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel. </br>Nach Norden geht es zu einer Lichtung, </br>nach Süden geht es zur Stadt </br>und im Westen liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle. </br>To the north is a clearing, </br>to the south is the town </br>and to the west is the entrance to the native tribe village.`)
 	let kaputteAmpel = new Door(T`${DE}Ampel${EN}traffic light`, T`${DE}Ein eine kaputte Ampel.${EN}A broken traffic-light.`, { blocking: true, usable: true, speakable: true, locked: true });
 	kaputteAmpel.use = function () {
 		Commands.forward_command = T`${DE}t ampel${EN}t traffic light`
@@ -2079,7 +2079,7 @@ you can make a door also an orc that blocks the road
 	scene6.south = scene5;
 	scene5.northblock = kaputteAmpel;
 	scene5.insert(kaputteAmpel)
-	let scene7 = new Scene(T`${DE}Lichtung${EN}Clearance`, T`<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>${DE}Du befindest dich auf einer Lichtung im Dschungel. </br>Nach Sueden geht es zurueck zum Dschungelpfad.${EN}You are in a clearance in the jungle. </br>To the south you go back to the jungle path.`)
+	let scene7 = new Scene(T`${DE}Lichtung${EN}Clearance`, T`<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>${DE}Du befindest dich auf einer Lichtung im Dschungel. </br>Nach Süden geht es zurueck zum Dschungelpfad.${EN}You are in a clearance in the jungle. </br>To the south you go back to the jungle path.`)
 	scene7.south = scene6;
 	scene6.southblock = kaputteAmpel2;
 	scene6.insert(kaputteAmpel2);
@@ -2214,7 +2214,7 @@ you can make a door also an orc that blocks the road
 	let scene10 = new Scene(T`${DE}Geheimes Labor${EN}Secret lab`, "");
 	scene10.describe = function () {
 		if (MODE.pro) {
-			return T`<img src='s10.png'>${DE}Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben. </br>Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: ${EN}Bravo, you have completed the game and can now write your own programmes. </br>Here is the source code so that you can extend the game yourself: ${ALL}<a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a> </br>${DE}Nach Sueden geht es zur Strandbar.${EN}To the south you can go to the beach bar.`;
+			return T`<img src='s10.png'>${DE}Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben. </br>Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: ${EN}Bravo, you have completed the game and can now write your own programmes. </br>Here is the source code so that you can extend the game yourself: ${ALL}<a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a> </br>${DE}Nach Süden geht es zur Strandbar.${EN}To the south you can go to the beach bar.`;
 		}
 		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>. </br>${DE}Ausserdem fällt dir der gut erhaltene Computer auf. </br>Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.) </br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest! </br>Nach Süden geht es zur Strandbar.${EN}You also notice the well-preserved computer. </br>In the north there is a door with a combination lock (<em style='color:#0f0;'>type on number lock</em>.) </br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain! </br>To the south you can go to the beach bar.`
 	}
