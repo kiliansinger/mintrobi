@@ -1643,21 +1643,21 @@ you can make a door also an orc that blocks the road
 						reply2 = yield (reply2 == "" ? T`${DE}Das Gehirn von dem Mintrobi ist der kleine farbige Chip. Den müssen wir erst noch programmieren. Hier ein paar Übungen:${EN}The brain of the Mintrobi is the little coloured chip. We still have to programme it. Here are a few exercises:${ALL}<p style='color:#0f0;'>` : T`${DE}Übung macht den Meister${EN}Practice makes perfect${ALL}:<p style='color:#0f0;'>`) +
 							T`1 - <a target='_blank' href='https://makecode.microbit.org/#pub:_VyuiWdV2LhE8'>${DE}Mache einen Smiley${EN}Make a smiley${ALL}</a> </br>2 - <a target='_blank' href='https://makecode.microbit.org/#pub:_C90eVc79ADWv'>${DE}Mache kleinen Film${EN}Make a small movie${ALL}</a> </br>3 - <a target='_blank' href='https://makecode.microbit.org/#pub:_HufEVJRw52vP'>${DE}Mache Geräusche${EN}Make noise${ALL}</a> </br>4 - <a target='_blank' href='https://makecode.microbit.org/#pub:_itjWEp51qUU7'>${DE}Mache ein Feuerknopf hinzu${EN}Add a fire button${ALL}</a> </br>5 - <a target='_blank' href='https://makecode.microbit.org/#pub:_8muMDLDucUxu'>${DE}Spiele die Tonleiter${EN}Play the scale${ALL}</a> </br>6 - <a target='_blank' href='https://makecode.microbit.org/#pub:_gma3HXbP56wz'>${DE}Zeige deinen Namen${EN}Show your name${ALL}</a> </br>7 - <a target='_blank' href='https://makecode.microbit.org/#pub:_2YsaPx2FrPdt'>${DE}Mache einen Zahlenwürfel${EN}Make a number dice${ALL}</a> </br>8 - <a target='_blank' href='https://makecode.microbit.org/#pub:_4XRfVyFpzbV6'>${DE}Mache einen Würfel mit Augen${EN}Make a dice with spots${ALL}</a> </br>9 - ${DE}Ich will keine Übungen mehr machen sondern mal was richtiges Spielen.${EN}I don't want to do any more exercises, I want to play something real for a change.${ALL}</p>`
 						switch (reply2) {
-							case "1": window.open("https://makecode.microbit.org/#pub:_VyuiWdV2LhE8", "_blank").focus();
+							case "1": window.open("https://makecode.microbit.org/#pub:_VyuiWdV2LhE8", "_blank")?.focus();
 								break;
-							case "2": window.open("https://makecode.microbit.org/#pub:_C90eVc79ADWv", "_blank").focus();
+							case "2": window.open("https://makecode.microbit.org/#pub:_C90eVc79ADWv", "_blank")?.focus();
 								break;
-							case "3": window.open("https://makecode.microbit.org/#pub:_HufEVJRw52vP", "_blank").focus();
+							case "3": window.open("https://makecode.microbit.org/#pub:_HufEVJRw52vP", "_blank")?.focus();
 								break;
-							case "4": window.open("https://makecode.microbit.org/#pub:_itjWEp51qUU7", "_blank").focus();
+							case "4": window.open("https://makecode.microbit.org/#pub:_itjWEp51qUU7", "_blank")?.focus();
 								break;
-							case "5": window.open("https://makecode.microbit.org/#pub:_8muMDLDucUxu", "_blank").focus();
+							case "5": window.open("https://makecode.microbit.org/#pub:_8muMDLDucUxu", "_blank")?.focus();
 								break;
-							case "6": window.open("https://makecode.microbit.org/#pub:_gma3HXbP56wz", "_blank").focus();
+							case "6": window.open("https://makecode.microbit.org/#pub:_gma3HXbP56wz", "_blank")?.focus();
 								break;
-							case "7": window.open("https://makecode.microbit.org/#pub:_2YsaPx2FrPdt", "_blank").focus();
+							case "7": window.open("https://makecode.microbit.org/#pub:_2YsaPx2FrPdt", "_blank")?.focus();
 								break;
-							case "8": window.open("https://makecode.microbit.org/#pub:_4XRfVyFpzbV6", "_blank").focus();
+							case "8": window.open("https://makecode.microbit.org/#pub:_4XRfVyFpzbV6", "_blank")?.focus();
 								break;
 							case "9":
 								return T`${DE}Ah dann kannst Du ja mal versuchen den Computer zu reparieren. Ich würde gerne mal wieder Computer spielen. Was war noch? Ah, Opa hat nach dir gefragt. Er hat etwas mysteriöses gefunden, das er dir gerne zeigen möchte.${EN}Ah, then you can try to repair the computer. I'd like to play computer games again. What else? Ah, grandpa was asking about you. He found something mysterious that he wants to show you.`;
@@ -1884,7 +1884,7 @@ you can make a door also an orc that blocks the road
 						let trick = false;
 						switch (reply2) {
 							case "1":
-								window.open("https://makecode.microbit.org/#pub:_4Mm6dtfmVTY5", "_blank").focus();
+								window.open("https://makecode.microbit.org/#pub:_4Mm6dtfmVTY5", "_blank")?.focus();
 								break;
 							case "123":
 								trick = true;
@@ -1907,7 +1907,7 @@ you can make a door also an orc that blocks the road
 													let trick = false;
 													switch (reply4) {
 														case "1":
-															window.open("https://makecode.microbit.org/#pub:_REjD0A9HE4m9", "_blank").focus();
+															window.open("https://makecode.microbit.org/#pub:_REjD0A9HE4m9", "_blank")?.focus();
 															break;
 														case "123":
 															trick = true;
@@ -2004,7 +2004,7 @@ you can make a door also an orc that blocks the road
 			const reply = yield T`${DE}Die Ampel muss wieder repariert werden. Diesmal soll die gelbe Leuchtdiode kaputt sein. Kannst Du mit der Leuchtdiode die 4 Beinchen hat gelb durch Farbmischung herstellen. Hier erfährst du mehr über Farbmischung ${EN}The traffic lights need to be repaired again. This time the yellow light-emitting diode is supposed to be broken. Can you use the light-emitting diode that has 4 legs to make yellow by mixing colours? Learn more about colour mixing here. ${ALL}<a target='_blank' href='https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1'>Video</a>. ${DE}Verwende dazu das Gehirn von Mintrobi. </br>Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken. </br>Verkabele alles wie in der Abbildung${EN}Use the brain from Mintrobi. </br>Connect it to your computer with the USB cable. The first time you do this, select the device in the dialogue and click OK. </br> Connect everything as shown in the picture ${ALL} <img width='80%' src='multifarbe.png'><p style='color:#0f0;'>${DE}1 - Wie soll man denn aus rot, grün und blau die Farbe gelb mischen? </br>${EN}1 - How are you supposed to mix red, green and blue to make yellow? </br>${DE}2 - Ok, es ist alles verbunden! </br>${EN}2 - Ok, it is all connected! </br>${DE}3 - Ich wollte eigentlich gar nicht über die Ampel.${EN} I didn't actually want to go through the traffic light.${ALL}</p>`;
 			switch (reply) {
 				case "1":
-					window.open("https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1", "_blank").focus();
+					window.open("https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1", "_blank")?.focus();
 					continue;
 				case "2":
 					while (true) {
@@ -2013,7 +2013,7 @@ you can make a door also an orc that blocks the road
 						let trick = false;
 						switch (reply4) {
 							case "1":
-								window.open("https://makecode.microbit.org/#pub:_fCvCeLT1h7tH", "_blank").focus();
+								window.open("https://makecode.microbit.org/#pub:_fCvCeLT1h7tH", "_blank")?.focus();
 								break;
 							case "123":
 								trick = true;
@@ -2360,7 +2360,7 @@ you can make a door also an orc that blocks the road
 			if (MODE.lang == DE) importantprep = ["an", "mit", "auf", "nach", "durch", "in", "zu"];
 			else if (MODE.lang == EN) importantprep = ["to", "with", "towards", "through", "in", "at", "on", "into"];
 
-			let delall = ["!", "."];
+			let delall = ["!", ".","?"];
 			Commands.answer = [];
 			let recog = false;
 			for (var del in delall) cmd = cmd.split(delall[del]).join(" ");
