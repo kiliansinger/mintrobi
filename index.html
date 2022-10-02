@@ -1232,7 +1232,7 @@ you can make a door also an orc that blocks the road
 	}
 	class Thing extends Obj {
 		/** @member {string} */
-		titel = [""];
+		title = [""];
 		description = "";
 		speakable = false;//when true you can speak with it. you need to add: XXX.dialog=async function* ()
 		opensoninspection = false;//is closed but when you look at it by command "look at item" it opens.
@@ -1275,17 +1275,17 @@ you can make a door also an orc that blocks the road
 			}
 			else return false;
 		}
-		constructor(titel, description) {
-			let titel2
-			if (!(titel instanceof Array)) titel2 = [titel];
-			else titel2 = titel;
+		constructor(title, description) {
+			let title2
+			if (!(title instanceof Array)) title2 = [title];
+			else title2 = title;
 			super();
-			this.titel = titel2;
+			this.title = title2;
 			this.description = description;
 		}
 		describe() {
 			if (this.opensoninspection) this.open = true;
-			return this.titel[0].toString() + ": " + this.description.toString();
+			return this.title[0].toString() + ": " + this.description.toString();
 		}
 		insert(thing) {
 			if (thing.name === undefined) Obj.nametag()
@@ -1323,8 +1323,8 @@ you can make a door also an orc that blocks the road
 
 	}
 	class Scene extends Thing {//is not takeable
-		constructor(titel, description, { openable = false, opensoninspection = false, closable = false, open = true, visible = true } = {}) {
-			super(titel, description);
+		constructor(title, description, { openable = false, opensoninspection = false, closable = false, open = true, visible = true } = {}) {
+			super(title, description);
 			this.openable = openable;
 			this.open = open;
 			this.closable = closable;
@@ -1386,8 +1386,8 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	class Door extends Thing {
-		constructor(titel, description, { openable = false, opensoninspection = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false, applicable = true, blockable = true, blocking = true, locked = false, speakable = false } = {}) {
-			super(titel, description);
+		constructor(title, description, { openable = false, opensoninspection = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false, applicable = true, blockable = true, blocking = true, locked = false, speakable = false } = {}) {
+			super(title, description);
 			this.speakable = speakable;
 			this.openable = openable;
 			this.closable = closable;
@@ -1408,8 +1408,8 @@ you can make a door also an orc that blocks the road
 	 * @extends Thing
 	 */
 	class Item extends Thing {//is takeable
-		constructor(titel, description, { openable = false, opensoninspection = false, closable = false, open = false, visible = true, takeable = true, dropable = true, usable = false, applicable = false } = {}) {
-			super(titel, description);
+		constructor(title, description, { openable = false, opensoninspection = false, closable = false, open = false, visible = true, takeable = true, dropable = true, usable = false, applicable = false } = {}) {
+			super(title, description);
 			this.openable = openable;
 			this.closable = closable;
 			this.open = open;
@@ -1423,8 +1423,8 @@ you can make a door also an orc that blocks the road
 	}
 	class Person extends Thing {
 		position = null;
-		constructor(titel, description, { speakable = true, opensoninspection = false, openable = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false } = {}) {
-			super(titel, description);
+		constructor(title, description, { speakable = true, opensoninspection = false, openable = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false } = {}) {
+			super(title, description);
 			this.speakable = speakable;
 			this.openable = openable;
 			this.closable = closable;
@@ -1438,8 +1438,8 @@ you can make a door also an orc that blocks the road
 	}
 	class BlockingPerson extends Thing {
 		position = null;
-		constructor(titel, description, { speakable = true, opensoninspection = false, openable = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false, blockable = true, blocking = true, locked = false } = {}) {
-			super(titel, description);
+		constructor(title, description, { speakable = true, opensoninspection = false, openable = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false, blockable = true, blocking = true, locked = false } = {}) {
+			super(title, description);
 			this.speakable = speakable;
 			this.openable = openable;
 			this.closable = closable;
@@ -1529,13 +1529,13 @@ you can make a door also an orc that blocks the road
 		let thing = null;
 		for (var i in things) {
 			var foundhere = false;
-			for (let j in things[i].titel) {
-				if (things[i].titel[j] && things[i].titel[j].toString().toLowerCase() === at) {
+			for (let j in things[i].title) {
+				if (things[i].title[j] && things[i].title[j].toString().toLowerCase() === at) {
 					thing = things[i]; found = true; foundhere = true;
 				}
 			}
 			if (found && !quiet && (key === null || things[i] instanceof key)) {
-				if (list) print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].titel[0].toString());
+				if (list) print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].title[0].toString());
 				else print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].describe() + "\n" + Array(cnt).join('   '));
 			}
 			if (things[i].open && !isEmpty(things[i]["things"])) {
@@ -1560,8 +1560,10 @@ you can make a door also an orc that blocks the road
 	}
 	var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 	///////////////////////////////////////////////////////
-	let ich = new Person(T`${DE}Kai${EN}Kai`, T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.${EN}You are interested in science and want to explore the world.${DE} </br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst. </br>${EN} </br>You can always enter <em style='color:#0f0;'>help</em> when you are stuck. </br>`
+	let ich = new Person("Kai", T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.${EN}You are interested in science and want to explore the world.${DE} </br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst. </br>${EN} </br>You can always enter <em style='color:#0f0;'>help</em> when you are stuck. </br>`
 		, { open: true });
+	ich.title=["Kai"]
+	ich.age=8;
 	var Pong = null;
 	let computer = new Person(T`${DE}Computer${EN}Computer`, T`${DE}Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.${EN}Computer with Pong game. Try typing: <en style='color:#0f0;'>use computer</em>.`, { usable: true });
 	var pongcanv = null;
@@ -1572,7 +1574,7 @@ you can make a door also an orc that blocks the road
 	computer.dialog = async function* () {
 		if (MODE.pro) return T`${DE}Für dieses Spiel musst du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
 		yield (!isChrome ? T`<em style='color:#faa;'>${DE}Achtung damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN}Attention: For everything to work, you should start the game with a modern Chrome/Edge browser!${ALL}</em> </br>` : "") +
-			T`${DE}Baue eine Steuerung des Spiels. Hier ist der Code:${EN}Build a control of the game. Here is the code: ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_XUx3dT0fdM2P'>Code</a>. </br>${DE}Dann musst Du das Programm auf das Gehirn von Mintrobi hochgeladen. </br>${EN}Then you have to upload the programme to Mintrobi's brain. </br>${DE}Falls Du in Makecode verbunden bist, musst du die Verbindung nach dem Hochladen des Programms erst noch trennen </br>${EN}If you are connected in Makecode, you must first disconnect after uploading the programme.${ALL}<img width='20%' src='unpair.gif'>${DE}Drücke [ENTER] wenn du soweit bist.${EN}Press [ENTER] when you are ready.`
+			T`${DE}Baue eine Steuerung des Spiels. Hier ist der Code:${EN}Build a control of the game. Here is the code: ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_XUx3dT0fdM2P'>Code</a>. </br>${DE}Dann musst Du das Programm auf das Gehirn von Mintrobi hochgeladen. </br>${EN}Then you have to upload the programme to Mintrobi's brain. </br>${DE}Falls Du in Makecode verbunden bist, musst du die Verbindung nach dem Hochladen des Programms erst noch trennen. </br>${EN}If you are connected in Makecode, you must first disconnect after uploading the programme. </br>${ALL}<img width='20%' src='unpair.gif'>${DE}Drücke [ENTER] wenn du soweit bist.${EN}Press [ENTER] when you are ready.`
 		yield T`${DE}Jetzt musst du nur noch wie folgt verkabeln:<img width='50%' src='poti.png'> </br>Drücke [ENTER] wenn du soweit bist.${EN}Now you just have to wire it as follows:<img width='50%' src='poti.png'> </br>Press [ENTER] when you are ready.`;
 		while (true) {
 			if (pongcanv != null) pongcanv.remove();
@@ -1581,7 +1583,7 @@ you can make a door also an orc that blocks the road
 			story.scrollTop = story.scrollHeight - story.clientHeight
 			Pong = Object.assign({}, Game);
 			Pong.initialize();
-			let nochmal = yield T`${DE}Nochmal${EN}Again${ALL}? <p style='color:#0f0;'>1 - ${DE}Ja${EN}Yes${ALL} </br>2 - ${DE}Nein${EN}No${ALL}</p>`
+			let nochmal = yield T`${DE}Nochmal${EN}Again${ALL}? <p style='color:#0f0;'>1 - ${DE}Ja.${EN}Yes.${ALL}  </br>2 - ${DE}Nein.${EN}No.${ALL}</p>`
 			if (nochmal != "1") return "Ok.";
 		}
 	}
@@ -1592,8 +1594,8 @@ you can make a door also an orc that blocks the road
 	ich.position = omazuhause;
 	oma.dialog = async function* () {
 		while (true) {
-			let reply = yield (!isChrome && !MODE.pro ? T`<em style='color:#faa;'>${DE}Achtung: Damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN} </br>Attention: For everything to work, you should start the game with a modern Chrome/Edge browser! ${DE}Falls du <em style='color:#0f0;'>4</em> wählst ist der Browser egal!</em> </br>${EN}In case you choose <em style='color:#0f0;'>4</em>, then the choice of browser is irrelevant!</em> </br>` : "") +
-				T`${DE}Kai, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi schon bestellt und zusammengebaut haben. ${EN}Kai, you have finally woken up! I don't even know if we have already ordered and assembled your birthday present, the Mintrobi. ${ALL}<p style='color:#0f0;'>${DE}1 - Ja, wir haben schon alles bestellt und zusammengebaut. </br>${EN}1 - Yes, we have already ordered and assembled everything. </br>${DE}2 - Ich muss ihn noch zusammenbauen! </br>${EN}2 - I still have to assemble it! </br>${DE}3 - Wir müssen ihn noch bestellen! </br>${EN}3 - We still have to order it! </br>${DE}4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram! </br>${EN}4 - Mintrobi? Piece of cake, I want to become a C++ programming expert without this kid stuff! </br>${DE}5 - Ich geh mal spazieren!${EN}5 - I'll go for a walk!${ALL}</p>`
+			let reply = yield (!isChrome && !MODE.pro ? T`<em style='color:#faa;'>${DE}Achtung: Damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN} </br>Attention: For everything to work, you should start the game with a modern Chrome/Edge browser! ${DE}Falls du <em style='color:#0f0;'>4</em> wählst ist der Browser egal!</em> </br>${EN}In case you choose <em style='color:#0f0;'>4</em>, then the choice of browser is irrelevant!</em> </br>` : "") +ich.title+
+				T`${DE}, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi s We still have to order it! </chon bestellt und zusammengebaut haben. ${EN}, you have finally woken up! I don't even know if we have already ordered and assembled your birthday present, the Mintrobi. ${ALL}<p style='color:#0f0;'>${DE}1 - Ja, wir haben schon alles bestellt und zusammengebaut. </br>${EN}1 - Yes, we have already ordered and assembled everything. </br>${DE}2 - Ich muss ihn noch zusammenbauen! </br>${EN}2 - I still have to assemble it! </br>${DE}3 - Wir müssen ihn noch bestellen! </br>${EN}3 -br>${DE}4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram! </br>${EN}4 - Mintrobi? Piece of cake, I want to become a C++ programming expert without this kid stuff! </br>${DE}5 - Du verwechselst mich ich bin jemand anderes! </br>${EN}5 - You've mistaken me for someone else! </br>${DE}6 - Ich geh mal spazieren!${EN}6 - I'll go for a walk!${ALL}</p>`
 			switch (reply) {
 				case "1":
 					MODE.pro = false;
@@ -1636,6 +1638,17 @@ you can make a door also an orc that blocks the road
 					MODE.pro = true;
 					return T`${DE}Kein Problem! Dann kannst Du alle Bastelaufgaben überspringen statt dessen C++ Programme erstellen. Wenn Du noch keine Ahnung hast oder im Spiel nicht mehr weiter weist, dann kannst Du hier Videos schauen: ${EN}No problem! Then you can skip all the tinkering tasks and create C++ programmes instead. If you still have no idea or are stuck in the game, you can watch videos here: ${ALL}<a target='_blank' href='https://www.youtube.com/watch?v=E53dZ8mW6tQ&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=1'>${DE}Abenteuer Programmieren auf Youtube${EN}Adventure Programming on Youtube${ALL}</a>.`
 				case "5":
+					let name=yield T`${DE}Oh entschuldigung, wie heißt du nochmal?${EN}Oh sorry, what is your name again?`
+					name=name.charAt(0).toUpperCase() + name.slice(1)
+					ich.title=[name];
+					let age
+					while(true){
+						age=yield T`${DE}Und wie alt bist Du nochmal?${EN}And how old are you again?`
+						if(!isNaN(+age)) break;
+					}
+					ich.age=age;
+					continue;
+				case "6":
 					return T`${DE}Tschüß${EN}Bye!`;
 				default:
 					Commands.understood = false;
@@ -1652,7 +1665,7 @@ you can make a door also an orc that blocks the road
 	opa.dialog = async function* () {
 		if (this.has(bottlemessage)) {
 			while (true) {
-				let reply = yield T`${DE}Hallo Kai hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.${EN}Hello Kai did you sleep well? Well, it's not that important, I fished a funny message out of the sea. Here, take a look.${ALL} <p style='color:#0f0;'>${DE}1 - Och ne, dafür bin ich jetzt noch viel zu müde. </br>${EN}1 - Oh no, I'm much too tired for that now. </br>${DE}2 - Echt???! Zeig mal her was du gefunden hast.${EN}2 - Really???! Let me see what you found.${ALL}</p>`
+				let reply = yield T`${DE}Hallo ${EN}Hello `+ich.title+T`${DE} hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.${EN} did you sleep well? Well, it's not that important, I fished a funny message out of the sea. Here, take a look.${ALL} <p style='color:#0f0;'>${DE}1 - Och ne, dafür bin ich jetzt noch viel zu müde. </br>${EN}1 - Oh no, I'm much too tired for that now. </br>${DE}2 - Echt???! Zeig mal her was du gefunden hast.${EN}2 - Really???! Let me see what you found.${ALL}</p>`
 				switch (reply) {
 					case "1":
 						return T`${DE}Ach Schade. Dann komm doch später nochmal zu mir.${EN}Oh, that's too bad. Then come back to me later.`
@@ -1781,8 +1794,30 @@ you can make a door also an orc that blocks the road
 	scene5.south = scene3;
 	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}ein Verkäufer${EN}a seller`);
 	scene5.insert(verkaeufer);
+	let muenzen=new Item(["1 Euro","Euro"],"Euro-Münzen",{applicable:true});
+	muenzen.value=1;
+
+	verkaeufer.insert(muenzen);
+
 	verkaeufer.dialog = async function* () {
-		return T`${DE}Hey komm mal her zu mir! </br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!${EN}Hey come here to me! </br>Here you will find souvenirs for every taste! Everyone will be happy with me!`;
+		if(this.has(muenzen)){
+			this.open = true;
+			Commands.actor.take(muenzen);
+			this.open = false;
+			return T`${DE}Hey komm mal her zu mir! </br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!${EN}Hey come here to me! </br>Here you will find souvenirs for every taste! Everyone will be happy with me!`;	
+		}
+		if(ich.has(muenzen)){
+			muenzen.value+=1;
+			muenzen.title=[muenzen.value+" Euro","Euro"]
+		}
+		return "Wuff"
+	}
+	verkaeufer.receiving = function (thing) {
+		if(thing==muenzen){
+			print( T`${DE}Nee behalte die ruhig, die kannst Du sicher gut gebrauchen!${EN}No, keep them, you'll need them for shure!`);
+			return false;
+		}
+		else return false;
 	}
 	let tratschtante = new Person([T`${DE}Tratschtante${EN}Tattletale`, T`${DE}Tratsch Tante`], T`${DE}eine Tratschtante${EN}a tattletale`);
 	scene5.insert(tratschtante);
@@ -2400,7 +2435,7 @@ you can make a door also an orc that blocks the road
 				case T`${DE}rucksack${EN}backpack`.toString():
 					if (!isEmpty(Commands.actor.things)) print(T`${DE}In deinem Rucksack befinden sich:${EN}In your backpack you can find:${ALL} \n`);
 					if (Commands.actor.open) for (var i in Commands.actor.things) {
-						print(Commands.actor.things[i].titel[0].toString());
+						print(Commands.actor.things[i].title[0].toString());
 						print("\n");
 					}
 					return true;
@@ -2449,7 +2484,7 @@ you can make a door also an orc that blocks the road
 						return true;
 					}
 					else {
-						print(T`${DE}Da kann ich nicht hin wegen: ${EN}I cannot go there due to: ` + Commands.actor.position[direction + "block"].titel.toString() + "!\n")
+						print(T`${DE}Da kann ich nicht hin wegen: ${EN}I cannot go there due to: ` + Commands.actor.position[direction + "block"].title.toString() + "!\n")
 						return true;
 					}
 				}
@@ -2547,7 +2582,7 @@ you can make a door also an orc that blocks the road
 		@when(T`${DE}l${EN}p${ALL} ITEM => TARGET`)
 		@when(T`${DE}gib${EN}give${ALL} ITEM`, { target: "scene" })
 		@when(T`${DE}lege${EN}put${ALL} ITEM`, { target: "scene" })
-		@when(T`${DE}lege${EN}drop${ALL} ITEM`)
+		@when(T`${DE}lege${EN}drop${ALL} ITEM`, { target: "scene" })
 		@when(T`${DE}l${EN}p${ALL} ITEM`, { target: "scene" })
 		static give({ item, target }) {//todo all logic should be in Thing class
 			let { mine, thing } = search(item);
@@ -2706,15 +2741,15 @@ you can make a door also an orc that blocks the road
 		}
 		@when("speichere TITEL")
 		@when("save TITEL")
-		static save({ titel }) {
+		static save({ title }) {
 			let dump2 = Obj.dump();
-			localStorage.setItem(titel, dump2);
+			localStorage.setItem(title, dump2);
 			return true;
 		}
 		@when("lade TITEL")
 		@when("load TITEL")
-		static load({ titel }) {
-			let dump2 = localStorage.getItem(titel)
+		static load({ title }) {
+			let dump2 = localStorage.getItem(title)
 			if (dump2 !== null) {
 				Obj.restore(dump2);
 				return true;
@@ -2722,7 +2757,7 @@ you can make a door also an orc that blocks the road
 		}
 		@when("reset")
 		static reset() {
-			return Commands.load({ titel: "reset" });
+			return Commands.load({ title: "reset" });
 		}
 		static intro() {
 			let dump = Obj.dump();
