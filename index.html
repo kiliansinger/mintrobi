@@ -952,6 +952,9 @@ you can make a door also an orc that blocks the road
 
 		}
 	}
+	function randint(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
 </script>
 <script src="pong.js"></script>
 
@@ -1266,7 +1269,7 @@ you can make a door also an orc that blocks the road
 				let old = thing.parent;
 				thing.parent.remove(thing)
 				this.insert(thing);
-				if (this.receiving) retval &= this.receiving(thing);//here we have recursive problem with calling take in receiving but only when calling take directly
+				if (this.receiving && !force) retval &= this.receiving(thing);//here we have recursive problem with calling take in receiving but only when calling take directly
 				if (!retval) {
 					thing.parent.remove(thing)
 					old.insert(thing);
@@ -1562,8 +1565,8 @@ you can make a door also an orc that blocks the road
 	///////////////////////////////////////////////////////
 	let ich = new Person("Kai", T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.${EN}You are interested in science and want to explore the world.${DE} </br>Du kannst immer <em style='color:#0f0;'>hilfe</em> eingeben, wenn du nicht weiter kommst. </br>${EN} </br>You can always enter <em style='color:#0f0;'>help</em> when you are stuck. </br>`
 		, { open: true });
-	ich.title=["Kai"]
-	ich.age=8;
+	ich.title = ["Kai"]
+	ich.age = 8;
 	var Pong = null;
 	let computer = new Person(T`${DE}Computer${EN}Computer`, T`${DE}Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.${EN}Computer with Pong game. Try typing: <en style='color:#0f0;'>use computer</em>.`, { usable: true });
 	var pongcanv = null;
@@ -1594,7 +1597,7 @@ you can make a door also an orc that blocks the road
 	ich.position = omazuhause;
 	oma.dialog = async function* () {
 		while (true) {
-			let reply = yield (!isChrome && !MODE.pro ? T`<em style='color:#faa;'>${DE}Achtung: Damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN} </br>Attention: For everything to work, you should start the game with a modern Chrome/Edge browser! ${DE}Falls du <em style='color:#0f0;'>4</em> wählst ist der Browser egal!</em> </br>${EN}In case you choose <em style='color:#0f0;'>4</em>, then the choice of browser is irrelevant!</em> </br>` : "") +ich.title+
+			let reply = yield (!isChrome && !MODE.pro ? T`<em style='color:#faa;'>${DE}Achtung: Damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN} </br>Attention: For everything to work, you should start the game with a modern Chrome/Edge browser! ${DE}Falls du <em style='color:#0f0;'>4</em> wählst ist der Browser egal!</em> </br>${EN}In case you choose <em style='color:#0f0;'>4</em>, then the choice of browser is irrelevant!</em> </br>` : "") + ich.title +
 				T`${DE}, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi s We still have to order it! </chon bestellt und zusammengebaut haben. ${EN}, you have finally woken up! I don't even know if we have already ordered and assembled your birthday present, the Mintrobi. ${ALL}<p style='color:#0f0;'>${DE}1 - Ja, wir haben schon alles bestellt und zusammengebaut. </br>${EN}1 - Yes, we have already ordered and assembled everything. </br>${DE}2 - Ich muss ihn noch zusammenbauen! </br>${EN}2 - I still have to assemble it! </br>${DE}3 - Wir müssen ihn noch bestellen! </br>${EN}3 -br>${DE}4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram! </br>${EN}4 - Mintrobi? Piece of cake, I want to become a C++ programming expert without this kid stuff! </br>${DE}5 - Du verwechselst mich ich bin jemand anderes! </br>${EN}5 - You've mistaken me for someone else! </br>${DE}6 - Ich geh mal spazieren!${EN}6 - I'll go for a walk!${ALL}</p>`
 			switch (reply) {
 				case "1":
@@ -1638,18 +1641,18 @@ you can make a door also an orc that blocks the road
 					MODE.pro = true;
 					return T`${DE}Kein Problem! Dann kannst Du alle Bastelaufgaben überspringen statt dessen C++ Programme erstellen. Wenn Du noch keine Ahnung hast oder im Spiel nicht mehr weiter weist, dann kannst Du hier Videos schauen: ${EN}No problem! Then you can skip all the tinkering tasks and create C++ programmes instead. If you still have no idea or are stuck in the game, you can watch videos here: ${ALL}<a target='_blank' href='https://www.youtube.com/watch?v=E53dZ8mW6tQ&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=1'>${DE}Abenteuer Programmieren auf Youtube${EN}Adventure Programming on Youtube${ALL}</a>.`
 				case "5":
-					let name=yield T`${DE}Oh entschuldigung, wie heißt du nochmal?${EN}Oh sorry, what is your name again?`
-					name=name.charAt(0).toUpperCase() + name.slice(1)
-					ich.title=[name];
+					let name = yield T`${DE}Oh entschuldigung, wie heißt du nochmal?${EN}Oh sorry, what is your name again?`
+					name = name.charAt(0).toUpperCase() + name.slice(1)
+					ich.title = [name];
 					let age
-					while(true){
-						age=yield T`${DE}Und wie alt bist Du nochmal?${EN}And how old are you again?`
-						if(!isNaN(+age)) break;
+					while (true) {
+						age = yield T`${DE}Und wie alt bist Du nochmal?${EN}And how old are you again?`
+						if (!isNaN(+age)) break;
 					}
-					ich.age=age;
+					ich.age = age;
 					continue;
 				case "6":
-					return T`${DE}Tschüß${EN}Bye!`;
+					return T`${DE}Tschüss${EN}Bye!`;
 				default:
 					Commands.understood = false;
 					continue;
@@ -1665,7 +1668,7 @@ you can make a door also an orc that blocks the road
 	opa.dialog = async function* () {
 		if (this.has(bottlemessage)) {
 			while (true) {
-				let reply = yield T`${DE}Hallo ${EN}Hello `+ich.title+T`${DE} hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.${EN} did you sleep well? Well, it's not that important, I fished a funny message out of the sea. Here, take a look.${ALL} <p style='color:#0f0;'>${DE}1 - Och ne, dafür bin ich jetzt noch viel zu müde. </br>${EN}1 - Oh no, I'm much too tired for that now. </br>${DE}2 - Echt???! Zeig mal her was du gefunden hast.${EN}2 - Really???! Let me see what you found.${ALL}</p>`
+				let reply = yield T`${DE}Hallo ${EN}Hello ` + ich.title + T`${DE} hast du gut geschlafen? Naja ist nicht so wichtig, ich habe eine komische Nachricht aus dem Meer gefischt. Hier guck mal.${EN} did you sleep well? Well, it's not that important, I fished a funny message out of the sea. Here, take a look.${ALL} <p style='color:#0f0;'>${DE}1 - Och ne, dafür bin ich jetzt noch viel zu müde. </br>${EN}1 - Oh no, I'm much too tired for that now. </br>${DE}2 - Echt???! Zeig mal her was du gefunden hast.${EN}2 - Really???! Let me see what you found.${ALL}</p>`
 				switch (reply) {
 					case "1":
 						return T`${DE}Ach Schade. Dann komm doch später nochmal zu mir.${EN}Oh, that's too bad. Then come back to me later.`
@@ -1688,6 +1691,54 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 	let scene3 = new Scene(T`${DE}Badestrand${EN}Beach`, T`<div class='flow'><img class='back' src='s3.png'><img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'><img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'><img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>${DE}Du stehst am Strand, um dich herum sind einige Leute. </br>Nach Norden geht es in die Stadt, </br>nach Osten zum Strandhaus, </br>im Westen ist eine Strandbar.${EN}You are standing on the beach, there are some people around you. </br>To the north it goes to the city, </br>to the east to the beach house, </br>to the west is a beach bar.`)
+
+	let loch = new Item(T`${DE}Loch${EN}Hole`, T`${DE}Ein tiefes Loch${EN}A deep hole.`, { open: false, opensoninspection: true, takeable: false });
+	loch.giving = function (thing) {
+		print(T`${DE}Das Loch ist zu tief!${EN}The hole is too deep!`);
+		return false;
+	}
+	loch.receiving = function (thing) {
+		print(T`${DE}Besser nicht, sonst ists weg.${EN}Better not, otherwise it's gone.`)
+		return false;
+	}
+
+	let holzschluessel = new Item(T`${DE}Holzschlüssel${EN}Wooden key`, T`${DE}Ein hölzerner Schlüssel.${EN}A wooden key.`, { applicable: true });
+	loch.insert(holzschluessel);
+	scene3.insert(loch);
+
+	let eimer = new Item(T`${DE}Eimer${EN}Bucket`, T`${DE}Ein roter Eimer.${EN}A red bucket.`, { applicable: true });
+	scene3.insert(eimer);
+
+	let meer = new Item(T`${DE}Meer${EN}Ocean`, T`${DE}Schönes Meer.${EN}Beautiful ocean`, { takeable: false });
+	scene3.insert(meer);
+	eimer.insertApplyTarget(meer);
+	eimer.insertApplyTarget(loch);
+	eimer.leer = true;
+
+	eimer.doapply = function (target) {
+		//if(target===ocean) return target.doapply(this);//is needed because reciproce call only works when doapply is not there
+		if (target === meer) {
+			this.title = [T`${DE}Voller Eimer${EN}Full bucket`, T`${DE}Eimer${EN}Bucket`]
+			this.description = T`${DE}Ein mit Meerwasser gefüllter roter Eimer.${EN}A red bucket filled with ocean water.`
+			eimer.voll = true;
+			print(eimer.describe())
+			return true;
+		}
+		else if (target === loch) {
+			if (eimer.voll) {
+				print(T`${DE}Oh der Holzschlüssel schwimmt auf der Wasseroberfläche. Den nehm ich mir!${EN}Oh the wooden key floats on the water surface. I'll take it.`)
+				Commands.actor.take(holzschluessel, true);
+				eimer.voll = false;
+				eimer.title = [T`${DE}Eimer${EN}Bucket`]
+				eimer.description = T`${DE}Ein roter Eimer.${EN}A red bucket.`
+
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
+	}
 	scene3.east = strand;
 	let frau = new Person(T`${DE}Frau${EN}Woman`, T`${DE}ein Frau${EN}a woman`);
 	scene3.insert(frau);
@@ -1785,49 +1836,162 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let tortenliebhaber = new Person([T`${DE}Tortenliebhaber${EN}cake lover`, T`${DE}Torten Liebhaber`], T`${DE}ein Tortenliebhaber${EN}a cakelover`);
+	let tortenliebhaber = new Person([T`${DE}Tortenliebhaber${EN}cake lover`, T`${DE}Torten Liebhaber`], T`${DE}ein Tortenliebhaber${EN}a cakelover`,{open:false});
 	scene4.insert(tortenliebhaber);
+	let kaugummi=new Item(T`${DE}Kaugummi${EN}Chewing gum`,T`${DE}Ein Stück Kaugummi.${EN}A piece of chewing gum.`)
+	tortenliebhaber.insert(kaugummi);
 	tortenliebhaber.dialog = async function* () {
-		return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server, Ben can't serve me my favourite cake.`;
+		if(!this.has(kaugummi)) return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server, Ben can't serve me my favourite cake.`;
+		while(true){
+			let reply=yield T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren. Willst du ein Kaugummi? <p style='color=#0f0;'>1 - Ja. </br>2 - Nein</p>${EN}That's really annoying, without the cake server, Ben can't serve me my favourite cake. Do you want a chewing gum? <p style='color=#0f0;'>1 - Yes. </br>2 - No</p>`;
+			switch(reply){
+				case "1":
+					tortenliebhaber.open=true;
+					Commands.actor.take(kaugummi)
+					tortenliebhaber.open=false;
+					return T`${DE}Bitte schön!${EN}Here you are!`;
+				case "2":
+					return T`${DE}Tschuß!${EN}Bye!`;
+				default:
+					Commands.understood = false;
+					continue;
+			}
+		}
 	}
 	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach Norden geht es über Straße mit Ampel in den Dschungel, </br>nach Süden geht es zum Strand.${EN}You are in a small market place in the city. </br>To the north, there is a road with traffic lights leading into the jungle, </br>to the south, there is the beach.`)
 	scene5.south = scene3;
 	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}ein Verkäufer${EN}a seller`);
 	scene5.insert(verkaeufer);
-	let muenzen=new Item(["1 Euro","Euro"],"Euro-Münzen",{applicable:true});
-	muenzen.value=1;
+	let muenzen = new Item(["1 Euro", "Euro"], "Euro-Münzen");
+	muenzen.value = 1;
+	muenzen.golden=false;
 
 	verkaeufer.insert(muenzen);
 
 	verkaeufer.dialog = async function* () {
-		if(this.has(muenzen)){
-			this.open = true;
-			Commands.actor.take(muenzen);
-			this.open = false;
-			return T`${DE}Hey komm mal her zu mir! </br>Hier gibt es Souvenirs für jeden Geschmack! Bei mir wird jeder glücklich!${EN}Hey come here to me! </br>Here you will find souvenirs for every taste! Everyone will be happy with me!`;	
+		while (true) {
+			const reply = yield T`${DE}Kannst Du mir bei der Abrechnung helfen? <p style='color:#0f0;'>1 - Gerne. </br>2 - Nein Danke!</p>${EN}Can you help me with the billing? <p style='color:#0f0;'>1 - Gladly. </br>2 - No thanks!</p>`;
+			switch (reply) {
+				case "1":
+					print(T`${DE}Super Danke! Wenn du 10 mal hintereinander richtig rechnest bekommst du ein Euro von mir als Dank.${EN}Super thanks! If you calculate correctly 10 times in a row, you'll get a Euro from me as a thank you.`)
+					let richtig = 0;
+					while (true) {
+						let a = randint(1, 10);
+						let b = randint(1, 10);
+						const reply = yield T`${DE}Was ist ${a}+${b}?${EN}What is ${a}+${b}?`;
+						if (!isNaN(+reply)) {
+							let ans;
+							if (a + b == +reply) {
+								richtig += 1;
+								if (richtig >= 1) {
+									print(T`${DE}Hier ein Euro.${EN}Here one Euro.`)
+									if (this.has(muenzen)) {
+										this.open = true;
+										Commands.actor.take(muenzen);
+										this.open = false;
+									}
+									else {
+										muenzen.value += 1;
+										if(muenzen.golden) {
+											muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,  T`${DE}Goldmünzen${EN}Gold coins`]
+										}
+										else muenzen.title = [muenzen.value + " Euro", "Euro"];
+									}
+									richtig = 0;
+								}
+								ans = yield T`${DE}Richtig! Weiter? <p style='color:#0f0;'>1 - Ja! <br>2 - Nein!</p>${EN}Right! Continue? <p style='color:#0f0;'>1 - Yes! <br>2 - No!</p>`;
+							} else {
+								richtig = 0;
+								ans = yield T`${DE}Falsch! Weiter? <p style='color:#0f0;'>1 - Ja! <br>2 - Nein!</p>${EN}Wrong! Continue? <p style='color:#0f0;'>1 - Yes! <br>2 - No!</p>`;
+							}
+							switch (ans) {
+								case "1":
+									continue;
+								case "2":
+									if(ich.has(nagellack) && nagellack.appliedtocoin) return T`<p style='color:#0f0;'>Ich male sie gleich golden an.</p>`
+									else return T`${DE}Tschüss!${EN}Bye!`
+								default:
+									Commands.understood = false;
+									continue;
+							}
+						}
+					}
+					break;
+				case "2":
+					return T`${DE}Ich hätte Dich auch dafür bezahlt!${EN}I would have paid for it!`
+				default:
+					Commands.understood = false;
+					continue;
+			}
 		}
-		if(ich.has(muenzen)){
-			muenzen.value+=1;
-			muenzen.title=[muenzen.value+" Euro","Euro"]
-		}
-		return "Wuff"
 	}
+
 	verkaeufer.receiving = function (thing) {
-		if(thing==muenzen){
-			print( T`${DE}Nee behalte die ruhig, die kannst Du sicher gut gebrauchen!${EN}No, keep them, you'll need them for shure!`);
+		if (thing == muenzen) {
+			print(T`${DE}Nee behalte die ruhig, die kannst Du sicher gut gebrauchen!${EN}No, keep them, you'll need them for shure!`);
 			return false;
 		}
 		else return false;
 	}
+	let nagellack=new Item(T`${DE}Nagellack${EN}finger varnish`,T`${DE}Goldener Nagellack.${EN}Golden finger varnish.`,{dropable:false,applicable:true});
+	nagellack.insertApplyTarget(muenzen)
+
+	nagellack.appliedtocoin=false;
+	nagellack.doapply=function(target){
+		if(target===muenzen){
+			this.appliedtocoin=true;
+			muenzen.golden=true;
+			muenzen.title = [muenzen.value + " Goldmünzen", "Gold coins"]
+			muenzen.description=T`${DE}Gold Münzen.${EN}Gold coins.`
+			print(T`${DE}Jetzt habe ich Goldmünzen!${EN}Now I have gold coins.`)
+			return true;
+		}
+		else return false;
+	}
 	let tratschtante = new Person([T`${DE}Tratschtante${EN}Tattletale`, T`${DE}Tratsch Tante`], T`${DE}eine Tratschtante${EN}a tattletale`);
+	tratschtante.insert(nagellack);
 	scene5.insert(tratschtante);
+	tratschtante.receiving = function (thing) {
+		if (thing == kaugummi) {
+			print(T`${DE}Danke! Hier hast du den goldenen Fingerlack dafür.${EN}Thank you! Here you have the golden finger varnish for it.`);
+			this.open=true;
+			Commands.actor.take(nagellack);
+			this.open=false;
+			return true;
+		}
+		else return false;
+	}
 	tratschtante.dialog = async function* () {
-		return T`${DE}Psst, hör mal, ich muss dir was erzählen. </br>Der Verkäufer da hinten verlangt bei Touristen </br>den dreifachen Preis! </br>Lass dich nicht übers Ohr hauen!${EN}Shh, listen, I have something to tell you. </br>The seller back there charges tourists </br>three times the price! </br>Don't let yourself be taken for a ride!`;
+		if(!this.has(nagellack))return T`${DE}Psst, hör mal, ich muss dir was erzählen. </br>Der Verkäufer da hinten verlangt bei Touristen </br>den dreifachen Preis! </br>Lass dich nicht übers Ohr hauen!${EN}Shh, listen, I have something to tell you. </br>The seller back there charges tourists </br>three times the price! </br>Don't let yourself be taken for a ride!`;
+		else return T`${DE}Schau mal mein toller goldener Nagellack. Meine Finger sehen richtig hübsch aus. Aber ich würde alles für Kaugummi geben.${EN}Look at my great golden nail varnish. My fingers look really pretty. But I'd give anything for chewing gum.`;
 	}
 	let kuenstler = new Person(T`${DE}Künstler${EN}Artist`, T`${DE}ein Künstler${EN}an artist`);
 	scene5.insert(kuenstler);
+	let bild=new Item(T`${DE}Bild${EN}Picture`,T`${DE}Ein Kunstwerk.${EN}A piece of art.`);
+	kuenstler.insert(bild)
 	kuenstler.dialog = async function* () {
-		return T`${DE}Für dieses Bild werde ich richtig reich. </br>Hm, soll ich eine Million Taler verlangen. </br>Nee, lieber 2. Oder doch 3 Millionen?${EN}For this picture I'll be really rich. </br>Hm, should I ask for a million thalers. </br>No, rather 2. Or 3 million?`;
+		while (true) {
+			let reply = yield T`${DE}Dieses Bild kann man kaufen! </br>Hm, wieviel Euro soll ich verlangen? <p style='color:#0f0;'>1 - Nein Danke! </br>2 - Ich gebe dir all mein Geld</p>${EN}This picture can be bought! </br>Hm, how much euros should I ask for? <p style='color:#0f0;'>1 - No thanks! </br>2 - I'll give you all my money</p>`;
+			switch (reply) {
+				case "1":
+					return T`${DE}Tschüss!${EN}Bye!`
+				case "2":
+					if (ich.has(muenzen) && muenzen.value >= 3 && muenzen.golden) {
+						muenzen.value = 1;
+						muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,  T`${DE}Goldmünzen${EN}Gold coins`]
+						verkaeufer.take(muenzen, true);
+						verkaeufer.open=true;
+						Commands.actor.take(bild);
+						verkaeufer.open=false;
+						return T`${DE}Das Kunstwerk gehört Dir!${EN}The artwork belongs to you!`
+					}
+					else if (!ich.has(muenzen)) return T`${DE}Witzbold, du hast doch gar kein Geld!${EN}Are you kidding? You don't have any money!`
+					else return T`${DE}Das ist mir zu wenig! Ich will mindestens 3 Euros!${EN}That's not enough! I want at least 3 Euros!`
+				default:
+					Commands.understood = false;
+					continue;
+			}
+		}
 	}
 	let scene6 = new Scene(T`${DE}Dschungel${EN}Jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel. </br>Nach Norden geht es zu einer Lichtung, </br>nach Süden geht es zur Stadt </br>und im Westen liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle. </br>To the north is a clearing, </br>to the south is the town </br>and to the west is the entrance to the native tribe village.`)
 	let kaputteAmpel = new Door(T`${DE}Ampel${EN}traffic light`, T`${DE}Ein eine kaputte Ampel.${EN}A broken traffic-light.`, { blocking: true, usable: true, speakable: true, locked: true });
@@ -2511,7 +2675,7 @@ you can make a door also an orc that blocks the road
 		@when(T`${DE}benutze${EN}use${ALL} ITEM => TARGET`)
 		@when(T`${DE}verwende${EN}use${ALL} ITEM => TARGET`)
 		@when(T`${DE}v${EN}u${ALL} ITEM => TARGET`)
-		static doapply({ item, target }) {
+		static doapply({ item, target }) {//we 
 			let retval;
 			let { thing } = search(item);
 			let { thing: targetthing } = search(target);
