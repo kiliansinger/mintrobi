@@ -1598,7 +1598,7 @@ you can make a door also an orc that blocks the road
 	oma.dialog = async function* () {
 		while (true) {
 			let reply = yield (!isChrome && !MODE.pro ? T`<em style='color:#faa;'>${DE}Achtung: Damit alles funktioniert solltest du das Spiel mit einem modernen Chrome/Edge Browser starten! ${EN} </br>Attention: For everything to work, you should start the game with a modern Chrome/Edge browser! ${DE}Falls du <em style='color:#0f0;'>4</em> wählst ist der Browser egal!</em> </br>${EN}In case you choose <em style='color:#0f0;'>4</em>, then the choice of browser is irrelevant!</em> </br>` : "") + ich.title +
-				T`${DE}, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi s We still have to order it! </chon bestellt und zusammengebaut haben. ${EN}, you have finally woken up! I don't even know if we have already ordered and assembled your birthday present, the Mintrobi. ${ALL}<p style='color:#0f0;'>${DE}1 - Ja, wir haben schon alles bestellt und zusammengebaut. </br>${EN}1 - Yes, we have already ordered and assembled everything. </br>${DE}2 - Ich muss ihn noch zusammenbauen! </br>${EN}2 - I still have to assemble it! </br>${DE}3 - Wir müssen ihn noch bestellen! </br>${EN}3 -br>${DE}4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram! </br>${EN}4 - Mintrobi? Piece of cake, I want to become a C++ programming expert without this kid stuff! </br>${DE}5 - Du verwechselst mich ich bin jemand anderes! </br>${EN}5 - You've mistaken me for someone else! </br>${DE}6 - Ich würde gerne eine Wissenssendung im Fernsehen anscheuen! </br>${EN}6 - I would love to watch a science programme on TV! </br>${DE}7 - Ich geh mal spazieren!${EN}7 - I'll go for a walk!${ALL}</p>`
+				T`${DE}, du bist ja endlich mal aufgewacht! Ich weiss gar nicht ob wir dir Dein Geburtstagsgeschenk den Mintrobi s We still have to order it! </chon bestellt und zusammengebaut haben. ${EN}, you have finally woken up! I don't even know if we have already ordered and assembled your birthday present, the Mintrobi. ${ALL}<p style='color:#0f0;'>${DE}1 - Ja, wir haben schon alles bestellt und zusammengebaut. </br>${EN}1 - Yes, we have already ordered and assembled everything. </br>${DE}2 - Ich muss ihn noch zusammenbauen! </br>${EN}2 - I still have to assemble it! </br>${DE}3 - Wir müssen ihn noch bestellen! </br>${EN}3 - We still need to order it! </br>${DE}4 - Mintrobi? Pipifax, ich will C++ Programmierprofi werden ohne diesen Kinderkram! </br>${EN}4 - Mintrobi? Piece of cake, I want to become a C++ programming expert without this kid stuff! </br>${DE}5 - Du verwechselst mich ich bin jemand anderes! </br>${EN}5 - You've mistaken me for someone else! </br>${DE}6 - Ich würde gerne eine Wissenssendung im Fernsehen anscheuen! </br>${EN}6 - I would love to watch a science programme on TV! </br>${DE}7 - Ich geh mal spazieren!${EN}7 - I'll go for a walk!${ALL}</p>`
 			switch (reply) {
 				case "1":
 					MODE.pro = false;
@@ -1847,7 +1847,7 @@ you can make a door also an orc that blocks the road
 	tortenliebhaber.dialog = async function* () {
 		if(!this.has(kaugummi)) return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server, Ben can't serve me my favourite cake.`;
 		while(true){
-			let reply=yield T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren. Willst du ein Kaugummi? <p style='color=#0f0;'>1 - Ja. </br>2 - Nein</p>${EN}That's really annoying, without the cake server, Ben can't serve me my favourite cake. Do you want a chewing gum? <p style='color=#0f0;'>1 - Yes. </br>2 - No</p>`;
+			let reply=yield T`${DE}Willst du ein Kaugummi? <p style='color:#0f0;>1 - Ja. </br>2 - Nein</p>${EN}Do you want a chewing gum? <p style='color:#0f0;'>1 - Yes. </br>2 - No</p>`;
 			switch(reply){
 				case "1":
 					tortenliebhaber.open=true;
@@ -1866,7 +1866,7 @@ you can make a door also an orc that blocks the road
 	scene5.south = scene3;
 	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}ein Verkäufer${EN}a seller`);
 	scene5.insert(verkaeufer);
-	let muenzen = new Item(["1 Euro", "Euro"], "Euro-Münzen");
+	let muenzen = new Item(["1 Euro", "Euro","€1"], "Euro-Münzen");
 	muenzen.value = 1;
 	muenzen.golden=false;
 
@@ -1887,8 +1887,8 @@ you can make a door also an orc that blocks the road
 							let ans;
 							if (a + b == +reply) {
 								richtig += 1;
-								if (richtig >= 1) {
-									print(T`${DE}Hier ein Euro.${EN}Here one Euro.`)
+								if (richtig >= 10) {
+									print(T`${DE}Hier ein Euro. ${EN}Here one Euro. `)
 									if (this.has(muenzen)) {
 										this.open = true;
 										Commands.actor.take(muenzen);
@@ -1899,7 +1899,7 @@ you can make a door also an orc that blocks the road
 										if(muenzen.golden) {
 											muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`,T`${DE}münze${EN}coin`]
 										}
-										else muenzen.title = [muenzen.value + " Euros", "Euro","Euros"];
+										else muenzen.title = [muenzen.value + " Euros", "Euro","Euros","€"+muenzen.value];
 									}
 									richtig = 0;
 								}
@@ -2044,7 +2044,7 @@ you can make a door also an orc that blocks the road
 			return false;
 		}
 	}
-	let nagellack=new Item(T`${DE}Nagellack${EN}finger varnish`,T`${DE}Goldener Nagellack.${EN}Golden finger varnish.`,{dropable:false,applicable:true});
+	let nagellack=new Item([T`${DE}Nagellack${EN}nail polish`,T`${DE}Goldener Nagellack${EN}Golden nail polish`],T`${DE}Goldener Nagellack.${EN}Golden nail polish.`,{dropable:false,applicable:true});
 	nagellack.insertApplyTarget(muenzen)
 
 	nagellack.appliedtocoin=false;
