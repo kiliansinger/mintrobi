@@ -1717,6 +1717,7 @@ you can make a door also an orc that blocks the road
 	scene3.insert(meer);
 	eimer.insertApplyTarget(meer);
 	eimer.insertApplyTarget(loch);
+	eimer.insertApplyTarget(holzstumpf);
 	eimer.leer = true;
 
 	eimer.doapply = function (target) {
@@ -1740,6 +1741,12 @@ you can make a door also an orc that blocks the road
 			} else {
 				return false;
 			}
+		}
+		else if (target === holzstumpf) {
+			if (eimer.voll) {
+				print(T`${DE}Leider schwimmt der Metallschlüssel nicht.${EN}Unfortunately, the metal key does not float.`)
+				return true;
+			}else return false;
 		}
 		return false;
 	}
