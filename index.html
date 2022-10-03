@@ -1255,7 +1255,7 @@ you can make a door also an orc that blocks the road
 		open = false;
 		blocking = false;//used if a person blocks a direction or a door blocks a direction;
 		blockable = false;//if true we can block and unblock.used if a person blocks a direction or a door can block a direction must be set true when we insert something that blocks;
-		locked = false;
+		locked = false;//use this only for doors not for boxes.
 
 		visible = false;
 		things = {};//items,scenes,persons
@@ -1539,10 +1539,10 @@ you can make a door also an orc that blocks the road
 			}
 			if (found && !quiet && (key === null || things[i] instanceof key)) {
 				if (list) print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].title[0].toString());
-				else print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].describe() + "\n" + Array(cnt).join('   '));
+				else print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].describe().toString() + "\n" + Array(cnt).join('   '));
 			}
 			if (things[i].open && !isEmpty(things[i]["things"])) {
-				if (found) if (!quiet && (key === null || things[i] instanceof key)) print(" mit:");
+				if (found) if (!quiet && (key === null || things[i] instanceof key)) print(T` ${DE}mit:${EN}with:`);
 				if (found) list = true;
 				let foundthere = lookrecursive(things[i]["things"], at, found, key, list, quiet, cnt + 1);
 
@@ -1703,6 +1703,7 @@ you can make a door also an orc that blocks the road
 	}
 
 	let holzschluessel = new Item(T`${DE}Holzschlüssel${EN}Wooden key`, T`${DE}Ein hölzerner Schlüssel.${EN}A wooden key.`, { applicable: true });
+	
 	loch.insert(holzschluessel);
 	scene3.insert(loch);
 
@@ -1870,7 +1871,7 @@ you can make a door also an orc that blocks the road
 
 	verkaeufer.dialog = async function* () {
 		while (true) {
-			const reply = yield T`${DE}Kannst Du mir bei der Abrechnung helfen? <p style='color:#0f0;'>1 - Gerne. </br>2 - Nein Danke!</p>${EN}Can you help me with the billing? <p style='color:#0f0;'>1 - Gladly. </br>2 - No thanks!</p>`;
+			const reply = yield T`${DE}Kannst Du mir bei der Abrechnung helfen? <p style='color:#0f0;'>1 - Gerne. </br>2 - Nein Danke! </br>3 - Kann ich was kaufen?</p>${EN}Can you help me with the billing? <p style='color:#0f0;'>1 - Gladly. </br>2 - No thanks! </br>3 - Can I buy something?</p>`;
 			switch (reply) {
 				case "1":
 					print(T`${DE}Super Danke! Wenn du 10 mal hintereinander richtig rechnest bekommst du ein Euro von mir als Dank.${EN}Super thanks! If you calculate correctly 10 times in a row, you'll get a Euro from me as a thank you.`)
@@ -1893,9 +1894,9 @@ you can make a door also an orc that blocks the road
 									else {
 										muenzen.value += 1;
 										if(muenzen.golden) {
-											muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,  T`${DE}Goldmünzen${EN}Gold coins`]
+											muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`,T`${DE}münze${EN}coin`]
 										}
-										else muenzen.title = [muenzen.value + " Euro", "Euro"];
+										else muenzen.title = [muenzen.value + " Euros", "Euro","Euros"];
 									}
 									richtig = 0;
 								}
@@ -1919,19 +1920,110 @@ you can make a door also an orc that blocks the road
 					break;
 				case "2":
 					return T`${DE}Ich hätte Dich auch dafür bezahlt!${EN}I would have paid for it!`
+				case "3":
+					return T`${DE}Für ein paar Goldmünzen kann ich dir eine verschlossene Überraschungsholzbox verkaufen.${EN}For a few gold coins I can sell you a sealed surprise wooden box.`
 				default:
 					Commands.understood = false;
 					continue;
 			}
 		}
 	}
+	let holzbox=new Item(T`${DE}Holzbox${EN}wooden box`,"",{openable:false,closable:true,open:false});
+	holzschluessel.insertApplyTarget(holzbox)
+	holzbox.describe=function(){
+		return T`${DE}Eine ${EN}A `+(this.open?T`${DE}offene Holzbox.${EN}open wooden box.`:T`${DE}geschlossene Holzbox.${EN}closed wooden box.`)
+	}
+	let nagel=new Item(T`${DE}Nagel${EN}Nail`,T`${DE}Ein rostiger Nagel.${EN}A rusty nail`,{applicable:true})
+	let batterie=new Item(T`${DE}Batterie${EN}Battery`,T`${DE}Volle Mono-Batterie.${EN}A full Mono-Battery.`,{applicable:true});
+	let kabel=new Item(T`${DE}Kabel${EN}Cable`,T`${DE}Stück isolierten Volldraht-Kabel.${EN}piece of insulated solid wire cable.`,{applicable:true,open:true});
+	kabel.describe=function(){
+		if(this.has(nagel) && this.has(batterie)){
+			
+			return T`${DE}aktiver Elektromagnet${EN}active Electromagnet`;
+		}
+		if(this.has(nagel)) {
+			return T`${DE}Elektromagnet${EN}Electromagnet`;
+		}
+		
+		else return this.description;
+	}
+	kabel.insertApplyTarget(nagel);
+	kabel.insertApplyTarget(batterie);
+	
+	kabel.giving=function(thing){
+		if(thing===batterie){
+			if(this.has(nagel)) this.title=[T`${DE}Elektromagnet${EN}Electromagnet`];
+			return true;
+		}
+		if(thing===nagel){
+			this.title=T`${DE}Kabel${EN}Cable`
+			return true;
+		}
+		return false;
+			
+	}
 
-	verkaeufer.receiving = function (thing) {
-		if (thing == muenzen) {
-			print(T`${DE}Nee behalte die ruhig, die kannst Du sicher gut gebrauchen!${EN}No, keep them, you'll need them for shure!`);
+	kabel.doapply=function(target){
+		if(target===nagel){
+			this.take(target);
+			this.title=[T`${DE}Elektromagnet${EN}Electromagnet`,T`${DE}Magnet${EN}Magnet`];
+			print(this.describe())
+			return true;
+		}
+		if(target===batterie){
+			if(this.has(nagel)){
+				this.take(target);
+				this.title=[T`${DE}aktiver Elektromagnet${EN}active Electromagnet`,T`${DE}Elektromagnet${EN}Electromagnet`,T`${DE}Magnet${EN}Magnet`];
+				print(this.describe())
+				return true;
+			}
 			return false;
 		}
-		else return false;
+		/*
+		if(target===schluessel){
+			if(this.has(nagel) && this.has(batterie)){
+				Commands.actor.take(schluessel,true);
+				print("Oh wow, jetzt hab ich den Schlüssel!")
+				return true;
+			}
+			if(this.has(nagel) && !this.has(batterie)) {
+				print("Ich glaube der braucht noch Strom!")
+				return true;
+			}
+		}*/
+	}
+
+	holzbox.insert(nagel);
+	holzbox.insert(batterie);
+	holzbox.insert(kabel);
+	verkaeufer.insert(holzbox);
+
+	holzschluessel.doapply=function(target){
+	if(target===holzbox){
+		print("Die Holzbox öffnet sich. ");
+		target.openable=true;
+		target.open=true;
+		Commands.forward_command = T`${DE}b holzbox${EN}l wooden box`
+        //print(target.describe())
+		return true;
+	}
+	return false;
+}
+
+
+	verkaeufer.receiving = function (thing) {
+		if (thing == muenzen && muenzen.value>=3 && muenzen.golden) {
+			muenzen.value=1;
+			print(T`${DE}Alles klar! Hier hast du die Holzbox!${EN}All right! Here you have the wooden box!`);
+			verkaeufer.open=true;
+			Commands.actor.take(holzbox);
+			verkaeufer.open=false;
+			return true;
+		}
+		else {
+			print(T`${DE}Ich will mindestens 3 Goldmünzen für die Holzbox.${EN}I want at least 3 gold coins for the wooden box.`)
+			return false;
+		}
 	}
 	let nagellack=new Item(T`${DE}Nagellack${EN}finger varnish`,T`${DE}Goldener Nagellack.${EN}Golden finger varnish.`,{dropable:false,applicable:true});
 	nagellack.insertApplyTarget(muenzen)
@@ -1941,7 +2033,9 @@ you can make a door also an orc that blocks the road
 		if(target===muenzen){
 			this.appliedtocoin=true;
 			muenzen.golden=true;
-			muenzen.title = [muenzen.value + " Goldmünzen", "Gold coins"]
+			muenzen.title = muenzen.value==1 ?
+			[muenzen.value + T`${DE} Goldmünze${EN} Gold coin`,T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`,T`${DE}münze${EN}coin`]:
+			[muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`,T`${DE}münze${EN}coin`]
 			muenzen.description=T`${DE}Gold Münzen.${EN}Gold coins.`
 			print(T`${DE}Jetzt habe ich Goldmünzen!${EN}Now I have gold coins.`)
 			return true;
@@ -1970,6 +2064,7 @@ you can make a door also an orc that blocks the road
 	let bild=new Item(T`${DE}Bild${EN}Picture`,T`${DE}Ein Kunstwerk.${EN}A piece of art.`);
 	kuenstler.insert(bild)
 	kuenstler.dialog = async function* () {
+		if(!this.has(bild)) return T`${DE}Ich brauche noch etwas Zeit für mein neues Kunstwerk.${EN}I still need some time for my new artwork.`
 		while (true) {
 			let reply = yield T`${DE}Dieses Bild kann man kaufen! </br>Hm, wieviel Euro soll ich verlangen? <p style='color:#0f0;'>1 - Nein Danke! </br>2 - Ich gebe dir all mein Geld</p>${EN}This picture can be bought! </br>Hm, how much euros should I ask for? <p style='color:#0f0;'>1 - No thanks! </br>2 - I'll give you all my money</p>`;
 			switch (reply) {
@@ -1978,7 +2073,7 @@ you can make a door also an orc that blocks the road
 				case "2":
 					if (ich.has(muenzen) && muenzen.value >= 3 && muenzen.golden) {
 						muenzen.value = 1;
-						muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,  T`${DE}Goldmünzen${EN}Gold coins`]
+						muenzen.title =  [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`,T`${DE}münze${EN}coin`]
 						verkaeufer.take(muenzen, true);
 						verkaeufer.open=true;
 						Commands.actor.take(bild);
@@ -2497,9 +2592,10 @@ you can make a door also an orc that blocks the road
 			recog |= commandspeak;
 			Commands.recogparam = null;
 			if (Commands.forward_command != "") {
+				let currentret= Commands.answer.join("");
 				var ret = Commands.execute(Commands.forward_command, false)//forwarded commands are never called as isspeechrecog=true
 				Commands.forward_command = ""
-				return ret;
+				return currentret.toString()+await ret;
 			} else {
 
 				if (recog) {
