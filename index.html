@@ -1929,6 +1929,9 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	let holzbox=new Item(T`${DE}Holzbox${EN}wooden box`,"",{openable:false,closable:true,open:false});
+	let koffer=new Item(T`${DE}Koffer${EN}Suitcase`,"",{openable:false,closable:true,open:false});
+	
+
 	holzschluessel.insertApplyTarget(holzbox)
 	holzbox.describe=function(){
 		return T`${DE}Eine ${EN}A `+(this.open?T`${DE}offene Holzbox.${EN}open wooden box.`:T`${DE}geschlossene Holzbox.${EN}closed wooden box.`)
@@ -1962,6 +1965,20 @@ you can make a door also an orc that blocks the road
 		return false;
 			
 	}
+	let metallschluessel=new Item(T`${DE}Schlüssel${EN}key`,T`${DE}Ein Metall Schlüssel.${EN}A metal key.`,{applicable:true});
+	kabel.insertApplyTarget(metallschluessel)
+	metallschluessel.insertApplyTarget(koffer);
+	metallschluessel.doapply=function(target){
+		if(target===koffer){
+			print("Der Koffer öffnet sich. ");
+			target.openable=true;
+			target.open=true;
+			Commands.forward_command = T`${DE}b koffer${EN}l suitcase`
+			//print(target.describe())
+			return true;
+		}
+		return false;
+	}
 
 	kabel.doapply=function(target){
 		if(target===nagel){
@@ -1979,18 +1996,17 @@ you can make a door also an orc that blocks the road
 			}
 			return false;
 		}
-		/*
-		if(target===schluessel){
+		if(target===metallschluessel){
 			if(this.has(nagel) && this.has(batterie)){
-				Commands.actor.take(schluessel,true);
-				print("Oh wow, jetzt hab ich den Schlüssel!")
+				Commands.actor.take(metallschluessel,true);
+				print(T`${DE}Oh wow, jetzt hab ich den Schlüssel!${EN}Oh wow, now I have the key!`)
 				return true;
 			}
 			if(this.has(nagel) && !this.has(batterie)) {
-				print("Ich glaube der braucht noch Strom!")
+				print(T`${DE}Ich glaube der braucht noch Strom!${EN}I think it still needs power!`)
 				return true;
 			}
-		}*/
+		}
 	}
 
 	holzbox.insert(nagel);
@@ -2309,24 +2325,28 @@ you can make a door also an orc that blocks the road
 	scene7.south = scene6;
 	scene6.southblock = kaputteAmpel2;
 	scene6.insert(kaputteAmpel2);
-	let kostuem = new Item(T`${DE}Kostüm${EN}Costume`, T`<img src='kostuem.png'>${DE}eine Kostüm${EN}a costume`, { open: true, applicable: true });
+	let kostuem = new Item(T`${DE}Kostüm${EN}Costume`, T`<img src='kostuem.png'>${DE}eine Kostüm${EN}a costume`, { open: true, usable:true});
+	kostuem.use = function () {
+		Commands.forward_command = T`${DE}m Kostüm${EN}t costume`
+		return true;
+	}
+	koffer.insert(kostuem)
 	let Forscher = new Person(T`${DE}Forscher${EN}Scientist`, T`${DE}ein Forscher${EN}a scientist`);
 	scene7.insert(Forscher);
 	let sonnenuhranleitung = new Item(T`${DE}Sonnenuhranleitung${EN}Sundial plan`, T`${DE}Um das Spiel zu lösen musst Du dieses Projekt nicht unbedingt durchführen. </br>${EN}You don't have to do this project to solve the game. </br>${DE}Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen. </br>${EN}If you feel like it and it's sunny outside, make a sundial with Mintrobi's brain. All you need is a cotton bud. </br>${DE}Hier ist die ${EN}Here is the ${ALL}<a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>${DE}Anleitung${EN}Instruction${ALL}</a>.`)
 	scene7.insert(sonnenuhranleitung)
-	Forscher.insert(kostuem);
+	Forscher.insert(koffer);
 	Forscher.dialog = async function* () {
-		if (this.has(kostuem)) {
+		if (this.has(koffer)) {
 			while (true) {
-				let reply = yield T`${DE}Hallo, guten Tag. ${EN}Hello, good day. ${ALL}<p style='color:#0f0;'>${DE}1 - Hallo, wer sind Sie denn? </br>${EN}1 - Hello, who are you? </br>${DE}2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen?</p>${EN}2 - How will I be let into the native tribe village?</p>`;
+				let reply = yield T`${DE}Hallo, guten Tag. ${EN}Hello, good day. ${ALL}<p style='color:#0f0;'>${DE}1 - Hallo, wer sind Sie denn? </br>${EN}1 - Hello, who are you? </br>${DE}2 - Wie werde ich ins Dorf der Ureinwohner hereingelassen? </br>${EN}2 - How will I be let into the native tribe village? </br>${DE}3 - Wie kann ich Dir behilflich sein?</p>${EN}3 - How can I be of service to you?</p>`;
 				switch (reply) {
 					case "1":
 						return T`${DE}Ich bin Sir Ernest Wordsworth, </br>meines Zeichens Wissenschaftler und Ethnologe, </br>ich erforsche den hiesigen Stamm der Ureinwohner.${EN}I am Sir Ernest Wordsworth, </br>a scientist and ethnologist, </br>I am researching the local native tribe.`
 					case "2":
-						this.open = true;
-						Commands.actor.take(kostuem);
-						this.open = false;
-						return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen. </br>Meine bisherigen Forschungen habe ich Beobachtungen </br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich </br>über den Zaun, der das Dorf umgibt spähen konnte. </br>Doch mit deiner Statur ist eventuell möglich dich als einer </br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest. </br>Hier ist das ${EN}I have not yet succeeded in gaining admittance. </br>I owe my research so far to observations </br>from high up in the treetops, from which I have been able </br>to peer over the fence surrounding the village. </br>But with your stature, it may be possible </br>to pass yourself off as one of their own if you disguise yourself accordingly. </br>Here is the ` + kostuem.describe()
+						return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen. </br>Meine bisherigen Forschungen habe ich Beobachtungen </br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich </br>über den Zaun, der das Dorf umgibt spähen konnte. </br>Doch mit deiner Statur ist eventuell möglich dich als einer </br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.${EN}I have not yet succeeded in gaining admittance. </br>I owe my research so far to observations </br>from high up in the treetops, from which I have been able </br>to peer over the fence surrounding the village. </br>But with your stature, it may be possible </br>to pass yourself off as one of their own if you disguise yourself accordingly.`
+					case "3":
+						return T`${DE}Ich würde mir ja so gerne ein Bild von dem Künstler in der Stadt leisten. Aber leider habe ich all mein Geld für die Forschung ausgegeben. Das einzige was ich im Tausch anbieten kann ist ein Koffer, den ich beim Ureinwohnerdorf gefunden habe. Leider bekomme ich den jedoch nicht auf. Daher will ihn auch keiner.${EN}I would  love to afford a painting by the artist in the city. But unfortunately I have spent all my money on research. The only thing I can offer in exchange is a suitcase I found at the native village. Unfortunately, I can't get it open. That's why no one wants it.`
 					default:
 						Commands.understood = false;
 						continue;
@@ -2337,10 +2357,28 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	Forscher.receiving = function (thing) {
-		print(T`${DE}Nein behalte das. Das ist für dich. </br>${EN}No, you keep that. This is for you. </br>`);
+		if(thing===bild){
+			print(T`${DE}Oh wow genau das Bild wollte ich. Gerne gebe ich dir im Tausch den Koffer.${EN}Oh wow, that's exactly the picture I wanted. I'd be happy to give you the case in exchange.`);
+			this.open = true;
+			Commands.actor.take(koffer);
+			this.open = false;
+			return true;
+		}
+		print(T`${DE}Nein behalte das. Das ist für dich.${EN}No, you keep that. This is for you.`);
 		return false;
 	}
 	let scene8 = new Scene(T`${DE}Eingang zum Ureinwohnerdorf${EN}Entry to the village of the native tribe`, "")
+	let holzstumpf=new Item(T`${DE}Holzstumpf${EN}wooden stump`,T`${DE}Ein Holzstumpf mit tiefen Spalt.${EN}A wooden stump with a deep slit.`,{takeable:false,open:true})
+	holzstumpf.insert(metallschluessel);
+	holzstumpf.giving=function(thing){
+		print(T`${DE}Der Spalt ist zu tief!${EN}The slit is too deep`);
+		return false;
+	}
+	holzstumpf.receiving=function(thing){
+		print(T`${DE}Besser nicht, sonst ists weg.${EN}Better not, otherwise it's gone.`)
+		return false;
+	}
+	scene8.insert(holzstumpf)
 	scene8.east = scene6;
 	let tuer = new Door(T`${DE}Tür${EN}Door`, T`${DE}Eine verschlossene Tür.${EN}A locked door.`, { blocking: true })
 	let torwache = new Person(T`${DE}Torwache${EN}Guard`, T`${DE}eine Torwache${EN}a gate guard`);
