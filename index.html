@@ -1854,7 +1854,7 @@ you can make a door also an orc that blocks the road
 	tortenliebhaber.dialog = async function* () {
 		if(!this.has(kaugummi)) return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server, Ben can't serve me my favourite cake.`;
 		while(true){
-			let reply=yield T`${DE}Willst du ein Kaugummi? <p style='color:#0f0;>1 - Ja. </br>2 - Nein</p>${EN}Do you want a chewing gum? <p style='color:#0f0;'>1 - Yes. </br>2 - No</p>`;
+			let reply=yield T`${DE}Willst du ein Kaugummi? <p style:'color:#0f0;>1 - Ja. </br>2 - Nein</p>${EN}Do you want a chewing gum? <p style='color:#0f0;'>1 - Yes. </br>2 - No</p>`;
 			switch(reply){
 				case "1":
 					tortenliebhaber.open=true;
