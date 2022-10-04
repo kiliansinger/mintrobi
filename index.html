@@ -1717,7 +1717,7 @@ you can make a door also an orc that blocks the road
 	scene3.insert(meer);
 	eimer.insertApplyTarget(meer);
 	eimer.insertApplyTarget(loch);
-	eimer.insertApplyTarget(holzstumpf);
+	
 	eimer.leer = true;
 
 	eimer.doapply = function (target) {
@@ -2380,6 +2380,7 @@ you can make a door also an orc that blocks the road
 	let scene8 = new Scene(T`${DE}Eingang zum Ureinwohnerdorf${EN}Entry to the village of the native tribe`, "")
 	let holzstumpf=new Item(T`${DE}Holzstumpf${EN}wooden stump`,T`${DE}Ein Holzstumpf mit tiefen Spalt.${EN}A wooden stump with a deep slit.`,{takeable:false,open:true})
 	holzstumpf.insert(metallschluessel);
+	eimer.insertApplyTarget(holzstumpf);
 	holzstumpf.giving=function(thing){
 		print(T`${DE}Der Spalt ist zu tief!${EN}The slit is too deep`);
 		return false;
@@ -3137,7 +3138,7 @@ you can make a door also an orc that blocks the road
 		} catch (e) {
 			console.log(e)
 			localStorage.clear()
-			setTimeout(() => window.location.reload(), 3000);
+			//setTimeout(() => window.location.reload(), 3000);
 		}
 	}
 </script>
