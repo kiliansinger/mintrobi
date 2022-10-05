@@ -1831,7 +1831,7 @@ you can make a door also an orc that blocks the road
 		}
 		else {
 			while (true) {
-				let reply = yield T`${DE}Ach in dieser Bar geht aber auch echt alles verloren, </br>zuerst die Mini-Schirmchen, dann die Orangen und jetzt auch noch mein Tortenheber. </br>Oh Entschuldigung Kumpel, ich habe dich nicht gesehen. </br>Kann ich dir helfen? <p style='color:#0f0;'>1 - Nein danke, mir geht es bestens. </br>2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>${EN}Oh, everything gets lost in this bar, </br>first the mini umbrellas, then the oranges and now my cake server. </br>Oh sorry buddy, I didn't see you. </br>Can I help you? <p style='color:#0f0;'>1 - No thanks, I'm fine. </br>2 - Yes, can you help me open this bottle?</p>`;
+				let reply = yield T`${DE}Ach in dieser Bar geht aber auch echt alles verloren, </br>zuerst die Mini-Schirmchen, dann die Orangen und jetzt auch noch mein Tortenheber. </br>Oh Entschuldigung, ich habe dich nicht gesehen. </br>Kann ich dir helfen? <p style='color:#0f0;'>1 - Nein danke, mir geht es bestens. </br>2 - Ja, kannst du mir helfen diese Flasche zu öffnen?</p>${EN}Oh, everything gets lost in this bar, </br>first the mini umbrellas, then the oranges and now my cake server. </br>Oh sorry, I didn't see you. </br>Can I help you? <p style='color:#0f0;'>1 - No thanks, I'm fine. </br>2 - Yes, can you help me open this bottle?</p>`;
 				switch (reply) {
 					case "1":
 						return T`${DE}Dann bis später.${EN}See you later.`
@@ -1856,11 +1856,13 @@ you can make a door also an orc that blocks the road
 		while(true){
 			let reply=yield T`${DE}Willst du ein Kaugummi? <p style='color:#0f0;'>1 - Ja. </br>2 - Nein</p>${EN}Do you want a chewing gum? <p style='color:#0f0;'>1 - Yes. </br>2 - No</p>`;
 			switch(reply){
+				case T`${DE}ja${EN}yes`.toString():
 				case "1":
 					tortenliebhaber.open=true;
 					Commands.actor.take(kaugummi)
 					tortenliebhaber.open=false;
 					return T`${DE}Bitte schön!${EN}Here you are!`;
+				case T`${DE}nein${EN}no`.toString():
 				case "2":
 					return T`${DE}Tschuß!${EN}Bye!`;
 				default:
@@ -1884,15 +1886,28 @@ you can make a door also an orc that blocks the road
 			const reply = yield T`${DE}Kannst Du mir bei der Abrechnung helfen? <p style='color:#0f0;'>1 - Gerne. </br>2 - Nein Danke! </br>3 - Kann ich was kaufen?</p>${EN}Can you help me with the billing? <p style='color:#0f0;'>1 - Gladly. </br>2 - No thanks! </br>3 - Can I buy something?</p>`;
 			switch (reply) {
 				case "1":
-					print(T`${DE}Super Danke! Wenn du 10 mal hintereinander richtig rechnest bekommst du ein Euro von mir als Dank.${EN}Super thanks! If you calculate correctly 10 times in a row, you'll get a Euro from me as a thank you.`)
+					print(T`${DE}Super Danke! Wenn du 10 mal hintereinander richtig rechnest bekommst du ein Euro von mir als Dank. </br>${EN}Super thanks! If you calculate correctly 10 times in a row, you'll get a Euro from me as a thank you. </br>`)
 					let richtig = 0;
 					while (true) {
 						let a = randint(1, 10);
 						let b = randint(1, 10);
 						const reply = yield T`${DE}Was ist ${a}+${b}?${EN}What is ${a}+${b}?`;
-						if (!isNaN(+reply)) {
+						if(parseInt(reply)==4242){
+							if (this.has(muenzen)) {
+								this.open = true;
+								Commands.actor.take(muenzen);
+								this.open = false;
+							}
+							muenzen.value=3;
+							if(muenzen.golden) {
+								muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`,T`${DE}münze${EN}coin`]
+							}
+							else muenzen.title = [muenzen.value + " Euros", "Euro","Euros","€"+muenzen.value];
+							return "you tricked me!"
+						}
+						if (!isNaN(parseInt(reply))) {
 							let ans;
-							if (a + b == +reply) {
+							if (a + b == parseInt(reply)) {
 								richtig += 1;
 								if (richtig >= 10) {
 									print(T`${DE}Hier ein Euro. ${EN}Here one Euro. `)
@@ -1917,7 +1932,9 @@ you can make a door also an orc that blocks the road
 							}
 							switch (ans) {
 								case "1":
+								case T`${DE}ja${EN}yes`.toString():
 									continue;
+								case T`${DE}nein${EN}no`.toString():
 								case "2":
 									if(ich.has(nagellack) && nagellack.appliedtocoin) return T`<p style='color:#0f0;'>Ich male sie gleich golden an.</p>`
 									else return T`${DE}Tschüss!${EN}Bye!`
@@ -2062,7 +2079,7 @@ you can make a door also an orc that blocks the road
 			muenzen.title = muenzen.value==1 ?
 			[muenzen.value + T`${DE} Goldmünze${EN} Gold coin`,T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`,T`${DE}münze${EN}coin`]:
 			[muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`,T`${DE}münze${EN}coin`]
-			muenzen.description=T`${DE}Gold Münzen.${EN}Gold coins.`
+			muenzen.description=T`${DE}Glitzernde gold Münzen.${EN}shiny gold coins.`
 			print(T`${DE}Jetzt habe ich Goldmünzen!${EN}Now I have gold coins.`)
 			return true;
 		}
@@ -2073,7 +2090,7 @@ you can make a door also an orc that blocks the road
 	scene5.insert(tratschtante);
 	tratschtante.receiving = function (thing) {
 		if (thing == kaugummi) {
-			print(T`${DE}Danke! Hier hast du den goldenen Nagellack dafür.${EN}Thank you! Here you have the golden finger varnish for it.`);
+			print(T`${DE}Danke! Hier hast du den goldenen Nagellack dafür.${EN}Thank you! Here you have the golden nail polish for it.`);
 			this.open=true;
 			Commands.actor.take(nagellack);
 			this.open=false;
@@ -2083,12 +2100,18 @@ you can make a door also an orc that blocks the road
 	}
 	tratschtante.dialog = async function* () {
 		if(!this.has(nagellack))return T`${DE}Psst, hör mal, ich muss dir was erzählen. </br>Der Verkäufer da hinten verlangt bei Touristen </br>den dreifachen Preis! </br>Lass dich nicht übers Ohr hauen!${EN}Shh, listen, I have something to tell you. </br>The seller back there charges tourists </br>three times the price! </br>Don't let yourself be taken for a ride!`;
-		else return T`${DE}Schau mal mein toller goldener Nagellack. Meine Finger sehen richtig hübsch aus. Aber ich würde alles für Kaugummi geben.${EN}Look at my great golden nail varnish. My fingers look really pretty. But I'd give anything for chewing gum.`;
+		else return T`${DE}Schau mal mein toller goldener Nagellack. Meine Finger sehen richtig hübsch aus. Aber ich würde alles für Kaugummi geben.${EN}Look at my great golden nail polish. My fingers look really pretty. But I'd give anything for chewing gum.`;
 	}
 	let kuenstler = new Person(T`${DE}Künstler${EN}Artist`, T`${DE}ein Künstler${EN}an artist`);
 	scene5.insert(kuenstler);
 	let bild=new Item(T`${DE}Bild${EN}Picture`,T`${DE}Ein Kunstwerk.${EN}A piece of art.`);
 	kuenstler.insert(bild)
+	kuenstler.receiving=function(thing){
+		if(thing===muenzen) {
+			Commands.forward_command = T`${DE}t künstler${EN}t artist`
+			return false;
+		}
+	}
 	kuenstler.dialog = async function* () {
 		if(!this.has(bild)) return T`${DE}Ich brauche noch etwas Zeit für mein neues Kunstwerk.${EN}I still need some time for my new artwork.`
 		while (true) {
