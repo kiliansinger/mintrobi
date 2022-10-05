@@ -1705,7 +1705,7 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 
-	let holzschluessel = new Item(T`${DE}Holzschlüssel${EN}Wooden key`, T`${DE}Ein hölzerner Schlüssel.${EN}A wooden key.`, { applicable: true });
+	let holzschluessel = new Item([T`${DE}Holzschlüssel${EN}Wooden key`,T`${DE}Holz Schlüssel${EN}Wood key`], T`${DE}Ein hölzerner Schlüssel.${EN}A wooden key.`, { applicable: true });
 	
 	loch.insert(holzschluessel);
 	scene3.insert(loch);
@@ -1756,7 +1756,7 @@ you can make a door also an orc that blocks the road
 	frau.dialog = async function* () {
 		return T`${DE}Endlich mal Ruhe. In der Stadt ist echt was los. </br>Diesen Urlaub habe ich mir echt verdient.${EN}Peace at last. There's really something going on in the city. </br>I've really earned this holiday.`;
 	}
-	let kind = new Person(T`${DE}Kind${EN}Child`, T`${DE}ein Kind${EN}a child`);
+	let kind = new Person([T`${DE}Kind${EN}Child`,T`${DE}Mädchen${EN}Girl`], T`${DE}ein Kind${EN}a child`);
 	scene3.insert(kind);
 	kind.dialog = async function* () {
 		return T`${DE}Da sind interessant verkleidete Menschen im Wald. </br>Hast du schonmal einen von denen gesehen?${EN}There are interesting people in disguise in the forest. </br>Have you ever seen one of them?`;
@@ -2115,7 +2115,7 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	let scene6 = new Scene(T`${DE}Dschungel${EN}Jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel. </br>Nach Norden geht es zu einer Lichtung, </br>nach Süden geht es zur Stadt </br>und im Westen liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle. </br>To the north is a clearing, </br>to the south is the town </br>and to the west is the entrance to the native tribe village.`)
-	let kaputteAmpel = new Door(T`${DE}Ampel${EN}traffic light`, T`${DE}Ein eine kaputte Ampel.${EN}A broken traffic-light.`, { blocking: true, usable: true, speakable: true, locked: true });
+	let kaputteAmpel = new Door(T`${DE}Ampel${EN}traffic light`, T`${DE}Eine kaputte Ampel.${EN}A broken traffic-light.`, { blocking: true, usable: true, speakable: true, locked: true });
 	kaputteAmpel.use = function () {
 		Commands.forward_command = T`${DE}t ampel${EN}t traffic light`
 		return false;
@@ -2959,7 +2959,7 @@ you can make a door also an orc that blocks the road
 					Commands.recognition = new SpeechRecognition();
 					Commands.recognition.interimResults = true;
 					Commands.recognition.lang = (MODE.lang == EN ? 'en-US' : 'de-DE');
-					Commands.recognition.maxAlternatives = 10;
+					Commands.recognition.maxAlternatives = 20;
 
 					//https://www.w3.org/TR/jsgf/
 					//const grammar = '#JSGF V1.0; grammar colors; public <color> = aqua | azure | beige | bisque | black | blue | brown | chocolate | coral | crimson | cyan | fuchsia | ghostwhite | gold | goldenrod | gray | green | indigo | ivory | khaki | lavender | lime | linen | magenta | maroon | moccasin | navy | olive | orange | orchid | peru | pink | plum | purple | red | salmon | sienna | silver | snow | tan | teal | thistle | tomato | turquoise | violet | white | yellow ;'
@@ -3001,7 +3001,10 @@ you can make a door also an orc that blocks the road
 									.replaceAll(T`${DE}acht${EN}eight`, "8")
 									.replaceAll(T`${DE}neuen${EN}nine`, "9")
 									.replaceAll(T`${DE}zehn${EN}ten`, "10")
+									.replaceAll(T`${DE}ein${EN}one`, "1")
 								answer = await Commands.execute(cmd, false);
+								if(answer=="TRYOTHERPOSSIBILITY") cmd=event.results[0][0].transcript
+								
 							}
 							lastinput = cmd;
 							let p = document.createElement('p');
