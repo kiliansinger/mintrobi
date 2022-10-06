@@ -2648,7 +2648,7 @@ you can make a door also an orc that blocks the road
 			Commands.recogparam = null;
 			recog |= Commands.load();
 			Commands.recogparam = null;
-			recog |= Commands.speachrecog();
+			recog |= await Commands.speachrecog();
 			Commands.recogparam = null;
 			recog |= Commands.save();
 			Commands.recogparam = null;
@@ -2969,12 +2969,29 @@ you can make a door also an orc that blocks the road
 		static dospeachrecog = false;
 		static recognition = null;
 		static synthesis = null;
+		static averagespeakvol=0;
 		@when(T`${DE}spracherkennung${EN}speachrecognition${ALL} ONOFF`)
 		@when("sp ONOFF")
-		static speachrecog({ onoff }) {
+		static async speachrecog({ onoff }) {
 			if (onoff.toLowerCase() == T`${DE}an${EN}on`) {
 				if (Commands.dospeachrecog) return true
 				Commands.dospeachrecog = true;
+
+
+				const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+				const audioContext = new AudioContext();
+				const mediaStreamAudioSourceNode = audioContext.createMediaStreamSource(stream);
+				const analyserNode = audioContext.createAnalyser();
+				mediaStreamAudioSourceNode.connect(analyserNode);
+
+				const pcmData = new Float32Array(analyserNode.fftSize);
+				const checkVolume = () => {
+					analyserNode.getFloatTimeDomainData(pcmData);
+					let sumSquares = 0.0;
+					for (const amplitude of pcmData) { sumSquares += amplitude*amplitude; }
+					return  Math.sqrt(sumSquares / pcmData.length);
+				}
+
 				window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 				// setup SpeechRecognation
 				if (Commands.recognition) Commands.recognition.lang = (MODE.lang == EN ? 'en-US' : 'de-DE');
@@ -2999,6 +3016,7 @@ you can make a door also an orc that blocks the road
 						console.log(transcript)
 						// check if the voice input has ended
 						if (event.results[0].isFinal) {
+							Commands.averagespeakvol=checkVolume();
 							let answer = "";
 							let found = false;
 							let cmd = "";
@@ -3057,8 +3075,26 @@ you can make a door also an orc that blocks the road
 							window.speechSynthesis.speak(Commands.synthesis);
 							Commands.synthesis.onend = function (e) {
 								Commands.dospeachrecog = true;
+								Commands.synthesis.onboundary=null
 								Commands.recognition.start();//function(e) {
 							}
+							Commands.synthesis.onboundary=function(e){
+								//console.log(e.name)
+								if(e.name!="sentence") return
+								
+								let vol=checkVolume()
+						
+								//Commands.averagespeakvol=Commands.averagespeakvol*0.95+0.05*vol;
+								
+								
+								console.log(vol+" "+Commands.averagespeakvol)
+								if(vol>10*Commands.averagespeakvol){
+									if ( window.speechSynthesis) window.speechSynthesis.cancel();
+								}else Commands.averagespeakvol=Commands.averagespeakvol*0.5+0.5*vol;
+								
+										
+							}
+							
 						}
 					});
 					Commands.recognition.addEventListener('end', () => {
@@ -3066,7 +3102,7 @@ you can make a door also an orc that blocks the road
 					});
 				}
 				if (Commands.recognition) try { Commands.recognition.start(); } catch (e) { }
-				print(T`${DE}Spracherkennung aktiviert! Anstatt ENTER drücken kannst du immer enter sagen.${EN}Speech recognition activated! Instead of pressing ENTER, you can always say enter.`)
+				print(T`${DE}Spracherkennung aktiviert! Du kannst immer zwischen den Sätzen laut "Stop!" sagen. Anstatt ENTER drücken kannst du immer enter sagen.${EN}Speech recognition activated! In between the sentences you can always say loud "Stop!". Instead of pressing ENTER, you can always say enter.`)
 				return true;
 			}
 			else {
