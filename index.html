@@ -2982,7 +2982,7 @@ you can make a door also an orc that blocks the road
 				const audioContext = new AudioContext();
 				const mediaStreamAudioSourceNode = audioContext.createMediaStreamSource(stream);
 				const analyserNode = audioContext.createAnalyser();
-				analyserNode.fftSize = 512;
+				analyserNode.fftSize = 1024;
 				mediaStreamAudioSourceNode.connect(analyserNode);
 
 				const pcmData = new Float32Array(analyserNode.fftSize);
@@ -2998,6 +2998,7 @@ you can make a door also an orc that blocks the road
 				if (Commands.recognition) Commands.recognition.lang = (MODE.lang == EN ? 'en-US' : 'de-DE');
 				else {
 					Commands.recognition = new SpeechRecognition();
+					Commands.recognition.continous=true;
 					Commands.recognition.interimResults = true;
 					Commands.recognition.lang = (MODE.lang == EN ? 'en-US' : 'de-DE');
 					Commands.recognition.maxAlternatives = 20;
