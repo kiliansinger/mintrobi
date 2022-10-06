@@ -2619,6 +2619,8 @@ you can make a door also an orc that blocks the road
 		static recogparam = null;
 		static command = "";
 		static forward_command = "";
+		static helpcnt=0;
+		static helpcntprev=0;
 		static async execute(cmd, isspeechrecog) {//TODO it does not recognize split words like "bottle message"
 			cmd = cmd.toString().toLowerCase();
 			let delstr;
@@ -2686,7 +2688,9 @@ you can make a door also an orc that blocks the road
 					if (!commandspeak && Commands.answer.length == 0) {
 						Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
 						if (isspeechrecog) return "TRYOTHERPOSSIBILITY";
-						else print(T`${DE}Was? Geht nicht!\n${EN}What? Doesn't work!`);
+						else {
+							print(T`${DE}Was? Geht nicht! Tippe <em style='color:#0f0;'>hilfe</em>!\n${EN}What? Doesn't work! Type <em style='color:#0f0;'>help</em>!`)
+						}
 					}
 				}
 				Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
