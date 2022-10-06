@@ -1793,6 +1793,12 @@ you can make a door also an orc that blocks the road
 	let barmann = new Person(T`${DE}Barmann${EN}Bartender`, T`${DE}ein Barmann${EN}a bartender`);
 	scene4.insert(barmann);
 	barmann.tricked = false;
+	barmann.receiving=function(thing){
+		if(thing===tortenheber) {
+			Commands.forward_command = T`${DE}t barmann${EN}t bartender`
+			return false;
+		}
+	}
 	barmann.dialog = async function* () {
 		if (Commands.actor.has(tortenheber) || barmann.tricked) {
 			if (seetang.blocking) {
@@ -1957,7 +1963,9 @@ you can make a door also an orc that blocks the road
 	}
 	let holzbox=new Item(T`${DE}Holzbox${EN}wooden box`,"",{openable:false,closable:true,open:false});
 	let koffer=new Item(T`${DE}Koffer${EN}Suitcase`,"",{openable:false,closable:true,open:false});
-	
+	koffer.describe=function(){
+		return T`${DE}Ein ${EN}A `+(this.open?T`${DE}offener Koffer.${EN}open suitcase.`:T`${DE}geschlossener Koffer.${EN}closed suitcase.`)
+	}
 
 	holzschluessel.insertApplyTarget(holzbox)
 	holzbox.describe=function(){
@@ -1997,7 +2005,7 @@ you can make a door also an orc that blocks the road
 	metallschluessel.insertApplyTarget(koffer);
 	metallschluessel.doapply=function(target){
 		if(target===koffer){
-			print("Der Koffer öffnet sich. ");
+			print(T`${DE}Der Koffer öffnet sich.${EN}The suitcase opens.`);
 			target.openable=true;
 			target.open=true;
 			Commands.forward_command = T`${DE}b koffer${EN}l suitcase`
@@ -2043,7 +2051,7 @@ you can make a door also an orc that blocks the road
 
 	holzschluessel.doapply=function(target){
 	if(target===holzbox){
-		print("Die Holzbox öffnet sich. ");
+		print(T`${DE}Die Holzbox öffnet sich.${EN}The wood box opens.`);
 		target.openable=true;
 		target.open=true;
 		Commands.forward_command = T`${DE}b holzbox${EN}l wooden box`
@@ -2391,7 +2399,7 @@ you can make a door also an orc that blocks the road
 	}
 	Forscher.receiving = function (thing) {
 		if(thing===bild){
-			print(T`${DE}Oh wow genau das Bild wollte ich. Gerne gebe ich dir im Tausch den Koffer.${EN}Oh wow, that's exactly the picture I wanted. I'd be happy to give you the case in exchange.`);
+			print(T`${DE}Oh wow genau das Bild wollte ich. Gerne gebe ich dir im Tausch den Koffer.${EN}Oh wow, that's exactly the picture I wanted. I'd be happy to give you the suitcase in exchange.`);
 			this.open = true;
 			Commands.actor.take(koffer);
 			this.open = false;
@@ -2401,7 +2409,7 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 	let scene8 = new Scene(T`${DE}Eingang zum Ureinwohnerdorf${EN}Entry to the village of the native tribe`, "")
-	let holzstumpf=new Item(T`${DE}Holzstumpf${EN}wooden stump`,T`${DE}Ein Holzstumpf mit tiefen Spalt.${EN}A wooden stump with a deep slit.`,{takeable:false,open:true})
+	let holzstumpf=new Item([T`${DE}Holzstumpf${EN}wooden stump`,T`${DE}Holzstumpf${EN}wooden stamp`],T`${DE}Ein Holzstumpf mit tiefen Spalt.${EN}A wooden stump with a deep slit.`,{takeable:false,open:true})
 	holzstumpf.insert(metallschluessel);
 	eimer.insertApplyTarget(holzstumpf);
 	holzstumpf.giving=function(thing){
@@ -2456,7 +2464,7 @@ you can make a door also an orc that blocks the road
 	mojito.dialog = async function* () {
 		return T`${DE}Hehe, mein Freund von nebenan hat </br>auf seinem Kopf so ein komisches silbernes Teil stecken, </br>das sieht total bescheuert aus!${EN}Hehe, my friend next door has </br>some weird silver thing stuck on his head, </br>it looks totally stupid!`;
 	}
-	let tortenheber = new Item(T`${DE}Tortenheber${EN}Cake-server`, T`<img src='tortenheber.png'>${DE}ein Tortenheber${EN}a cake server`);
+	let tortenheber = new Item(T`${DE}Tortenheber${EN}Cake server`, T`<img src='tortenheber.png'>${DE}ein Tortenheber${EN}a cake server`);
 	daiquiri.insert(tortenheber);
 	daiquiri.dialog = async function* () {
 		if (this.has(tortenheber)) {
@@ -2496,7 +2504,7 @@ you can make a door also an orc that blocks the road
 		if (MODE.pro) {
 			return T`<img src='s10.png'>${DE}Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben. </br>Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: ${EN}Bravo, you have completed the game and can now write your own programmes. </br>Here is the source code so that you can extend the game yourself: ${ALL}<a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a> </br>${DE}Nach Süden geht es zur Strandbar.${EN}To the south you can go to the beach bar.`;
 		}
-		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>. </br>${DE}Ausserdem fällt dir der gut erhaltene Computer auf. </br>Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.) </br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest! </br>Nach Süden geht es zur Strandbar.${EN}You also notice the well-preserved computer. </br>In the north there is a door with a combination lock (<em style='color:#0f0;'>type on number lock</em>.) </br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain! </br>To the south you can go to the beach bar.`
+		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>. </br>${DE}Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.) </br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest! </br>Nach Süden geht es zur Strandbar.${EN}In the north there is a door with a number lock (<em style='color:#0f0;'>type on number lock</em>.) </br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain! </br>To the south you can go to the beach bar.`
 	}
 	scene10.south = scene4;
 	scene4.northblock = seetang;
@@ -2678,7 +2686,7 @@ you can make a door also an orc that blocks the road
 					if (!commandspeak && Commands.answer.length == 0) {
 						Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
 						if (isspeechrecog) return "TRYOTHERPOSSIBILITY";
-						else print(T`${DE}Was? Geht nicht! Tippe: <em style='color:#0f0;'>hilfe</em>!\n${EN}What? Doesn't work! Type: <em style='color:#0f0;'>help</em>!`);
+						else print(T`${DE}Was? Geht nicht!\n${EN}What? Doesn't work!`);
 					}
 				}
 				Commands.lastcommandspeak = commandspeak && !Commands.endofspeak;
@@ -2830,7 +2838,7 @@ you can make a door also an orc that blocks the road
 		}
 		@when(T`${DE}v${EN}u${ALL} ITEM`)
 		@when(T`${DE}verwende${EN}use${ALL} ITEM`)
-		@when(T`${DE}benutze${EN}use${ALL} ITEM`)
+		@when(T`${DE}benutze${EN}press${ALL} ITEM`)
 		@when(T`${DE}drücke${EN}push${ALL} ITEM`)
 		@when(T`${DE}ziehe${EN}pull${ALL} ITEM`)
 		static use({ item }) {
