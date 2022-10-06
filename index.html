@@ -3025,9 +3025,11 @@ you can make a door also an orc that blocks the road
 									.replaceAll(T`${DE}neuen${EN}nine`, "9")
 									.replaceAll(T`${DE}zehn${EN}ten`, "10")
 									.replaceAll(T`${DE}ein${EN}one`, "1")
-								answer = await Commands.execute(cmd, false);
-								if(answer=="TRYOTHERPOSSIBILITY") cmd=event.results[0][0].transcript
-								
+								answer = await Commands.execute(cmd, true)
+								if(answer=="TRYOTHERPOSSIBILITY") {
+									cmd=event.results[0][0].transcript
+									answer = await Commands.execute(cmd, false)
+								}
 							}
 							lastinput = cmd;
 							let p = document.createElement('p');
