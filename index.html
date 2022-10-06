@@ -2982,6 +2982,7 @@ you can make a door also an orc that blocks the road
 				const audioContext = new AudioContext();
 				const mediaStreamAudioSourceNode = audioContext.createMediaStreamSource(stream);
 				const analyserNode = audioContext.createAnalyser();
+				analyserNode.fftSize = 512;
 				mediaStreamAudioSourceNode.connect(analyserNode);
 
 				const pcmData = new Float32Array(analyserNode.fftSize);
@@ -3079,8 +3080,11 @@ you can make a door also an orc that blocks the road
 								Commands.recognition.start();//function(e) {
 							}
 							Commands.synthesis.onboundary=function(e){
-								//console.log(e.name)
+								//if(![','].includes(e.utterance.text.charAt(e.charIndex-2)))
+								//	if(e.name!="sentence") return
 								if(e.name!="sentence") return
+								//console.log(e.name)
+								
 								
 								let vol=checkVolume()
 						
