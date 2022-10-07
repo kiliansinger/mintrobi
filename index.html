@@ -963,7 +963,10 @@ you can make a door also an orc that blocks the road
 	// Define a preset https://medium.com/jspoint/a-minimal-guide-to-ecmascript-decorators-55b70338215e
 	Babel.registerPreset("env-plus", {
 		presets: [
-			[Babel.availablePresets["env"], { "loose": true }]
+			[Babel.availablePresets["env"], {
+				 "loose": true, 
+				 "targets":{"browsers": "> 0.5%, not dead"}
+			}]
 		],
 		plugins: [
 			[
