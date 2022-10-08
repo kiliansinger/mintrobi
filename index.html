@@ -2991,17 +2991,23 @@ you can make a door also an orc that blocks the road
 			if (onoff.toLowerCase() == T`${DE}an${EN}on`) {
 				if (Commands.dospeachrecog) return true
 				Commands.dospeachrecog = true;
+				let stream=null;
+				let audioContext=null;
+				let mediaStreamAudioSourceNode=null;
+				let analyserNode=null;
+				let pcmData=null;
+				if(! /Android/i.test(navigator.userAgent)){//In android the simultaneous Audiomonitoring does not work
+					stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+					audioContext = new AudioContext();
+					mediaStreamAudioSourceNode = audioContext.createMediaStreamSource(stream);
+					analyserNode = audioContext.createAnalyser();
+					analyserNode.fftSize = 1024;
+					mediaStreamAudioSourceNode.connect(analyserNode);
 
-
-				const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-				const audioContext = new AudioContext();
-				const mediaStreamAudioSourceNode = audioContext.createMediaStreamSource(stream);
-				const analyserNode = audioContext.createAnalyser();
-				analyserNode.fftSize = 1024;
-				mediaStreamAudioSourceNode.connect(analyserNode);
-
-				const pcmData = new Float32Array(analyserNode.fftSize);
+					pcmData = new Float32Array(analyserNode.fftSize);
+				}
 				const checkVolume = () => {
+					if( /Android/i.test(navigator.userAgent)) return 0.00001;//In android the simultaneous Audiomonitoring does not work
 					analyserNode.getFloatTimeDomainData(pcmData);
 					let sumSquares = 0.0;
 					for (const amplitude of pcmData) { sumSquares += amplitude*amplitude; }
