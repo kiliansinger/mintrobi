@@ -1911,7 +1911,7 @@ you can make a door also an orc that blocks the road
 							if(muenzen.golden) {
 								muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`,T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`,T`${DE}münze${EN}coin`]
 							}
-							else muenzen.title = [muenzen.value + " Euros", "Euro","Euros","€"+muenzen.value];
+							else muenzen.title = [muenzen.value + " Euros", "Euro","Euros","€"+muenzen.value,muenzen.value+" €"];
 							return "you tricked me!"
 						}
 						if (!isNaN(parseInt(reply))) {
@@ -2096,7 +2096,7 @@ you can make a door also an orc that blocks the road
 		}
 		else return false;
 	}
-	let tratschtante = new Person([T`${DE}Tratschtante${EN}Tattletale`, T`${DE}Tratsch Tante`], T`${DE}eine Tratschtante${EN}a tattletale`);
+	let tratschtante = new Person([T`${DE}Tratschtante${EN}Tattletale`, T`${DE}Tratsch Tante${EN}Tattletail`], T`${DE}eine Tratschtante${EN}a tattletale`);
 	tratschtante.insert(nagellack);
 	scene5.insert(tratschtante);
 	tratschtante.receiving = function (thing) {
@@ -2924,10 +2924,12 @@ you can make a door also an orc that blocks the road
 			}
 		}
 		@when(T`${DE}gib${EN}give${ALL} ITEM => TARGET`)
+		@when(T`${DE}gebe${EN}give${ALL} ITEM => TARGET`)
 		@when(T`${DE}lege${EN}put${ALL} ITEM => TARGET`)
 		@when(T`${DE}lege${EN}drop${ALL} ITEM => TARGET`)
 		@when(T`${DE}l${EN}p${ALL} ITEM => TARGET`)
 		@when(T`${DE}gib${EN}give${ALL} ITEM`, { target: "scene" })
+		@when(T`${DE}gebe${EN}give${ALL} ITEM`, { target: "scene" })
 		@when(T`${DE}lege${EN}put${ALL} ITEM`, { target: "scene" })
 		@when(T`${DE}lege${EN}drop${ALL} ITEM`, { target: "scene" })
 		@when(T`${DE}l${EN}p${ALL} ITEM`, { target: "scene" })
