@@ -2095,7 +2095,7 @@ you can make a door also an orc that blocks the road
 
 	holzschluessel.doapply=function(target){
 	if(target===holzbox){
-		print(T`${DE}Die Holzbox öffnet sich.${EN}The wood box opens.`);
+		print(T`${DE}Die Holzbox öffnet sich. </br>${EN}The wood box opens. </br>`);
 		target.openable=true;
 		target.open=true;
 		Commands.forward_command = T`${DE}b holzbox${EN}l wooden box`
@@ -2418,7 +2418,7 @@ you can make a door also an orc that blocks the road
 	koffer.insert(kostuem)
 	let Forscher = new Person(T`${DE}Forscher${EN}Scientist`, T`${DE}ein Forscher${EN}a scientist`);
 	scene7.insert(Forscher);
-	let sonnenuhranleitung = new Item(T`${DE}Sonnenuhranleitung${EN}Sundial plan`, T`${DE}Um das Spiel zu lösen musst Du dieses Projekt nicht unbedingt durchführen. </br>${EN}You don't have to do this project to solve the game. </br>${DE}Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen. </br>${EN}If you feel like it and it's sunny outside, make a sundial with Mintrobi's brain. All you need is a cotton bud. </br>${DE}Hier ist die ${EN}Here is the ${ALL}<a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>${DE}Anleitung${EN}Instruction${ALL}</a>.`)
+	let sonnenuhranleitung = new Item([T`${DE}Sonnenuhranleitung${EN}Sundial plan`,T`${DE}Sonnenuhr Anleitung${EN}Sundialplan`], T`${DE}Um das Spiel zu lösen musst Du dieses Projekt nicht unbedingt durchführen. </br>${EN}You don't have to do this project to solve the game. </br>${DE}Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen. </br>${EN}If you feel like it and it's sunny outside, make a sundial with Mintrobi's brain. All you need is a cotton bud. </br>${DE}Hier ist die ${EN}Here is the ${ALL}<a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>${DE}Anleitung${EN}Instruction${ALL}</a>.`)
 	scene7.insert(sonnenuhranleitung)
 	Forscher.insert(koffer);
 	Forscher.dialog = async function* () {
