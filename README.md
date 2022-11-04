@@ -18,7 +18,7 @@ The game was supported by [Smart City Kassel](https://www.startnext.com/pages/un
 
 <video class="elementor-video" src="https://www.mintrobi.de/mintrobi_lb.mp4" controls="" controlslist="nodownload" style="box-sizing: border-box; width: 673px; max-width: 100%; margin: 0px; line-height: 1; border: none; object-fit: cover;"></video>
 
-![MINT-Robi](README.assets/mintrobi_titel.jpg)
+[![MINT-Robi](README.assets/mintrobi_titel_play.jpg)](https://www.youtube.com/watch?v=3pp6IKeDl-8)
 
 [MINT-Robi](https://www.startnext.com/mint-robi?utm_source=startnext&utm_medium=extwidget&utm_campaign=projectwidget&utm_term=projectpromo)
 
