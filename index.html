@@ -1332,7 +1332,7 @@ you can make a door also an orc that blocks the road
 		}
 		describe() {
 			if (this.opensoninspection) this.open = true;
-			return this.title[0].toString() + ": " + this.description.toString();
+			return "<a onclick='exec(this);' href='javascript:void(0);'>"+this.title[0].toString() + "</a>: " + this.description.toString();
 		}
 		insert(thing) {
 			if (thing.name === undefined) Obj.nametag()
@@ -1582,7 +1582,7 @@ you can make a door also an orc that blocks the road
 				}
 			}
 			if (found && !quiet && (key === null || things[i] instanceof key)) {
-				if (list) print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].title[0].toString());
+				if (list) print("\n" + Array(cnt).join('   ') + "&#x26AC; <a onclick='exec(this);' href='javascript:void(0);'>"+ things[i].title[0].toString()+"</a>");
 				else print("\n" + Array(cnt).join('   ') + "&#x26AC; " + things[i].describe().toString() + "\n" + Array(cnt).join('   '));
 			}
 			if (things[i].open && !isEmpty(things[i]["things"])) {
@@ -2714,6 +2714,8 @@ you can make a door also an orc that blocks the road
 			Commands.recogparam = null;
 			recog |= Commands.help();
 			Commands.recogparam = null;
+			recog |= Commands.look({ at: Commands.command });
+			Commands.recogparam = null;
 			let commandspeak = await Commands.speak();//needs to be last in line
 			recog |= commandspeak;
 			Commands.recogparam = null;
@@ -2830,6 +2832,15 @@ you can make a door also an orc that blocks the road
 				default:
 					console.log("schaue");
 					let found1, found2;
+					if(Commands.actor.position.title.toString().toLowerCase()==at){
+						print(Commands.actor.position.describe());
+						if (!isEmpty(Commands.actor.position.things) && Commands.actor.position.open) {
+							print(T`\n${DE}Desweiteren sieht man:${EN}Furthermore, you can see:`);
+							lookrecursive(Commands.actor.position.things, at, true, null, true);
+							print("\n");
+						}
+						return true;
+					}
 					found1 = lookrecursive(Commands.actor.things, at, false, null, false);
 					found2 = lookrecursive(Commands.actor.position.things, at, false, null, false);
 					return (found1 !== null) || (found2 !== null);
@@ -3115,21 +3126,7 @@ you can make a door also an orc that blocks the road
 									answer = await Commands.execute(cmd, false)
 								}
 							}
-							lastinput = cmd;
-							let p = document.createElement('p');
-							p.innerHTML = cmd;
-							p.className = 'command';
-							story.appendChild(p);
-							let p2 = document.createElement('p');
-							p2.innerHTML = answer;
-							story.appendChild(p2);
-							inp.value = '';
-							story.scrollTop = story.scrollHeight;//- story.offsetHeight;
-							setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
-							let dump = Obj.dump();
-							localStorage.setItem("current", dump);
-							document.getElementById("inp").disabled = false
-							document.getElementById("inp").focus();
+							updateConsole(cmd,answer);
 							Commands.dospeachrecog = false;
 							Commands.recognition.abort();
 							Commands.synthesis = new SpeechSynthesisUtterance();
@@ -3227,6 +3224,30 @@ you can make a door also an orc that blocks the road
 	let story = document.getElementById('story')
 	let inp = document.getElementById('inp')
 	let prompt = document.getElementById('prompt')
+	async function exec(el){
+		console.log(el.innerHTML)
+		let answer = await Commands.execute(el.innerHTML, false);
+		updateConsole(el.innerHTML,answer);
+
+	}
+	async function updateConsole(cmd,answer){
+		lastinput = cmd;
+		let p = document.createElement('p');
+		p.innerHTML = cmd;
+		p.className = 'command';
+		story.appendChild(p);
+		let p2 = document.createElement('p');
+		p2.innerHTML = answer;
+		story.appendChild(p2);
+		inp.value = '';
+		story.scrollTop = story.scrollHeight;//- story.offsetHeight;
+
+		setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
+		let dump = Obj.dump();
+		localStorage.setItem("current", dump);
+		document.getElementById("inp").disabled = false
+		document.getElementById("inp").focus();
+	}
 	async function start() {
 		try {
 			let answer = Commands.intro();
@@ -3244,24 +3265,11 @@ you can make a door also an orc that blocks the road
 					document.getElementById("inp").disabled = true;
 
 					let cmd = inp.value;
-					lastinput = cmd;
-					let p = document.createElement('p');
-					p.innerHTML = cmd;
-					p.className = 'command';
-					story.appendChild(p);
-
 					let answer = await Commands.execute(cmd, false);
-					let p2 = document.createElement('p');
-					p2.innerHTML = answer;
-					story.appendChild(p2);
-					inp.value = '';
-					story.scrollTop = story.scrollHeight;//- story.offsetHeight;
 
-					setTimeout(function () { story.scrollTop = story.scrollHeight - story.clientHeight }, 100);
-					let dump = Obj.dump();
-					localStorage.setItem("current", dump);
-					document.getElementById("inp").disabled = false
-					document.getElementById("inp").focus();
+					updateConsole(cmd,answer);
+					
+				
 				}
 				else if (event.keyCode == 38) {//up arrow
 					document.getElementById("inp").focus();
