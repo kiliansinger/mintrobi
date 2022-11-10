@@ -1330,11 +1330,9 @@ you can make a door also an orc that blocks the road
 			this.title = title2;
 			this.description = description;
 		}
-		describe() {
-			if (this.opensoninspection) this.open = true;
-			let ret="<a onclick='exec(this);' href='javascript:void(0);'>"+this.title[0].toString() + "</a>: " + this.description.toString();
-	
-		 	if(this!==Commands.actor && (this.speakable || this.takeable || this.dropable || this.usable || this.openable || this.applicable || this.closable)){
+		printcommands(){
+			let ret="";
+			if(this!==Commands.actor && (this.speakable || this.takeable || this.dropable || this.usable || this.openable || this.applicable || this.closable)){
 				let cnt=0;
 				ret+=T`</br>${DE}Befehle: ${EN}Commands: `.toString();
 				if(this.speakable) {
@@ -1347,6 +1345,8 @@ you can make a door also an orc that blocks the road
 				}
 				if(this.dropable && Commands.actor.has(this) ){
 					ret+=(cnt>0?", ":"")+T`<a onclick='exec(this);' href='javascript:void(0);'>${DE}lege ${EN}drop `+this.title[0].toString()+"</a>";
+					cnt++;
+					ret+=(cnt>0?", ":"")+T`<a onclick='typeCommand(this);' href='javascript:void(0);'>${DE}gib ${EN}give `+this.title[0].toString()+T`${DE} an${EN} to`.toString()+"</a>";
 					cnt++;
 				}
 				if(this.usable ){
@@ -1361,13 +1361,19 @@ you can make a door also an orc that blocks the road
 					ret+=(cnt>0?", ":"")+T`<a onclick='typeCommand(this);' href='javascript:void(0);'>${DE}verwende ${EN}use `+this.title[0].toString()+T`${DE} mit${EN} with`.toString()+"</a>";
 					cnt++;
 				}
-				if(this.closeable && this.open){
+				if(this.closable && this.open){
 					ret+=(cnt>0?", ":"")+T`<a onclick='exec(this);' href='javascript:void(0);'>${DE}schließe ${EN}close `+this.title[0].toString()+"</a>";
 					cnt++;
 				}
 				
 				
 			}
+			return ret;
+		}
+		describe() {
+			if (this.opensoninspection) this.open = true;
+			let ret="<a onclick='exec(this);' href='javascript:void(0);'>"+this.title[0].toString() + "</a>: " + this.description.toString();
+			ret+=this.printcommands()
 			return ret;
 		}
 		insert(thing) {
@@ -1469,7 +1475,7 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	class Door extends Thing {
-		constructor(title, description, { openable = false, opensoninspection = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false, applicable = true, blockable = true, blocking = true, locked = false, speakable = false } = {}) {
+		constructor(title, description, { openable = false, opensoninspection = false, closable = false, open = false, visible = true, takeable = false, dropable = false, usable = false, applicable = false, blockable = true, blocking = true, locked = false, speakable = false } = {}) {
 			super(title, description);
 			this.speakable = speakable;
 			this.openable = openable;
@@ -1867,9 +1873,9 @@ you can make a door also an orc that blocks the road
 	scene4.describe = function () {
 		seetang.cnt=0;
 		if (seetang.blocking) {
-			return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>${DE}Du stehst in einer offenen Strandbar mit einigen Leuten. </br>Nach Osten geht es zum Strand.${EN}You are standing in an open beach bar with a few people. </br>To the east you can go to the beach.`;
+			return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>${DE}Du stehst in einer offenen Strandbar mit einigen Leuten. </br>Nach Osten geht es zum Strand.${EN}You are standing in an open beach bar with a few people. </br>To the east you can go to the beach.`+this.printcommands();
 		}
-		else return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>${DE}Oh da ist ja eine geheime Höhle dahinter im Norden. Was da wohl drin ist? </br>${EN}Ooh, there's a secret cave behind there in the north. I wonder what's in there? </br>`
+		else return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>${DE}Oh da ist ja eine geheime Höhle dahinter im Norden. Was da wohl drin ist? </br>${EN}Ooh, there's a secret cave behind there in the north. I wonder what's in there? </br>`+this.printcommands();
 	}
 	let barmann = new Person(T`${DE}Barmann${EN}Bartender`, T`${DE}ein Barmann${EN}a bartender`);
 	scene4.insert(barmann);
@@ -2045,12 +2051,12 @@ you can make a door also an orc that blocks the road
 	let holzbox=new Item(T`${DE}Holzbox${EN}wooden box`,"",{openable:false,closable:true,open:false});
 	let koffer=new Item(T`${DE}Koffer${EN}Suitcase`,"",{openable:false,closable:true,open:false});
 	koffer.describe=function(){
-		return T`${DE}Ein ${EN}A `+(this.open?T`${DE}offener Koffer.${EN}open suitcase.`:T`${DE}geschlossener Koffer.${EN}closed suitcase.`)
+		return T`${DE}Ein ${EN}A `+(this.open?T`${DE}offener Koffer.${EN}open suitcase.`:T`${DE}geschlossener Koffer.${EN}closed suitcase.`)+this.printcommands();
 	}
 
 	holzschluessel.insertApplyTarget(holzbox)
 	holzbox.describe=function(){
-		return T`${DE}Eine ${EN}A `+(this.open?T`${DE}offene Holzbox.${EN}open wooden box.`:T`${DE}geschlossene Holzbox.${EN}closed wooden box.`)
+		return T`${DE}Eine ${EN}A `+(this.open?T`${DE}offene Holzbox.${EN}open wooden box.`:T`${DE}geschlossene Holzbox.${EN}closed wooden box.`)+this.printcommands();
 	}
 	let nagel=new Item(T`${DE}Nagel${EN}Nail`,T`${DE}Ein rostiger Nagel.${EN}A rusty nail`,{applicable:true})
 	let batterie=new Item(T`${DE}Batterie${EN}Battery`,T`${DE}Volle Mono-Batterie.${EN}A full Mono-Battery.`,{applicable:true});
@@ -2058,10 +2064,10 @@ you can make a door also an orc that blocks the road
 	kabel.describe=function(){
 		if(this.has(nagel) && this.has(batterie)){
 			
-			return T`${DE}aktiver Elektromagnet${EN}active Electromagnet`;
+			return T`${DE}aktiver Elektromagnet${EN}active Electromagnet`+this.printcommands();
 		}
 		if(this.has(nagel)) {
-			return T`${DE}Elektromagnet${EN}Electromagnet`;
+			return T`${DE}Elektromagnet${EN}Electromagnet`+this.printcommands();
 		}
 		
 		else return this.description;
@@ -2075,7 +2081,7 @@ you can make a door also an orc that blocks the road
 			return true;
 		}
 		if(thing===nagel){
-			this.title=T`${DE}Kabel${EN}Cable`
+			this.title=[T`${DE}Kabel${EN}Cable`]
 			return true;
 		}
 		return false;
@@ -2509,9 +2515,9 @@ you can make a door also an orc that blocks the road
 	scene8.northblock = tuer;
 	scene8.describe = function () {
 		if (tuer.blocking) {
-			return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east it goes back to the jungle path. </br>Tip: If you don't understand the gate guard, the explorer might help you.`;
+			return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east it goes back to the jungle path. </br>Tip: If you don't understand the gate guard, the explorer might help you.`+this.printcommands();
 		}
-		else return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east you go back to the jungle path. </br>`;
+		else return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east you go back to the jungle path. </br>`+this.printcommands();
 	}
 	torwache.dialog = async function* () {
 		if (Commands.actor.has(kostuem)) {
@@ -2583,9 +2589,9 @@ you can make a door also an orc that blocks the road
 	let scene10 = new Scene(T`${DE}Geheimes Labor${EN}Secret lab`, "");
 	scene10.describe = function () {
 		if (MODE.pro) {
-			return T`<img src='s10.png'>${DE}Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben. </br>Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: ${EN}Bravo, you have completed the game and can now write your own programmes. </br>Here is the source code so that you can extend the game yourself: ${ALL}<a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a> </br>${DE}Nach Süden geht es zur Strandbar.${EN}To the south you can go to the beach bar.`;
+			return T`<img src='s10.png'>${DE}Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben. </br>Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: ${EN}Bravo, you have completed the game and can now write your own programmes. </br>Here is the source code so that you can extend the game yourself: ${ALL}<a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a> </br>${DE}Nach Süden geht es zur Strandbar.${EN}To the south you can go to the beach bar.`+this.printcommands();
 		}
-		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>. </br>${DE}Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.) </br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest! </br>Nach Süden geht es zur Strandbar.${EN}In the north there is a door with a number lock (<em style='color:#0f0;'>type on number lock</em>.) </br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain! </br>To the south you can go to the beach bar.`
+		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>. </br>${DE}Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.) </br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest! </br>Nach Süden geht es zur Strandbar.${EN}In the north there is a door with a number lock (<em style='color:#0f0;'>type on number lock</em>.) </br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain! </br>To the south you can go to the beach bar.`+this.printcommands();
 	}
 	scene10.south = scene4;
 	scene4.northblock = seetang;
@@ -2862,7 +2868,7 @@ you can make a door also an orc that blocks the road
 				case T`${DE}rucksack${EN}backpack`.toString():
 					if (!isEmpty(Commands.actor.things)) print(T`${DE}In deinem Rucksack befinden sich:${EN}In your backpack you can find:${ALL} \n`);
 					if (Commands.actor.open) for (var i in Commands.actor.things) {
-						print(Commands.actor.things[i].title[0].toString());
+						print("<a onclick='exec(this);' href='javascript:void(0);'>"+Commands.actor.things[i].title[0].toString()+"</a>");
 						print("\n");
 					}
 					return true;
@@ -2956,16 +2962,15 @@ you can make a door also an orc that blocks the road
 			let retval=false;
 			let { thing } = search(item);
 			let { thing: targetthing } = search(target);
-			if(thing !== null && targetthing !== null && !Commands.actor.has(thing)) {
+			if(thing  && targetthing  && !Commands.actor.has(thing)) {
 				print(T`<p style='color:#0f0;'>${DE}nehme ${EN}taking `.toString()+thing.title[0].toString()+"</p>")
 				if( thing.takeable && thing.parent != Commands.actor) {
-					Commands.actor.take(thing);
-					print(T`<p style='color:#0f0;'>${DE}verwende ${EN}use `.toString()+thing.title[0].toString()+T`${DE} mit ${EN} with `+targetthing.title[0].toString()+"</p>")
+					if(Commands.actor.take(thing)) print(T`<p style='color:#0f0;'>${DE}verwende ${EN}use `.toString()+thing.title[0].toString()+T`${DE} mit ${EN} with `+targetthing.title[0].toString()+"</p>")
 				}
 				else print(T`${DE}geht nicht${EN}does not work${ALL}</br>`)
 			}
 		
-			if (thing !== null && targetthing !== null && thing.applicable && Commands.actor.has(thing)) {
+			if (thing  && targetthing && thing.applicable && Commands.actor.has(thing)) {
 				if (thing.applytarget.hasOwnProperty(targetthing.name))
 					retval = thing.doapply(targetthing);
 			}
@@ -2973,11 +2978,10 @@ you can make a door also an orc that blocks the road
 			else {
 				let { thing } = search(target);
 				let { thing: targetthing } = search(item);
-				if(thing !== null && targetthing !== null && !Commands.actor.has(thing)) {
+				if(thing  && targetthing  && !Commands.actor.has(thing)) {
 					print(T`<p style='color:#0f0;'>${DE}nehme ${EN}taking `.toString()+thing.title[0].toString()+"</p>")
 					if( thing.takeable && thing.parent != Commands.actor) {
-						Commands.actor.take(thing);
-						print(T`<p style='color:#0f0;'>${DE}verwende ${EN}use `.toString()+thing.title[0].toString()+T`${DE} mit ${EN} with `+targetthing.title[0].toString()+"</p>")
+						if(Commands.actor.take(thing))print(T`<p style='color:#0f0;'>${DE}verwende ${EN}use `.toString()+thing.title[0].toString()+T`${DE} mit ${EN} with `+targetthing.title[0].toString()+"</p>")
 					}
 					else print(T`${DE}geht nicht${EN}does not work${ALL}</br>`)
 				}
