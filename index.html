@@ -1861,6 +1861,7 @@ you can make a door also an orc that blocks the road
 	scene4.northblock = seetang;
 	scene4.insert(seetang);
 	scene4.describe = function () {
+		seetang.cnt=0;
 		if (seetang.blocking) {
 			return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>${DE}Du stehst in einer offenen Strandbar mit einigen Leuten. </br>Nach Osten geht es zum Strand.${EN}You are standing in an open beach bar with a few people. </br>To the east you can go to the beach.`;
 		}
@@ -2934,12 +2935,12 @@ you can make a door also an orc that blocks the road
 		@when(T`${DE}ziehe${EN}pull${ALL} ITEM`)
 		static use({ item }) {
 			let { thing } = search(item);
-			if(thing !== null && !Commands.actor.has(thing)){
-				print(T`<p style='color:#0f0;'>${DE}nehme ${EN}taking `.toString()+thing.title[0].toString()+"</p></br>")
-				if( thing.takeable && thing.parent != Commands.actor) Commands.actor.take(thing);
-				else print(T`${DE}geht nicht${EN}does not work${ALL}</br>`)
-			}
-			if (thing && thing.usable && Commands.actor.has(thing) ) return thing.use();
+			//if(thing !== null && !Commands.actor.has(thing)){
+			//	print(T`<p style='color:#0f0;'>${DE}nehme ${EN}taking `.toString()+thing.title[0].toString()+"</p></br>")
+			//	if( thing.takeable && thing.parent != Commands.actor) Commands.actor.take(thing);
+			//	else print(T`${DE}geht nicht${EN}does not work${ALL}</br>`)
+			//}
+			if (thing && thing.usable /*&& Commands.actor.has(thing) */) return thing.use();
 			else {
 				return false;
 			}
