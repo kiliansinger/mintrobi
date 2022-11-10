@@ -749,10 +749,14 @@ you can make a door also an orc that blocks the road
 <body onload="start()">
 	<div id="story"></div>
 	<div id="inputline" class="flexed">
-		<span class="flexele"><a id="backpack"  onclick='exec(this);' href='javascript:void(0);'>R</a></span>
+		<span class="hflexed">
+			<span class="flexele"><a id="look"  onclick='exec(this);' href='javascript:void(0);'>B</a></span>
+			<span class="flexele">&nbsp;</span>
+			<span class="flexele"><a id="backpack"  onclick='exec(this);' href='javascript:void(0);'>R</a></span>
+		</span>
 		<span id="compass" class="hflexed">
 			<span class="flexele"><a id="north"  onclick='exec(this);' href='javascript:void(0);'>N</a></span>
-			<span class="flexele"><a id="west"  onclick='exec(this);' href='javascript:void(0);'>W</a><a id="look"  onclick='exec(this);' href='javascript:void(0);'>B</a><a id="east"  onclick='exec(this);' href='javascript:void(0);'>O</a></span>
+			<span class="flexele"><a id="west"  onclick='exec(this);' href='javascript:void(0);'>W</a>+<a id="east"  onclick='exec(this);' href='javascript:void(0);'>O</a></span>
 			<span class="flexele"><a id="south"  onclick='exec(this);' href='javascript:void(0);'>S</a></span>
 		</span>
 		<span id="prompt" class="flexele">
