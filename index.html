@@ -1357,6 +1357,10 @@ you can make a door also an orc that blocks the road
 					ret+=(cnt>0?", ":"")+T`<a onclick='exec(this);' href='javascript:void(0);'>${DE}öffne ${EN}open `+this.title[0].toString()+"</a>";
 					cnt++;
 				}
+				if(this.applicable  ){
+					ret+=(cnt>0?", ":"")+T`<a onclick='typeCommand(this);' href='javascript:void(0);'>${DE}verwende ${EN}use `+this.title[0].toString()+T`${DE} mit${EN}with`.toString()+"</a>";
+					cnt++;
+				}
 				if(this.closeable && this.open){
 					ret+=(cnt>0?", ":"")+T`<a onclick='exec(this);' href='javascript:void(0);'>${DE}schließe ${EN}close `+this.title[0].toString()+"</a>";
 					cnt++;
@@ -1771,7 +1775,7 @@ you can make a door also an orc that blocks the road
 	}
 	let scene3 = new Scene(T`${DE}Badestrand${EN}Beach`, T`<div class='flow'><img class='back' src='s3.png'><img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'><img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'><img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>${DE}Du stehst am Strand, um dich herum sind einige Leute. </br>Nach Norden geht es in die Stadt, </br>nach Osten zum Strandhaus, </br>im Westen ist eine Strandbar.${EN}You are standing on the beach, there are some people around you. </br>To the north it goes to the city, </br>to the east to the beach house, </br>to the west is a beach bar.`)
 
-	let loch = new Item(T`${DE}Loch${EN}Hole`, T`${DE}Ein tiefes Loch${EN}A deep hole.`, { open: false, opensoninspection: true, takeable: false });
+	let loch = new Item(T`${DE}Loch${EN}Hole`, T`${DE}Ein tiefes Loch${EN}A deep hole.`, { open: false, opensoninspection: true, takeable: false, dropable:false });
 	loch.giving = function (thing) {
 		print(T`${DE}Das Loch ist zu tief!${EN}The hole is too deep!`);
 		return false;
@@ -1789,7 +1793,7 @@ you can make a door also an orc that blocks the road
 	let eimer = new Item(T`${DE}Eimer${EN}Bucket`, T`${DE}Ein roter Eimer.${EN}A red bucket.`, { applicable: true });
 	scene3.insert(eimer);
 
-	let meer = new Item(T`${DE}Meer${EN}Ocean`, T`${DE}Schönes Meer.${EN}Beautiful ocean`, { takeable: false });
+	let meer = new Item(T`${DE}Meer${EN}Ocean`, T`${DE}Schönes Meer.${EN}Beautiful ocean`, { takeable: false,dropable:false });
 	scene3.insert(meer);
 	eimer.insertApplyTarget(meer);
 	eimer.insertApplyTarget(loch);
@@ -2486,7 +2490,7 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 	let scene8 = new Scene(T`${DE}Eingang zum Ureinwohnerdorf${EN}Entry to the village of the native tribe`, "")
-	let holzstumpf=new Item([T`${DE}Holzstumpf${EN}wooden stump`,T`${DE}Holzstumpf${EN}wooden stamp`],T`${DE}Ein Holzstumpf mit tiefen Spalt.${EN}A wooden stump with a deep slit.`,{takeable:false,open:true})
+	let holzstumpf=new Item([T`${DE}Holzstumpf${EN}wooden stump`,T`${DE}Holzstumpf${EN}wooden stamp`],T`${DE}Ein Holzstumpf mit tiefen Spalt.${EN}A wooden stump with a deep slit.`,{takeable:false,dropable: false,open:true})
 	holzstumpf.insert(metallschluessel);
 	eimer.insertApplyTarget(holzstumpf);
 	holzstumpf.giving=function(thing){
@@ -3281,9 +3285,15 @@ you can make a door also an orc that blocks the road
 	let prompt = document.getElementById('prompt')
 	async function exec(el){
 		console.log(el.innerHTML)
-		let answer = await Commands.execute(el.innerHTML, false);
-		updateConsole(el.innerHTML,answer);
+		let command=document.getElementById("inp").value+" "+el.innerHTML;
+		let answer = await Commands.execute(command, false);
+		updateConsole(command,answer);
 
+	}
+	function typeCommand(el){
+		document.getElementById("inp").value=el.innerHTML;
+		document.getElementById("inp").disabled = false
+		document.getElementById("inp").focus();
 	}
 	async function updateConsole(cmd,answer){
 		lastinput = cmd;
