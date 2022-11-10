@@ -1332,7 +1332,39 @@ you can make a door also an orc that blocks the road
 		}
 		describe() {
 			if (this.opensoninspection) this.open = true;
-			return "<a onclick='exec(this);' href='javascript:void(0);'>"+this.title[0].toString() + "</a>: " + this.description.toString();
+			let ret="<a onclick='exec(this);' href='javascript:void(0);'>"+this.title[0].toString() + "</a>: " + this.description.toString();
+	
+		 	if(this!==Commands.actor && (this.speakable || this.takeable || this.dropable || this.usable || this.openable || this.applicable || this.closable)){
+				let cnt=0;
+				ret+=T`</br>${DE}Befehle: ${EN}Commands: `.toString();
+				if(this.speakable) {
+					ret+=T`<a onclick='exec(this);' href='javascript:void(0);'>${DE}sprich mit ${EN}speak with `+this.title[0].toString()+"</a>";
+					cnt++;
+				}
+				if(this.takeable && !Commands.actor.has(this)){
+					ret+=(cnt>0?", ":"")+T`<a onclick='exec(this);' href='javascript:void(0);'>${DE}nimm ${EN}take `+this.title[0].toString()+"</a>";
+					cnt++;
+				}
+				if(this.dropable && Commands.actor.has(this) ){
+					ret+=(cnt>0?", ":"")+T`<a onclick='exec(this);' href='javascript:void(0);'>${DE}lege ${EN}drop `+this.title[0].toString()+"</a>";
+					cnt++;
+				}
+				if(this.usable ){
+					ret+=(cnt>0?", ":"")+T`<a onclick='exec(this);' href='javascript:void(0);'>${DE}verwende ${EN}use `+this.title[0].toString()+"</a>";
+					cnt++;
+				}
+				if(this.openable && !this.open){
+					ret+=(cnt>0?", ":"")+T`<a onclick='exec(this);' href='javascript:void(0);'>${DE}öffne ${EN}open `+this.title[0].toString()+"</a>";
+					cnt++;
+				}
+				if(this.closeable && this.open){
+					ret+=(cnt>0?", ":"")+T`<a onclick='exec(this);' href='javascript:void(0);'>${DE}schließe ${EN}close `+this.title[0].toString()+"</a>";
+					cnt++;
+				}
+				
+				
+			}
+			return ret;
 		}
 		insert(thing) {
 			if (thing.name === undefined) Obj.nametag()
@@ -1767,7 +1799,7 @@ you can make a door also an orc that blocks the road
 	eimer.doapply = function (target) {
 		//if(target===ocean) return target.doapply(this);//is needed because reciproce call only works when doapply is not there
 		if (target === meer) {
-			this.title = [T`${DE}Voller Eimer${EN}Full bucket`, T`${DE}Eimer${EN}Bucket`]
+			this.title = [T`${DE}Vollen Eimer${EN}Full bucket`,T`${DE}Voller Eimer${EN}Full bucket`, T`${DE}Eimer${EN}Bucket`]
 			this.description = T`${DE}Ein mit Meerwasser gefüllter roter Eimer.${EN}A red bucket filled with ocean water.`
 			eimer.voll = true;
 			print(eimer.describe())
@@ -2902,7 +2934,12 @@ you can make a door also an orc that blocks the road
 		@when(T`${DE}ziehe${EN}pull${ALL} ITEM`)
 		static use({ item }) {
 			let { thing } = search(item);
-			if (thing && thing.usable) return thing.use();
+			if(thing !== null && !Commands.actor.has(thing)){
+				print(T`<p style='color:#0f0;'>${DE}nehme ${EN}taking `.toString()+thing.title[0].toString()+"</p></br>")
+				if( thing.takeable && thing.parent != Commands.actor) Commands.actor.take(thing);
+				else print(T`${DE}geht nicht${EN}does not work${ALL}</br>`)
+			}
+			if (thing && thing.usable && Commands.actor.has(thing) ) return thing.use();
 			else {
 				return false;
 			}
@@ -2911,10 +2948,19 @@ you can make a door also an orc that blocks the road
 		@when(T`${DE}verwende${EN}use${ALL} ITEM => TARGET`)
 		@when(T`${DE}v${EN}u${ALL} ITEM => TARGET`)
 		static doapply({ item, target }) {//we 
-			let retval;
+			let retval=false;
 			let { thing } = search(item);
 			let { thing: targetthing } = search(target);
-			if (thing !== null && targetthing !== null && thing.applicable) {
+			if(thing !== null && targetthing !== null && !Commands.actor.has(thing)) {
+				print(T`<p style='color:#0f0;'>${DE}nehme ${EN}taking `.toString()+thing.title[0].toString()+"</p>")
+				if( thing.takeable && thing.parent != Commands.actor) {
+					Commands.actor.take(thing);
+					print(T`<p style='color:#0f0;'>${DE}verwende ${EN}use `.toString()+thing.title[0].toString()+T`${DE} mit ${EN} with `+targetthing.title[0].toString()+"</p>")
+				}
+				else print(T`${DE}geht nicht${EN}does not work${ALL}</br>`)
+			}
+		
+			if (thing !== null && targetthing !== null && thing.applicable && Commands.actor.has(thing)) {
 				if (thing.applytarget.hasOwnProperty(targetthing.name))
 					retval = thing.doapply(targetthing);
 			}
@@ -2922,7 +2968,15 @@ you can make a door also an orc that blocks the road
 			else {
 				let { thing } = search(target);
 				let { thing: targetthing } = search(item);
-				if (thing !== null && targetthing !== null && thing.applicable) {
+				if(thing !== null && targetthing !== null && !Commands.actor.has(thing)) {
+					print(T`<p style='color:#0f0;'>${DE}nehme ${EN}taking `.toString()+thing.title[0].toString()+"</p>")
+					if( thing.takeable && thing.parent != Commands.actor) {
+						Commands.actor.take(thing);
+						print(T`<p style='color:#0f0;'>${DE}verwende ${EN}use `.toString()+thing.title[0].toString()+T`${DE} mit ${EN} with `+targetthing.title[0].toString()+"</p>")
+					}
+					else print(T`${DE}geht nicht${EN}does not work${ALL}</br>`)
+				}
+				if (thing !== null && targetthing !== null && thing.applicable && Commands.actor.has(thing)) {
 					if (thing.applytarget.hasOwnProperty(targetthing.name))
 						return thing.doapply(targetthing);
 				}
@@ -2968,7 +3022,7 @@ you can make a door also an orc that blocks the road
 		@when(T`${DE}m${EN}k${ALL} ITEM`)
 		static take({ item }) {
 			let { mine, thing } = search(item);
-			if (thing !== null && thing.takeable && thing.parent != ich) {
+			if (thing !== null && thing.takeable && thing.parent != Commands.actor) {
 				return Commands.actor.take(thing);
 			}
 			else {
