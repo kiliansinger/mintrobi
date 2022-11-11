@@ -3337,15 +3337,15 @@ you can make a door also an orc that blocks the road
 		if(txt=="&#128065;") txt=T`${DE}B${EN}L`.toString();
 		let command = document.getElementById("inp").value + " " + txt;
 		let answer = await Commands.execute(command, false);
-		updateConsole(command, answer);
+		updateConsole(command, answer,false);
 
 	}
 	function typeCommand(el) {
 		document.getElementById("inp").value = el.innerHTML;
 		document.getElementById("inp").disabled = false
-		document.getElementById("inp").focus();
+		//document.getElementById("inp").focus();
 	}
-	async function updateConsole(cmd, answer) {
+	async function updateConsole(cmd, answer,focus=true) {
 		lastinput = cmd;
 		let p = document.createElement('p');
 		p.innerHTML = cmd;
@@ -3361,7 +3361,7 @@ you can make a door also an orc that blocks the road
 		let dump = Obj.dump();
 		localStorage.setItem("current", dump);
 		document.getElementById("inp").disabled = false
-		document.getElementById("inp").focus();
+		if(focus)document.getElementById("inp").focus();
 	}
 	async function start() {
 		try {
