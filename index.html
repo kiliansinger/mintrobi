@@ -1318,7 +1318,18 @@ you can make a door also an orc that blocks the road
 	
 	class Thing extends Obj {
 		/** @member {string} */
-		title = [""];
+		_title = [""];
+		get title () {
+    		return this._title;
+  		};
+  		set title (value) {
+			if (!(value instanceof Array)) {
+				console.log("not arr")
+				this._title = [value];
+
+			}
+			else this._title=value;	
+  		};
 		description = "";
 		speakable = false;//when true you can speak with it. you need to add: XXX.dialog=async function* ()
 		opensoninspection = false;//is closed but when you look at it by command "look at item" it opens.
@@ -1362,11 +1373,11 @@ you can make a door also an orc that blocks the road
 			else return false;
 		}
 		constructor(title, description) {
-			let title2
-			if (!(title instanceof Array)) title2 = [title];
-			else title2 = title;
+			//let title2
+			//if (!(title instanceof Array)) title2 = [title];
+			//else title2 = title;
 			super();
-			this.title = title2;
+			this.title = title;
 			this.description = description;
 		}
 		printcommands() {
@@ -1690,7 +1701,7 @@ you can make a door also an orc that blocks the road
 	///////////////////////////////////////////////////////
 	let ich = new Person("Kai", T`${DE}Du bist interessiert an der Wissenschaft und willst die Welt erforschen.${EN}You are interested in science and want to explore the world.${DE} </br>Du kannst immer <em style='color:#0f0;'>${"hilfe"}</em> eingeben, wenn du nicht weiter kommst. </br>${EN} </br>You can always enter <em style='color:#0f0;'>${"help"}</em> when you are stuck. </br>`
 		, { open: true });
-	ich.title = ["Kai"]
+	ich.title = "Kai"
 	ich.age = 8;
 	var Pong = null;
 	let computer = new Person(T`${DE}Computer${EN}Computer`, T`${DE}Computer mit Pong spiel. Tippe mal: <em style='color:#0f0;'>verwende computer</em>.${EN}Computer with Pong game. Try typing: <en style='color:#0f0;'>use computer</em>.`, { usable: true });
