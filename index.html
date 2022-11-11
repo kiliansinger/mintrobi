@@ -1726,7 +1726,7 @@ you can make a door also an orc that blocks the road
 			if (nochmal != "1") return "Ok.";
 		}
 	}
-	let omazuhause = new Scene(T`${DE}Omas Haus${EN}Grandma's house`, T`<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>${DE}Du bist im Haus deiner Grosseltern. </br>${EN}You are at your grandmother's house. </br>${DE}Deine Oma steht im Wohnzimmer. </br>${EN}Your granny is standing in the living room. </br>${DE}Der Ausgang zum Strand ist westlich von dir. </br>${EN}The exit to the beach is to the west of you. </br>${DE}Das Spiel wurde unterstützt durch ${EN}The game was supported by ${ALL}<a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a> </br>${DE}und dem ${EN}and the ${ALL}<a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.`);
+	let omazuhause = new Scene(T`${DE}Omas Haus${EN}Grandma's house`, T`<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>${DE}Du bist im Haus deiner Grosseltern. </br>${EN}You are at your grandmother's house. </br>${DE}Deine Oma steht im Wohnzimmer. </br>${EN}Your granny is standing in the living room. </br>${DE}Der Ausgang zum Strand ist ${"westlich"} von dir. </br>${EN}The exit to the beach is to the ${"west"} of you. </br>${DE}Das Spiel wurde unterstützt durch ${EN}The game was supported by ${ALL}<a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a> </br>${DE}und dem ${EN}and the ${ALL}<a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.`);
 	let oma = new Person([T`${DE}Oma${EN}Granny`, T`${DE}Großmutter${EN}Grandmother`, T`${DE}Omi`], T`${DE}Deine liebe Oma.${EN}Your dear Grandmother.`);
 	omazuhause.insert(oma);
 	omazuhause.insert(computer);
@@ -1799,7 +1799,7 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let strand = new Scene(T`${DE}Strand${EN}Beach`, T`<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>${DE}Du stehst am Strand vorm Haus deiner Grosseltern, </br>an dem sich ein kleiner Steg befindet. </br>${EN}You are standing on the beach in front of your grandparents' house, </br>where there is a small walkway. </br>${DE}Dort sitzt dein Opa und angelt. </br>Nach Osten geht es in das Haus deiner Grosseltern, im Westen geht der Strand weiter. </br>${EN}That's where your grandfather sits and fishes. </br>To the east, you can go to your grandparents' house, </br>to the west, the beach continues.`)
+	let strand = new Scene(T`${DE}Strand${EN}Beach`, T`<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>${DE}Du stehst am Strand vorm Haus deiner Grosseltern, </br>an dem sich ein kleiner Steg befindet. </br>${EN}You are standing on the beach in front of your grandparents' house, </br>where there is a small walkway. </br>${DE}Dort sitzt dein Opa und angelt. </br>Nach ${"Osten"} geht es in das Haus deiner Grosseltern, im ${"Westen"} geht der Strand weiter. </br>${EN}That's where your grandfather sits and fishes. </br>To the ${"east"}, you can go to your grandparents' house, </br>to the ${"west"}, the beach continues.`)
 	strand.east = omazuhause;
 	let bottlemessage = new Item(T`${DE}Flaschenpost${EN}bottle message`, T`<img src='bottlemessage.png'>${DE}eine verschlossene Flaschenpost${EN}a sealed message in a bottle`);
 	let opa = new Person([T`${DE}Opa${EN}Grandpa`, T`${DE}Großvater${EN}Grandfather`], T`${DE}Dein lieber Opa.${EN}Your dear grandpa.`);
@@ -1830,7 +1830,7 @@ you can make a door also an orc that blocks the road
 		print(T`${DE}Nein behalte das. Das ist fuer dich. </br>${EN}No keep that. That is for you. </br>`);
 		return false;
 	}
-	let scene3 = new Scene(T`${DE}Badestrand${EN}Beach`, T`<div class='flow'><img class='back' src='s3.png'><img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'><img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'><img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>${DE}Du stehst am Strand, um dich herum sind einige Leute. </br>Nach Norden geht es in die Stadt, </br>nach Osten zum Strandhaus, </br>im Westen ist eine Strandbar.${EN}You are standing on the beach, there are some people around you. </br>To the north it goes to the city, </br>to the east to the beach house, </br>to the west is a beach bar.`)
+	let scene3 = new Scene(T`${DE}Badestrand${EN}Beach`, T`<div class='flow'><img class='back' src='s3.png'><img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'><img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'><img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>${DE}Du stehst am Strand, um dich herum sind einige Leute. </br>Nach ${"Norden"} geht es in die Stadt, </br>nach ${"Osten"} zum Strandhaus, </br>im ${"Westen"} ist eine Strandbar.${EN}You are standing on the beach, there are some people around you. </br>To the ${"north"} it goes to the city, </br>to the ${"east"} to the beach house, </br>to the ${"west"} is a beach bar.`)
 
 	let loch = new Item(T`${DE}Loch${EN}Hole`, T`${DE}Ein tiefes Loch${EN}A deep hole.`, { open: false, opensoninspection: true, takeable: false, dropable: false });
 	loch.giving = function (thing) {
@@ -1924,9 +1924,9 @@ you can make a door also an orc that blocks the road
 	scene4.describe = function () {
 		seetang.cnt = 0;
 		if (seetang.blocking) {
-			return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>${DE}Du stehst in einer offenen Strandbar mit einigen Leuten. </br>Nach Osten geht es zum Strand.${EN}You are standing in an open beach bar with a few people. </br>To the east you can go to the beach.` + this.printcommands();
+			return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'><img id='s4seetang' src='s4seetang.png'></div>${DE}Du stehst in einer offenen Strandbar mit einigen Leuten. </br>Nach ${"Osten"} geht es zum Strand.${EN}You are standing in an open beach bar with a few people. </br>To the ${"east"} you can go to the beach.` + this.printcommands();
 		}
-		else return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>${DE}Oh da ist ja eine geheime Höhle dahinter im Norden. Was da wohl drin ist? </br>${EN}Ooh, there's a secret cave behind there in the north. I wonder what's in there? </br>` + this.printcommands();
+		else return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>${DE}Oh da ist ja eine geheime Höhle dahinter im ${"Norden"}. Was da wohl drin ist? </br>${EN}Ooh, there's a secret cave behind there in the ${"north"}. I wonder what's in there? </br>` + this.printcommands();
 	}
 	let barmann = new Person(T`${DE}Barmann${EN}Bartender`, T`${DE}ein Barmann${EN}a bartender`);
 	scene4.insert(barmann);
@@ -2015,7 +2015,7 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach Norden geht es über Straße mit Ampel in den Dschungel, </br>nach Süden geht es zum Strand.${EN}You are in a small market place in the city. </br>To the north, there is a road with traffic lights leading into the jungle, </br>to the south, there is the beach.`)
+	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach ${"Norden"} geht es über Straße mit Ampel in den Dschungel, </br>nach ${"Süden"} geht es zum Strand.${EN}You are in a small market place in the city. </br>To the ${"north"}, there is a road with traffic lights leading into the jungle, </br>to the ${"south"}, there is the beach.`)
 	scene5.south = scene3;
 	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}ein Verkäufer${EN}a seller`);
 	scene5.insert(verkaeufer);
@@ -2283,7 +2283,7 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let scene6 = new Scene(T`${DE}Dschungel${EN}Jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel. </br>Nach Norden geht es zu einer Lichtung, </br>nach Süden geht es zur Stadt </br>und im Westen liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle. </br>To the north is a clearing, </br>to the south is the town </br>and to the west is the entrance to the native tribe village.`)
+	let scene6 = new Scene(T`${DE}Dschungel${EN}Jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel. </br>Nach ${"Norden"} geht es zu einer Lichtung, </br>nach ${"Süden"} geht es zur Stadt </br>und im ${"Westen"} liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle. </br>To the ${"north"} is a clearing, </br>to the ${"south"} is the town </br>and to the ${"west"} is the entrance to the native tribe village.`)
 	let kaputteAmpel = new Door(T`${DE}Ampel${EN}traffic light`, T`${DE}Eine kaputte Ampel.${EN}A broken traffic-light.`, { blocking: true, usable: true, speakable: true, locked: true });
 	kaputteAmpel.use = function () {
 		Commands.forward_command = T`${DE}t ampel${EN}t traffic light`
@@ -2367,7 +2367,7 @@ you can make a door also an orc that blocks the road
 																	continue;
 																}
 																kaputteAmpel.blocking = false;
-																return T`${DE}Super. Du hast die Ampel repariert und kannst jetzt nach Norden in den Djungel.${EN}Great. You've fixed the traffic lights and can now head north into the jungle.`
+																return T`${DE}Super. Du hast die Ampel repariert und kannst jetzt nach ${"Norden"} in den Djungel.${EN}Great. You've fixed the traffic lights and can now head ${"north"} into the jungle.`
 															}
 															break;
 
@@ -2500,7 +2500,7 @@ you can make a door also an orc that blocks the road
 	scene6.south = scene5;
 	scene5.northblock = kaputteAmpel;
 	scene5.insert(kaputteAmpel)
-	let scene7 = new Scene(T`${DE}Lichtung${EN}Clearance`, T`<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>${DE}Du befindest dich auf einer Lichtung im Dschungel. </br>Nach Süden geht es zurueck zum Dschungelpfad.${EN}You are in a clearance in the jungle. </br>To the south you go back to the jungle path.`)
+	let scene7 = new Scene(T`${DE}Lichtung${EN}Clearance`, T`<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>${DE}Du befindest dich auf einer Lichtung im Dschungel. </br>Nach ${"Süden"} geht es zurueck zum Dschungelpfad.${EN}You are in a clearance in the jungle. </br>To the ${"south"} you go back to the jungle path.`)
 	scene7.south = scene6;
 	scene6.southblock = kaputteAmpel2;
 	scene6.insert(kaputteAmpel2);
@@ -2566,9 +2566,9 @@ you can make a door also an orc that blocks the road
 	scene8.northblock = tuer;
 	scene8.describe = function () {
 		if (tuer.blocking) {
-			return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east it goes back to the jungle path. </br>Tip: If you don't understand the gate guard, the explorer might help you.` + this.printcommands();
+			return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach ${"Osten"} geht es zurueck zum Dschungelpfad. </br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the ${"east"} it goes back to the jungle path. </br>Tip: If you don't understand the gate guard, the explorer might help you.` + this.printcommands();
 		}
-		else return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach Osten geht es zurueck zum Dschungelpfad. </br>${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the east you go back to the jungle path. </br>` + this.printcommands();
+		else return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach ${"Osten"} geht es zurueck zum Dschungelpfad. </br>${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the ${"east"} you go back to the jungle path. </br>` + this.printcommands();
 	}
 	torwache.dialog = async function* () {
 		if (Commands.actor.has(kostuem)) {
@@ -2576,7 +2576,7 @@ you can make a door also an orc that blocks the road
 				let reply = yield T`${DE}Hallo, Kumpel. </br>Ich dachte zuerst du bist schon wieder einer von diesen </br>bescheuerten Städtern, die uns immer wieder auf </br>die Nerven gehen. Aber manche verkleiden sich, </br>und da wir von klein auf rechnen lernen, </br>und da wir von klein auf rechnen lernen, </br>fällt es uns leicht ${EN}Hello, buddy. </br>At first I thought you were another one of those </br>stupid townies who always get on </br>our nerves. But some dress up, </br>and since we learn to count from a young age, </br>it is easy for us to ` + (MODE.pro ? T`${DE}die 20te Fibonacci Zahl zu schnell im Kopf zu berechnen${EN}calculate the 20th Fibonacci number quickly in your head` : T`${DE}alle zahlen von 0 bis 10 schnell im Kopf zusammenzuzählen${DE}add all numbers from 0 to 10 in your head`) + T`${DE} </br>und sie in das </br>Zahlenschloss einzugeben. Und spätestens daran </br>scheitern die bescheuerten Städter immer. </br>Hahaha! Hast du den Code berechnet? Das kann dir helfen: ${EN} </br>and enter them into the </br>combination lock. And that </br>is the latest thing the stupid city dwellers always fail at. </br>Hahaha! Have you calculated the code? That could help you: ` + (MODE.pro ? "<a target='_blank' href='https://www.youtube.com/watch?v=5cE_HfsLpP0&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=22'>Video</a>" : "<a target='_blank' href='https://makecode.microbit.org/#pub:_gCb2aFRTi9M6'>Code</a>") + T`${DE} </br>Wenn ja dann sage ihn mir doch:${EN} </br>If so, then tell me:`;
 				if (reply === (MODE.pro ? "6765" : "55")) {
 					tuer.blocking = false;
-					return T`<img src='s8block.png'>${DE}Code akzeptiert. Das Tor nach Norden öffnet sich. </br>${EN}Code accepted. The gate to the north opens. </br>` + scene8.describe();
+					return T`<img src='s8block.png'>${DE}Code akzeptiert. Das Tor nach ${"Norden"} öffnet sich. </br>${EN}Code accepted. The gate to the ${"north"} opens. </br>` + scene8.describe();
 				}
 				else return T`<img src='s8block.png'>${DE}Falscher Code!${EN}Wrong code!`
 			}
@@ -2588,7 +2588,7 @@ you can make a door also an orc that blocks the road
 			return "Ugga bugga, blubliblah! Impostor!"
 		}
 	}
-	let scene9 = new Scene(T`${DE}Ureinwohnerdorf${EN}Village of native tribe`, T`<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>${DE}Du bist im Dorf der Ureinwohner. </br>Nach Süden geht es zurück zum Eingang. </br>${EN}You are in the village of the native tribe. </br>To the south you can go back to the entrance. </br>`);
+	let scene9 = new Scene(T`${DE}Ureinwohnerdorf${EN}Village of native tribe`, T`<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>${DE}Du bist im Dorf der Ureinwohner. </br>Nach ${"Süden"} geht es zurück zum Eingang. </br>${EN}You are in the village of the native tribe. </br>To the ${"south"} you can go back to the entrance. </br>`);
 	scene9.south = scene8;
 	let pina = new Person(["Pina", "Pina Colada"], T`${DE}eine Ureinwohnerin${EN}a native woman`);
 	let mojito = new Person("Mojito", T`${DE}ein Ureinwohner${EN}a native man`);
@@ -2640,9 +2640,9 @@ you can make a door also an orc that blocks the road
 	let scene10 = new Scene(T`${DE}Geheimes Labor${EN}Secret lab`, "");
 	scene10.describe = function () {
 		if (MODE.pro) {
-			return T`<img src='s10.png'>${DE}Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben. </br>Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: ${EN}Bravo, you have completed the game and can now write your own programmes. </br>Here is the source code so that you can extend the game yourself: ${ALL}<a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a> </br>${DE}Nach Süden geht es zur Strandbar.${EN}To the south you can go to the beach bar.` + this.printcommands();
+			return T`<img src='s10.png'>${DE}Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben. </br>Hier ist der Quelltext damit Du das Spiel selbst erweitern kannst: ${EN}Bravo, you have completed the game and can now write your own programmes. </br>Here is the source code so that you can extend the game yourself: ${ALL}<a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a> </br>${DE}Nach ${"Süden"} geht es zur Strandbar.${EN}To the ${"south"} you can go to the beach bar.` + this.printcommands();
 		}
-		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>. </br>${DE}Im Norden ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.) </br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest! </br>Nach Süden geht es zur Strandbar.${EN}In the north there is a door with a number lock (<em style='color:#0f0;'>type on number lock</em>.) </br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain! </br>To the south you can go to the beach bar.` + this.printcommands();
+		else return T`<img src='s10.png'>${DE}Schreibe ein Mintrobi-Programm was 2*2*2*3*5*11-1 berechnet. ${EN}Write a Mintrobi program that calculates 2*2*2*3*5*11-1. ${ALL}<a target='_blank' href='https://makecode.microbit.org/#pub:_4VuLC0hXL3Mp'>Code</a>. </br>${DE}Im ${"Norden"} ist eine Tür mit Zahlenschloss (<em style='color:#0f0;'>tippe auf zahlenschloss</em>.) </br>Da muss man sicher die Zahl eingeben, welche du mit dem Gehirn von Mintrobi berechnest! </br>Nach ${"Süden"} geht es zur Strandbar.${EN}In the ${"north"} there is a door with a number lock (<em style='color:#0f0;'>type on number lock</em>.) </br>There you surely have to enter the number, which you'll calculate with Mintrobi's brain! </br>To the ${"south"} you can go to the beach bar.` + this.printcommands();
 	}
 	scene10.south = scene4;
 	scene4.northblock = seetang;
@@ -2946,18 +2946,22 @@ you can make a door also an orc that blocks the road
 		}
 		@when("w", { direction: "west" })
 		@when(T`${DE}westen${EN}west`, { direction: "west" })
+		@when(T`${DE}westlich${EN}west`, { direction: "west" })
 		@when(T`${DE}gehe westen${EN}go west`, { direction: "west" })
 		@when(T`${DE}gehe => westen${EN}go => west`, { direction: "west" })
 		@when(T`${DE}o${EN}e`, { direction: "east" })
 		@when(T`${DE}osten${EN}east`, { direction: "east" })
+		@when(T`${DE}östlich${EN}east`, { direction: "east" })
 		@when(T`${DE}gehe osten${EN}go east`, { direction: "east" })
 		@when(T`${DE}gehe => osten${EN}go => east`, { direction: "east" })
 		@when("s", { direction: "south" })
 		@when(T`${DE}süden${EN}south`, { direction: "south" })
+		@when(T`${DE}südlich${EN}south`, { direction: "south" })
 		@when(T`${DE}gehe süden${EN}go south`, { direction: "south" })
 		@when(T`${DE}gehe => süden${EN}go => south`, { direction: "south" })
 		@when("n", { direction: "north" })
 		@when(T`${DE}norden${EN}north`, { direction: "north" })
+		@when(T`${DE}nördlich${EN}north`, { direction: "north" })
 		@when(T`${DE}gehe norden${EN}go north`, { direction: "north" })
 		@when(T`${DE}gehe => norden${EN}go => north`, { direction: "north" })
 		@when(T`${DE}oben${EN}up`, { direction: "up" })
