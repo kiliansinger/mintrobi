@@ -1306,8 +1306,8 @@ you can make a door also an orc that blocks the road
 						if ( this._value[i + 1] instanceof Array) {
 							if(this._value[i + 1].length==1) normalval = "<a onclick='exec(this);' href='javascript:void(0);'>" + this._value[i + 1][0].toString() + "</a>";
 							else if(this._value[i + 1].length==2 && this._value[i + 1][1]=="") normalval = "<a onclick='typeCommand(this);' href='javascript:void(0);'>" + this._value[i + 1][0].toString() + "</a>";
-							else if(this._value[i + 1].length==2 && this._value[i + 1][1]!="") normalval = "<a onclick='exec("+this._value[i + 1][1].toString()+");' href='javascript:void(0);'>" + this._value[i + 1][0].toString() + "</a>";
-							else if(this._value[i + 1].length==3 && this._value[i + 1][2]!="") normalval = "<a onclick='typeCommand("+this._value[i + 1][1].toString()+");' href='javascript:void(0);'>" + this._value[i + 1][0].toString() + "</a>";
+							else if(this._value[i + 1].length==2 && this._value[i + 1][1]!="") normalval = "<a onclick='exec(\""+this._value[i + 1][1].toString()+"\");' href='javascript:void(0);'>" + this._value[i + 1][0].toString() + "</a>";
+							else if(this._value[i + 1].length==3 && this._value[i + 1][2]!="") normalval = "<a onclick='typeCommand(\""+this._value[i + 1][1].toString()+"\");' href='javascript:void(0);'>" + this._value[i + 1][0].toString() + "</a>";
 						}
 						else normalval = this._value[i + 1].toString()
 					}
@@ -2047,7 +2047,7 @@ you can make a door also an orc that blocks the road
 					while (true) {
 						let a = randint(1, 10);
 						let b = randint(1, 10);
-						const reply = yield T`${DE}Was ist ${a}+${b}?${EN}What is ${a}+${b}?`;
+						const reply = yield T`${DE}Was ist ${a}+${b}?${EN}What is ${a}+${b}?${ALL}</br>${["7",""]} ${["8",""]} ${["9",""]}</br>${["4",""]} ${["5",""]} ${["6",""]}</br>${["1",""]} ${["2",""]} ${["3",""]}</br>&nbsp;&nbsp;&nbsp;${["0",""]} ${["ok"," "]}`;
 						if (parseInt(reply) == 4242) {
 							if (this.has(muenzen)) {
 								this.open = true;
@@ -2580,12 +2580,12 @@ you can make a door also an orc that blocks the road
 		if (tuer.blocking) {
 			return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torzu' src='s8torzu.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach ${["Osten"]} geht es zurueck zum Dschungelpfad. </br>Tipp: Wenn du die Torwache nicht verstehst, wird dir der Forscher vielleicht helfen.${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the ${["east"]} it goes back to the jungle path. </br>Tip: If you don't understand the gate guard, the explorer might help you.` + this.printcommands();
 		}
-		else return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach ${["Osten"]} geht es zurueck zum Dschungelpfad. </br>${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the ${["east"]} you go back to the jungle path. </br>` + this.printcommands();
+		else return T`<div class='flow'><img class='back' src='s8.png'><img id='s8wache1' src='s8wache1.png'><img id='s8wache2' src='s8wache2.png'><img id='s8torauf' src='s8torauf.png'><img id='s8schild' src='s8schild.png'></div>${DE}Du bist im Dschungel und vor dir </br>baut sich eine große Holzwand auf der sich oben </br>ein Ureinwohner als Wache postiert hat. </br>Nach ${["Osten"]} geht es zurueck zum Dschungelpfad. </br>Das Tor nach ${["Norden"]} ist offen. </br>${EN}You are in the jungle and in front of you </br>there is a big wooden wall on top of which </br>a native person has posted himself as a guard. </br>To the ${["east"]} you go back to the jungle path. </br>The gate to the ${["north"]} is open. </br>` + this.printcommands();
 	}
 	torwache.dialog = async function* () {
 		if (Commands.actor.has(kostuem)) {
 			if (tuer.blocking) {
-				let reply = yield T`${DE}Hallo, Kumpel. </br>Ich dachte zuerst du bist schon wieder einer von diesen </br>bescheuerten Städtern, die uns immer wieder auf </br>die Nerven gehen. Aber manche verkleiden sich, </br>und da wir von klein auf rechnen lernen, </br>und da wir von klein auf rechnen lernen, </br>fällt es uns leicht ${EN}Hello, buddy. </br>At first I thought you were another one of those </br>stupid townies who always get on </br>our nerves. But some dress up, </br>and since we learn to count from a young age, </br>it is easy for us to ` + (MODE.pro ? T`${DE}die 20te Fibonacci Zahl zu schnell im Kopf zu berechnen${EN}calculate the 20th Fibonacci number quickly in your head` : T`${DE}alle zahlen von 0 bis 10 schnell im Kopf zusammenzuzählen${DE}add all numbers from 0 to 10 in your head`) + T`${DE} </br>und sie in das </br>Zahlenschloss einzugeben. Und spätestens daran </br>scheitern die bescheuerten Städter immer. </br>Hahaha! Hast du den Code berechnet? Das kann dir helfen: ${EN} </br>and enter them into the </br>combination lock. And that </br>is the latest thing the stupid city dwellers always fail at. </br>Hahaha! Have you calculated the code? That could help you: ` + (MODE.pro ? "<a target='_blank' href='https://www.youtube.com/watch?v=5cE_HfsLpP0&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=22'>Video</a>" : "<a target='_blank' href='https://makecode.microbit.org/#pub:_gCb2aFRTi9M6'>Code</a>") + T`${DE} </br>Wenn ja dann sage ihn mir doch:${EN} </br>If so, then tell me:`;
+				let reply = yield T`${DE}Hallo, Kumpel. </br>Ich dachte zuerst du bist schon wieder einer von diesen </br>bescheuerten Städtern, die uns immer wieder auf </br>die Nerven gehen. Aber manche verkleiden sich, </br>und da wir von klein auf rechnen lernen, </br>und da wir von klein auf rechnen lernen, </br>fällt es uns leicht ${EN}Hello, buddy. </br>At first I thought you were another one of those </br>stupid townies who always get on </br>our nerves. But some dress up, </br>and since we learn to count from a young age, </br>it is easy for us to ` + (MODE.pro ? T`${DE}die 20te Fibonacci Zahl zu schnell im Kopf zu berechnen${EN}calculate the 20th Fibonacci number quickly in your head` : T`${DE}alle zahlen von 0 bis 10 schnell im Kopf zusammenzuzählen${DE}add all numbers from 0 to 10 in your head`) + T`${DE} </br>und sie in das </br>Zahlenschloss einzugeben. Und spätestens daran </br>scheitern die bescheuerten Städter immer. </br>Hahaha! Hast du den Code berechnet? Das kann dir helfen: ${EN} </br>and enter them into the </br>combination lock. And that </br>is the latest thing the stupid city dwellers always fail at. </br>Hahaha! Have you calculated the code? That could help you: ` + (MODE.pro ? "<a target='_blank' href='https://www.youtube.com/watch?v=5cE_HfsLpP0&list=PLEWVM-KBUSpmWSfyoFdD_hLWAY_9tTgi5&index=22'>Video</a>" : "<a target='_blank' href='https://makecode.microbit.org/#pub:_gCb2aFRTi9M6'>Code</a>") + T`${DE} </br>Wenn ja dann sage ihn mir doch:${EN} </br>If so, then tell me:${ALL}</br>${["7",""]} ${["8",""]} ${["9",""]}</br>${["4",""]} ${["5",""]} ${["6",""]}</br>${["1",""]} ${["2",""]} ${["3",""]}</br>&nbsp;&nbsp;&nbsp;${["0",""]} ${["ok"," "]}`;
 				if (reply === (MODE.pro ? "6765" : "55")) {
 					tuer.blocking = false;
 					return T`<img src='s8block.png'>${DE}Code akzeptiert. Das Tor nach ${["Norden"]} öffnet sich. </br>${EN}Code accepted. The gate to the ${["north"]} opens. </br>` + scene8.describe();
@@ -2665,7 +2665,7 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 	numberlockdoor.dialog = async function* () {
-		const reply = yield T`${DE}Bitte Zahlencode eingeben${EN}Please enter numerical code${ALL}</p>`;
+		const reply = yield T`${DE}Bitte Zahlencode eingeben${EN}Please enter numerical code${ALL}</br>${["7",""]} ${["8",""]} ${["9",""]}</br>${["4",""]} ${["5",""]} ${["6",""]}</br>${["1",""]} ${["2",""]} ${["3",""]}</br>&nbsp;&nbsp;&nbsp;${["0",""]} ${["ok"," "]}</p>`;
 		if (reply === "1319") {
 			numberlockdoor.blocking = false;
 			return T`${DE}Die Tür öffnet sich!${EN}The door opens!`
@@ -3371,7 +3371,7 @@ you can make a door also an orc that blocks the road
 		let txt;
 		if(typeof el == "string") txt=el;
 		else txt=el.innerHTML;
-		document.getElementById("inp").value = txt;
+		document.getElementById("inp").value+= txt;
 		document.getElementById("inp").disabled = false
 		//document.getElementById("inp").focus();
 	}
