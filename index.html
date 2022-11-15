@@ -2532,14 +2532,29 @@ you can make a door also an orc that blocks the road
 	Forscher.dialog = async function* () {
 		if (this.has(koffer)) {
 			while (true) {
-				let reply = yield T`${DE}Hallo, guten Tag. ${EN}Hello, good day. ${ALL}<p style='color:#0f0;'>${DE}${["1"]} - Hallo, wer sind Sie denn? </br>${EN}${["1"]} - Hello, who are you? </br>${DE}${["2"]} - Wie werde ich ins Dorf der Ureinwohner hereingelassen? </br>${EN}${["2"]} - How will I be let into the native tribe village? </br>${DE}${["3"]} - Wie kann ich Dir behilflich sein?</p>${EN}${["3"]} - How can I be of service to you?</p>`;
+				let reply;
+				if (!MODE.pro){
+					reply = yield T`${DE}Hallo, guten Tag. ${EN}Hello, good day. ${ALL}<p style='color:#0f0;'>${DE}${["1"]} - Hallo, wer sind Sie denn? </br>${EN}${["1"]} - Hello, who are you? </br>${DE}${["2"]} - Wie werde ich ins Dorf der Ureinwohner hereingelassen? </br>${EN}${["2"]} - How will I be let into the native tribe village? </br>${DE}${["3"]} - Wie kann ich Dir behilflich sein?</p>${EN}${["3"]} - How can I be of service to you?</p>`;
+				}else{
+					reply = yield T`${DE}Hallo, guten Tag. ${EN}Hello, good day. ${ALL}<p style='color:#0f0;'>${DE}${["1"]} - Hallo, wer sind Sie denn? </br>${EN}${["1"]} - Hello, who are you? </br>${DE}${["2"]} - Wie werde ich ins Dorf der Ureinwohner hereingelassen? </br>${EN}${["2"]} - How will I be let into the native tribe village?</p>`;
+				}
 				switch (reply) {
 					case "1":
 						return T`${DE}Ich bin Sir Ernest Wordsworth, </br>meines Zeichens Wissenschaftler und Ethnologe, </br>ich erforsche den hiesigen Stamm der Ureinwohner.${EN}I am Sir Ernest Wordsworth, </br>a scientist and ethnologist, </br>I am researching the local native tribe.`
 					case "2":
-						return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen. </br>Meine bisherigen Forschungen habe ich Beobachtungen </br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich </br>über den Zaun, der das Dorf umgibt spähen konnte. </br>Doch mit deiner Statur ist eventuell möglich dich als einer </br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.${EN}I have not yet succeeded in gaining admittance. </br>I owe my research so far to observations </br>from high up in the treetops, from which I have been able </br>to peer over the fence surrounding the village. </br>But with your stature, it may be possible </br>to pass yourself off as one of their own if you disguise yourself accordingly.`
+						if(!MODE.pro){
+							return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen. </br>Meine bisherigen Forschungen habe ich Beobachtungen </br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich </br>über den Zaun, der das Dorf umgibt spähen konnte. </br>Doch mit deiner Statur ist eventuell möglich dich als einer </br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest.${EN}I have not yet succeeded in gaining admittance. </br>I owe my research so far to observations </br>from high up in the treetops, from which I have been able </br>to peer over the fence surrounding the village. </br>But with your stature, it may be possible </br>to pass yourself off as one of their own if you disguise yourself accordingly.`
+						}
+						else{
+							koffer.open=true;
+							Commands.actor.take(kostuem);
+							koffer.open = false;
+							return T`${DE}Es ist mir noch nicht gelungen Einlass gewährt zu bekommen. </br>Meine bisherigen Forschungen habe ich Beobachtungen </br>aus hoch gelegenen Baumwipfeln zu verdanken, aus denen ich </br>über den Zaun, der das Dorf umgibt spähen konnte. </br>Doch mit deiner Statur ist eventuell möglich dich als einer </br>der Ihrigen auszugeben, wenn du dich entsprechend verkleidest. Diese Maske könnte dir dabei helfen.${EN}I have not yet succeeded in gaining admittance. </br>I owe my research so far to observations </br>from high up in the treetops, from which I have been able </br>to peer over the fence surrounding the village. </br>But with your stature, it may be possible </br>to pass yourself off as one of their own if you disguise yourself accordingly. This mask might help you.`
+						}
 					case "3":
-						return T`${DE}Ich würde mir ja so gerne ein Bild von dem Künstler in der Stadt leisten. Aber leider habe ich all mein Geld für die Forschung ausgegeben. Das einzige was ich im Tausch anbieten kann ist ein Koffer, den ich beim Ureinwohnerdorf gefunden habe. Leider bekomme ich den jedoch nicht auf. Daher will ihn auch keiner.${EN}I would  love to afford a painting by the artist in the city. But unfortunately I have spent all my money on research. The only thing I can offer in exchange is a suitcase I found at the native village. Unfortunately, I can't get it open. That's why no one wants it.`
+						if(!MODE.pro){
+							return T`${DE}Ich würde mir ja so gerne ein Bild von dem Künstler in der Stadt leisten. Aber leider habe ich all mein Geld für die Forschung ausgegeben. Das einzige was ich im Tausch anbieten kann ist ein Koffer, den ich beim Ureinwohnerdorf gefunden habe. Leider bekomme ich den jedoch nicht auf. Daher will ihn auch keiner.${EN}I would  love to afford a painting by the artist in the city. But unfortunately I have spent all my money on research. The only thing I can offer in exchange is a suitcase I found at the native village. Unfortunately, I can't get it open. That's why no one wants it.`
+						}
 					default:
 						Commands.understood = false;
 						continue;
