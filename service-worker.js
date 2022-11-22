@@ -117,8 +117,8 @@ const FILES_TO_CACHE = [
   "./View.png",
 ];
 
-const CACHE_NAME = "2";
-const DATA_CACHE_NAME = "2";
+const CACHE_NAME = "3";
+const DATA_CACHE_NAME = "3";
 
 
 // install
