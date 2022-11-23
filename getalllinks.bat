@@ -1,0 +1,1 @@
+grep "_\([0-9a-zA-Z]\)\{12\}" -wo index.html
