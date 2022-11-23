@@ -754,14 +754,14 @@ you can make a door also an orc that blocks the road
 	<div id="story"></div>
 	<div id="inputline" class="flexed">
 		<span  id="lookbackpack" class="hflexed">
-			<span class="flexele"><a id="look"  onclick='exec(T`${DE}B${EN}L`.toString());' href='javascript:void(0);'>&#128269;</a></span>
+			<span class="flexele"><a id="look"  onclick='exec(T`${DE}B${EN}L`.toString(),true);' href='javascript:void(0);'>&#128269;</a></span>
 			<span class="flexele"><a>&nbsp;</a></span>
-			<span class="flexele"><a id="backpack"  onclick='exec(T`${DE}R${EN}B`.toString());' href='javascript:void(0);'>&#128092;</a></span>
+			<span class="flexele"><a id="backpack"  onclick='exec(T`${DE}R${EN}B`.toString(),true);' href='javascript:void(0);'>&#128092;</a></span>
 		</span>
 		<span id="compass" class="hflexed">
-			<span class="flexele"><a id="north"  onclick='exec(this);' href='javascript:void(0);'>N</a></span>
-			<span class="flexele"><a id="west"  onclick='exec(this);' href='javascript:void(0);'>W</a>+<a id="east"  onclick='exec(this);' href='javascript:void(0);'>O</a></span>
-			<span class="flexele"><a id="south"  onclick='exec(this);' href='javascript:void(0);'>S</a></span>
+			<span class="flexele"><a id="north"  onclick='exec(this,true);' href='javascript:void(0);'>N</a></span>
+			<span class="flexele"><a id="west"  onclick='exec(this,true);' href='javascript:void(0);'>W</a>+<a id="east"  onclick='exec(this,true);' href='javascript:void(0);'>O</a></span>
+			<span class="flexele"><a id="south"  onclick='exec(this,true);' href='javascript:void(0);'>S</a></span>
 		</span>
 		<span id="prompt" class="flexele">
 			&#x25B6;
@@ -3378,14 +3378,23 @@ you can make a door also an orc that blocks the road
 	let story = document.getElementById('story')
 	let inp = document.getElementById('inp')
 	let prompt = document.getElementById('prompt')
-	async function exec(el) {
+	async function exec(el,prepend=false) {
 		let txt;
 		if(typeof el == "string") txt=el;
 		else txt=el.innerHTML;
 		console.log(txt)
-		let command = document.getElementById("inp").value + " " + txt;
-		let answer = await Commands.execute(command, false);
-		updateConsole(command, answer,false);
+		let command;
+		if(!prepend){ 
+			command = document.getElementById("inp").value + " " + txt;
+			let answer = await Commands.execute(command, false);
+			updateConsole(command, answer,false);
+		}else{
+			let old=document.getElementById("inp").value;
+			command = txt;
+			let answer = await Commands.execute(command, false);
+			updateConsole(command, answer,false);
+			document.getElementById("inp").value=old
+		}
 
 	}
 	function typeCommand(el) {
