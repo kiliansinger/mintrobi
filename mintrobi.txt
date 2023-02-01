@@ -1,3 +1,5 @@
+
+
 https://osoyoo.com/2018/09/24/osoyoo-starter-learning-kit-for-bbc-micro-bit/
 
 mache smiley.
@@ -108,6 +110,11 @@ schrittzähler
 poti bauen mit blei
 
 spiel mit funkleistung auf 1=> 30cm man muss verstecktes gehirn finden...
+
+magnetfeldsensor mit nagel draht und 1.5 V Batterie magnet bauen
+
+https://makecode.microbit.org/_0tDgaY4FFhaj
+
 ___
 
 

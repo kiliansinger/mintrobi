@@ -1,12 +1,10 @@
-
-
 # MINT-Robi: Playfully creative in Math-Computer-Science and Technology / Spielerisch kreativ in MINT-Fächern
 
 [Click to play the adventure game...](https://kiliansinger.github.io/mintrobi/?lang=EN)
 
 [Klicke hier um das Abenteuerspiel zu spielen..](https://kiliansinger.github.io/mintrobi/)
 
-Credits: 
+Credits:
 
 * Game engine: Kilian Singer
 * Story-code: Kilian Singer, Miriam Mendoza Delgado, Jonas Proll
@@ -16,19 +14,17 @@ Credits:
 
 The game was supported by [Smart City Kassel](https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/) and the [SFB-ELCH (Uni-Kassel)](https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/).
 
-<video class="elementor-video" src="https://www.mintrobi.de/mintrobi_lb.mp4" controls="" controlslist="nodownload" style="box-sizing: border-box; width: 673px; max-width: 100%; margin: 0px; line-height: 1; border: none; object-fit: cover;"></video>
-
+<br>
+<br>
 [![MINT-Robi](README.assets/mintrobi_titel_play.jpg)](https://www.youtube.com/watch?v=3pp6IKeDl-8)
 
 [MINT-Robi](https://www.startnext.com/mint-robi?utm_source=startnext&utm_medium=extwidget&utm_campaign=projectwidget&utm_term=projectpromo)
 
 Schülerinnen und Schüler lösen spielerisch ein Abenteuerspiel mit Programmier-, Elektronik- und Physikproblemen und finden tolle Praktika bei Firmen
 
-
-
 ![img](README.assets/hero-2-1024x576.jpg)
 
-Schüler*innen lösen im Abenteuerspiel Programmier-, Elektronik- und Physikprobleme, um MINT-Robi weiterzuentwickeln.
+Schüler\*innen lösen im Abenteuerspiel Programmier-, Elektronik- und Physikprobleme, um MINT-Robi weiterzuentwickeln.
 
 Firmen können über Schul-Sponsoring für Praktika werben und nachhaltig MINT begabte Mitarbeiter in der Region gewinnen.
 
@@ -71,51 +67,39 @@ Achtung: Dieses Angebot ist limitiert auf nur 6 Stück.
 
 **Prof. Kilian Singer:**
 
-- Lehrstuhl Experimentalphysik 1: Quantentechnologien ([quantumtechnology.info](https://quantumtechnology.info/))
-- Erfinder der Einzelionenwärmekraftmaschine (top 10 Publikation 2016)
-- Nominiert für Ars-Legendi Lehrpreis
-- Moodle core Entwickler (e-learning)
-- Programmierexperte
-- Elektronikentwickler
-- Ideensonderpreis zu innovativem Lehrsystem (UNH 2019)
-- Startup ([peerscope.de](https://peerscope.de/))
-
- 
+* Lehrstuhl Experimentalphysik 1: Quantentechnologien ([quantumtechnology.info](https://quantumtechnology.info/))
+* Erfinder der Einzelionenwärmekraftmaschine (top 10 Publikation 2016)
+* Nominiert für Ars-Legendi Lehrpreis
+* Moodle core Entwickler (e-learning)
+* Programmierexperte
+* Elektronikentwickler
+* Ideensonderpreis zu innovativem Lehrsystem (UNH 2019)
+* Startup ([peerscope.de](https://peerscope.de/))
 
 **Miriam Mendoza Delgado:**
 
-- Physik Doktorandin im Bereich Quantentechnologien
-- Lehrinhalt für MINT-Robi
-
- 
+* Physik Doktorandin im Bereich Quantentechnologien
+* Lehrinhalt für MINT-Robi
 
 **Bernd Bauerhenne**
 
-- Postdoc im Bereich Theoretischer Physik
-- Lehrvideos
-- Machine Learning
-
- 
-
- 
+* Postdoc im Bereich Theoretischer Physik
+* Lehrvideos
+* Machine Learning
 
 **Ricky-Joe Plate:**
 
-- Physik Masterstudent im Bereich Quantentechnologien
-- Experte für künstliche Intelligenz
-- C++ Experte
-- Lehrinhalt für MINT-Robi
-- Firmenkontakte
+* Physik Masterstudent im Bereich Quantentechnologien
+* Experte für künstliche Intelligenz
+* C++ Experte
+* Lehrinhalt für MINT-Robi
+* Firmenkontakte
 
- 
+**Jonas Proll**
 
-**Jonas Proll** 
-
-- Schüler
-- Lehrinhalt für MINT-Robi erstellt
-- Facharbeit zum Thema Gamification in der Lehre
-
-
+* Schüler
+* Lehrinhalt für MINT-Robi erstellt
+* Facharbeit zum Thema Gamification in der Lehre
 
 ![img](README.assets/ks.jpg)
 
@@ -135,14 +119,8 @@ Achtung: Dieses Angebot ist limitiert auf nur 6 Stück.
 
 [![img](README.assets/proj1.jpg)](https://www.mintrobi.de/wp-content/uploads/2022/07/proj1.jpg)
 
-
-
 ## Fragen
 
 Bei Fragen kontaktieren Sie uns gerne…
 
-© 2022 All Rights Reserved. | kilian.singer@quantumtechnology.info
-
-
-
-
+© 2022 All Rights Reserved\. \| kilian\.singer@quantumtechnology\.info
