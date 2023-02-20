@@ -2047,8 +2047,12 @@ you can make a door also an orc that blocks the road
 					print(T`${DE}Super Danke! Wenn du 10 mal hintereinander richtig rechnest bekommst du ein Euro von mir als Dank. </br>${EN}Super thanks! If you calculate correctly 10 times in a row, you'll get a Euro from me as a thank you. </br>`)
 					let richtig = 0;
 					while (true) {
-						let a = randint(1, 10);
-						let b = randint(1, 10);
+						let a;
+						let b;
+						if(Commands.understood!=false)
+							a = randint(1, 10);
+							b = randint(1, 10);
+						}
 						const reply = yield T`${DE}Was ist ${a}+${b}?${EN}What is ${a}+${b}?${ALL}</br><quiet>${["7",""]} ${["8",""]} ${["9",""]}</br>${["4",""]} ${["5",""]} ${["6",""]}</br>${["1",""]} ${["2",""]} ${["3",""]}</br>${["c","",""]} ${["0",""]} ${["ok"," "]}</quiet>`;
 						if (parseInt(reply) == 4242) {
 							if (this.has(muenzen)) {
