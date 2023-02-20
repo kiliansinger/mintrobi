@@ -3312,7 +3312,13 @@ you can make a door also an orc that blocks the road
 									if (window.speechSynthesis){
 										window.speechSynthesis.cancel();
 										if(Commands.synthesis) Commands.synthesis.onboundary = null
-										if(Commands.recognition) Commands.recognition.start();//function(e) {
+										if(Commands.recognition) {
+											try{
+												Commands.recognition.start();//function(e) {
+											}catch (e){
+												
+											}
+										}
 									}
 								} else Commands.averagespeakvol = Commands.averagespeakvol * 0.5 + 0.5 * vol;
 
@@ -3447,7 +3453,13 @@ you can make a door also an orc that blocks the road
 						window.speechSynthesis.cancel();
 						//Commands.dospeachrecog = true;
 						if(Commands.synthesis) Commands.synthesis.onboundary = null
-						if(Commands.recognition) Commands.recognition.start();//function(e) {
+						if(Commands.recognition) {
+							try{
+								Commands.recognition.start();//function(e) {
+							}catch (e){
+								
+							}
+						}
 					}
 					document.getElementById("inp").disabled = true;
 
