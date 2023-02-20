@@ -3246,7 +3246,7 @@ you can make a door also an orc that blocks the road
 						const transcript = event.results[0][0].transcript;
 						console.log(transcript)
 						// check if the voice input has ended
-						if (event.results[0].isFinal) {
+						if (event.results[0].isFinal || true) {
 							Commands.averagespeakvol = checkVolume();
 							let answer = "";
 							let found = false;
