@@ -1741,7 +1741,7 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	let omazuhause = new Scene(T`${DE}Omas Haus${EN}grandma's house`, T`<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>${DE}Du bist im Haus deiner Großeltern. </br>${EN}You are at your grandmother's house. </br>${DE}Deine Oma steht im Wohnzimmer. </br>${EN}Your granny is standing in the living room. </br>${DE}Der Ausgang zum Strand ist ${["westlich"]} von dir. </br>${EN}The exit to the beach is to the ${["west"]} of you. </br>${DE}Das Spiel wurde unterstützt durch ${EN}The game was supported by ${ALL}<a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a> </br>${DE}und dem ${EN}and the ${ALL}<a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.`);
-	let oma = new Person([T`${DE}Oma${EN}granny`, T`${DE}Großmutter${EN}grandmother`, T`${DE}Omi${EN}grandmother`], T`${DE}Deine liebe Oma.${EN}Your dear Grandmother.`);
+	let oma = new Person([T`${DE}Oma${EN}granny`, T`${DE}Großmutter${EN}grandmother`, T`${DE}Omi${EN}grandmother`], T`${DE}Deine liebe Oma.${EN}Your dear grandmother.`);
 	omazuhause.insert(oma);
 	omazuhause.insert(computer);
 	ich.position = omazuhause;
@@ -1864,7 +1864,7 @@ you can make a door also an orc that blocks the road
 	let eimer = new Item(T`${DE}Eimer${EN}bucket`, T`${DE}Ein roter Eimer.${EN}A red bucket.`, { applicable: true });
 	scene3.insert(eimer);
 
-	let meer = new Item(T`${DE}Meer${EN}ocean`, T`${DE}Schönes Meer.${EN}beautiful ocean`, { takeable: false, dropable: false });
+	let meer = new Item(T`${DE}Meer${EN}ocean`, T`${DE}Ein schönes Meer.${EN}A beautiful ocean`, { takeable: false, dropable: false });
 	scene3.insert(meer);
 	eimer.insertApplyTarget(meer);
 	eimer.insertApplyTarget(loch);
@@ -2033,7 +2033,7 @@ you can make a door also an orc that blocks the road
 	scene5.south = scene3;
 	let verkaeufer = new Person(T`${DE}Verkäufer${EN}seller`, T`${DE}Ein Verkäufer${EN}A seller`);
 	scene5.insert(verkaeufer);
-	let muenzen = new Item(["1 Euro", "Euro", "€1", "1 €"], "Euro-Münzen");
+	let muenzen = new Item([T`${DE}1 Euro${EN}1 euro`, T`${DE}Euro${EN}euro`, "€1", "1 €"], T`${DE}Euro Münzen${EN}euro coins`);
 	muenzen.value = 1;
 	muenzen.golden = false;
 
@@ -2044,7 +2044,7 @@ you can make a door also an orc that blocks the road
 			const reply = yield T`${DE}Kannst Du mir bei der Abrechnung helfen? <p style='color:#0f0;'>${["1"]} - Gerne. </br>${["2"]} - Nein Danke! </br>${["3"]} - Kann ich was kaufen?</p>${EN}Can you help me with the billing? <p style='color:#0f0;'>${["1"]} - Gladly. </br>${["2"]} - No thanks! </br>${["3"]} - Can I buy something?</p>`;
 			switch (reply) {
 				case "1":
-					print(T`${DE}Super Danke! Wenn Du 10 mal hintereinander richtig rechnest bekommst du einen Euro von mir als Dank. </br>${EN}Super thanks! If you calculate correctly 10 times in a row, you'll get a Euro from me as a thank you. </br>`)
+					print(T`${DE}Super Danke! Wenn Du 10 mal hintereinander richtig rechnest bekommst du einen Euro von mir als Dank. </br>${EN}Super thanks! If you calculate correctly 10 times in a row, you'll get a euro from me as a thank you. </br>`)
 					let richtig = 0;
 					while (true) {
 						let a = randint(1, 10);
@@ -2060,7 +2060,7 @@ you can make a door also an orc that blocks the road
 							if (muenzen.golden) {
 								muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`, T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`, T`${DE}münze${EN}coin`]
 							}
-							else muenzen.title = [muenzen.value + " Euros", "Euro", "Euros", "€" + muenzen.value, muenzen.value + " €"];
+							else muenzen.title = [muenzen.value + T` ${DE}Euros${EN}euros`, T`${DE}Euro${EN}euro`, T`${DE}Euros${EN}euros`, "€" + muenzen.value, muenzen.value + " €"];
 							return "you tricked me!"
 						}
 						if (!isNaN(parseInt(reply))) {
@@ -2068,7 +2068,7 @@ you can make a door also an orc that blocks the road
 							if (a + b == parseInt(reply)) {
 								richtig += 1;
 								if (richtig >= 10) {
-									print(T`${DE}Hier ein Euro. ${EN}Here one Euro. `)
+									print(T`${DE}Hier ein Euro. ${EN}Here one euro. `)
 									if (this.has(muenzen)) {
 										this.open = true;
 										Commands.actor.take(muenzen);
@@ -2079,7 +2079,7 @@ you can make a door also an orc that blocks the road
 										if (muenzen.golden) {
 											muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`, T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`, T`${DE}münze${EN}coin`]
 										}
-										else muenzen.title = [muenzen.value + " Euros", "Euro", "Euros", "€" + muenzen.value];
+										else muenzen.title = [muenzen.value + T` ${DE}Euros${EN}euros`, T`${DE}Euro${EN}euro`, T`${DE}Euros${EN}euros`, "€" + muenzen.value, muenzen.value + " €"];
 									}
 									richtig = 0;
 								}
