@@ -1037,7 +1037,7 @@ you can make a door also an orc that blocks the road
 		presets: [
 			[Babel.availablePresets["env"], {
 				"loose": true,
-				"targets": { "browsers": "> 0.3%, not dead" }
+				"targets": { "browsers": "> 0.1%, not dead" }
 			}]
 		],
 		plugins: [
@@ -1740,7 +1740,7 @@ you can make a door also an orc that blocks the road
 			if (nochmal != "1") return "Ok.";
 		}
 	}
-	let omazuhause = new Scene(T`${DE}Omas Haus${EN}Grandma's house`, T`<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>${DE}Du bist im Haus deiner Grosseltern. </br>${EN}You are at your grandmother's house. </br>${DE}Deine Oma steht im Wohnzimmer. </br>${EN}Your granny is standing in the living room. </br>${DE}Der Ausgang zum Strand ist ${["westlich"]} von dir. </br>${EN}The exit to the beach is to the ${["west"]} of you. </br>${DE}Das Spiel wurde unterstützt durch ${EN}The game was supported by ${ALL}<a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a> </br>${DE}und dem ${EN}and the ${ALL}<a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.`);
+	let omazuhause = new Scene(T`${DE}Omas Haus${EN}Grandma's house`, T`<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>${DE}Du bist im Haus deiner Großeltern. </br>${EN}You are at your grandmother's house. </br>${DE}Deine Oma steht im Wohnzimmer. </br>${EN}Your granny is standing in the living room. </br>${DE}Der Ausgang zum Strand ist ${["westlich"]} von dir. </br>${EN}The exit to the beach is to the ${["west"]} of you. </br>${DE}Das Spiel wurde unterstützt durch ${EN}The game was supported by ${ALL}<a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a> </br>${DE}und dem ${EN}and the ${ALL}<a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.`);
 	let oma = new Person([T`${DE}Oma${EN}Granny`, T`${DE}Großmutter${EN}Grandmother`, T`${DE}Omi`], T`${DE}Deine liebe Oma.${EN}Your dear Grandmother.`);
 	omazuhause.insert(oma);
 	omazuhause.insert(computer);
@@ -1756,7 +1756,7 @@ you can make a door also an orc that blocks the road
 					while (reply2 != 7) {
 						let p = 2;
 						reply2 = yield (reply2 == "" ? T`${DE}Das Gehirn von dem Mintrobi ist der kleine farbige Chip. Den müssen wir erst noch programmieren. Hier ein paar Übungen: ${EN}The brain of the Mintrobi is the little coloured chip. We still have to programme it. Here are a few exercises: ${ALL}<p style='color:#0f0;'>` : T`${DE}Übung macht den Meister${EN}Practice makes perfect${ALL}: <p style='color:#0f0;'>`) +
-							T`${["1"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_VyuiWdV2LhE8'>${DE}Mache einen Smiley${EN}Make a smiley${ALL}</a> </br>${["2"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_C90eVc79ADWv'>${DE}Mache kleinen Film${EN}Make a small movie${ALL}</a> </br>${["3"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_HufEVJRw52vP'>${DE}Mache Geräusche${EN}Make noise${ALL}</a> </br>${["4"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_itjWEp51qUU7'>${DE}Mache ein Feuerknopf hinzu${EN}Add a fire button${ALL}</a> </br>${["5"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_8muMDLDucUxu'>${DE}Spiele die Tonleiter${EN}Play the scale${ALL}</a> </br>${["6"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_gma3HXbP56wz'>${DE}Zeige deinen Namen${EN}Show your name${ALL}</a> </br>${["7"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_2YsaPx2FrPdt'>${DE}Mache einen Zahlenwürfel${EN}Make a number dice${ALL}</a> </br>${["8"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_4XRfVyFpzbV6'>${DE}Mache einen Würfel mit Augen${EN}Make a dice with spots${ALL}</a> </br>${["9"]} - ${DE}Ich will keine Übungen mehr machen sondern mal was richtiges Spielen.${EN}I don't want to do any more exercises, I want to play something real for a change.${ALL}</p>`
+							T`${["1"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_VyuiWdV2LhE8'>${DE}Mache einen Smiley${EN}Make a smiley${ALL}</a> </br>${["2"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_C90eVc79ADWv'>${DE}Mache einen kleinen Film${EN}Make a small movie${ALL}</a> </br>${["3"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_HufEVJRw52vP'>${DE}Mache Geräusche${EN}Make noise${ALL}</a> </br>${["4"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_itjWEp51qUU7'>${DE}Mache einen Feuerknopf hinzu${EN}Add a fire button${ALL}</a> </br>${["5"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_8muMDLDucUxu'>${DE}Spiele die Tonleiter${EN}Play the scale${ALL}</a> </br>${["6"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_gma3HXbP56wz'>${DE}Zeige deinen Namen${EN}Show your name${ALL}</a> </br>${["7"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_2YsaPx2FrPdt'>${DE}Mache einen Zahlenwürfel${EN}Make a number dice${ALL}</a> </br>${["8"]} - <a target='_blank' href='https://makecode.microbit.org/#pub:_4XRfVyFpzbV6'>${DE}Mache einen Würfel mit Augen${EN}Make a dice with spots${ALL}</a> </br>${["9"]} - ${DE}Ich will keine Übungen mehr machen sondern mal was richtiges Spielen.${EN}I don't want to do any more exercises, I want to play something real for a change.${ALL}</p>`
 						switch (reply2) {
 							case "1": window.open("https://makecode.microbit.org/#pub:_VyuiWdV2LhE8", "_blank")?.focus();
 								break;
@@ -1813,9 +1813,9 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let strand = new Scene(T`${DE}Strand${EN}Beach`, T`<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>${DE}Du stehst am Strand vorm Haus deiner Grosseltern, </br>an dem sich ein kleiner Steg befindet. </br>${EN}You are standing on the beach in front of your grandparents' house, </br>where there is a small walkway. </br>${DE}Dort sitzt dein Opa und angelt. </br>Nach ${["Osten"]} geht es in das Haus deiner Grosseltern, im ${["Westen"]} geht der Strand weiter. </br>${EN}That's where your grandfather sits and fishes. </br>To the ${["east"]}, you can go to your grandparents' house, </br>to the ${["west"]}, the beach continues.`)
+	let strand = new Scene(T`${DE}Strand${EN}Beach`, T`<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>${DE}Du stehst am Strand vorm Haus deiner Großeltern, </br>an dem sich ein kleiner Steg befindet. </br>${EN}You are standing on the beach in front of your grandparents' house, </br>where there is a small walkway. </br>${DE}Dort sitzt dein Opa und angelt. </br>Nach ${["Osten"]} geht es in das Haus deiner Großeltern, im ${["Westen"]} geht der Strand weiter. </br>${EN}That's where your grandfather sits and fishes. </br>To the ${["east"]}, you can go to your grandparents' house, </br>to the ${["west"]}, the beach continues.`)
 	strand.east = omazuhause;
-	let bottlemessage = new Item(T`${DE}Flaschenpost${EN}bottle message`, T`<img src='bottlemessage.png'>${DE}eine verschlossene Flaschenpost${EN}a sealed message in a bottle`);
+	let bottlemessage = new Item(T`${DE}Flaschenpost${EN}bottle message`, T`<img src='bottlemessage.png'>${DE}Eine verschlossene Flaschenpost${EN}A sealed message in a bottle`);
 	let opa = new Person([T`${DE}Opa${EN}Grandpa`, T`${DE}Großvater${EN}Grandfather`], T`${DE}Dein lieber Opa.${EN}Your dear grandpa.`);
 	strand.insert(opa);
 	opa.insert(bottlemessage);
@@ -1856,7 +1856,7 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 
-	let holzschluessel = new Item([T`${DE}Holzschlüssel${EN}Wooden key`, T`${DE}Holz Schlüssel${EN}Wood key`], T`${DE}Ein hölzerner Schlüssel.${EN}A wooden key.`, { applicable: true });
+	let holzschluessel = new Item([T`${DE}Holzschlüssel${EN}Wooden key`, T`${DE}Ein Holz Schlüssel${EN}A wood key`], T`${DE}Ein hölzerner Schlüssel.${EN}A wooden key.`, { applicable: true });
 
 	loch.insert(holzschluessel);
 	scene3.insert(loch);
@@ -1902,17 +1902,17 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 	scene3.east = strand;
-	let frau = new Person(T`${DE}Frau${EN}Woman`, T`${DE}ein Frau${EN}a woman`);
+	let frau = new Person(T`${DE}Frau${EN}Woman`, T`${DE}Ein Frau${EN}A woman`);
 	scene3.insert(frau);
 	frau.dialog = async function* () {
 		return T`${DE}Endlich mal Ruhe. In der Stadt ist echt was los. </br>Diesen Urlaub habe ich mir echt verdient.${EN}Peace at last. There's really something going on in the city. </br>I've really earned this holiday.`;
 	}
-	let kind = new Person([T`${DE}Kind${EN}Child`, T`${DE}Mädchen${EN}Girl`], T`${DE}ein Kind${EN}a child`);
+	let kind = new Person([T`${DE}Kind${EN}Child`, T`${DE}Mädchen${EN}Girl`], T`${DE}Ein Kind${EN}A child`);
 	scene3.insert(kind);
 	kind.dialog = async function* () {
 		return T`${DE}Da sind interessant verkleidete Menschen im Wald. </br>Hast du schonmal einen von denen gesehen?${EN}There are interesting people in disguise in the forest. </br>Have you ever seen one of them?`;
 	}
-	let junge = new Person([T`${DE}Junge${EN}Boy`, T`${DE}Jungen`], T`${DE}ein Junge${EN}a boy`);
+	let junge = new Person([T`${DE}Junge${EN}Boy`, T`${DE}Jungen`], T`${DE}Ein Junge${EN}A boy`);
 	scene3.insert(junge);
 	junge.dialog = async function* () {
 		return T`${DE}Hey schau mal, </br>diese Sandburg habe ich ganz alleine gebaut!${EN}Hey look, </br>I built this sandcastle all by myself!`;
@@ -1942,7 +1942,7 @@ you can make a door also an orc that blocks the road
 		}
 		else return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>${DE}Oh da ist ja eine geheime Höhle dahinter im ${["Norden"]}. Was da wohl drin ist? </br>Nach ${["Osten"]} geht es zum Strand.${EN}Ooh, there's a secret cave behind there in the ${["north"]}. I wonder what's in there? </br>To the ${["east"]} you can go to the beach.` + this.printcommands();
 	}
-	let barmann = new Person(T`${DE}Barmann${EN}Bartender`, T`${DE}ein Barmann${EN}a bartender`);
+	let barmann = new Person(T`${DE}Barmann${EN}Bartender`, T`${DE}Ein Barmann${EN}A bartender`);
 	scene4.insert(barmann);
 	barmann.tricked = false;
 	barmann.receiving = function (thing) {
@@ -2005,7 +2005,7 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let tortenliebhaber = new Person([T`${DE}Tortenliebhaber${EN}cake lover`, T`${DE}Torten Liebhaber`], T`${DE}ein Tortenliebhaber${EN}a cakelover`, { open: false });
+	let tortenliebhaber = new Person([T`${DE}Tortenliebhaber${EN}cake lover`, T`${DE}Torten Liebhaber`], T`${DE}Ein Tortenliebhaber${EN}A cakelover`, { open: false });
 	scene4.insert(tortenliebhaber);
 	let kaugummi = new Item(T`${DE}Kaugummi${EN}Chewing gum`, T`${DE}Ein Stück Kaugummi.${EN}A piece of chewing gum.`)
 	tortenliebhaber.insert(kaugummi);
@@ -2031,7 +2031,7 @@ you can make a door also an orc that blocks the road
 	}
 	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach ${["Norden"]} geht es über Straße mit Ampel in den Dschungel, </br>nach ${["Süden"]} geht es zum Strand.${EN}You are in a small market place in the city. </br>To the ${["north"]}, there is a road with traffic lights leading into the jungle, </br>to the ${["south"]}, there is the beach.`)
 	scene5.south = scene3;
-	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}ein Verkäufer${EN}a seller`);
+	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}Ein Verkäufer${EN}A seller`);
 	scene5.insert(verkaeufer);
 	let muenzen = new Item(["1 Euro", "Euro", "€1", "1 €"], "Euro-Münzen");
 	muenzen.value = 1;
@@ -2245,7 +2245,7 @@ you can make a door also an orc that blocks the road
 		}
 		else return false;
 	}
-	let tratschtante = new Person([T`${DE}Tratschtante${EN}Tattletale`, T`${DE}Tratsch Tante${EN}Tattletail`], T`${DE}eine Tratschtante${EN}a tattletale`);
+	let tratschtante = new Person([T`${DE}Tratschtante${EN}Tattletale`, T`${DE}Tratsch Tante${EN}Tattletail`], T`${DE}Eine Tratschtante${EN}A tattletale`);
 	tratschtante.insert(nagellack);
 	scene5.insert(tratschtante);
 	tratschtante.receiving = function (thing) {
@@ -2262,7 +2262,7 @@ you can make a door also an orc that blocks the road
 		if (!this.has(nagellack)) return T`${DE}Psst, hör mal, ich muss dir was erzählen. </br>Der Verkäufer da hinten verlangt bei Touristen </br>den dreifachen Preis! </br>Lass dich nicht übers Ohr hauen!${EN}Shh, listen, I have something to tell you. </br>The seller back there charges tourists </br>three times the price! </br>Don't let yourself be taken for a ride!`;
 		else return T`${DE}Schau mal mein toller goldener Nagellack. Meine Finger sehen richtig hübsch aus. Aber ich würde alles für Kaugummi geben.${EN}Look at my great golden nail polish. My fingers look really pretty. But I'd give anything for chewing gum.`;
 	}
-	let kuenstler = new Person(T`${DE}Künstler${EN}Artist`, T`${DE}ein Künstler${EN}an artist`);
+	let kuenstler = new Person(T`${DE}Künstler${EN}Artist`, T`${DE}Ein Künstler${EN}An artist`);
 	scene5.insert(kuenstler);
 	let bild = new Item(T`${DE}Bild${EN}Picture`, T`${DE}Ein Kunstwerk.${EN}A piece of art.`);
 	kuenstler.insert(bild)
@@ -2518,13 +2518,13 @@ you can make a door also an orc that blocks the road
 	scene7.south = scene6;
 	scene6.southblock = kaputteAmpel2;
 	scene6.insert(kaputteAmpel2);
-	let kostuem = new Item(T`${DE}Kostüm${EN}Costume`, T`<img src='kostuem.png'>${DE}eine Kostüm${EN}a costume`, { open: true, usable: true });
+	let kostuem = new Item(T`${DE}Kostüm${EN}Costume`, T`<img src='kostuem.png'>${DE}Ein Kostüm${EN}A costume`, { open: true, usable: true });
 	kostuem.use = function () {
 		Commands.forward_command = T`${DE}m Kostüm${EN}t costume`
 		return true;
 	}
 	koffer.insert(kostuem)
-	let Forscher = new Person(T`${DE}Forscher${EN}Scientist`, T`${DE}ein Forscher${EN}a scientist`);
+	let Forscher = new Person(T`${DE}Forscher${EN}Scientist`, T`${DE}Ein Forscher${EN}A scientist`);
 	scene7.insert(Forscher);
 	let sonnenuhranleitung = new Item([T`${DE}Sonnenuhranleitung${EN}Sundial plan`, T`${DE}Sonnenuhr Anleitung${EN}Sundialplan`], T`${DE}Um das Spiel zu lösen musst Du dieses Projekt nicht unbedingt durchführen. </br>${EN}You don't have to do this project to solve the game. </br>${DE}Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen. </br>${EN}If you feel like it and it's sunny outside, make a sundial with Mintrobi's brain. All you need is a cotton bud. </br>${DE}Hier ist die ${EN}Here is the ${ALL}<a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>${DE}Anleitung${EN}Instruction${ALL}</a>.`)
 	scene7.insert(sonnenuhranleitung)
@@ -2576,7 +2576,7 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 	let scene8 = new Scene(T`${DE}Eingang zum Ureinwohnerdorf${EN}Entry to the village of the native tribe`, "")
-	let holzstumpf = new Item([T`${DE}Holzstumpf${EN}wooden stump`, T`${DE}Holzstumpf${EN}wooden stamp`], T`${DE}Ein Holzstumpf mit tiefen Spalt.${EN}A wooden stump with a deep slit.`, { takeable: false, dropable: false, open: true })
+	let holzstumpf = new Item([T`${DE}Holzstumpf${EN}wooden stump`, T`${DE}Holzstumpf${EN}Wooden stamp`], T`${DE}Ein Holzstumpf mit tiefen Spalt.${EN}A wooden stump with a deep slit.`, { takeable: false, dropable: false, open: true })
 	holzstumpf.insert(metallschluessel);
 	eimer.insertApplyTarget(holzstumpf);
 	holzstumpf.giving = function (thing) {
@@ -2590,7 +2590,7 @@ you can make a door also an orc that blocks the road
 	scene8.insert(holzstumpf)
 	scene8.east = scene6;
 	let tuer = new Door(T`${DE}Tür${EN}Door`, T`${DE}Eine verschlossene Tür.${EN}A locked door.`, { blocking: true })
-	let torwache = new Person(T`${DE}Torwache${EN}Guard`, T`${DE}eine Torwache${EN}a gate guard`);
+	let torwache = new Person(T`${DE}Torwache${EN}Guard`, T`${DE}Eine Torwache${EN}A gate guard`);
 	scene8.insert(torwache);
 	scene8.northblock = tuer;
 	scene8.describe = function () {
@@ -2619,9 +2619,9 @@ you can make a door also an orc that blocks the road
 	}
 	let scene9 = new Scene(T`${DE}Ureinwohnerdorf${EN}Village of native tribe`, T`<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>${DE}Du bist im Dorf der Ureinwohner. </br>Nach ${["Süden"]} geht es zurück zum Eingang. </br>${EN}You are in the village of the native tribe. </br>To the ${["south"]} you can go back to the entrance. </br>`);
 	scene9.south = scene8;
-	let pina = new Person(["Pina", "Pina Colada"], T`${DE}eine Ureinwohnerin${EN}a native woman`);
-	let mojito = new Person("Mojito", T`${DE}ein Ureinwohner${EN}a native man`);
-	let daiquiri = new Person(["Daiquiri", "Daikiri", T`${EN}Dietary`], T`${DE}ein Ureinwohner mit einem Problem${EN}a native man with a problem`);
+	let pina = new Person(["Pina", "Pina Colada"], T`${DE}Eine Ureinwohnerin${EN}A native woman`);
+	let mojito = new Person("Mojito", T`${DE}Ein Ureinwohner${EN}A native man`);
+	let daiquiri = new Person(["Daiquiri", "Daikiri", T`${EN}Dietary`], T`${DE}Ein Ureinwohner mit einem Problem${EN}A native man with a problem`);
 	scene9.insert(pina);
 	scene9.insert(mojito);
 	scene9.insert(daiquiri);
@@ -2631,7 +2631,7 @@ you can make a door also an orc that blocks the road
 	mojito.dialog = async function* () {
 		return T`${DE}Hehe, mein Freund von nebenan hat </br>auf seinem Kopf so ein komisches silbernes Teil stecken, </br>das sieht total bescheuert aus!${EN}Hehe, my friend next door has </br>some weird silver thing stuck on his head, </br>it looks totally stupid!`;
 	}
-	let tortenheber = new Item(T`${DE}Tortenheber${EN}Cake server`, T`<img src='tortenheber.png'>${DE}ein Tortenheber${EN}a cake server`);
+	let tortenheber = new Item(T`${DE}Tortenheber${EN}Cake server`, T`<img src='tortenheber.png'>${DE}Ein Tortenheber${EN}A cake server`);
 	daiquiri.insert(tortenheber);
 	daiquiri.dialog = async function* () {
 		if (this.has(tortenheber)) {
@@ -3371,7 +3371,7 @@ you can make a door also an orc that blocks the road
 			}
 			Commands.answer = [];
 			Commands.look({ at: T`${DE}mich${EN}me`.toString() });
-			print(T`${DE}Du trägst einen ${["Rucksack"]}.${EN}You are carrying a ${["backpack"]}.`);
+			print(T`${ALL}</br>${DE}Du trägst einen ${["Rucksack"]}.${EN}You are carrying a ${["backpack"]}.`);
 			print("\n");
 			Commands.look({ at: "scene" });
 			if (Commands.actor.position == omazuhause) {
