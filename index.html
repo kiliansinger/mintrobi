@@ -1874,7 +1874,7 @@ you can make a door also an orc that blocks the road
 	eimer.doapply = function (target) {
 		//if(target===ocean) return target.doapply(this);//is needed because reciproce call only works when doapply is not there
 		if (target === meer) {
-			this.title = [T`${DE}Vollen Eimer${EN}Full bucket`, T`${DE}Voller Eimer${EN}Full bucket`, T`${DE}Eimer${EN}Bucket`]
+			this.title = [T`${DE}vollen Eimer${EN}full bucket`, T`${DE}Voller Eimer${EN}Full bucket`, T`${DE}Eimer${EN}Bucket`]
 			this.description = T`${DE}Ein mit Meerwasser gefüllter roter Eimer.${EN}A red bucket filled with ocean water.`
 			eimer.voll = true;
 			print(eimer.describe())
@@ -2029,7 +2029,7 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach ${["Norden"]} geht es über Straße mit Ampel in den Dschungel, </br>nach ${["Süden"]} geht es zum Strand.${EN}You are in a small market place in the city. </br>To the ${["north"]}, there is a road with traffic lights leading into the jungle, </br>to the ${["south"]}, there is the beach.`)
+	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach ${["Norden"]} geht es über die Straße mit einer Ampel in den Dschungel, </br>nach ${["Süden"]} geht es zum Strand.${EN}You are in a small market place in the city. </br>To the ${["north"]}, there is a road with traffic lights leading into the jungle, </br>to the ${["south"]}, there is the beach.`)
 	scene5.south = scene3;
 	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}Ein Verkäufer${EN}A seller`);
 	scene5.insert(verkaeufer);
@@ -2044,7 +2044,7 @@ you can make a door also an orc that blocks the road
 			const reply = yield T`${DE}Kannst Du mir bei der Abrechnung helfen? <p style='color:#0f0;'>${["1"]} - Gerne. </br>${["2"]} - Nein Danke! </br>${["3"]} - Kann ich was kaufen?</p>${EN}Can you help me with the billing? <p style='color:#0f0;'>${["1"]} - Gladly. </br>${["2"]} - No thanks! </br>${["3"]} - Can I buy something?</p>`;
 			switch (reply) {
 				case "1":
-					print(T`${DE}Super Danke! Wenn du 10 mal hintereinander richtig rechnest bekommst du ein Euro von mir als Dank. </br>${EN}Super thanks! If you calculate correctly 10 times in a row, you'll get a Euro from me as a thank you. </br>`)
+					print(T`${DE}Super Danke! Wenn du 10 mal hintereinander richtig rechnest bekommst du einen Euro von mir als Dank. </br>${EN}Super thanks! If you calculate correctly 10 times in a row, you'll get a Euro from me as a thank you. </br>`)
 					let richtig = 0;
 					while (true) {
 						let a = randint(1, 10);
@@ -2124,15 +2124,15 @@ you can make a door also an orc that blocks the road
 		return T`${DE}Eine ${EN}A ` + (this.open ? T`${DE}offene Holzbox.${EN}open wooden box.` : T`${DE}geschlossene Holzbox.${EN}closed wooden box.`) + this.printcommands();
 	}
 	let nagel = new Item(T`${DE}Nagel${EN}Nail`, T`${DE}Ein rostiger Nagel.${EN}A rusty nail`, { applicable: true })
-	let batterie = new Item(T`${DE}Batterie${EN}Battery`, T`${DE}Volle Mono-Batterie.${EN}A full Mono-Battery.`, { applicable: true });
-	let kabel = new Item(T`${DE}Kabel${EN}Cable`, T`${DE}Stück isolierten Volldraht-Kabel.${EN}piece of insulated solid wire cable.`, { applicable: true, open: true });
+	let batterie = new Item(T`${DE}Batterie${EN}Battery`, T`${DE}Eine volle Mono-Batterie.${EN}A full Mono-Battery.`, { applicable: true });
+	let kabel = new Item(T`${DE}Kabel${EN}Cable`, T`${DE}Stück isolierten Volldraht-Kabel.${EN}A piece of insulated solid wire cable.`, { applicable: true, open: true });
 	kabel.describe = function () {
 		if (this.has(nagel) && this.has(batterie)) {
 
-			return T`${DE}aktiver Elektromagnet${EN}active Electromagnet` + this.printcommands();
+			return T`${DE}${["aktiver Elektromagnet"]}${EN}${["active Electromagnet"]}` + this.printcommands();
 		}
 		if (this.has(nagel)) {
-			return T`${DE}Elektromagnet${EN}Electromagnet` + this.printcommands();
+			return T`${DE}${["Elektromagnet"]}${EN}${["Electromagnet"]}$` + this.printcommands();
 		}
 
 		else return this.description;
@@ -2237,9 +2237,9 @@ you can make a door also an orc that blocks the road
 			this.appliedtocoin = true;
 			muenzen.golden = true;
 			muenzen.title = muenzen.value == 1 ?
-				[muenzen.value + T`${DE} Goldmünze${EN} Gold coin`, T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`, T`${DE}münze${EN}coin`] :
-				[muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`, T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`, T`${DE}münze${EN}coin`]
-			muenzen.description = T`${DE}Glitzernde gold Münzen.${EN}shiny gold coins.`
+				[muenzen.value + T`${DE} Goldmünze${EN} Gold coin`, T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}Münzen${EN}Coins`, T`${DE}Münze${EN}Coin`] :
+				[muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`, T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}Münzen${EN}Coins`, T`${DE}Münze${EN}Coin`]
+			muenzen.description = T`${DE}Glitzernde Goldmünzen.${EN}Shiny gold coins.`
 			print(T`${DE}Jetzt habe ich Goldmünzen!${EN}Now I have gold coins.`)
 			return true;
 		}
