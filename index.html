@@ -2058,7 +2058,7 @@ you can make a door also an orc that blocks the road
 							}
 							muenzen.value = 3;
 							if (muenzen.golden) {
-								muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} Gold coins`, T`${DE}Goldmünze${EN}Gold coin`, T`${DE}Goldmünzen${EN}Gold coins`, T`${DE}münzen${EN}coins`, T`${DE}münze${EN}coin`]
+								muenzen.title = [muenzen.value + T`${DE} Goldmünzen${EN} gold coins`, T`${DE}Goldmünze${EN}gold coin`, T`${DE}Goldmünzen${EN}gold coins`, T`${DE}münzen${EN}coins`, T`${DE}münze${EN}coin`]
 							}
 							else muenzen.title = [muenzen.value + T` ${DE}Euros${EN}euros`, T`${DE}Euro${EN}euro`, T`${DE}Euros${EN}euros`, "€" + muenzen.value, muenzen.value + " €"];
 							return "you tricked me!"
@@ -2129,10 +2129,10 @@ you can make a door also an orc that blocks the road
 	kabel.describe = function () {
 		if (this.has(nagel) && this.has(batterie)) {
 
-			return T`${DE}${["aktiver Elektromagnet"]}${EN}${["active Electromagnet"]}` + this.printcommands();
+			return T`${DE}${["aktiver Elektromagnet"]}${EN}${["active electromagnet"]}` + this.printcommands();
 		}
 		if (this.has(nagel)) {
-			return T`${DE}${["Elektromagnet"]}${EN}${["Electromagnet"]}$` + this.printcommands();
+			return T`${DE}${["Elektromagnet"]}${EN}${["electromagnet"]}$` + this.printcommands();
 		}
 
 		else return this.description;
@@ -2434,7 +2434,7 @@ you can make a door also an orc that blocks the road
 			return T`<em style='color:#faa;'>${DE}Du musst einen modernen Chrome/Edge Browser verwenden damit das geht!${EN}You need to use a modern Chrome/Edge browser for this to work!${ALL}</em>\n`;;
 		}
 		while (true) {
-			const reply = yield T`${DE}Die Ampel muss wieder repariert werden. Diesmal ist die gelbe Leuchtdiode kaputt. Kannst Du mit der Leuchtdiode die 4 Beinchen hat die Farbe Gelb durch Farbmischung herstellen? Hier erfährst du mehr über Farbmischung ${EN}The traffic lights need to be repaired again. This time the yellow light-emitting diode is broken. Can you use the light-emitting diode that has 4 legs to make the color yellow by mixing colours? Learn more about colour mixing here. ${ALL}<a target='_blank' href='https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1'>Video</a>. ${DE}Verwende dazu das Gehirn von Mintrobi. </br>Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken. </br>Verkabele alles wie in der Abbildung${EN}Use the brain from Mintrobi. </br>Connect it to your computer with the USB cable. The first time you do this, select the device in the dialogue and click OK. </br> Connect everything as shown in the picture ${ALL} <img width='80%' src='multifarbe.png'><p style='color:#0f0;'>${DE}${["1"]} - Wie soll man denn aus Rot, Grün und Blau die Farbe Gelb mischen? </br>${EN}${["1"]} - How are you supposed to mix red, green and blue to make yellow? </br>${DE}${["2"]} - Ok, es ist alles verbunden! </br>${EN}${["2"]} - Ok, it is all connected! </br>${DE}${["3"]} - Ich wollte eigentlich gar nicht über die Ampel.${EN}${["3"]} - I didn't actually want to go through the traffic light.${ALL}</p>`;
+			const reply = yield T`${DE}Die Ampel muss wieder repariert werden. Diesmal ist die gelbe Leuchtdiode kaputt. Kannst Du mit der Leuchtdiode die 4 Beinchen hat die Farbe Gelb durch Farbmischung herstellen? Hier erfährst du mehr über Farbmischung ${EN}The traffic lights need to be repaired again. This time the yellow light-emitting diode is broken. Can you use the light-emitting diode that has 4 legs to make the color yellow by mixing colours? Learn more about colour mixing here: ${ALL}<a target='_blank' href='https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1'>Video</a>. ${DE}Verwende dazu das Gehirn von Mintrobi. </br>Verbinde es mit dem USB-Kabel mit deinem Computer. Beim ersten mal musst du jetzt im Dialog das Gerät auswählen und auf OK clicken. </br>Verkabele alles wie in der Abbildung${EN}Use the brain from Mintrobi. </br>Connect it to your computer with the USB cable. The first time you do this, select the device in the dialogue and click OK. </br> Connect everything as shown in the picture ${ALL} <img width='80%' src='multifarbe.png'><p style='color:#0f0;'>${DE}${["1"]} - Wie soll man denn aus Rot, Grün und Blau die Farbe Gelb mischen? </br>${EN}${["1"]} - How are you supposed to mix red, green and blue to make yellow? </br>${DE}${["2"]} - Ok, es ist alles verbunden! </br>${EN}${["2"]} - Ok, it is all connected! </br>${DE}${["3"]} - Ich wollte eigentlich gar nicht über die Ampel.${EN}${["3"]} - I didn't actually want to go through the traffic light.${ALL}</p>`;
 			switch (reply) {
 				case "1":
 					window.open("https://www.youtube.com/embed/5PQ_foxxoKM?autoplay=1", "_blank")?.focus();
@@ -2520,13 +2520,13 @@ you can make a door also an orc that blocks the road
 	scene6.insert(kaputteAmpel2);
 	let kostuem = new Item(T`${DE}Kostüm${EN}costume`, T`<img src='kostuem.png'>${DE}Ein Kostüm${EN}A costume`, { open: true, usable: true });
 	kostuem.use = function () {
-		Commands.forward_command = T`${DE}m Kostüm${EN}t costume`
+		Commands.forward_command = T`${DE}m Kostüm${EN}k costume`
 		return true;
 	}
 	koffer.insert(kostuem)
 	let Forscher = new Person(T`${DE}Forscher${EN}scientist`, T`${DE}Ein Forscher${EN}A scientist`);
 	scene7.insert(Forscher);
-	let sonnenuhranleitung = new Item([T`${DE}Sonnenuhranleitung${EN}sundial plan`, T`${DE}Sonnenuhr Anleitung${EN}sundialplan`], T`${DE}Um das Spiel zu lösen, musst Du dieses Projekt nicht unbedingt durchführen. </br>${EN}You don't have to do this project to solve the game. </br>${DE}Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen. </br>${EN}If you feel like it and it's sunny outside, make a sundial with Mintrobi's brain. All you need is a cotton bud. </br>${DE}Hier ist die ${EN}Here is the ${ALL}<a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>${DE}Anleitung${EN}Instruction${ALL}</a>.`)
+	let sonnenuhranleitung = new Item([T`${DE}Sonnenuhranleitung${EN}sundial plan`, T`${DE}Sonnenuhr Anleitung${EN}sundialplan`], T`${DE}Um das Spiel zu lösen, musst Du dieses Projekt nicht unbedingt durchführen. </br>${EN}You don't have to do this project to solve the game. </br>${DE}Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen. </br>${EN}If you feel like it and it's sunny outside, make a sundial with Mintrobi's brain. All you need is a cotton bud. </br>${DE}Hier ist die ${EN}Here is the ${ALL}<a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>${DE}Anleitung${EN}instruction${ALL}</a>.`)
 	scene7.insert(sonnenuhranleitung)
 	Forscher.insert(koffer);
 	Forscher.dialog = async function* () {
