@@ -1718,7 +1718,7 @@ you can make a door also an orc that blocks the road
 	ich.title = "Kai"
 	ich.age = 8;
 	var Pong = null;
-	let computer = new Person(T`${DE}Computer${EN}Computer`, T`${DE}Computer mit Pong spiel.${EN}Computer with Pong game.`, { usable: true });
+	let computer = new Person(T`${DE}Computer${EN}computer`, T`${DE}Computer mit Pong spiel.${EN}Computer with Pong game.`, { usable: true });
 	var pongcanv = null;
 	computer.use = function () {
 		Commands.forward_command = T`${DE}t computer${EN}t computer`.toString();
@@ -1740,8 +1740,8 @@ you can make a door also an orc that blocks the road
 			if (nochmal != "1") return "Ok.";
 		}
 	}
-	let omazuhause = new Scene(T`${DE}Omas Haus${EN}Grandma's house`, T`<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>${DE}Du bist im Haus deiner Großeltern. </br>${EN}You are at your grandmother's house. </br>${DE}Deine Oma steht im Wohnzimmer. </br>${EN}Your granny is standing in the living room. </br>${DE}Der Ausgang zum Strand ist ${["westlich"]} von dir. </br>${EN}The exit to the beach is to the ${["west"]} of you. </br>${DE}Das Spiel wurde unterstützt durch ${EN}The game was supported by ${ALL}<a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a> </br>${DE}und dem ${EN}and the ${ALL}<a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.`);
-	let oma = new Person([T`${DE}Oma${EN}Granny`, T`${DE}Großmutter${EN}Grandmother`, T`${DE}Omi`], T`${DE}Deine liebe Oma.${EN}Your dear Grandmother.`);
+	let omazuhause = new Scene(T`${DE}Omas Haus${EN}grandma's house`, T`<div class='flow'><img class='back' src='s1.png'><img id='s1oma1' src='s1oma1.png'><img id='s1oma2' src='s1oma2.png'></div>${DE}Du bist im Haus deiner Großeltern. </br>${EN}You are at your grandmother's house. </br>${DE}Deine Oma steht im Wohnzimmer. </br>${EN}Your granny is standing in the living room. </br>${DE}Der Ausgang zum Strand ist ${["westlich"]} von dir. </br>${EN}The exit to the beach is to the ${["west"]} of you. </br>${DE}Das Spiel wurde unterstützt durch ${EN}The game was supported by ${ALL}<a target='_blank' href='https://www.startnext.com/pages/unikat/campaign/smart-city-kassel-344#/'>Smart City Kassel</a> </br>${DE}und dem ${EN}and the ${ALL}<a target='_blank' href='https://www.uni-kassel.de/forschung/sfb/sfb-1319-elch/'>SFB-ELCH (Uni-Kassel)</a>.`);
+	let oma = new Person([T`${DE}Oma${EN}granny`, T`${DE}Großmutter${EN}grandmother`, T`${DE}Omi${EN}grandmother`], T`${DE}Deine liebe Oma.${EN}Your dear Grandmother.`);
 	omazuhause.insert(oma);
 	omazuhause.insert(computer);
 	ich.position = omazuhause;
@@ -1813,10 +1813,10 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let strand = new Scene(T`${DE}Strand${EN}Beach`, T`<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>${DE}Du stehst am Strand vorm Haus deiner Großeltern, </br>an dem sich ein kleiner Steg befindet. </br>${EN}You are standing on the beach in front of your grandparents' house, </br>where there is a small walkway. </br>${DE}Dort sitzt dein Opa und angelt. </br>Nach ${["Osten"]} geht es in das Haus deiner Großeltern, im ${["Westen"]} geht der Strand weiter. </br>${EN}That's where your grandfather sits and fishes. </br>To the ${["east"]}, you can go to your grandparents' house, </br>to the ${["west"]}, the beach continues.`)
+	let strand = new Scene(T`${DE}Strand${EN}beach`, T`<div class='flow'><img class='back' src='s2.png'><img id='s2opa1' src='s2opa1.png'><img id='s2opa2' src='s2opa2.png'><img id='s2krabbe1' src='s2krabbe1.png'><img id='s2krabbe2' src='s2krabbe2.png'><img id='s2tuer1' src='s2tuer1.png'><img id='s2tuer2' src='s2tuer2.png'><img id='s2vase' src='s2vase.png'></div>${DE}Du stehst am Strand vorm Haus deiner Großeltern, </br>an dem sich ein kleiner Steg befindet. </br>${EN}You are standing on the beach in front of your grandparents' house, </br>where there is a small walkway. </br>${DE}Dort sitzt dein Opa und angelt. </br>Nach ${["Osten"]} geht es in das Haus deiner Großeltern, im ${["Westen"]} geht der Strand weiter. </br>${EN}That's where your grandfather sits and fishes. </br>To the ${["east"]}, you can go to your grandparents' house, </br>to the ${["west"]}, the beach continues.`)
 	strand.east = omazuhause;
 	let bottlemessage = new Item(T`${DE}Flaschenpost${EN}bottle message`, T`<img src='bottlemessage.png'>${DE}Eine verschlossene Flaschenpost${EN}A sealed message in a bottle`);
-	let opa = new Person([T`${DE}Opa${EN}Grandpa`, T`${DE}Großvater${EN}Grandfather`], T`${DE}Dein lieber Opa.${EN}Your dear grandpa.`);
+	let opa = new Person([T`${DE}Opa${EN}grandpa`, T`${DE}Großvater${EN}grandfather`], T`${DE}Dein lieber Opa.${EN}Your dear grandpa.`);
 	strand.insert(opa);
 	opa.insert(bottlemessage);
 	opa.dialog = async function* () {
@@ -1844,9 +1844,9 @@ you can make a door also an orc that blocks the road
 		print(T`${DE}Nein behalte das. Das ist fuer dich. </br>${EN}No keep that. That is for you. </br>`);
 		return false;
 	}
-	let scene3 = new Scene(T`${DE}Badestrand${EN}Beach`, T`<div class='flow'><img class='back' src='s3.png'><img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'><img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'><img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>${DE}Du stehst am Strand, um dich herum sind einige Leute. </br>Nach ${["Norden"]} geht es in die Stadt, </br>nach ${["Osten"]} zum Strandhaus, </br>im ${["Westen"]} ist eine Strandbar.${EN}You are standing on the beach, there are some people around you. </br>To the ${["north"]} it goes to the city, </br>to the ${["east"]} to the beach house, </br>to the ${["west"]} is a beach bar.`)
+	let scene3 = new Scene(T`${DE}Badestrand${EN}beach`, T`<div class='flow'><img class='back' src='s3.png'><img id='s3frau1' src='s3frau1.png'><img id='s3frau2' src='s3frau2.png'><img id='s3kind1' src='s3kind1.png'><img id='s3kind2' src='s3kind2.png'><img id='s3junge1' src='s3junge1.png'><img id='s3junge2' src='s3junge2.png'></div>${DE}Du stehst am Strand, um dich herum sind einige Leute. </br>Nach ${["Norden"]} geht es in die Stadt, </br>nach ${["Osten"]} zum Strandhaus, </br>im ${["Westen"]} ist eine Strandbar.${EN}You are standing on the beach, there are some people around you. </br>To the ${["north"]} it goes to the city, </br>to the ${["east"]} to the beach house, </br>to the ${["west"]} is a beach bar.`)
 
-	let loch = new Item(T`${DE}Loch${EN}Hole`, T`${DE}Ein tiefes Loch${EN}A deep hole.`, { open: false, opensoninspection: true, takeable: false, dropable: false });
+	let loch = new Item(T`${DE}Loch${EN}hole`, T`${DE}Ein tiefes Loch${EN}A deep hole.`, { open: false, opensoninspection: true, takeable: false, dropable: false });
 	loch.giving = function (thing) {
 		print(T`${DE}Das Loch ist zu tief!${EN}The hole is too deep!`);
 		return false;
@@ -1856,15 +1856,15 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 
-	let holzschluessel = new Item([T`${DE}Holzschlüssel${EN}Wooden key`, T`${DE}Ein Holz Schlüssel${EN}A wood key`], T`${DE}Ein hölzerner Schlüssel.${EN}A wooden key.`, { applicable: true });
+	let holzschluessel = new Item([T`${DE}Holzschlüssel${EN}wooden key`, T`${DE}Holz Schlüssel${EN}wood key`], T`${DE}Ein hölzerner Schlüssel.${EN}A wooden key.`, { applicable: true });
 
 	loch.insert(holzschluessel);
 	scene3.insert(loch);
 
-	let eimer = new Item(T`${DE}Eimer${EN}Bucket`, T`${DE}Ein roter Eimer.${EN}A red bucket.`, { applicable: true });
+	let eimer = new Item(T`${DE}Eimer${EN}bucket`, T`${DE}Ein roter Eimer.${EN}A red bucket.`, { applicable: true });
 	scene3.insert(eimer);
 
-	let meer = new Item(T`${DE}Meer${EN}Ocean`, T`${DE}Schönes Meer.${EN}Beautiful ocean`, { takeable: false, dropable: false });
+	let meer = new Item(T`${DE}Meer${EN}ocean`, T`${DE}Schönes Meer.${EN}beautiful ocean`, { takeable: false, dropable: false });
 	scene3.insert(meer);
 	eimer.insertApplyTarget(meer);
 	eimer.insertApplyTarget(loch);
@@ -1902,24 +1902,24 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 	scene3.east = strand;
-	let frau = new Person(T`${DE}Frau${EN}Woman`, T`${DE}Ein Frau${EN}A woman`);
+	let frau = new Person(T`${DE}Frau${EN}woman`, T`${DE}Ein Frau${EN}A woman`);
 	scene3.insert(frau);
 	frau.dialog = async function* () {
 		return T`${DE}Endlich mal Ruhe. In der Stadt ist echt was los. </br>Diesen Urlaub habe ich mir echt verdient.${EN}Peace at last. There's really something going on in the city. </br>I've really earned this holiday.`;
 	}
-	let kind = new Person([T`${DE}Kind${EN}Child`, T`${DE}Mädchen${EN}Girl`], T`${DE}Ein Kind${EN}A child`);
+	let kind = new Person([T`${DE}Kind${EN}child`, T`${DE}Mädchen${EN}girl`], T`${DE}Ein Kind${EN}A child`);
 	scene3.insert(kind);
 	kind.dialog = async function* () {
 		return T`${DE}Da sind interessant verkleidete Menschen im Wald. </br>Hast du schonmal einen von denen gesehen?${EN}There are interesting people in disguise in the forest. </br>Have you ever seen one of them?`;
 	}
-	let junge = new Person([T`${DE}Junge${EN}Boy`, T`${DE}Jungen`], T`${DE}Ein Junge${EN}A boy`);
+	let junge = new Person([T`${DE}Junge${EN}boy`, T`${DE}Jungen${EN}boy`], T`${DE}Ein Junge${EN}A boy`);
 	scene3.insert(junge);
 	junge.dialog = async function* () {
 		return T`${DE}Hey schau mal, </br>diese Sandburg habe ich ganz alleine gebaut!${EN}Hey look, </br>I built this sandcastle all by myself!`;
 	}
-	let scene4 = new Scene(T`${DE}Strandbar${EN}Beach-bar`, "")
+	let scene4 = new Scene(T`${DE}Strandbar${EN}beach-bar`, "")
 	scene4.east = scene3;
-	let seetang = new Door(T`${DE}Seetang${EN}Seaweed`, T`${DE}Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!${EN}A pile of smelly seaweed. Mmm, yam, yam, I love sushi rolls!`, { blocking: true, usable: true, locked: true })
+	let seetang = new Door(T`${DE}Seetang${EN}seaweed`, T`${DE}Ein Haufen riechender Seetang. Hm, yam, yam, ich liebe Sushi-Rolls!${EN}A pile of smelly seaweed. Mmm, yam, yam, I love sushi rolls!`, { blocking: true, usable: true, locked: true })
 	seetang.cnt = 0;
 	seetang.use = function () {
 		seetang.cnt++;
@@ -1942,7 +1942,7 @@ you can make a door also an orc that blocks the road
 		}
 		else return T`<div class='flow'><img class='back' src='s4.png'><img id='s4barkeeper1' src='s4barkeeper1.png'><img id='s4barkeeper2' src='s4barkeeper2.png'><img id='s4tortentyp1' src='s4tortentyp1.png'><img id='s4tortentyp2' src='s4tortentyp2.png'><img id='s4bar' src='s4bar.png'></div>${DE}Oh da ist ja eine geheime Höhle dahinter im ${["Norden"]}. Was da wohl drin ist? </br>Nach ${["Osten"]} geht es zum Strand.${EN}Ooh, there's a secret cave behind there in the ${["north"]}. I wonder what's in there? </br>To the ${["east"]} you can go to the beach.` + this.printcommands();
 	}
-	let barmann = new Person(T`${DE}Barmann${EN}Bartender`, T`${DE}Ein Barmann${EN}A bartender`);
+	let barmann = new Person(T`${DE}Barmann${EN}bartender`, T`${DE}Ein Barmann${EN}A bartender`);
 	scene4.insert(barmann);
 	barmann.tricked = false;
 	barmann.receiving = function (thing) {
@@ -2005,9 +2005,9 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let tortenliebhaber = new Person([T`${DE}Tortenliebhaber${EN}cake lover`, T`${DE}Torten Liebhaber`], T`${DE}Ein Tortenliebhaber${EN}A cakelover`, { open: false });
+	let tortenliebhaber = new Person([T`${DE}Tortenliebhaber${EN}cake lover`, T`${DE}Torten Liebhaber${EN}cake lover`], T`${DE}Ein Tortenliebhaber${EN}A cakelover`, { open: false });
 	scene4.insert(tortenliebhaber);
-	let kaugummi = new Item(T`${DE}Kaugummi${EN}Chewing gum`, T`${DE}Ein Stück Kaugummi.${EN}A piece of chewing gum.`)
+	let kaugummi = new Item(T`${DE}Kaugummi${EN}chewing gum`, T`${DE}Ein Stück Kaugummi.${EN}A piece of chewing gum.`)
 	tortenliebhaber.insert(kaugummi);
 	tortenliebhaber.dialog = async function* () {
 		if (!this.has(kaugummi)) return T`${DE}Das ist echt ärgerlich, ohne den Tortenheber kann Ben mir ja gar nicht meine Lieblingstorte servieren.${EN}That's really annoying, without the cake server, Ben can't serve me my favourite cake.`;
@@ -2029,9 +2029,9 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let scene5 = new Scene(T`${DE}Stadt${EN}City`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach ${["Norden"]} geht es über die Straße mit einer Ampel in den Dschungel, </br>nach ${["Süden"]} geht es zum Strand.${EN}You are in a small market place in the city. </br>To the ${["north"]}, there is a road with traffic lights leading into the jungle, </br>to the ${["south"]}, there is the beach.`)
+	let scene5 = new Scene(T`${DE}Stadt${EN}city`, T`<div class='flow'><img class='back' src='s5.png'><img id='s5artist1' src='s5artist1.png'><img id='s5artist2' src='s5artist2.png'><img id='s5seller1' src='s5seller1.png'><img id='s5seller2' src='s5seller2.png'><img id='s5tante1' src='s5tante1.png'><img id='s5tante2' src='s5tante2.png'></div>${DE}Du befindest dich auf einem kleinen Marktplatz in der Stadt. </br>Nach ${["Norden"]} geht es über die Straße mit einer Ampel in den Dschungel, </br>nach ${["Süden"]} geht es zum Strand.${EN}You are in a small market place in the city. </br>To the ${["north"]}, there is a road with traffic lights leading into the jungle, </br>to the ${["south"]}, there is the beach.`)
 	scene5.south = scene3;
-	let verkaeufer = new Person(T`${DE}Verkäufer${EN}Seller`, T`${DE}Ein Verkäufer${EN}A seller`);
+	let verkaeufer = new Person(T`${DE}Verkäufer${EN}seller`, T`${DE}Ein Verkäufer${EN}A seller`);
 	scene5.insert(verkaeufer);
 	let muenzen = new Item(["1 Euro", "Euro", "€1", "1 €"], "Euro-Münzen");
 	muenzen.value = 1;
@@ -2114,7 +2114,7 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	let holzbox = new Item(T`${DE}Holzbox${EN}wooden box`, "", { openable: false, closable: true, open: false });
-	let koffer = new Item(T`${DE}Koffer${EN}Suitcase`, "", { openable: false, closable: true, open: false });
+	let koffer = new Item(T`${DE}Koffer${EN}suitcase`, "", { openable: false, closable: true, open: false });
 	koffer.describe = function () {
 		return T`${DE}Ein ${EN}A ` + (this.open ? T`${DE}offener Koffer.${EN}open suitcase.` : T`${DE}geschlossener Koffer.${EN}closed suitcase.`) + this.printcommands();
 	}
@@ -2123,9 +2123,9 @@ you can make a door also an orc that blocks the road
 	holzbox.describe = function () {
 		return T`${DE}Eine ${EN}A ` + (this.open ? T`${DE}offene Holzbox.${EN}open wooden box.` : T`${DE}geschlossene Holzbox.${EN}closed wooden box.`) + this.printcommands();
 	}
-	let nagel = new Item(T`${DE}Nagel${EN}Nail`, T`${DE}Ein rostiger Nagel.${EN}A rusty nail`, { applicable: true })
-	let batterie = new Item(T`${DE}Batterie${EN}Battery`, T`${DE}Eine volle Mono-Batterie.${EN}A full Mono-Battery.`, { applicable: true });
-	let kabel = new Item(T`${DE}Kabel${EN}Cable`, T`${DE}Stück isolierten Volldraht-Kabel.${EN}A piece of insulated solid wire cable.`, { applicable: true, open: true });
+	let nagel = new Item(T`${DE}Nagel${EN}nail`, T`${DE}Ein rostiger Nagel.${EN}A rusty nail`, { applicable: true })
+	let batterie = new Item(T`${DE}Batterie${EN}battery`, T`${DE}Eine volle Mono-Batterie.${EN}A full Mono-Battery.`, { applicable: true });
+	let kabel = new Item(T`${DE}Kabel${EN}cable`, T`${DE}Stück isolierten Volldraht-Kabel.${EN}A piece of insulated solid wire cable.`, { applicable: true, open: true });
 	kabel.describe = function () {
 		if (this.has(nagel) && this.has(batterie)) {
 
@@ -2170,7 +2170,7 @@ you can make a door also an orc that blocks the road
 	kabel.doapply = function (target) {
 		if (target === nagel) {
 			this.take(target);
-			this.title = [T`${DE}Elektromagnet${EN}Electromagnet`, T`${DE}Magnet${EN}Magnet`];
+			this.title = [T`${DE}Elektromagnet${EN}electromagnet`, T`${DE}Magnet${EN}magnet`];
 			print(this.describe())
 			return true;
 		}
@@ -2228,7 +2228,7 @@ you can make a door also an orc that blocks the road
 			return false;
 		}
 	}
-	let nagellack = new Item([T`${DE}Nagellack${EN}nail polish`, T`${DE}Goldener Nagellack${EN}Golden nail polish`], T`${DE}Goldener Nagellack.${EN}Golden nail polish.`, { dropable: false, applicable: true });
+	let nagellack = new Item([T`${DE}Nagellack${EN}nail polish`,  T`${DE}goldenen Nagellack${EN}golden nail polish`,T`${DE}goldener Nagellack${EN}golden nail polish`], T`${DE}Goldener Nagellack.${EN}Golden nail polish.`, { dropable: false, applicable: true });
 	nagellack.insertApplyTarget(muenzen)
 
 	nagellack.appliedtocoin = false;
@@ -2245,7 +2245,7 @@ you can make a door also an orc that blocks the road
 		}
 		else return false;
 	}
-	let tratschtante = new Person([T`${DE}Tratschtante${EN}Tattletale`, T`${DE}Tratsch Tante${EN}Tattletail`], T`${DE}Eine Tratschtante${EN}A tattletale`);
+	let tratschtante = new Person([T`${DE}Tratschtante${EN}tattletale`, T`${DE}Tratsch Tante${EN}tattletail`], T`${DE}Eine Tratschtante${EN}A tattletale`);
 	tratschtante.insert(nagellack);
 	scene5.insert(tratschtante);
 	tratschtante.receiving = function (thing) {
@@ -2262,9 +2262,9 @@ you can make a door also an orc that blocks the road
 		if (!this.has(nagellack)) return T`${DE}Psst, hör mal, ich muss dir was erzählen. </br>Der Verkäufer da hinten verlangt bei Touristen </br>den dreifachen Preis! </br>Lass dich nicht übers Ohr hauen!${EN}Shh, listen, I have something to tell you. </br>The seller back there charges tourists </br>three times the price! </br>Don't let yourself be taken for a ride!`;
 		else return T`${DE}Schau mal mein toller goldener Nagellack. Meine Finger sehen richtig hübsch aus. Aber ich würde alles für Kaugummi geben.${EN}Look at my great golden nail polish. My fingers look really pretty. But I'd give anything for chewing gum.`;
 	}
-	let kuenstler = new Person(T`${DE}Künstler${EN}Artist`, T`${DE}Ein Künstler${EN}An artist`);
+	let kuenstler = new Person(T`${DE}Künstler${EN}artist`, T`${DE}Ein Künstler${EN}An artist`);
 	scene5.insert(kuenstler);
-	let bild = new Item(T`${DE}Bild${EN}Picture`, T`${DE}Ein Kunstwerk.${EN}A piece of art.`);
+	let bild = new Item(T`${DE}Bild${EN}picture`, T`${DE}Ein Kunstwerk.${EN}A piece of art.`);
 	kuenstler.insert(bild)
 	kuenstler.receiving = function (thing) {
 		if (thing === muenzen) {
@@ -2297,7 +2297,7 @@ you can make a door also an orc that blocks the road
 			}
 		}
 	}
-	let scene6 = new Scene(T`${DE}Dschungel${EN}Jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel. </br>Nach ${["Norden"]} geht es zu einer Lichtung, </br>nach ${["Süden"]} geht es zur Stadt </br>und im ${["Westen"]} liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle. </br>To the ${["north"]} is a clearing, </br>to the ${["south"]} is the town </br>and to the ${["west"]} is the entrance to the native tribe village.`)
+	let scene6 = new Scene(T`${DE}Dschungel${EN}jungle`, T`<div class='flow'><img class='back' src='s6.png'></div>${DE}Du befindest dich auf einem Pfad im Dschungel. </br>Nach ${["Norden"]} geht es zu einer Lichtung, </br>nach ${["Süden"]} geht es zur Stadt </br>und im ${["Westen"]} liegt der Eingang des Ureinwohnerdorfes.${EN}You are on a path in the jungle. </br>To the ${["north"]} is a clearing, </br>to the ${["south"]} is the town </br>and to the ${["west"]} is the entrance to the native tribe village.`)
 	let kaputteAmpel = new Door(T`${DE}Ampel${EN}traffic light`, T`${DE}Eine kaputte Ampel.${EN}A broken traffic-light.`, { blocking: true, usable: true, speakable: true, locked: true });
 	kaputteAmpel.use = function () {
 		Commands.forward_command = T`${DE}t ampel${EN}t traffic light`
@@ -2514,19 +2514,19 @@ you can make a door also an orc that blocks the road
 	scene6.south = scene5;
 	scene5.northblock = kaputteAmpel;
 	scene5.insert(kaputteAmpel)
-	let scene7 = new Scene(T`${DE}Lichtung${EN}Clearance`, T`<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>${DE}Du befindest dich auf einer Lichtung im Dschungel. </br>Nach ${["Süden"]} geht es zurück zum Dschungelpfad.${EN}You are in a clearance in the jungle. </br>To the ${["south"]} you go back to the jungle path.`)
+	let scene7 = new Scene(T`${DE}Lichtung${EN}clearance`, T`<div class='flow'><img class='back' src='s7.png'><img id='s7forscher1' src='s7forscher1.png'><img id='s7forscher2' src='s7forscher2.png'></div>${DE}Du befindest dich auf einer Lichtung im Dschungel. </br>Nach ${["Süden"]} geht es zurück zum Dschungelpfad.${EN}You are in a clearance in the jungle. </br>To the ${["south"]} you go back to the jungle path.`)
 	scene7.south = scene6;
 	scene6.southblock = kaputteAmpel2;
 	scene6.insert(kaputteAmpel2);
-	let kostuem = new Item(T`${DE}Kostüm${EN}Costume`, T`<img src='kostuem.png'>${DE}Ein Kostüm${EN}A costume`, { open: true, usable: true });
+	let kostuem = new Item(T`${DE}Kostüm${EN}costume`, T`<img src='kostuem.png'>${DE}Ein Kostüm${EN}A costume`, { open: true, usable: true });
 	kostuem.use = function () {
 		Commands.forward_command = T`${DE}m Kostüm${EN}t costume`
 		return true;
 	}
 	koffer.insert(kostuem)
-	let Forscher = new Person(T`${DE}Forscher${EN}Scientist`, T`${DE}Ein Forscher${EN}A scientist`);
+	let Forscher = new Person(T`${DE}Forscher${EN}scientist`, T`${DE}Ein Forscher${EN}A scientist`);
 	scene7.insert(Forscher);
-	let sonnenuhranleitung = new Item([T`${DE}Sonnenuhranleitung${EN}Sundial plan`, T`${DE}Sonnenuhr Anleitung${EN}Sundialplan`], T`${DE}Um das Spiel zu lösen, musst Du dieses Projekt nicht unbedingt durchführen. </br>${EN}You don't have to do this project to solve the game. </br>${DE}Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen. </br>${EN}If you feel like it and it's sunny outside, make a sundial with Mintrobi's brain. All you need is a cotton bud. </br>${DE}Hier ist die ${EN}Here is the ${ALL}<a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>${DE}Anleitung${EN}Instruction${ALL}</a>.`)
+	let sonnenuhranleitung = new Item([T`${DE}Sonnenuhranleitung${EN}sundial plan`, T`${DE}Sonnenuhr Anleitung${EN}sundialplan`], T`${DE}Um das Spiel zu lösen, musst Du dieses Projekt nicht unbedingt durchführen. </br>${EN}You don't have to do this project to solve the game. </br>${DE}Falls du Lust hast und es draußen sonnig ist, dann baue mit dem Gehirn von Mintrobi eine Sonnenuhr. Du brauchst nur noch ein Wattestäbchen. </br>${EN}If you feel like it and it's sunny outside, make a sundial with Mintrobi's brain. All you need is a cotton bud. </br>${DE}Hier ist die ${EN}Here is the ${ALL}<a target='_blank' href='https://microbit.eeducation.at/wiki/Sonnenuhr_L%C3%B6sung'>${DE}Anleitung${EN}Instruction${ALL}</a>.`)
 	scene7.insert(sonnenuhranleitung)
 	Forscher.insert(koffer);
 	Forscher.dialog = async function* () {
@@ -2576,7 +2576,7 @@ you can make a door also an orc that blocks the road
 		return false;
 	}
 	let scene8 = new Scene(T`${DE}Eingang zum Ureinwohnerdorf${EN}Entry to the village of the native tribe`, "")
-	let holzstumpf = new Item([T`${DE}Holzstumpf${EN}wooden stump`, T`${DE}Holzstumpf${EN}Wooden stamp`], T`${DE}Ein Holzstumpf mit tiefen Spalt.${EN}A wooden stump with a deep slit.`, { takeable: false, dropable: false, open: true })
+	let holzstumpf = new Item([T`${DE}Holzstumpf${EN}wooden stump`, T`${DE}Holzstumpf${EN}wooden stamp`], T`${DE}Ein Holzstumpf mit tiefen Spalt.${EN}A wooden stump with a deep slit.`, { takeable: false, dropable: false, open: true })
 	holzstumpf.insert(metallschluessel);
 	eimer.insertApplyTarget(holzstumpf);
 	holzstumpf.giving = function (thing) {
@@ -2589,8 +2589,8 @@ you can make a door also an orc that blocks the road
 	}
 	scene8.insert(holzstumpf)
 	scene8.east = scene6;
-	let tuer = new Door(T`${DE}Tür${EN}Door`, T`${DE}Eine verschlossene Tür.${EN}A locked door.`, { blocking: true })
-	let torwache = new Person(T`${DE}Torwache${EN}Guard`, T`${DE}Eine Torwache${EN}A gate guard`);
+	let tuer = new Door(T`${DE}Tür${EN}door`, T`${DE}Eine verschlossene Tür.${EN}A locked door.`, { blocking: true })
+	let torwache = new Person(T`${DE}Torwache${EN}guard`, T`${DE}Eine Torwache${EN}A gate guard`);
 	scene8.insert(torwache);
 	scene8.northblock = tuer;
 	scene8.describe = function () {
@@ -2617,7 +2617,7 @@ you can make a door also an orc that blocks the road
 			return "Ugga bugga, blubliblah! Impostor!"
 		}
 	}
-	let scene9 = new Scene(T`${DE}Ureinwohnerdorf${EN}Village of native tribe`, T`<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>${DE}Du bist im Dorf der Ureinwohner. </br>Nach ${["Süden"]} geht es zurück zum Eingang. </br>${EN}You are in the village of the native tribe. </br>To the ${["south"]} you can go back to the entrance. </br>`);
+	let scene9 = new Scene(T`${DE}Ureinwohnerdorf${EN}village of native tribe`, T`<div class='flow'><img class='back' src='s9.png'><img id='s9pina1' src='s9pina1.png'><img id='s9pina2' src='s9pina2.png'><img id='s9mojito1' src='s9mojito1.png'><img id='s9mojito2' src='s9mojito2.png'><img id='s9daiquiri3' src='s9daiquiri3.png'><img id='s9daiquiri1' src='s9daiquiri1.png'><img id='s9daiquiri2' src='s9daiquiri2.png'><img id='s9mauer' src='s9mauer.png'></div>${DE}Du bist im Dorf der Ureinwohner. </br>Nach ${["Süden"]} geht es zurück zum Eingang. </br>${EN}You are in the village of the native tribe. </br>To the ${["south"]} you can go back to the entrance. </br>`);
 	scene9.south = scene8;
 	let pina = new Person(["Pina", "Pina Colada"], T`${DE}Eine Ureinwohnerin${EN}A native woman`);
 	let mojito = new Person("Mojito", T`${DE}Ein Ureinwohner${EN}A native man`);
@@ -2631,7 +2631,7 @@ you can make a door also an orc that blocks the road
 	mojito.dialog = async function* () {
 		return T`${DE}Hehe, mein Freund von nebenan hat </br>auf seinem Kopf so ein komisches silbernes Teil stecken, </br>das sieht total bescheuert aus!${EN}Hehe, my friend next door has </br>some weird silver thing stuck on his head, </br>it looks totally stupid!`;
 	}
-	let tortenheber = new Item(T`${DE}Tortenheber${EN}Cake server`, T`<img src='tortenheber.png'>${DE}Ein Tortenheber${EN}A cake server`);
+	let tortenheber = new Item(T`${DE}Tortenheber${EN}cake server`, T`<img src='tortenheber.png'>${DE}Ein Tortenheber${EN}A cake server`);
 	daiquiri.insert(tortenheber);
 	daiquiri.dialog = async function* () {
 		if (this.has(tortenheber)) {
@@ -2666,7 +2666,7 @@ you can make a door also an orc that blocks the road
 			return T`${DE}Danke nochmals.${EN}Thanks again.`;
 		}
 	}
-	let scene10 = new Scene(T`${DE}Geheimes Labor${EN}Secret lab`, "");
+	let scene10 = new Scene(T`${DE}Geheimes Labor${EN}secret lab`, "");
 	scene10.describe = function () {
 		if (MODE.pro) {
 			return T`<img src='s10.png'>${DE}Bravo du hast das Spiel geschafft und kannst jetzt eigene Programme schreiben. </br>Hier ist der Quelltext, damit Du das Spiel selbst erweitern kannst: ${EN}Bravo, you have completed the game and can now write your own programmes. </br>Here is the source code so that you can extend the game yourself: ${ALL}<a target='_blank' href='https://github.com/kiliansinger/mintrobi/'>https://github.com/kiliansinger/mintrobi/</a> </br>${DE}Nach ${["Süden"]} geht es zur Strandbar.${EN}To the ${["south"]} you can go to the beach bar.` + this.printcommands();
@@ -2691,9 +2691,9 @@ you can make a door also an orc that blocks the road
 	}
 	scene10.northblock = numberlockdoor;
 	scene10.insert(numberlockdoor)
-	let scene11 = new Scene(T`${DE}Dunkles Labyrinth${EN}Dark labyrinth`, T`${DE}Es ist stockdunkel hier. Ich glaube ich brauche Mintrobis Hilfe, um hier rauszufinden.${EN}It's pitch black in here. I think I need Mintrobi's help to find my way out.`);
+	let scene11 = new Scene(T`${DE}Dunkles Labyrinth${EN}dark labyrinth`, T`${DE}Es ist stockdunkel hier. Ich glaube ich brauche Mintrobis Hilfe, um hier rauszufinden.${EN}It's pitch black in here. I think I need Mintrobi's help to find my way out.`);
 	scene11.south = scene10;
-	let mintrobi = new Person(T`${DE}Roboter${EN}Robot`, T`${DE}Dein lieber Mintrobi.${EN}Your dear Mintrobi.`);
+	let mintrobi = new Person(T`${DE}Roboter${EN}robot`, T`${DE}Dein lieber Mintrobi.${EN}Your dear Mintrobi.`);
 	scene11.insert(mintrobi);
 	mintrobi.dialog = async function* () {
 		if (MODE.pro) return T`${DE}Für dieses Spiel musst du einen Mintrobi haben. Du hast jedoch den C++ Programmierkurs gewählt. Weshalb dieses Rätsel übersprungen wird.${EN}For this game you must have a Mintrobi. However, you have chosen the C++ programming course. Therefore, this puzzle is skipped.`;
