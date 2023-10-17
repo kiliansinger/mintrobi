@@ -3365,6 +3365,7 @@ you can make a door also an orc that blocks the road
 				return true;
 			} else return false;
 		}
+		@when("lab")
 		@when("lab ID PASSWORD")
 		static lab({ id,password }) {
 			if (id === undefined) id=Commands.store_id;
