@@ -3371,7 +3371,7 @@ you can make a door also an orc that blocks the road
 			if (password === undefined) password=Commands.store_password;
 			Commands.store_id=id;
 			Commands.store_password=password;	
-			window.open("https://classroom.microbit.org/join?id="+id+"&password="+password, "_blank")?.focus();
+			window.open("https://classroom.microbit.org/join?id="+id+"&password="+password.toUpperCase(), "_blank")?.focus();
 		}
 		@when("reset")
 		static reset() {
