@@ -1252,7 +1252,14 @@ you can make a door also an orc that blocks the road
 			this.pro = pro;
 		}
 	}
-
+	class lab_id_passwordObj extends Obj{
+		constructor(id,password){
+			super();
+			this.id=id;
+			this.password=password;
+		}
+	}
+	let lab_id_password=new lab_id_passwordObj("","");
 	const params = new Proxy(new URLSearchParams(window.location.search), {
 		get: (searchParams, prop) => searchParams.get(prop),
 	});
@@ -3198,8 +3205,7 @@ you can make a door also an orc that blocks the road
 		static recognition = null;
 		static synthesis = null;
 		static averagespeakvol = 0;
-		static store_password="";
-		static store_id="";
+
 		@when(T`${DE}spracherkennung${EN}speachrecognition${ALL} ONOFF`)
 		@when("sp ONOFF")
 		static async speachrecog({ onoff }) {
@@ -3368,10 +3374,10 @@ you can make a door also an orc that blocks the road
 		@when("lab", { id: undefined,password:undefined })
 		@when("lab ID PASSWORD")
 		static lab({ id,password }) {
-			if (id === undefined) id=Commands.store_id;
-			if (password === undefined) password=Commands.store_password;
-			Commands.store_id=id;
-			Commands.store_password=password;	
+			if (id === undefined) id=lab_id_password.id;
+			if (password === undefined) password=lab_id_password.password;
+			lab_id_password.id=id;
+			lab_id_password.password=password;	
 			window.open("https://classroom.microbit.org/join?id="+id+"&password="+password.toUpperCase(), "_blank")?.focus();
 			return true;
 		}
