@@ -3367,10 +3367,10 @@ you can make a door also an orc that blocks the road
 		}
 		@when("lab ID PASSWORD")
 		static lab({ id,password }) {
-			if (id === undefined) id=store_id;
-			if (password === undefined) password=store_password;
-			store_id=id;
-			store_password=password;	
+			if (id === undefined) id=Commands.store_id;
+			if (password === undefined) password=Commands.store_password;
+			Commands.store_id=id;
+			Commands.store_password=password;	
 			window.open("https://classroom.microbit.org/join?id="+id+"&password="+password, "_blank")?.focus();
 		}
 		@when("reset")
