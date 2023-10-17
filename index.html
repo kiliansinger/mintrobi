@@ -2831,6 +2831,8 @@ you can make a door also an orc that blocks the road
 			Commands.recogparam = null;
 			recog |= Commands.save();
 			Commands.recogparam = null;
+			recog |= Commands.lab();
+			Commands.recogparam = null;
 			recog |= Commands.reset();
 			Commands.recogparam = null;
 			recog |= Commands.de();
@@ -2900,6 +2902,7 @@ you can make a door also an orc that blocks the road
 			print(T`&#x26AC; ${DE}sprich/rede/tippe/t (mit/in/...) PERSON/COMPUTER\n${EN}speak/talk/type/t (with/into/...) PERSON/COMPUTER\n`);
 			print(T`&#x26AC; ${DE}speichere/save SPIELSTANDSNAME\n${EN}save NAMEOFGAMESTATE\n`);
 			print(T`&#x26AC; ${DE}lade/load SPIELSTANDSNAME\n${EN}load NAMEOFGAMESTATE\n`);
+			print(T`&#x26AC; ${ALL}lab ID PASSWORD\n`);
 			print(T`&#x26AC; ${DE}spracherkennung/sp an/aus\n${EN}speechrecognition/sp on/off\n`);
 			print("&#x26AC; reset\n");
 			print(T`&#x26AC; ${DE}Deutsch/de/Englisch/en${EN}German/de/English/en\n`);
@@ -3195,6 +3198,8 @@ you can make a door also an orc that blocks the road
 		static recognition = null;
 		static synthesis = null;
 		static averagespeakvol = 0;
+		static store_password="";
+		static store_id="";
 		@when(T`${DE}spracherkennung${EN}speachrecognition${ALL} ONOFF`)
 		@when("sp ONOFF")
 		static async speachrecog({ onoff }) {
@@ -3359,6 +3364,14 @@ you can make a door also an orc that blocks the road
 				Obj.restore(dump2);
 				return true;
 			} else return false;
+		}
+		@when("lab ID PASSWORD")
+		static lab({ id,password }) {
+			if (id === undefined) id=store_id;
+			if (password === undefined) password=store_password;
+			store_id=id;
+			store_password=password;	
+			window.open("https://classroom.microbit.org/join?id="+id+"&password="+password, "_blank")?.focus();
 		}
 		@when("reset")
 		static reset() {
