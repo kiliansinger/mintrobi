@@ -1253,9 +1253,9 @@ you can make a door also an orc that blocks the road
 		}
 	}
 	class lab_id_passwordObj extends Obj{
-		constructor(id,password){
+		constructor(idnum,password){
 			super();
-			this.id=id;
+			this.idnum=idnum;
 			this.password=password;
 		}
 	}
@@ -3374,9 +3374,9 @@ you can make a door also an orc that blocks the road
 		@when("lab", { id: undefined,password:undefined })
 		@when("lab ID PASSWORD")
 		static lab({ id,password }) {
-			if (id === undefined) id=lab_id_password.id;
+			if (id === undefined) id=lab_id_password.idnum;
 			if (password === undefined) password=lab_id_password.password;
-			lab_id_password.id=id;
+			lab_id_password.idnum=id;
 			lab_id_password.password=password;	
 			window.open("https://classroom.microbit.org/join?id="+id+"&password="+password.toUpperCase(), "_blank")?.focus();
 			return true;
