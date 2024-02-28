@@ -2842,6 +2842,8 @@ you can make a door also an orc that blocks the road
 			Commands.recogparam = null;
 			recog |= Commands.reset();
 			Commands.recogparam = null;
+			recog |= Commands.hack();
+			Commands.recogparam = null;
 			recog |= Commands.de();
 			Commands.recogparam = null;
 			recog |= Commands.en();
@@ -3385,6 +3387,11 @@ you can make a door also an orc that blocks the road
 		@when("reset")
 		static reset() {
 			return Commands.load({ title: "reset" });
+		}
+		@when("hack")
+		static hack() {
+			kaputteAmpel.blocking=false;
+			kaputteAmpel2.blocking=false;
 		}
 		static intro() {
 			let dump = Obj.dump();
